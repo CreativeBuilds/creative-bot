@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server --hot"
   },
   "author": "CreativeBuilds",
   "license": "ISC",
@@ -38,6 +39,7 @@
     "style-loader": "^0.23.1",
     "typescript": "^3.4.3",
     "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.3.1"
   }
 }
