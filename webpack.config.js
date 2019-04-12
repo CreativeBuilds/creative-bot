@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   // context: __dirname + '\\src\\javascript',
@@ -41,6 +42,9 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname, '/src/index.ejs')
-    })
+    }),
+    new CopyWebpackPlugin([
+      {from:'src/styles',to:'styles'}
+    ])
   ]
 };
