@@ -41,6 +41,12 @@ const theme = {
           "title_hover":{
               backgroundColor: '#dddddd'
           }
+      },
+      chat: {
+        input: {
+          backgroundColor: "#ffffff",
+          color: "#202225",
+        }
       }
     }
   };
