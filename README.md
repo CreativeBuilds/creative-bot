@@ -20,7 +20,7 @@ Currently it is only for people who know how to run node / have some basic under
  6. Once you've set your streamername as your blockchain username found in step 5, you're going to need to find an authKey  **Note if you're using a separate account for a bot (recommended, sign into this account now!)**. This is pretty tricky, and not for normal users *(this is why I said you have to know something about how web dev works)* 
 	 7. Open a url to your stream or any page where you can send chat messages.
 	 8.  Open the dev console *(note I will be walking through this process on chrome)* for chrome do `ctrl + shift + j`
-	 9. Once open, look at the top of the developer console and navigate to the `Network` tab ![Dev console](./readmefiles/network.png)
+	 9. Once open, look at the top of the developer console and navigate to the `Network` tab ![Dev console](./readmefiles/networktab.png)
 	 10. With that tab open send a message in chat, doesn't need to be anything specific and you should see two new requests in that panel labeled `graphigo.prd.dli...` I wont get into the specifics of what these are, but basically it tells the server who you are and what message you would like to send.
 	 11. Click on the bottom `graphigo.prd.dli...` and you should be greeted with a page something like this ![Graph Response](./readmefiles/graph.png)
 	 12. Copy the string of text next to the header called `authorization` it should be pretty long *(this string is found right where my cursor is in the image)*
