@@ -15,9 +15,34 @@
   align-items: center;
 }
 
+.message {
+  width: calc(100% - 10px);
+  padding: 5px;
+  text-overflow: wrap;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .image_container {
+    padding-right: 5px;
+  }
+  .message_content {
+    flex: 1;
+    text-align: left;
+    span {
+      font-weight: bold;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
 .content {
   flex: 1;
   overflow-y: auto;
+  width: calc(100% - 10px);
+  padding: 5px;
 }
 
 .input {
