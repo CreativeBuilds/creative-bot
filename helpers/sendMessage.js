@@ -93,6 +93,7 @@ const checkMessages = () => {
 };
 
 const sendMessage = (message, streamer) => {
+  // TODO add a check to see if message is past max character limit, if it is, split it up into multiple messages
   return new Promise((response, reject) => {
     msgs.push({
       message,

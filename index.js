@@ -115,7 +115,7 @@ const textMessage = (message, data) => {
     let command = commands[commandName];
     if (command) {
       // TODO check permissions
-      command.run(message, data).then(msg => {
+      command.run({message, data, args}).then(msg => {
           if(!msg) return;
           sendMessage(msg);
       })
