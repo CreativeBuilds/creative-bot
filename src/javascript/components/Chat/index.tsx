@@ -3,10 +3,19 @@ import { useState, useContext } from 'react';
 import { ThemeContext } from '../../helpers';
 import { MdSend } from 'react-icons/md';
 
+const Window: any = window;
+const { ipcRenderer } = Window.require('electron');
+
 const styles: any = require('./Chat.scss');
 
 const Chat = props => {
   const { stateTheme, setStateTheme } = useContext(ThemeContext);
+  const [messages, setMessages] = useState([])
+  let newMessage = (event, data) => {
+    setMessages(messages.concat([data.message]))
+  }
+  console.log("messages", messages);
+  ipcRenderer.on('newmessage', newMessage)
   return (
     <div style={stateTheme.menu} className={styles.Chat}>
       <div style={stateTheme.menu.title} className={styles.header}>

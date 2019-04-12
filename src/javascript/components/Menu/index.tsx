@@ -10,7 +10,6 @@ const styles: any = require('./Menu.scss');
 const Menu = props => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { stateTheme, setStateTheme } = useContext(ThemeContext);
-  console.log("STATETHEME", stateTheme.menu.title_hover);
   return (
     <React.Fragment>
       <div

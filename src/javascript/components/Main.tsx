@@ -10,11 +10,6 @@ const { ipcRenderer } = Window.require('electron');
 
 const styles: any = require('./Main.scss');
 
-ipcRenderer.send('cookies', 'test cookie!');
-ipcRenderer.on('info', (event, obj) => {
-  console.log(obj);
-});
-
 // TODO move theme/style function to a different file
 
 const Main = props => {
