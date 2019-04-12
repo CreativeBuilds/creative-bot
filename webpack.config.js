@@ -46,5 +46,8 @@ module.exports = {
     new CopyWebpackPlugin([
       {from:'src/styles',to:'styles'}
     ])
-  ]
+  ],
+  node: {
+    fs: "empty"
+  }
 };

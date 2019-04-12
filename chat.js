@@ -99,7 +99,7 @@ ws.on('open', function() {
       type: 'start',
       payload: {
         variables: {
-          streamer: 'creativebuilds'
+          streamer: config.streamer
         },
         extensions: {},
         operationName: 'StreamMessageSubscription',
