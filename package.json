@@ -16,6 +16,8 @@
     "https": "^1.0.0",
     "react": "^16.8.6",
     "react-icons": "^3.5.0",
+    "react-router": "^5.0.0",
+    "react-router-dom": "^5.0.0",
     "rxjs": "^6.4.0",
     "ws": "^6.2.1"
   },

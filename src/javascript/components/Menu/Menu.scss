@@ -2,9 +2,10 @@
 }
 .hamburger {
   font-size: 3em;
-  postion: absolute;
+  position: fixed;
   top: 0;
   left: 0;
+  z-index: 1;
   margin-left: 5px;
   display: inline;
   svg:hover {
@@ -14,16 +15,41 @@
 .menu_popout {
   width: 250px;
   height: 100vh;
-  position: absolute;
+  position: relative;
   transition: all 0.5s;
   top: 0;
   left: -250px;
+  z-index: 9999999;
   svg {
     font-size: 3em;
     position: absolute;
     right: 0;
   }
+  svg:hover {
+    cursor: pointer;
+  }
   &.menu_toggled {
     left: 0;
+  }
+  ul {
+    list-style-type: none;
+    &,
+    li {
+      margin: 0;
+      padding: 0;
+    }
+    li {
+      font-size: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 48px;
+      &:hover {
+        cursor: pointer;
+      }
+      &:hover:nth-child(1) {
+        cursor: default;
+      }
+    }
   }
 }
