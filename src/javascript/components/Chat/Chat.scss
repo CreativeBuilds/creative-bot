@@ -25,6 +25,9 @@
   align-items: center;
   .image_container {
     padding-right: 5px;
+    img {
+      border-radius: 50%;
+    }
   }
   .message_content {
     flex: 1;

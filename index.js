@@ -120,6 +120,11 @@ function createWindow() {
   });
 }
 
+ipcMain.on('sendmessage', (event, {from, message}) => {
+  console.log("Sending new message", message);
+  sendMessage(message);
+})
+
 ipcMain.on('cookies', (event, cookie) => {
   console.log('cookies fired');
   console.log(cookie);
