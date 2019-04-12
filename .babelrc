@@ -3,6 +3,7 @@
 	"plugins": [
 		"@babel/plugin-transform-modules-commonjs",
 		"@babel/plugin-proposal-class-properties",
-		"add-module-exports"
+		"add-module-exports",
+		"react-hot-loader/babel"
 	]
 }

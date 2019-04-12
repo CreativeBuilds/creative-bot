@@ -1,7 +1,9 @@
 import * as React from 'react';
 
-const Main = (props) => {
-    return <div>I'm in Main x!</div>
-}
+const styles: any = require('./Main.scss');
 
-export {Main};
+const Main = props => {
+  return <div className={styles.main}>Hello Hnspn</div>;
+};
+
+export { Main };

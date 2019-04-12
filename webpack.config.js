@@ -22,7 +22,12 @@ module.exports = {
       },
       {
         test: /\.(sa|sc|c)ss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        use: ['style-loader', {
+          loader: 'css-loader',
+          options: {
+            modules: true
+          }
+        }, 'sass-loader']
       },
       { test: /\.(t|j)sx?$/, use: { loader: 'awesome-typescript-loader' } },
       { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
