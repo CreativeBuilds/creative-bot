@@ -1,0 +1,29 @@
+.menu {
+}
+.hamburger {
+  font-size: 3em;
+  postion: absolute;
+  top: 0;
+  left: 0;
+  margin-left: 5px;
+  display: inline;
+  svg:hover {
+    cursor: pointer;
+  }
+}
+.menu_popout {
+  width: 250px;
+  height: 100vh;
+  position: absolute;
+  transition: all 0.5s;
+  top: 0;
+  left: -250px;
+  svg {
+    font-size: 3em;
+    position: absolute;
+    right: 0;
+  }
+  &.menu_toggled {
+    left: 0;
+  }
+}
