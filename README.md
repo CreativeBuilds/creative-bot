@@ -7,7 +7,7 @@
 
 This chat bot allows you to entirely custom code your own bot how you see fit and interact with the private DLive Chat API.
 
-It is currently in heavy early stage development with tons of new features being added daily! (Support me and my journey, and check for future updates on my dlive channel!)[https://dlive.tv/creativebuilds]
+It is currently in heavy early stage development with tons of new features being added daily! [Support me and my journey, and check for future updates on my dlive channel!](https://dlive.tv/creativebuilds)
 
 Currently it is only for people who know how to run node / have some basic understanding on how javascript works.
 
