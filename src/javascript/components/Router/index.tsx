@@ -4,15 +4,15 @@ import {useState} from 'react';
 import {Route} from'./Route';
 import {Chat} from '../Chat';
 
+const RouteContext = React.createContext({currentUrl: '/'})
+
 const Router = props => {
     const [url, setUrl] = useState('/');
 
     return (
-        <React.Fragment>
-            <Route url={url} path={'/'}>
-                <Chat></Chat>
-            </Route>
-        </React.Fragment>
+        <RouteContext.Provider value={{currentUrl: url, setUrl}}>
+            <Route url={url} path={'/'} Component={Chat}/>
+        </RouteContext.Provider>
     );
 }
 export {Router};

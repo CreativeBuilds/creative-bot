@@ -16,6 +16,12 @@ const theme = {
           "title_hover":{
               backgroundColor: '#0e0f10'
           }
+      },
+      chat: {
+        input: {
+          backgroundColor: "#202225",
+          color: "#f0f0f0"
+        }
       }
     },
     light: {
