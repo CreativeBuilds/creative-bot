@@ -28,13 +28,21 @@ function createWindow() {
 
   // and load the index.html of the app.
   win.loadFile(__dirname + '/dist/index.html');
+
+  let users = {};
   
+  ipcMain.on('editpoints', (event, {username, points}) => {
+    let Users = Object.assign({}, users);
+    Users[username].points = points;
+    rxUsers.next(Users);
+  })
 
   ipcMain.on('getUsermap', () => {
     rxUsers.pipe(
       distinctUntilChanged((x, y) => JSON.stringify(x) !== JSON.stringify(y))
     ).subscribe(Users => {
       win.webContents.send('usermap', {Users})
+      users = Users;
     })
   })
 
@@ -147,6 +155,8 @@ function createWindow() {
 ipcMain.on('sendmessage', (event, {from, message}) => {
   sendMessage(message);
 })
+
+
 
 
 

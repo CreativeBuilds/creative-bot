@@ -5,6 +5,7 @@ import { Route } from './Route';
 import { Chat } from '../Chat';
 import { UsersPage } from '../Users';
 import { Menu } from '../Menu';
+import { Popup } from '../Popup';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -17,7 +18,8 @@ class RouterWrapper extends Component<any, any> {
   }
   state = {
     users: {},
-    messages: []
+    messages: [],
+    popups: []
   };
   componentDidMount() {
     ipcRenderer.send('getUsermap');
@@ -33,24 +35,53 @@ class RouterWrapper extends Component<any, any> {
       this.setState({ messages: newArr });
     });
   }
+
+  addPopup = element => {
+    this.setState({
+      popups: this.state.popups.concat([element])
+    });
+  };
+
+  closeCurrentPopup = () => {
+    let arr = this.state.popups.concat([]);
+    arr.splice(-1, 1);
+    this.setState({ popups: arr });
+  };
   render() {
     const { url, setUrl } = this.props;
+    const { popups } = this.state;
     return (
-      <div id='content'>
-        <Route
-          url={url}
-          path={'/'}
-          componentProps={{ Messages: this.state.messages }}
-          Component={Chat}
-          exact={true}
-        />
-        <Route
-          url={url}
-          path={'/users'}
-          componentProps={{ Users: this.state.users }}
-          Component={UsersPage}
-        />
-      </div>
+      <React.Fragment>
+        {popups.length > 0 ? (
+          <Popup
+            Component={popups[popups.length - 1]}
+            closePopup={() => {
+              let arr = this.state.popups.concat([]);
+              arr.splice(-1, 1);
+              this.setState({ popups: arr });
+            }}
+          />
+        ) : null}
+        <div id='content'>
+          <Route
+            url={url}
+            path={'/'}
+            componentProps={{ Messages: this.state.messages }}
+            Component={Chat}
+            exact={true}
+          />
+          <Route
+            url={url}
+            path={'/users'}
+            componentProps={{
+              Users: this.state.users,
+              addPopup: this.addPopup,
+              closeCurrentPopup: this.closeCurrentPopup
+            }}
+            Component={UsersPage}
+          />
+        </div>
+      </React.Fragment>
     );
   }
 }

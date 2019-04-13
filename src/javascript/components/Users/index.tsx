@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../../helpers';
 import * as _ from 'lodash';
 
@@ -15,10 +15,8 @@ const UsersPage = ({ props }) => {
   const { stateTheme, setStateTheme } = useContext(ThemeContext);
   const [toggle, setToggle] = useState<string>('points');
   const [isDesc, setIsDesc] = useState<boolean>(true);
-  const { Users } = props;
+  const { Users, addPopup, closeCurrentPopup } = props;
 
-  console.log("Current toggle", toggle);
-  console.log(Object.keys(Users).map(username => Users[username]));
   let userArray = _.orderBy(
     _.sortBy(Object.keys(Users)).map(username => Users[username]),
     [toggle],
@@ -47,6 +45,8 @@ const UsersPage = ({ props }) => {
               User={user}
               stateTheme={stateTheme}
               nth={nth + 1}
+              addPopup={addPopup}
+              closeCurrentPopup={closeCurrentPopup}
             />
           );
         })}

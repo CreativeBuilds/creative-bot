@@ -60,9 +60,6 @@ const Sorting = ({
           POINTS <Arrow isDesc={isDesc} toggle={toggle} type={'points'} />
         </div>
         <div className={styles.spacer} />
-        <div className={styles.banned}>
-          BANNED {/*<Arrow isDesc={isDesc} toggle={toggle} type={'banned'}/> */}
-        </div>
         <div className={styles.modded}>
           MOD {/*<Arrow isDesc={isDesc} toggle={toggle} type={'mod'}/>*/}
         </div>

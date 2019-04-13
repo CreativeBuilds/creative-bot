@@ -1,0 +1,33 @@
+.overlay {
+  background: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 999999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dialog {
+  width: 475px;
+  max-height: 90%;
+  overflow: auto;
+  padding: 10px;
+}
+
+.close {
+  position: relative;
+  svg {
+    font-size: 2em;
+    stroke-width: 1px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
