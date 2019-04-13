@@ -39,6 +39,7 @@ const UsersPage = ({ props }) => {
           stateTheme={stateTheme}
         />
         {userArray.map((user, nth) => {
+          console.log(user);
           return (
             <User
               styles={styles}

@@ -16,6 +16,7 @@ let ticker = setInterval(()=>{
                     points: config.points,
                     avatar: user.avatar,
                     displayname: user.displayname,
+                    lino: 0,
                     username,
                     role: activeUsers[username].roomRole
                 }

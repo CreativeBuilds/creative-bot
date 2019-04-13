@@ -58,12 +58,15 @@ const User = ({ styles, User, nth, stateTheme, addPopup, closeCurrentPopup }) =>
       <div className={styles.toggle_wrappers}>
         <div className={styles.username}>{User.displayname}</div>
         <div className={styles.points}>
-          {User.points}{' '}
+          {User.points}
           <MdModeEdit
             onClick={() => {
               updateUserPointsPopup(User);
             }}
           />
+        </div>
+        <div className={styles.points}>
+          {User.lino ? Math.floor(User.lino/10)/100 : 0}
         </div>
         <div className={styles.spacer} />
         {/* <div className={styles.banned}>

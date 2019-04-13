@@ -1,24 +1,25 @@
 const WebSocket = require('ws');
-const {sendMessage, keepActive}= require('./helpers');
+const { sendMessage, keepActive } = require('./helpers');
 const { app, BrowserWindow, session, ipcMain } = require('electron');
 const fs = require('fs');
 const path = require('path');
-const {distinctUntilChanged} = require('rxjs/operators');
+const { distinctUntilChanged } = require('rxjs/operators');
 let config = require('./config');
+const _ = require('lodash');
 let win;
 
 let users = require('./storage/users.json');
 const rxUsers = require('./helpers/rxUsers');
-let {saveUsers} = require('./helpers');
+let { saveUsers } = require('./helpers');
 
-rxUsers.pipe(
-  distinctUntilChanged((x, y) => JSON.stringify(x) !== JSON.stringify(y))
-).subscribe(Users => {
-  users = Users;
-  saveUsers(Users);
-})
+rxUsers
+  .pipe(distinctUntilChanged((x, y) => _.isEqual(x, y) && Object.keys(x) === Object.keys(y)))
+  .subscribe(Users => {
+    users = Users;
+    saveUsers(Users);
+  });
 
-require('electron-reload')(path.join(__dirname,'dist'), {
+require('electron-reload')(path.join(__dirname, 'dist'), {
   electron: require(`${__dirname}/node_modules/electron`)
 });
 
@@ -30,21 +31,23 @@ function createWindow() {
   win.loadFile(__dirname + '/dist/index.html');
 
   let users = {};
-  
-  ipcMain.on('editpoints', (event, {username, points}) => {
+
+  ipcMain.on('editpoints', (event, { username, points }) => {
     let Users = Object.assign({}, users);
     Users[username].points = points;
     rxUsers.next(Users);
-  })
+  });
 
   ipcMain.on('getUsermap', () => {
-    rxUsers.pipe(
-      distinctUntilChanged((x, y) => JSON.stringify(x) !== JSON.stringify(y))
-    ).subscribe(Users => {
-      win.webContents.send('usermap', {Users})
-      users = Users;
-    })
-  })
+    rxUsers
+      .pipe(
+        distinctUntilChanged((x, y) => JSON.stringify(x) !== JSON.stringify(y))
+      )
+      .subscribe(Users => {
+        win.webContents.send('usermap', { Users });
+        users = Users;
+      });
+  });
 
   const ws = new WebSocket('wss://graphigostream.prd.dlive.tv', 'graphql-ws');
 
@@ -105,11 +108,49 @@ function createWindow() {
             'AMOUNT:',
             message.amount
           );
+          const inLino = (gift, amount) => {
+            let multiplier = 9.01e2;
+            switch (gift) {
+              case 'ICE_CREAM':
+                multiplier = 9.01e3;
+              case 'DIAMOND':
+                multiplier = 9.01e4;
+              case 'NINJAGHINI':
+                multiplier = 9.01e5;
+                ret;
+              case 'NINJET':
+                multiplier = 9.01e6;
+              default:
+                multiplier = 9.01e2;
+            }
+            return amount * multiplier;
+          };
+          win.webContents.send('newdonation', {
+            message,
+            data,
+            inLino: inLino(message.gift, message.amount)
+          });
+          let username = message.sender.username;
+          let Users = Object.assign({}, users);
+          if(!Users[username]) {
+            Users[username] = {
+              points: 0,
+              avatar: message.sender.avatar,
+              displayname: message.sender.displayname,
+              lino: 0,
+              username: username,
+              role: message.roomRole
+            };
+          }
+          Users[username].lino = (Users[username].lino
+            ? Users[username].lino
+            : 0)+ inLino(message.gift, message.amount);
+          rxUsers.next(Users);
         }
         if (message.type === 'Message') {
           textMessage(message);
           keepActive(message);
-          win.webContents.send('newmessage', ({message, data}))
+          win.webContents.send('newmessage', { message, data });
           let content = message.content;
           console.log(
             'NEW MSG FROM:',
@@ -122,7 +163,7 @@ function createWindow() {
     }
   };
 
-  ws.on('message', (data) => {
+  ws.on('message', data => {
     if (!data || data == null) return;
     onNewMsg(JSON.parse(data));
   });
@@ -152,12 +193,8 @@ function createWindow() {
   });
 }
 
-ipcMain.on('sendmessage', (event, {from, message}) => {
+ipcMain.on('sendmessage', (event, { from, message }) => {
   sendMessage(message);
-})
-
-
-
-
+});
 
 app.on('ready', createWindow);

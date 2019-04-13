@@ -59,6 +59,14 @@ const Sorting = ({
         >
           POINTS <Arrow isDesc={isDesc} toggle={toggle} type={'points'} />
         </div>
+        <div
+          className={styles.points}
+          onClick={() => {
+            swapOrToggle(isDesc, toggle, 'lino');
+          }}
+        >
+          LINO <Arrow isDesc={isDesc} toggle={toggle} type={'lino'} />
+        </div>
         <div className={styles.spacer} />
         <div className={styles.modded}>
           MOD {/*<Arrow isDesc={isDesc} toggle={toggle} type={'mod'}/>*/}
