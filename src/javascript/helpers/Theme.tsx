@@ -5,6 +5,7 @@ const theme = {
     main: {
       backgroundColor: '#202225',
       color: '#f0f0f0',
+      fill: '#f0f0f0',
       highlightColor: '#ffd300'
     },
     menu: {
@@ -17,7 +18,6 @@ const theme = {
         backgroundColor: '#0e0f10'
       }
     },
-
     chat: {
       input: {
         backgroundColor: '#202225',

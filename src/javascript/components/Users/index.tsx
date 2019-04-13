@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { useContext, Component } from 'react';
+import { useContext, useState } from 'react';
 import { ThemeContext } from '../../helpers';
-import { any } from 'prop-types';
+import * as _ from 'lodash';
 
 const { User } = require('./User');
 const { Sorting } = require('./Sorting');
@@ -13,7 +13,18 @@ const styles: any = require('./Users.scss');
 
 const UsersPage = ({ props }) => {
   const { stateTheme, setStateTheme } = useContext(ThemeContext);
+  const [toggle, setToggle] = useState<string>('points');
+  const [isDesc, setIsDesc] = useState<boolean>(true);
   const { Users } = props;
+
+  console.log("Current toggle", toggle);
+  console.log(Object.keys(Users).map(username => Users[username]));
+  let userArray = _.orderBy(
+    _.sortBy(Object.keys(Users)).map(username => Users[username]),
+    [toggle],
+    [isDesc ? 'desc' : 'asc']
+  );
+
   return (
     <div style={stateTheme.menu} className={styles.Points}>
       <div style={stateTheme.menu.title} className={styles.header}>
@@ -21,10 +32,15 @@ const UsersPage = ({ props }) => {
       </div>
       <div style={{}} className={styles.content}>
         {/* TODO ADD PAGINATION */}
-        <Sorting styles={styles} stateTheme={stateTheme} />
-        {Object.keys(Users).map((username, nth) => {
-          let user = Users[username];
-          console.log(user, Users, username);
+        <Sorting
+          toggle={toggle}
+          setToggle={setToggle}
+          isDesc={isDesc}
+          setIsDesc={setIsDesc}
+          styles={styles}
+          stateTheme={stateTheme}
+        />
+        {userArray.map((user, nth) => {
           return (
             <User
               styles={styles}
