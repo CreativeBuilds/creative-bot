@@ -3,13 +3,14 @@ import { useState, useContext } from 'react';
 import { MdMenu, MdClose, MdEventBusy } from 'react-icons/md';
 import { ThemeContext } from '../../helpers';
 
-import {Li} from './li';
+import { Li } from './li';
 
 const styles: any = require('./Menu.scss');
 
 const Menu = props => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const { stateTheme, setStateTheme } = useContext(ThemeContext);
+  const { setUrl } = props;
   return (
     <React.Fragment>
       <div
@@ -22,9 +23,25 @@ const Menu = props => {
           }}
         />
         <ul>
-            <Li style={stateTheme.menu.title}>MENU</Li>
-            <Li style={{}} hoverStyle={stateTheme.menu.title_hover}>CHAT</Li>
-            <Li style={{}} hoverStyle={stateTheme.menu.title_hover}>POINTS</Li>
+          <Li style={stateTheme.menu.title}>MENU</Li>
+          <Li
+            style={{}}
+            hoverStyle={stateTheme.menu.title_hover}
+            onClick={() => {
+              setUrl('/');
+            }}
+          >
+            CHAT
+          </Li>
+          <Li
+            style={{}}
+            hoverStyle={stateTheme.menu.title_hover}
+            onClick={() => {
+              setUrl('/points');
+            }}
+          >
+            POINTS
+          </Li>
         </ul>
       </div>
       <div
@@ -34,7 +51,6 @@ const Menu = props => {
         }}
       >
         <MdMenu />
-        
       </div>
     </React.Fragment>
   );
