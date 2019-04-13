@@ -38,11 +38,11 @@ const Menu = props => {
             style={{}}
             hoverStyle={stateTheme.menu.title_hover}
             onClick={() => {
-              setUrl('/points');
+              setUrl('/UsersPage');
               setIsOpen(false);
             }}
           >
-            POINTS
+            USERS
           </Li>
         </ul>
       </div>

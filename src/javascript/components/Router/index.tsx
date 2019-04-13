@@ -3,7 +3,7 @@ import { useState, Component } from 'react';
 
 import { Route } from './Route';
 import { Chat } from '../Chat';
-import { Points } from '../Points';
+import { UsersPage } from '../Users';
 import { Menu } from '../Menu';
 
 const Window: any = window;
@@ -38,7 +38,7 @@ class RouterWrapper extends Component<any, any> {
     return (
       <div id='content'>
         <Route url={url} path={'/'} componentProps={{Messages: this.state.messages}} Component={Chat} exact={true} />
-        <Route url={url} path={'/points'} componentProps={{Users: this.state.users}} Component={Points} />
+        <Route url={url} path={'/users'} componentProps={{Users: this.state.users}} Component={UsersPage} />
       </div>
     );
   }

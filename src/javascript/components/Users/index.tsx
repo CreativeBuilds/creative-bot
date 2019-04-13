@@ -8,9 +8,9 @@ const User = require('./User');
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
-const styles: any = require('./Points.scss');
+const styles: any = require('./Users.scss');
 
-const Points = ({ props }) => {
+const UsersPage = ({ props }) => {
   const { stateTheme, setStateTheme } = useContext(ThemeContext);
   const { Users } = props;
   return (
@@ -35,4 +35,4 @@ const Points = ({ props }) => {
   );
 };
 
-export { Points };
+export { UsersPage };
