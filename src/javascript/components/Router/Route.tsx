@@ -8,6 +8,7 @@ const Route = ({
   Component,
   componentProps = {}
 }) => {
+    
   return (url === path && exact) || (!exact && url.includes(path)) ? (
     <Component props={componentProps} />
   ) : null;

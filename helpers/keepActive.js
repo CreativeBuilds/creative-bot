@@ -25,12 +25,12 @@ let ticker = setInterval(()=>{
             users[username] = storageUser;
             
         })
+        rxUsers.next(users)
     }
     // Remove all users from activeUsers
-    if(startUsers !== users) rxUsers.next(users);
     startUsers = undefined;
     activeUsers = {};
-},1000*60*5)
+},1000*10)
 
 const keepActive = message => {
     activeUsers[message.sender.username] = message;

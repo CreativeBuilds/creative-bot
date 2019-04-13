@@ -21,3 +21,44 @@
   width: calc(100% - 10px);
   padding: 5px;
 }
+
+.toggle_wrappers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  div {
+    padding-right: 5px;
+    padding-left: 5px;
+    &.spacer {
+      flex: 2;
+    }
+  }
+}
+
+.user {
+  width: calc(100% - 10px);
+  min-height: 24px;
+  padding: 5px;
+  text-overflow: wrap;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .image_container {
+    padding-right: 5px;
+    img {
+      border-radius: 50%;
+    }
+  }
+  .message_content {
+    flex: 1;
+    text-align: left;
+    span {
+      font-weight: bold;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}

@@ -18,10 +18,10 @@ class RouterWrapper extends Component<any, any> {
   state = {
     users: {},
     messages: []
-  }
+  };
   componentDidMount() {
     ipcRenderer.send('getUsermap');
-    ipcRenderer.on('usermap', (event, {Users}) => {
+    ipcRenderer.on('usermap', (event, { Users }) => {
       this.setState({ users: Users });
     });
     ipcRenderer.on('updatedUser', (event, { user }) => {
@@ -37,8 +37,19 @@ class RouterWrapper extends Component<any, any> {
     const { url, setUrl } = this.props;
     return (
       <div id='content'>
-        <Route url={url} path={'/'} componentProps={{Messages: this.state.messages}} Component={Chat} exact={true} />
-        <Route url={url} path={'/users'} componentProps={{Users: this.state.users}} Component={UsersPage} />
+        <Route
+          url={url}
+          path={'/'}
+          componentProps={{ Messages: this.state.messages }}
+          Component={Chat}
+          exact={true}
+        />
+        <Route
+          url={url}
+          path={'/users'}
+          componentProps={{ Users: this.state.users }}
+          Component={UsersPage}
+        />
       </div>
     );
   }
@@ -46,11 +57,10 @@ class RouterWrapper extends Component<any, any> {
 
 const Router = props => {
   const [url, setUrl] = useState('/');
-
   return (
     <RouteContext.Provider value={{ currentUrl: url, setUrl }}>
       <Menu setUrl={setUrl} />
-      <RouterWrapper url={url} setUrl={setUrl}/>
+      <RouterWrapper url={url} setUrl={setUrl} />
     </RouteContext.Provider>
   );
 };

@@ -38,7 +38,7 @@ const Menu = props => {
             style={{}}
             hoverStyle={stateTheme.menu.title_hover}
             onClick={() => {
-              setUrl('/UsersPage');
+              setUrl('/users');
               setIsOpen(false);
             }}
           >

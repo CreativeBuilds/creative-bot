@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 const Message = ({ styles, message, nth, stateTheme }) => {
-  console.log(message, 'MESSAGE');
   return (
     <div
       className={styles.message}

@@ -11,7 +11,12 @@ let users = require('./storage/users.json');
 const rxUsers = require('./helpers/rxUsers');
 let {saveUsers} = require('./helpers');
 
-
+rxUsers.pipe(
+  distinctUntilChanged((x, y) => JSON.stringify(x) !== JSON.stringify(y))
+).subscribe(Users => {
+  users = Users;
+  saveUsers(Users);
+})
 
 require('electron-reload')(path.join(__dirname,'dist'), {
   electron: require(`${__dirname}/node_modules/electron`)
@@ -27,11 +32,9 @@ function createWindow() {
 
   ipcMain.on('getUsermap', () => {
     rxUsers.pipe(
-      distinctUntilChanged((x, y) => JSON.stringify(x) === JSON.stringify(y))
+      distinctUntilChanged((x, y) => JSON.stringify(x) !== JSON.stringify(y))
     ).subscribe(Users => {
-      users = Users;
       win.webContents.send('usermap', {Users})
-      saveUsers(users);
     })
   })
 
