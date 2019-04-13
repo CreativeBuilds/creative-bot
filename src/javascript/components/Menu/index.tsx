@@ -29,6 +29,7 @@ const Menu = props => {
             hoverStyle={stateTheme.menu.title_hover}
             onClick={() => {
               setUrl('/');
+              setIsOpen(false);
             }}
           >
             CHAT
@@ -38,6 +39,7 @@ const Menu = props => {
             hoverStyle={stateTheme.menu.title_hover}
             onClick={() => {
               setUrl('/points');
+              setIsOpen(false);
             }}
           >
             POINTS

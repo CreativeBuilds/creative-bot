@@ -1,10 +1,19 @@
 const WebSocket = require('ws');
-const {sendMessage}= require('./helpers');
+const {sendMessage, keepActive}= require('./helpers');
 const { app, BrowserWindow, session, ipcMain } = require('electron');
 const fs = require('fs');
+const path = require('path');
+const {distinctUntilChanged} = require('rxjs/operators');
 let config = require('./config');
+let win;
 
-require('electron-reload')(__dirname, {
+let users = require('./storage/users.json');
+const rxUsers = require('./helpers/rxUsers');
+let {saveUsers} = require('./helpers');
+
+
+
+require('electron-reload')(path.join(__dirname,'dist'), {
   electron: require(`${__dirname}/node_modules/electron`)
 });
 
@@ -14,6 +23,17 @@ function createWindow() {
 
   // and load the index.html of the app.
   win.loadFile(__dirname + '/dist/index.html');
+  
+
+  ipcMain.on('getUsermap', () => {
+    rxUsers.pipe(
+      distinctUntilChanged((x, y) => JSON.stringify(x) === JSON.stringify(y))
+    ).subscribe(Users => {
+      users = Users;
+      win.webContents.send('usermap', {Users})
+      saveUsers(users);
+    })
+  })
 
   const ws = new WebSocket('wss://graphigostream.prd.dlive.tv', 'graphql-ws');
 
@@ -77,6 +97,7 @@ function createWindow() {
         }
         if (message.type === 'Message') {
           textMessage(message);
+          keepActive(message);
           win.webContents.send('newmessage', ({message, data}))
           let content = message.content;
           console.log(
@@ -90,7 +111,7 @@ function createWindow() {
     }
   };
 
-  ws.on('message', function(data) {
+  ws.on('message', (data) => {
     if (!data || data == null) return;
     onNewMsg(JSON.parse(data));
   });
@@ -121,14 +142,9 @@ function createWindow() {
 }
 
 ipcMain.on('sendmessage', (event, {from, message}) => {
-  console.log("Sending new message", message);
   sendMessage(message);
 })
 
-ipcMain.on('cookies', (event, cookie) => {
-  console.log('cookies fired');
-  console.log(cookie);
-  win.webContents.send('info', { msg: 'test' });
-});
+
 
 app.on('ready', createWindow);

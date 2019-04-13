@@ -10,38 +10,12 @@ const { ipcRenderer } = Window.require('electron');
 
 const styles: any = require('./Chat.scss');
 
-class ChatWrap extends Component<any, any> {
-  constructor(props) {
-    super(props);
-    this.state = {
-      messages: []
-    };
-  }
-
-  componentDidMount() {
-    let newMessage = (event, data) => {
-      let newArr = [...this.state.messages, data.message];
-      this.setState({ messages: newArr });
-    };
-    ipcRenderer.on('newmessage', newMessage);
-  }
-
-  render() {
-    return (
-      <ChatComponent
-        props={Object.assign({ messages: this.state.messages }, this.props)}
-      />
-    );
-  }
-}
-
-const ChatComponent = ({ props }) => {
+const Chat = ({props}) => {
   const { stateTheme, setStateTheme } = useContext(ThemeContext);
   const [text, setText] = useState('');
-  const { messages } = props;
+  const { Messages } = props;
 
   const updateText = e => {
-    console.log('e', e, text);
     setText(e.target.value);
   };
 
@@ -63,7 +37,7 @@ const ChatComponent = ({ props }) => {
         CHAT
       </div>
       <div style={{}} className={styles.content}>
-        {messages.map((message, nth) => {
+        {Messages.map((message, nth) => {
           return (
             <Message
               styles={styles}
@@ -96,10 +70,6 @@ const ChatComponent = ({ props }) => {
       </div>
     </div>
   );
-};
-
-const Chat = props => {
-  return <ChatWrap props={props} />;
 };
 
 export { Chat };

@@ -50,5 +50,8 @@ module.exports = {
   node: {
     fs: "empty"
   },
-  devtool: 'eval-source-map'
+  devtool: 'eval-source-map',
+  watchOptions: {
+    ignored: ['storage/*']
+  }
 };
