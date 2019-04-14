@@ -6,6 +6,7 @@ import { Chat } from '../Chat';
 import { UsersPage } from '../Users';
 import { Menu } from '../Menu';
 import { Popup } from '../Popup';
+import { CommandsPage } from '../Commands';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -87,13 +88,13 @@ class RouterWrapper extends Component<any, any> {
           />
           <Route
             url={url}
-            path={'/chat'}
+            path={'/commands'}
             componentProps={{
               commands: this.state.commands,
               addPopup: this.addPopup,
               closeCurrentPopup: this.closeCurrentPopup
             }}
-            Component={UsersPage}
+            Component={CommandsPage}
           />
         </div>
       </React.Fragment>

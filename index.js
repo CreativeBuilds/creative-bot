@@ -20,7 +20,7 @@ let Commands = tryRequireFromStorage('./storage/commands.json');
 
 let users = tryRequireFromStorage('./storage/users.json');
 const rxUsers = require('./helpers/rxUsers');
-let { saveUsers } = require('./helpers');
+let { saveUsers, makeNewCommand } = require('./helpers');
 
 rxUsers
   .pipe(
@@ -53,7 +53,16 @@ function createWindow() {
   });
 
   ipcMain.on('getCommands', () => {
-    let Commands = Object.assign({}, Commands);
+    let commands = Object.assign({}, Commands);
+    win.webContents.send('commands', commands);
+  });
+
+  ipcMain.on('createCommand', (event, { commandName, commandReply }) => {
+    makeNewCommand({ commandName, commandReply, Commands })
+      .then(commands => (Commands = commands))
+      .catch(err => {
+        throw err;
+      });
   });
 
   ipcMain.on('getUsermap', () => {
