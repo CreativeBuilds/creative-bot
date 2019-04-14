@@ -20,7 +20,8 @@ let Commands = tryRequireFromStorage('./storage/commands.json');
 
 let users = tryRequireFromStorage('./storage/users.json');
 const rxUsers = require('./helpers/rxUsers');
-let { saveUsers, makeNewCommand } = require('./helpers');
+const rxCommands = require('./helpers/rxCommands');
+let { saveUsers, makeNewCommand, saveCommands } = require('./helpers');
 
 rxUsers
   .pipe(
@@ -29,8 +30,18 @@ rxUsers
     )
   )
   .subscribe(Users => {
-    users = Users;
     saveUsers(Users);
+  });
+
+rxCommands
+  .pipe(
+    distinctUntilChanged(
+      (x, y) => _.isEqual(x, y) && Object.keys(x) === Object.keys(y)
+    )
+  )
+  .subscribe(commands => {
+    Commands = commands;
+    saveCommands(Commands);
   });
 
 require('electron-reload')(path.join(__dirname, 'dist'), {
@@ -45,6 +56,16 @@ function createWindow() {
   win.loadFile(__dirname + '/dist/index.html');
 
   let users = {};
+
+  rxCommands
+    .pipe(
+      distinctUntilChanged(
+        (x, y) => _.isEqual(x, y) && Object.keys(x) === Object.keys(y)
+      )
+    )
+    .subscribe(commands => {
+      win.webContents.send('commands', commands);
+    });
 
   ipcMain.on('editpoints', (event, { username, points }) => {
     let Users = Object.assign({}, users);
@@ -112,6 +133,19 @@ function createWindow() {
           if (!msg) return;
           sendMessage(msg);
         });
+      } else {
+        command = Commands[commandName];
+        if (!command) return;
+        if (!command.reply) return;
+        // TODO Check permissions
+        let obj = {};
+        obj[commandName] = Object.assign({}, command);
+        obj[commandName].uses += 1;
+        console.log('commnads', obj[commandName]);
+        Commands = Object.assign({}, Commands, obj);
+        console.log('COMMANDS', Commands);
+        sendMessage(command.reply);
+        rxCommands.next(Commands);
       }
     }
   };

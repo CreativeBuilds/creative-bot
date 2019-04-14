@@ -8,9 +8,9 @@ let tryRequireFromStorage = path => {
   }
 };
 
-const users = tryRequireFromStorage('../storage/users.json');
+const commands = tryRequireFromStorage('../storage/commands.json');
 
 // This creates a new B.S. which allows us to listen to this node and make changes whenever and whereever we want
-const rxUsers = new BehaviorSubject(users);
+const rxCommands = new BehaviorSubject(commands);
 
-module.exports = rxUsers;
+module.exports = rxCommands;
