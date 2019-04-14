@@ -141,9 +141,7 @@ function createWindow() {
         let obj = {};
         obj[commandName] = Object.assign({}, command);
         obj[commandName].uses += 1;
-        console.log('commnads', obj[commandName]);
         Commands = Object.assign({}, Commands, obj);
-        console.log('COMMANDS', Commands);
         sendMessage(command.reply);
         rxCommands.next(Commands);
       }
