@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext, Component, useState } from 'react';
+import { useContext, Component, useState, useEffect } from 'react';
 import { ThemeContext } from '../../helpers';
 import { MdSend } from 'react-icons/md';
 
@@ -10,8 +10,9 @@ const { ipcRenderer } = Window.require('electron');
 
 const styles: any = require('./Chat.scss');
 
-const Chat = ({props}) => {
+const Chat = ({ props }) => {
   const { stateTheme, setStateTheme } = useContext(ThemeContext);
+  const [isScrolledUp, setIsScrolledUp] = useState(false);
   const [text, setText] = useState('');
   const { Messages } = props;
 
@@ -31,12 +32,32 @@ const Chat = ({props}) => {
     }
   };
 
+  useEffect(() => {
+    let element: any = document.getElementById('messages');
+    element.addEventListener('scroll', function(event) {
+      var element = event.target;
+      if (
+        element.scrollHeight - element.scrollTop - 20 <=
+        element.clientHeight
+      ) {
+        setIsScrolledUp(false);
+      } else {
+        setIsScrolledUp(true);
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (isScrolledUp) return;
+    document.getElementById('bottomOfMessages').scrollIntoView();
+  }, [Messages]);
+
   return (
     <div style={stateTheme.menu} className={styles.Chat}>
       <div style={stateTheme.menu.title} className={styles.header}>
         CHAT
       </div>
-      <div style={{}} className={styles.content}>
+      <div style={{}} className={styles.content} id='messages'>
         {Messages.map((message, nth) => {
           return (
             <Message
@@ -47,6 +68,7 @@ const Chat = ({props}) => {
             />
           );
         })}
+        <div id={'bottomOfMessages'} />
         {/* This is for the actual chat messages */}
       </div>
       <div style={stateTheme.menu['title_hover']} className={styles.input}>
