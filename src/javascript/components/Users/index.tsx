@@ -15,10 +15,18 @@ const UsersPage = ({ props }) => {
   const { stateTheme, setStateTheme } = useContext(ThemeContext);
   const [toggle, setToggle] = useState<string>('points');
   const [isDesc, setIsDesc] = useState<boolean>(true);
+  const [searchUsername, setSearchUsername] = useState<string>('');
   const { Users, addPopup, closeCurrentPopup } = props;
 
   let userArray = _.orderBy(
-    _.sortBy(Object.keys(Users)).map(username => Users[username]),
+    _.sortBy(Object.keys(Users))
+      .map(username => Users[username])
+      .filter(user => {
+        if (searchUsername.trim() === '') return true;
+        return user.displayname
+          .toLowerCase()
+          .includes(searchUsername.trim().toLowerCase());
+      }),
     [toggle],
     [isDesc ? 'desc' : 'asc']
   );
@@ -27,6 +35,15 @@ const UsersPage = ({ props }) => {
     <div style={stateTheme.menu} className={styles.Points}>
       <div style={stateTheme.menu.title} className={styles.header}>
         USERS
+        <textarea
+          className={styles.usersearch}
+          style={stateTheme.chat.message.alternate}
+          placeholder={'Search...'}
+          value={searchUsername}
+          onChange={e => {
+            setSearchUsername(e.target.value);
+          }}
+        />
       </div>
       <div style={{}} className={styles.content}>
         {/* TODO ADD PAGINATION */}
@@ -39,7 +56,6 @@ const UsersPage = ({ props }) => {
           stateTheme={stateTheme}
         />
         {userArray.map((user, nth) => {
-          console.log(user);
           return (
             <User
               styles={styles}

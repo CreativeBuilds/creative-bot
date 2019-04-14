@@ -2,7 +2,6 @@ const https = require('https');
 const config = require('../config');
 
 let msgs = [];
-
 let loop;
 
 // Check the msgs array every 2.1 seconds to send the next message (2.1 seconds to avoid debouncing of dlive);
@@ -73,7 +72,7 @@ const checkMessages = () => {
       fingerprint: '',
       gacid: 'undefined',
       Origin: 'https://dlive.tv',
-      Referer: 'https://dlive.tv/creativebuilds',
+      Referer: 'https://dlive.tv/' + config.streamer,
       'User-Agent':
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'
     }
@@ -85,7 +84,6 @@ const checkMessages = () => {
     });
     res.on('end', function() {
       msg.cb(body);
-      
     });
   });
   req.write(postData);

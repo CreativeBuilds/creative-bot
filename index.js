@@ -13,7 +13,11 @@ const rxUsers = require('./helpers/rxUsers');
 let { saveUsers } = require('./helpers');
 
 rxUsers
-  .pipe(distinctUntilChanged((x, y) => _.isEqual(x, y) && Object.keys(x) === Object.keys(y)))
+  .pipe(
+    distinctUntilChanged(
+      (x, y) => _.isEqual(x, y) && Object.keys(x) === Object.keys(y)
+    )
+  )
   .subscribe(Users => {
     users = Users;
     saveUsers(Users);
@@ -113,15 +117,19 @@ function createWindow() {
             switch (gift) {
               case 'ICE_CREAM':
                 multiplier = 9.01e3;
+                break;
               case 'DIAMOND':
                 multiplier = 9.01e4;
+                break;
               case 'NINJAGHINI':
                 multiplier = 9.01e5;
-                ret;
+                break;
               case 'NINJET':
                 multiplier = 9.01e6;
+                break;
               default:
                 multiplier = 9.01e2;
+                break;
             }
             return amount * multiplier;
           };
@@ -132,7 +140,7 @@ function createWindow() {
           });
           let username = message.sender.username;
           let Users = Object.assign({}, users);
-          if(!Users[username]) {
+          if (!Users[username]) {
             Users[username] = {
               points: 0,
               avatar: message.sender.avatar,
@@ -142,9 +150,9 @@ function createWindow() {
               role: message.roomRole
             };
           }
-          Users[username].lino = (Users[username].lino
-            ? Users[username].lino
-            : 0)+ inLino(message.gift, message.amount);
+          Users[username].lino =
+            (Users[username].lino ? Users[username].lino : 0) +
+            inLino(message.gift, message.amount);
           rxUsers.next(Users);
         }
         if (message.type === 'Message') {

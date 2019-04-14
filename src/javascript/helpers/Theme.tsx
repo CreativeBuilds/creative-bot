@@ -10,6 +10,7 @@ const theme = {
     },
     menu: {
       backgroundColor: '#141517',
+      color: '#f0f0f0',
       title: {
         'border-bottom': '4px solid #202225',
         'font-size': '30px'
@@ -55,6 +56,14 @@ const theme = {
       input: {
         backgroundColor: '#ffffff',
         color: '#202225'
+      },
+      message: {
+        backgroundColor: '#ffffff',
+        color: '#202225',
+        alternate: {
+          backgroundColor: '#eeeeee',
+          color: '#202225'
+        }
       }
     }
   }
