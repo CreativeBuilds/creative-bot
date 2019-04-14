@@ -3,39 +3,69 @@ import { useState } from 'react';
 
 import { ToggleBox } from './ToggleBox';
 
-import { MdModeEdit } from 'react-icons/md';
+import { MdModeEdit, MdEdit } from 'react-icons/md';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
-const Popup = ({ user, styles, closeCurrentPopup, stateTheme }) => {
-  const [points, setpoints] = useState<string>(user.points.toString());
+const Popup = ({ command, styles, closeCurrentPopup, stateTheme }) => {
+  const [name, setName] = useState<string>(command.name);
+  const [reply, setReply] = useState<string>(command.reply);
+  const [uses, setUses] = useState<number>(command.uses);
+  const [permissions, setPermissions] = useState(command.permissions);
 
-  const saveToDB = points => {
-    ipcRenderer.send('editpoints', { username: user.username, points });
+  const saveToDB = () => {
+    ipcRenderer.send('editcommand', {
+      oldName: command.name,
+      name,
+      obj: {
+        reply,
+        name,
+        uses,
+        permissions,
+        enabled: command.enabled
+      }
+    });
   };
 
   return (
     <div className={styles.popup} style={stateTheme.main}>
-      <h1>
-        Edit {user.displayname}
-        {user.displayname[user.displayname.length - 1].toLowerCase() === 's'
-          ? `'`
-          : `'s`}{' '}
-        Points
-      </h1>
-      <textarea
-        className={styles.input}
-        onChange={e => {
-          setpoints(e.target.value);
-        }}
-        value={points}
-      />
+      <div className={styles.input_wrapper}>
+        <div className={styles.input_name}>Name</div>
+        <textarea
+          className={styles.input}
+          onChange={e => {
+            setName(e.target.value);
+          }}
+          value={name}
+        />
+      </div>
+      <div className={styles.input_wrapper}>
+        <div className={styles.input_name}>Reply</div>
+        <textarea
+          className={styles.input}
+          onChange={e => {
+            setReply(e.target.value);
+          }}
+          value={reply}
+        />
+      </div>
+      <div className={styles.input_wrapper}>
+        <div className={styles.input_name}>Uses</div>
+        <textarea
+          className={styles.input}
+          onChange={e => {
+            setUses(Number(e.target.value));
+          }}
+          value={uses}
+        />
+      </div>
       <div
         className={styles.submit}
         onClick={() => {
-          if (isNaN(Number(points))) return;
-          saveToDB(Number(points));
+          if (isNaN(Number(uses))) return;
+          setUses(Number(uses));
+          saveToDB();
           closeCurrentPopup();
         }}
       >
@@ -53,10 +83,10 @@ const Command = ({
   addPopup,
   closeCurrentPopup
 }) => {
-  const updateUserPointsPopup = user => {
+  const updateCommandPopup = command => {
     addPopup(
       <Popup
-        user={user}
+        command={command}
         styles={styles}
         closeCurrentPopup={closeCurrentPopup}
         stateTheme={stateTheme}
@@ -74,7 +104,14 @@ const Command = ({
       )}
     >
       <div className={styles.toggle_wrappers}>
-        <div className={styles.username}>{command.name}</div>
+        <div className={styles.username}>
+          {command.name}{' '}
+          <MdEdit
+            onClick={() => {
+              updateCommandPopup(command);
+            }}
+          />
+        </div>
         <div className={styles.points}>{command.uses}</div>
         <div className={styles.spacer} />
         <div className={styles.modded}>
@@ -82,6 +119,7 @@ const Command = ({
             styles={styles}
             command={command}
             stateTheme={stateTheme}
+            ipcRenderer={ipcRenderer}
           />
         </div>
       </div>

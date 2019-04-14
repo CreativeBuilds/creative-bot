@@ -73,6 +73,37 @@ function createWindow() {
     rxUsers.next(Users);
   });
 
+  ipcMain.on('togglecommand', (event, { name, enabled }) => {
+    let CommandsCopy = Object.assign({}, Commands);
+    if (!CommandsCopy[name]) return;
+    CommandsCopy[name].enabled = enabled;
+    rxCommands.next(CommandsCopy);
+  });
+
+  ipcMain.on('editcommand', (event, { name, oldName, obj }) => {
+    let CommandsCopy = Object.assign({}, Commands);
+    if (!CommandsCopy[name]) {
+      // Making new command;
+      if (!CommandsCopy[oldName]) return;
+      delete CommandsCopy[oldName];
+    }
+
+    let command = Object.assign(
+      {},
+      CommandsCopy[name] || {
+        name: 'Placeholder',
+        dateCreated: Date.now(),
+        reply: 'This is a placeholder!',
+        uses: 0,
+        enabled: true,
+        permissions: {}
+      },
+      obj
+    );
+    CommandsCopy[name] = command;
+    rxCommands.next(CommandsCopy);
+  });
+
   ipcMain.on('getCommands', () => {
     let commands = Object.assign({}, Commands);
     win.webContents.send('commands', commands);
