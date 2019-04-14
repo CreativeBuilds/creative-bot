@@ -8,7 +8,17 @@ let config = require('./config');
 const _ = require('lodash');
 let win;
 
-let users = require('./storage/users.json');
+let tryRequireFromStorage = path => {
+  try {
+    return require(path);
+  } catch (err) {
+    return {};
+  }
+};
+
+let Commands = tryRequireFromStorage('./storage/commands.json');
+
+let users = tryRequireFromStorage('./storage/users.json');
 const rxUsers = require('./helpers/rxUsers');
 let { saveUsers } = require('./helpers');
 
@@ -40,6 +50,10 @@ function createWindow() {
     let Users = Object.assign({}, users);
     Users[username].points = points;
     rxUsers.next(Users);
+  });
+
+  ipcMain.on('getCommands', () => {
+    let Commands = Object.assign({}, Commands);
   });
 
   ipcMain.on('getUsermap', () => {

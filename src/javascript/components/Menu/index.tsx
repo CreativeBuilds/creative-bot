@@ -44,6 +44,16 @@ const Menu = props => {
           >
             USERS
           </Li>
+          <Li
+            style={{}}
+            hoverStyle={stateTheme.menu.title_hover}
+            onClick={() => {
+              setUrl('/commands');
+              setIsOpen(false);
+            }}
+          >
+            COMMANDS
+          </Li>
         </ul>
       </div>
       <div

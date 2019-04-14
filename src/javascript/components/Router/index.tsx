@@ -19,10 +19,12 @@ class RouterWrapper extends Component<any, any> {
   state = {
     users: {},
     messages: [],
-    popups: []
+    popups: [],
+    commands: {}
   };
   componentDidMount() {
     ipcRenderer.send('getUsermap');
+    ipcRenderer.send('getCommands');
     ipcRenderer.on('usermap', (event, { Users }) => {
       this.setState({ users: Users });
     });
@@ -33,6 +35,9 @@ class RouterWrapper extends Component<any, any> {
     ipcRenderer.on('newmessage', (event, data) => {
       let newArr = [...this.state.messages, data.message];
       this.setState({ messages: newArr });
+    });
+    ipcRenderer.on('commands', (event, commands) => {
+      this.setState({ commands });
     });
   }
 
@@ -75,6 +80,16 @@ class RouterWrapper extends Component<any, any> {
             path={'/users'}
             componentProps={{
               Users: this.state.users,
+              addPopup: this.addPopup,
+              closeCurrentPopup: this.closeCurrentPopup
+            }}
+            Component={UsersPage}
+          />
+          <Route
+            url={url}
+            path={'/chat'}
+            componentProps={{
+              commands: this.state.commands,
               addPopup: this.addPopup,
               closeCurrentPopup: this.closeCurrentPopup
             }}
