@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { ToggleBox } from './ToggleBox';
 
-import { MdModeEdit, MdEdit } from 'react-icons/md';
+import { MdModeEdit, MdEdit, MdDelete } from 'react-icons/md';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -15,6 +15,7 @@ const Popup = ({ command, styles, closeCurrentPopup, stateTheme }) => {
   const [permissions, setPermissions] = useState(command.permissions);
 
   const saveToDB = () => {
+    if (name.length === 0) return;
     ipcRenderer.send('editcommand', {
       oldName: command.name,
       name,
@@ -75,6 +76,42 @@ const Popup = ({ command, styles, closeCurrentPopup, stateTheme }) => {
   );
 };
 
+const RemoveCommandPopup = ({
+  command,
+  styles,
+  closeCurrentPopup,
+  stateTheme
+}) => {
+  const [name, setName] = useState<string>(command.name);
+  const [reply, setReply] = useState<string>(command.reply);
+  const [uses, setUses] = useState<number>(command.uses);
+  const [permissions, setPermissions] = useState(command.permissions);
+
+  const saveToDB = () => {
+    if (name.length === 0) return;
+    ipcRenderer.send('removecommand', {
+      name
+    });
+  };
+
+  return (
+    <div className={styles.popup} style={stateTheme.main}>
+      <div className={styles.remove_text}>
+        You're about to delete this command! Are you sure you want to do that?
+      </div>
+      <div
+        className={styles.submit}
+        onClick={() => {
+          saveToDB();
+          closeCurrentPopup();
+        }}
+      >
+        YES
+      </div>
+    </div>
+  );
+};
+
 const Command = ({
   styles,
   command,
@@ -86,6 +123,17 @@ const Command = ({
   const updateCommandPopup = command => {
     addPopup(
       <Popup
+        command={command}
+        styles={styles}
+        closeCurrentPopup={closeCurrentPopup}
+        stateTheme={stateTheme}
+      />
+    );
+  };
+
+  const removeCommandPopup = command => {
+    addPopup(
+      <RemoveCommandPopup
         command={command}
         styles={styles}
         closeCurrentPopup={closeCurrentPopup}
@@ -120,6 +168,14 @@ const Command = ({
             command={command}
             stateTheme={stateTheme}
             ipcRenderer={ipcRenderer}
+          />
+        </div>
+        <div className={styles.modded}>
+          <MdDelete
+            className={styles.trash}
+            onClick={() => {
+              removeCommandPopup(command);
+            }}
           />
         </div>
       </div>

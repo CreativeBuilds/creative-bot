@@ -52,6 +52,9 @@ const Sorting = ({
         <div className={styles.modded}>
           ENABLED {/*<Arrow isDesc={isDesc} toggle={toggle} type={'mod'}/>*/}
         </div>
+        <div className={styles.modded}>
+          REMOVE {/*<Arrow isDesc={isDesc} toggle={toggle} type={'mod'}/>*/}
+        </div>
       </div>
     </div>
   );

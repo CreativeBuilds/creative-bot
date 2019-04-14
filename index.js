@@ -73,6 +73,13 @@ function createWindow() {
     rxUsers.next(Users);
   });
 
+  ipcMain.on('removecommand', (event, { name }) => {
+    let CommandsCopy = Object.assign({}, Commands);
+    if (!CommandsCopy[name]) return;
+    delete CommandsCopy[name];
+    rxCommands.next(CommandsCopy);
+  });
+
   ipcMain.on('togglecommand', (event, { name, enabled }) => {
     let CommandsCopy = Object.assign({}, Commands);
     if (!CommandsCopy[name]) return;
@@ -84,8 +91,7 @@ function createWindow() {
     let CommandsCopy = Object.assign({}, Commands);
     if (!CommandsCopy[name]) {
       // Making new command;
-      if (!CommandsCopy[oldName]) return;
-      delete CommandsCopy[oldName];
+      if (CommandsCopy[oldName]) delete CommandsCopy[oldName];
     }
 
     let command = Object.assign(
@@ -173,6 +179,7 @@ function createWindow() {
         obj[commandName] = Object.assign({}, command);
         obj[commandName].uses += 1;
         Commands = Object.assign({}, Commands, obj);
+        if (!command.enabled) return;
         sendMessage(command.reply);
         rxCommands.next(Commands);
       }

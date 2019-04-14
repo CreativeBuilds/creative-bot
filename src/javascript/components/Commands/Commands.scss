@@ -22,6 +22,12 @@
   padding: 5px;
 }
 
+.remove_text {
+  width: 300px;
+  max-width: 50%;
+  margin-bottom: 20px;
+}
+
 .box {
   height: 24px;
   width: 24px;
@@ -30,9 +36,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  // &:hover {
-  //   cursor: pointer;
-  // }
+  &:hover {
+    cursor: pointer;
+  }
   svg {
     stroke-width: 2px;
     font-size: 1.2em;
@@ -113,6 +119,16 @@ textarea.usersearch {
   }
 }
 
+.add_circle {
+  position: absolute;
+  top: 10px;
+  right: 175px;
+  font-size: 25px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .toggle_wrappers {
   display: flex;
   justify-content: center;
@@ -158,13 +174,19 @@ textarea.usersearch {
     }
     &.banned,
     &.modded {
-      width: 80px;
+      width: 100px;
       display: flex;
       justify-content: center;
       align-items: center;
+      .trash {
+        font-size: 25px;
+      }
+      svg:hover {
+        cursor: pointer;
+      }
     }
     &.modded {
-      width: 55px;
+      width: 65px;
     }
   }
 }

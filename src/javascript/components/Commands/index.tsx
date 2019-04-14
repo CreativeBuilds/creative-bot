@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../../helpers';
 import * as _ from 'lodash';
+import { MdAddCircle } from 'react-icons/md';
 
 const { Command } = require('./Command');
 const { Sorting } = require('./Sorting');
@@ -10,6 +11,63 @@ const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
 const styles: any = require('./Commands.scss');
+
+const AddCommandPopup = ({ styles, closeCurrentPopup, stateTheme }) => {
+  const [name, setName] = useState<string>('');
+  const [reply, setReply] = useState<string>('');
+  const [uses, setUses] = useState<number>(0);
+  const [permissions, setPermissions] = useState({});
+
+  const saveToDB = () => {
+    if (name.length === 0) return;
+    ipcRenderer.send('editcommand', {
+      name,
+      obj: {
+        reply,
+        name,
+        uses,
+        permissions,
+        enabled: true
+      }
+    });
+  };
+
+  return (
+    <div className={styles.popup} style={stateTheme.main}>
+      <div className={styles.input_wrapper}>
+        <div className={styles.input_name}>Name</div>
+        <textarea
+          className={styles.input}
+          onChange={e => {
+            setName(e.target.value);
+          }}
+          value={name}
+        />
+      </div>
+      <div className={styles.input_wrapper}>
+        <div className={styles.input_name}>Reply</div>
+        <textarea
+          className={styles.input}
+          onChange={e => {
+            setReply(e.target.value);
+          }}
+          value={reply}
+        />
+      </div>
+      <div
+        className={styles.submit}
+        onClick={() => {
+          if (isNaN(Number(uses))) return;
+          setUses(Number(uses));
+          saveToDB();
+          closeCurrentPopup();
+        }}
+      >
+        CREATE
+      </div>
+    </div>
+  );
+};
 
 const CommandsPage = ({ props }) => {
   const { stateTheme, setStateTheme } = useContext(ThemeContext);
@@ -31,6 +89,16 @@ const CommandsPage = ({ props }) => {
     [isDesc ? 'desc' : 'asc']
   );
 
+  const addCommandPopup = () => {
+    addPopup(
+      <AddCommandPopup
+        styles={styles}
+        closeCurrentPopup={closeCurrentPopup}
+        stateTheme={stateTheme}
+      />
+    );
+  };
+
   return (
     <div style={stateTheme.menu} className={styles.Points}>
       <div style={stateTheme.menu.title} className={styles.header}>
@@ -42,6 +110,12 @@ const CommandsPage = ({ props }) => {
           value={searchCommandName}
           onChange={e => {
             setSearchCommandName(e.target.value);
+          }}
+        />
+        <MdAddCircle
+          className={styles.add_circle}
+          onClick={() => {
+            addCommandPopup();
           }}
         />
       </div>
