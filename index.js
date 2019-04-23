@@ -285,7 +285,9 @@ function createWindow() {
     });
     WS.on('message', function incoming(message) {
       let msg = JSON.parse(message);
-      if (msg.type === 'key_received') {
+      if (msg.type === 'send_message') {
+        sendMessage(message.value);
+      } else if (msg.type === 'key_received') {
         Config = Object.assign({}, { authKey: msg.value.key }, config);
         SaveToJson('./config.json', Config);
       }
