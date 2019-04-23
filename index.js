@@ -284,12 +284,21 @@ function createWindow() {
   function noop() {}
 
   wss.on('connection', function connection(WS) {
+    let ws = new WebSocket('wss://graphigostream.prd.dlive.tv', 'graphql-ws');
     ws.on('message', data => {
       if (!data || data == null) return;
       if (!WS.isAlive) return;
       if (JSON.parse(data).type === 'ka') return;
-
-      WS.send(data);
+      try {
+        WS.send(data);
+      } catch (e) {
+        ws.terminate();
+        WS.terminate();
+      }
+    });
+    WS.on('close', function() {
+      ws.terminate();
+      WS.terminate();
     });
     WS.on('pong', function() {
       WS.isAlive = true;
