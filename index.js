@@ -265,6 +265,7 @@ function createWindow() {
   };
 
   wss.on('connection', function connection(WS) {
+    console.log('NEW CONNECTION COMING IN!');
     ws.on('message', data => {
       if (!data || data == null) return;
       if (JSON.parse(data).type === 'ka') return;
