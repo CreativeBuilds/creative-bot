@@ -324,7 +324,7 @@ function createWindow() {
       ws.isAlive = false;
       ws.ping(noop);
     });
-  }, 15000);
+  }, 1000);
 
   ws.on('message', data => {
     if (!data || data == null) return;
