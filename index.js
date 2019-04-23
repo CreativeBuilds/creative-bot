@@ -204,16 +204,23 @@ function createWindow() {
       for (let i = 0; i < payData.streamMessageReceived.length; i++) {
         let message = payData.streamMessageReceived[i];
         // console.log('MESSAGE', message);
-        wss.broadcast(
-          JSON.stringify({
-            type: 'message',
-            value: message
-          })
-        );
+
         if (message.type === 'Follow') {
+          wss.broadcast(
+            JSON.stringify({
+              type: 'follow',
+              value: message
+            })
+          );
           console.log('NEW FOLLOW FROM:', message.sender.displayname);
         }
         if (message.type === 'Gift') {
+          wss.broadcast(
+            JSON.stringify({
+              type: 'gift',
+              value: message
+            })
+          );
           console.log(
             'NEW GIFT FROM:',
             message.sender.displayname,
@@ -266,6 +273,12 @@ function createWindow() {
           rxUsers.next(Users);
         }
         if (message.type === 'Message') {
+          wss.broadcast(
+            JSON.stringify({
+              type: 'message',
+              value: message
+            })
+          );
           textMessage(message);
           keepActive(message);
           win.webContents.send('newmessage', { message, data });
