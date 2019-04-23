@@ -14,9 +14,16 @@ const run = ({ message, args }) => {
     return Promise.resolve(`Please input a user and number! ex: !send 10 user`);
   if (isNaN(amount))
     return Promise.resolve(`Please input a number! ex: !send 10 user`);
-  sendLino(args[2], 1)
+  return sendLino(args[2], 1)
     .then(v => {
-      return Promise.resolve('Transfer completed! block: ', v.height);
+      return Promise.resolve(
+        'Transfer completed! block: ',
+        v.height,
+        ' sent ',
+        amount,
+        ' to ',
+        user
+      );
     })
     .catch(err => {
       console.error(err);
