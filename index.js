@@ -193,6 +193,12 @@ function createWindow() {
       let payData = payload.data;
       for (let i = 0; i < payData.streamMessageReceived.length; i++) {
         let message = payData.streamMessageReceived[i];
+        wss.broadcast(
+          JSON.stringify({
+            type: 'message',
+            value: message
+          })
+        );
         if (message.type === 'Follow') {
           console.log('NEW FOLLOW FROM:', message.sender.displayname);
         }
@@ -267,17 +273,14 @@ function createWindow() {
   function noop() {}
 
   wss.on('connection', function connection(WS) {
-    console.log(
-      '~~~ NEW CONNECTION | Remember to send pongs back, otherwise connection will terminate! ~~~'
-    );
     ws.on('message', data => {
       if (!data || data == null) return;
       if (!WS.isAlive) return;
       if (JSON.parse(data).type === 'ka') return;
+
       WS.send(data);
     });
     WS.on('pong', function() {
-      console.log('pong');
       WS.isAlive = true;
     });
     WS.on('message', function incoming(message) {
@@ -296,7 +299,6 @@ function createWindow() {
       if (ws.isAlive === false) return ws.terminate();
 
       ws.isAlive = false;
-      console.log('ping');
       ws.ping(noop);
     });
   }, 15000);
