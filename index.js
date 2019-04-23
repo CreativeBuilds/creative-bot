@@ -264,14 +264,23 @@ function createWindow() {
     }
   };
 
+  function noop() {}
+
   wss.on('connection', function connection(WS) {
-    console.log('NEW CONNECTION COMING IN!');
+    console.log(
+      '~~~ NEW CONNECTION | Remember to send pongs back, otherwise connection will terminate! ~~~'
+    );
     ws.on('message', data => {
       if (!data || data == null) return;
+      if (!WS.isAlive) return;
       if (JSON.parse(data).type === 'ka') return;
       WS.send(data);
     });
-    WS.on('message', function incomming(message) {
+    WS.on('pong', function() {
+      console.log('pong');
+      WS.isAlive = true;
+    });
+    WS.on('message', function incoming(message) {
       let msg = JSON.parse(message);
       if (msg.type === 'key_received') {
         Config = Object.assign({}, { authKey: msg.value.key }, config);
@@ -281,6 +290,16 @@ function createWindow() {
     if (!config.authKey || config.authKey === '')
       return WS.send(JSON.stringify({ type: 'key_init' }));
   });
+
+  const interval = setInterval(function ping() {
+    wss.clients.forEach(function each(ws) {
+      if (ws.isAlive === false) return ws.terminate();
+
+      ws.isAlive = false;
+      console.log('ping');
+      ws.ping(noop);
+    });
+  }, 15000);
 
   ws.on('message', data => {
     if (!data || data == null) return;
