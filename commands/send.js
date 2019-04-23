@@ -17,12 +17,7 @@ const run = ({ message, args }) => {
   return sendLino(args[2], 1)
     .then(v => {
       return Promise.resolve(
-        'Transfer completed! block: ',
-        v.height,
-        ' sent ',
-        amount,
-        ' to ',
-        user
+        `Transfer completed! block: ${v.height} sent ${amount} to ${user}`
       );
     })
     .catch(err => {
