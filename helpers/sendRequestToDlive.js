@@ -2,8 +2,6 @@ const tryRequireFromStorage = require('./tryRequireFromStorage');
 const config = require('../config');
 const https = require('https');
 
-console.log(config);
-
 module.exports = ({ operationName, query, variables }) => {
   return new Promise((RES, rej) => {
     const postData = JSON.stringify({

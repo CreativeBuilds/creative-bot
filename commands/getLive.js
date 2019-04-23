@@ -1,4 +1,4 @@
-const sendLino = require('../helpers/sendLino');
+const getLiveChannels = require('../helpers/getLiveChannels');
 const { tryRequireFromStorage } = require('../helpers');
 const config = tryRequireFromStorage('../config');
 const run = ({ message, args }) => {
@@ -8,15 +8,13 @@ const run = ({ message, args }) => {
     message.sender.username !== config.streamer
   )
     return Promise.resolve(`You don't have permission to run that command!`);
-  let amount = Math.floor(args[1]);
-  let user = args[2];
-  if (!user)
-    return Promise.resolve(`Please input a user and number! ex: !send 10 user`);
-  if (isNaN(amount))
-    return Promise.resolve(`Please input a number! ex: !send 10 user`);
-  sendLino(args[2], 1)
+  return getLiveChannels()
     .then(v => {
-      return Promise.resolve('Transfer completed! block: ', v.height);
+      return Promise.resolve(
+        `There are currently ~${v.streamers} live with a total of ${
+          v.viewers
+        } viewers`
+      );
     })
     .catch(err => {
       console.error(err);
@@ -25,9 +23,9 @@ const run = ({ message, args }) => {
 };
 
 module.exports = {
-  name: 'send',
+  name: 'getLive',
   run: run,
-  description: 'sends lino to a user',
+  description: 'gets all users',
   permissions: {
     everyone: true
   }

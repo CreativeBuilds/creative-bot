@@ -203,6 +203,7 @@ function createWindow() {
       let payData = payload.data;
       for (let i = 0; i < payData.streamMessageReceived.length; i++) {
         let message = payData.streamMessageReceived[i];
+        // console.log('MESSAGE', message);
         wss.broadcast(
           JSON.stringify({
             type: 'message',

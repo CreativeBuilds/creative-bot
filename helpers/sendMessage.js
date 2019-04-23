@@ -61,7 +61,8 @@ const checkMessages = () => {
     }
   })
     .then(body => {
-      console.log('Message sent!');
+      console.log('Message sent!', body);
+      console.log('msg:', msg);
     })
     .catch(err => {
       throw err;
