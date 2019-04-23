@@ -2,6 +2,8 @@
   "commandPrefix": "!",
   "authKey": "",
   "streamer": "",
+  "senderUsername": "",
+  "privKeyHex": "",
   "discordInvite": "",
   "points": 5
 }
