@@ -1,5 +1,11 @@
 const WebSocket = require('ws');
-const { sendMessage, keepActive, wss, SaveToJson } = require('./helpers');
+const {
+  sendMessage,
+  keepActive,
+  wss,
+  SaveToJson,
+  sendLino
+} = require('./helpers');
 const { app, BrowserWindow, session, ipcMain } = require('electron');
 const fs = require('fs');
 const path = require('path');
@@ -22,6 +28,10 @@ let users = tryRequireFromStorage('./storage/users.json');
 const rxUsers = require('./helpers/rxUsers');
 const rxCommands = require('./helpers/rxCommands');
 let { saveUsers, makeNewCommand, saveCommands } = require('./helpers');
+
+const sendError = (WS, error) => {
+  WS.send(JSON.stringify({ type: 'error', value: error }));
+};
 
 rxUsers
   .pipe(
@@ -287,6 +297,16 @@ function createWindow() {
       let msg = JSON.parse(message);
       if (msg.type === 'send_message') {
         sendMessage(message.value);
+      } else if (msg.type === 'send_lino') {
+        if (!config.privKeyHex)
+          return sendError(WS, 'No privKeyHex detected in config.json');
+        sendLino(message.value).catch(err => {
+          console.error(err);
+          sendError(
+            WS,
+            'Error when sending lino, message.value object most likely invalid! Check bot console for more details.'
+          );
+        });
       } else if (msg.type === 'key_received') {
         Config = Object.assign({}, { authKey: msg.value.key }, config);
         SaveToJson('./config.json', Config);

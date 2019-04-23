@@ -6,6 +6,8 @@ const sendRequestToDlive = require('./sendRequestToDlive');
 const { lino } = require('./lino');
 const getBlockchainUsername = require('./getBlockchainUsername');
 
+// TODO add options toggle setting
+
 module.exports = (
   username,
   amount,

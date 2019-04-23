@@ -9,5 +9,6 @@ module.exports = {
   makeNewCommand: require('./makeNewCommand'),
   wss: require('./webSocketServer').wss,
   tryRequireFromStorage: require('./tryRequireFromStorage'),
-  getBlockchainUsername: require('./getBlockchainUsername')
+  getBlockchainUsername: require('./getBlockchainUsername'),
+  sendLino: require('./sendLino')
 };
