@@ -1,10 +1,9 @@
 const WebSocket = require('ws');
-const { sendMessage, keepActive } = require('./helpers');
+const { sendMessage, keepActive, wss, SaveToJson } = require('./helpers');
 const { app, BrowserWindow, session, ipcMain } = require('electron');
 const fs = require('fs');
 const path = require('path');
 const { distinctUntilChanged } = require('rxjs/operators');
-let config = require('./config');
 const _ = require('lodash');
 let win;
 
@@ -16,6 +15,7 @@ let tryRequireFromStorage = path => {
   }
 };
 
+let config = tryRequireFromStorage('./config.json');
 let Commands = tryRequireFromStorage('./storage/commands.json');
 
 let users = tryRequireFromStorage('./storage/users.json');
@@ -263,6 +263,23 @@ function createWindow() {
       }
     }
   };
+
+  wss.on('connection', function connection(WS) {
+    ws.on('message', data => {
+      if (!data || data == null) return;
+      if (JSON.parse(data).type === 'ka') return;
+      WS.send(data);
+    });
+    WS.on('message', function incomming(message) {
+      let msg = JSON.parse(message);
+      if (msg.type === 'key_received') {
+        Config = Object.assign({}, { authKey: msg.value.key }, config);
+        SaveToJson('./config.json', Config);
+      }
+    });
+    if (!config.authKey || config.authKey === '')
+      return WS.send(JSON.stringify({ type: 'key_init' }));
+  });
 
   ws.on('message', data => {
     if (!data || data == null) return;

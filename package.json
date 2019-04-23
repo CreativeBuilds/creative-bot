@@ -14,6 +14,7 @@
     "electron-reload": "^1.4.0",
     "fs": "0.0.1-security",
     "https": "^1.0.0",
+    "lino-js": "^1.0.19",
     "lodash": "^4.17.11",
     "react": "^16.8.6",
     "react-icons": "^3.5.0",

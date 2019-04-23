@@ -1,5 +1,6 @@
 const https = require('https');
 const config = require('../config');
+const sendRequestToDlive = require('./sendRequestToDlive');
 
 let msgs = [];
 let loop;
@@ -13,7 +14,7 @@ const checkMessages = () => {
   }
   let msg = msgs[0];
   msgs = msgs.splice(1);
-  const postData = JSON.stringify({
+  sendRequestToDlive({
     operationName: 'SendStreamChatMessage',
     query: `mutation SendStreamChatMessage($input: SendStreamchatMessageInput!) {
                 sendStreamchatMessage(input: $input) {
@@ -58,36 +59,13 @@ const checkMessages = () => {
         subscribing: true
       }
     }
-  });
-
-  const options = {
-    hostname: 'graphigo.prd.dlive.tv',
-    port: 443,
-    path: '/',
-    method: 'POST',
-    headers: {
-      accept: '*/*',
-      authorization: config.authKey,
-      'content-type': 'application/json',
-      fingerprint: '',
-      gacid: 'undefined',
-      Origin: 'https://dlive.tv',
-      Referer: 'https://dlive.tv/' + config.streamer,
-      'User-Agent':
-        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'
-    }
-  };
-  var body = '';
-  var req = https.request(options, res => {
-    res.on('data', chunk => {
-      body += chunk;
+  })
+    .then(body => {
+      console.log('Message sent!');
+    })
+    .catch(err => {
+      throw err;
     });
-    res.on('end', function() {
-      msg.cb(body);
-    });
-  });
-  req.write(postData);
-  req.end();
 };
 
 const sendMessage = (message, streamer) => {
