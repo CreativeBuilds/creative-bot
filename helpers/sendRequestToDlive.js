@@ -1,5 +1,7 @@
 const tryRequireFromStorage = require('./tryRequireFromStorage');
-let config = require('../config');
+let config = {};
+let rxConfig = require('./rxConfig');
+rxConfig.subscribe(data => (config = data));
 const https = require('https');
 
 module.exports = ({ operationName, query, variables }) => {

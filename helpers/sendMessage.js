@@ -1,5 +1,7 @@
 const https = require('https');
-let config = require('../config');
+let config = {};
+let rxConfig = require('./rxConfig');
+rxConfig.subscribe(data => (config = data));
 const sendRequestToDlive = require('./sendRequestToDlive');
 
 let msgs = [];

@@ -7,7 +7,9 @@ let tryRequireFromStorage = path => {
 };
 
 let users = {};
-let config = require('../config');
+let config = {};
+let rxConfig = require('./rxConfig');
+rxConfig.subscribe(data => (config = data));
 let activeUsers = {};
 const rxUsers = require('./rxUsers');
 
