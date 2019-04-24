@@ -1,4 +1,4 @@
-const SaveCommands = require('./SaveCommands');
+const rxCommands = require('./rxCommands');
 
 const makeNewCommand = ({ commandName, commandReply, commands }) => {
   if (commands[commandName]) return Promise.reject('Command Already Exists!');
@@ -10,7 +10,7 @@ const makeNewCommand = ({ commandName, commandReply, commands }) => {
     uses: 0,
     permissions: {}
   };
-  return SaveCommands(Commands);
+  return rxCommands.next(Commands);
 };
 
 module.exports = makeNewCommand;

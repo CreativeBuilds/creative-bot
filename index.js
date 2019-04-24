@@ -11,7 +11,16 @@ const fs = require('fs');
 const path = require('path');
 const { distinctUntilChanged } = require('rxjs/operators');
 const _ = require('lodash');
+const storage = require('electron-json-storage');
 let win;
+var env = process.env.NODE_ENV || 'production';
+console.print = console.log;
+if (env === 'production') {
+  console.log = () => {};
+}
+if (process.env.NODE_HARD) {
+  storage.clear();
+}
 
 let tryRequireFromStorage = path => {
   try {
@@ -21,42 +30,24 @@ let tryRequireFromStorage = path => {
   }
 };
 
-let config = tryRequireFromStorage('./config.json');
-let Commands = tryRequireFromStorage('./storage/commands.json');
-
-let users = tryRequireFromStorage('./storage/users.json');
+let config = {};
+const rxConfig = require('./helpers/rxConfig');
+rxConfig.subscribe(data => (config = data));
+let Commands = {};
 const rxUsers = require('./helpers/rxUsers');
 const rxCommands = require('./helpers/rxCommands');
-let { saveUsers, makeNewCommand, saveCommands } = require('./helpers');
+let { makeNewCommand } = require('./helpers');
 
 const sendError = (WS, error) => {
   WS.send(JSON.stringify({ type: 'error', value: error }));
 };
-
-rxUsers
-  .pipe(
-    distinctUntilChanged(
-      (x, y) => _.isEqual(x, y) && Object.keys(x) === Object.keys(y)
-    )
-  )
-  .subscribe(Users => {
-    saveUsers(Users);
-  });
-
-rxCommands
-  .pipe(
-    distinctUntilChanged(
-      (x, y) => _.isEqual(x, y) && Object.keys(x) === Object.keys(y)
-    )
-  )
-  .subscribe(commands => {
-    Commands = commands;
-    saveCommands(Commands);
-  });
-
-require('electron-reload')(path.join(__dirname, 'dist'), {
-  electron: require(`${__dirname}/node_modules/electron`)
-});
+if (env === 'dev') {
+  try {
+    require('electron-reload')(path.join(__dirname, 'dist'), {
+      electron: require(`${__dirname}/node_modules/electron`)
+    });
+  } catch (err) {}
+}
 
 function createWindow() {
   // Create the browser window.
@@ -64,18 +55,11 @@ function createWindow() {
 
   // and load the index.html of the app.
   win.loadFile(__dirname + '/dist/index.html');
+  win.on('close', function() {
+    process.exit();
+  });
 
   let users = {};
-
-  rxCommands
-    .pipe(
-      distinctUntilChanged(
-        (x, y) => _.isEqual(x, y) && Object.keys(x) === Object.keys(y)
-      )
-    )
-    .subscribe(commands => {
-      win.webContents.send('commands', commands);
-    });
 
   ipcMain.on('editpoints', (event, { username, points }) => {
     let Users = Object.assign({}, users);
@@ -332,7 +316,7 @@ function createWindow() {
         });
       } else if (msg.type === 'key_received') {
         Config = Object.assign({}, { authKey: msg.value.key }, config);
-        SaveToJson('./config.json', Config);
+        SaveToJson('config', Config);
       }
     });
     if (!config.authKey || config.authKey === '')

@@ -1,19 +1,14 @@
 const fs = require('fs');
 var path = require('path');
 var appDir = path.dirname(require.main.filename);
+const storage = require('electron-json-storage');
 
-const SaveToJson = (pathFromRoot, fileToSave, cb) => {
-    if(typeof fileToSave !== "string") {
-        if(typeof fileToSave !== "object") {
-            return console.error("Tried saving to JSON and file wasnt a string or JSON")
-        }
-        fileToSave = JSON.stringify(fileToSave);
-    }
-    fs.writeFile(path.join(appDir, pathFromRoot), fileToSave, (err) => {
-        if(err) return console.error("Error while trying to save to JSON", err);
-        if(cb) cb();
-    })
+const SaveToJson = (name, fileToSave, cb = function() {}) => {
+  storage.set(name, fileToSave, function(err, something) {
+    if (err) throw err;
+    console.log('Saving to json', name, fileToSave);
+    console.log(something);
+  });
 };
-
 
 module.exports = SaveToJson;

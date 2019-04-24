@@ -1,5 +1,5 @@
 const https = require('https');
-const config = require('../config');
+let config = require('../config');
 const sendRequestToDlive = require('./sendRequestToDlive');
 
 let msgs = [];

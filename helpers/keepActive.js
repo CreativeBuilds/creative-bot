@@ -6,13 +6,18 @@ let tryRequireFromStorage = path => {
   }
 };
 
-let users = tryRequireFromStorage('../storage/users');
+let users = {};
 let config = require('../config');
 let activeUsers = {};
 const rxUsers = require('./rxUsers');
 
+rxUsers.subscribe(data => {
+  users = data;
+});
+
 // Every 5 minutes this interval will run
 let ticker = setInterval(() => {
+  console.log('LOOPING');
   let startUsers = Object.assign({}, users);
   if (Object.keys(activeUsers).length > 0) {
     Object.keys(activeUsers).forEach(username => {

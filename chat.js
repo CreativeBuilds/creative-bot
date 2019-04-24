@@ -1,10 +1,12 @@
 const WebSocket = require('ws');
 const fs = require('fs');
-const config = require('./config');
+let config = {};
+const rxConfig = require('../helpers/rxConfig');
+rxConfig.subscribe(data => (config = data));
 const axios = require('axios');
 const https = require('https');
 const querystring = require('querystring');
-const {sendMessage}= require('./helpers');
+const { sendMessage } = require('./helpers');
 
 const ws = new WebSocket('wss://graphigostream.prd.dlive.tv', 'graphql-ws');
 
@@ -38,10 +40,10 @@ const textMessage = (message, data) => {
     let command = commands[commandName];
     if (command) {
       // TODO check permissions
-      command.run({message, data, args}).then(msg => {
-          if(!msg) return;
-          sendMessage(msg);
-      })
+      command.run({ message, data, args }).then(msg => {
+        if (!msg) return;
+        sendMessage(msg);
+      });
     }
   }
 };
@@ -83,7 +85,6 @@ const onNewMsg = data => {
 ws.on('message', function(data) {
   if (!data || data == null) return;
   onNewMsg(JSON.parse(data));
-  
 });
 
 ws.on('open', function() {

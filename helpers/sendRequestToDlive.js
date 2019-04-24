@@ -1,5 +1,5 @@
 const tryRequireFromStorage = require('./tryRequireFromStorage');
-const config = require('../config');
+let config = require('../config');
 const https = require('https');
 
 module.exports = ({ operationName, query, variables }) => {
