@@ -72,7 +72,11 @@ class RouterWrapper extends Component<any, any> {
           <Route
             url={url}
             path={'/'}
-            componentProps={{ Messages: this.state.messages }}
+            componentProps={{
+              Messages: this.state.messages,
+              addPopup: this.addPopup,
+              closeCurrentPopup: this.closeCurrentPopup
+            }}
             Component={Chat}
             exact={true}
           />

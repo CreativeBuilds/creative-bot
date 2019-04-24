@@ -4,8 +4,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   // context: __dirname + '\\src\\javascript',
-  entry: [
-    './src/javascript/index.tsx'],
+  entry: ['./src/javascript/index.tsx'],
   resolve: {
     // changed from extensions: [".js", ".jsx"]
     extensions: ['.ts', '.tsx', '.js', '.jsx']
@@ -23,16 +22,29 @@ module.exports = {
       },
       {
         test: /\.(sa|sc|c)ss$/,
-        use: ['style-loader', {
-          loader: 'css-loader',
-          options: {
-            modules: true
-          }
-        }, 'sass-loader']
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true
+            }
+          },
+          'sass-loader'
+        ]
       },
-      { test: /\.(t|j)sx?$/, use: { loader: 'awesome-typescript-loader' } },
+      {
+        test: /\.(t|j)sx?$/,
+        use: {
+          loader: 'awesome-typescript-loader?cacheDirectory=true'
+        }
+      },
       { enforce: 'pre', test: /\.js$/, loader: 'source-map-loader' },
-      { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' }
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'babel-loader?cacheDirectory=true'
+      }
     ]
   },
   output: {
@@ -43,12 +55,10 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, '/src/index.ejs')
     }),
-    new CopyWebpackPlugin([
-      {from:'src/styles',to:'styles'}
-    ])
+    new CopyWebpackPlugin([{ from: 'src/styles', to: 'styles' }])
   ],
   node: {
-    fs: "empty"
+    fs: 'empty'
   },
   devtool: 'eval-source-map',
   watchOptions: {

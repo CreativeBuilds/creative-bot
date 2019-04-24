@@ -22,14 +22,6 @@ if (process.env.NODE_HARD) {
   storage.clear();
 }
 
-let tryRequireFromStorage = path => {
-  try {
-    return require(path);
-  } catch (err) {
-    return {};
-  }
-};
-
 let config = {};
 const rxConfig = require('./helpers/rxConfig');
 rxConfig.subscribe(data => (config = data));

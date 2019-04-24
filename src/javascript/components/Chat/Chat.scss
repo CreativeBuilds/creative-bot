@@ -72,3 +72,56 @@
     }
   }
 }
+
+.popup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  h1 {
+    text-transform: uppercase;
+    margin: 0px;
+    font-size: 1.5em;
+  }
+  .helper_text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+  textarea {
+    flex: 1;
+    border: 0;
+    outline-width: 0;
+    resize: none;
+    text-align: center;
+    height: 20px;
+    font-size: 15px;
+    padding: 5px;
+    width: 150px;
+    overflow-y: hidden;
+    overflow-x: auto;
+    margin: 0 !important;
+    margin-bottom: 10px !important;
+  }
+  .input {
+    margin: 10px;
+    outline-width: 0;
+    background: rgba(0, 0, 0, 0);
+    border: 2px solid;
+    color: inherit;
+  }
+  .submit {
+    width: 150px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    padding: 6px;
+    border: 2px solid;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
