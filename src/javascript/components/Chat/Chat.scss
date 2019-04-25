@@ -15,6 +15,13 @@
   align-items: center;
 }
 
+.link {
+  font-weight: bold;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .message {
   width: calc(100% - 10px);
   padding: 5px;
@@ -88,6 +95,7 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+    margin-bottom: 5px;
   }
   textarea {
     flex: 1;
@@ -110,6 +118,7 @@
     background: rgba(0, 0, 0, 0);
     border: 2px solid;
     color: inherit;
+    min-width: calc(100% - 14px);
   }
   .submit {
     width: 150px;

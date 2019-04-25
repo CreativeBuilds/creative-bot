@@ -14,6 +14,7 @@ const _ = require('lodash');
 const storage = require('electron-json-storage');
 let win;
 var env = process.env.NODE_ENV || 'production';
+const open = require('open');
 console.print = console.log;
 if (env === 'production') {
   console.log = () => {};
@@ -29,21 +30,26 @@ rxConfig.subscribe(data => (config = data));
 let Commands = {};
 const rxUsers = require('./helpers/rxUsers');
 const rxCommands = require('./helpers/rxCommands');
-let { makeNewCommand } = require('./helpers');
+let { makeNewCommand, getBlockchainUsername } = require('./helpers');
+const { autoUpdater } = require('electron-updater');
 
 const sendError = (WS, error) => {
   WS.send(JSON.stringify({ type: 'error', value: error }));
 };
 if (env === 'dev') {
+  console.log('inside if');
   try {
     require('electron-reload')(path.join(__dirname, 'dist'), {
       electron: require(`${__dirname}/node_modules/electron`)
     });
-  } catch (err) {}
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 function createWindow() {
   // Create the browser window.
+  autoUpdater.checkForUpdatesAndNotify();
   win = new BrowserWindow({ width: 800, height: 600 });
 
   // and load the index.html of the app.
@@ -140,12 +146,16 @@ function createWindow() {
   });
 
   ipcMain.on('setRxConfig', (event, Config) => {
-    if (Config !== config) {
-      console.log(
-        'inside else statement',
-        Object.keys(config),
-        Object.keys(Config)
-      );
+    if (Config.streamerDisplayName && config.authKey) {
+      getBlockchainUsername(Config.streamerDisplayName).then(username => {
+        if (username.length === 0) return;
+        Config.streamer = username;
+        if (Config !== config) {
+          config = Config;
+          rxConfig.next(Config);
+        }
+      });
+    } else if (Config !== config) {
       config = Config;
       rxConfig.next(Config);
     }

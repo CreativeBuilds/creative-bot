@@ -42,16 +42,19 @@ class RouterWrapper extends Component<any, any> {
     });
   }
 
+  popups = [];
+
   addPopup = element => {
+    this.popups = this.popups.concat([element]);
     this.setState({
-      popups: this.state.popups.concat([element])
+      popups: this.popups
     });
   };
 
   closeCurrentPopup = () => {
-    console.log('RUNNING');
-    let arr = this.state.popups.concat([]);
+    let arr = this.popups.concat([]);
     arr.splice(-1, 1);
+    this.popups = arr;
     this.setState({ popups: arr });
   };
   render() {

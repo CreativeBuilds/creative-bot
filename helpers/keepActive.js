@@ -19,7 +19,6 @@ rxUsers.subscribe(data => {
 
 // Every 5 minutes this interval will run
 let ticker = setInterval(() => {
-  console.log('LOOPING');
   let startUsers = Object.assign({}, users);
   if (Object.keys(activeUsers).length > 0) {
     Object.keys(activeUsers).forEach(username => {
