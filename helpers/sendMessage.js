@@ -61,14 +61,9 @@ const checkMessages = () => {
         subscribing: true
       }
     }
-  })
-    .then(body => {
-      console.log('Message sent!', body);
-      console.log('msg:', msg);
-    })
-    .catch(err => {
-      throw err;
-    });
+  }).catch(err => {
+    throw err;
+  });
 };
 
 const sendMessage = (message, streamer) => {

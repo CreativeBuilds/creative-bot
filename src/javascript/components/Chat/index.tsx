@@ -4,7 +4,7 @@ import { ThemeContext } from '../../helpers';
 import { MdSend } from 'react-icons/md';
 
 import { Message } from './Message';
-import rxConfig from '../../../../helpers/rxConfig';
+import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -100,8 +100,12 @@ const Chat = ({ props }) => {
         setIsScrolledUp(true);
       }
     });
+    console.log('subscribing');
     let listener = rxConfig.subscribe((data: any) => {
+      console.log('got data from rxConfig', data);
+      delete data.first;
       setConfig(data);
+      setRxConfig(data);
     });
     return () => {
       listener.unsubscribe();
@@ -116,21 +120,27 @@ const Chat = ({ props }) => {
   useEffect(() => {
     // Test to see if the config includes the right variables
     // if's at the top of this will be rendered last
-    console.log('CONFIG', config);
+    if (config.first) return;
     if (!config.streamer) {
       addPopup(
         <AddCommandPopup
           styles={styles}
           closeCurrentPopup={(input, setError) => {
+            console.log(input, setError);
             if (input !== '') {
-              let Config = Object.assign({}, { streamer: input });
+              console.log('config', config);
+              let Config = Object.assign({}, { streamer: input }, config);
+              rxConfig.next(Config);
               closeCurrentPopup();
             } else {
               setError('Input field must not be empty!');
             }
           }}
           stateTheme={stateTheme}
-          configName={'LINO Blockchain Name'}
+          configName={'Streamer Username on DLive'}
+          text={
+            'Note if, you input the incorrect name, you can change later in the options file.'
+          }
         />
       );
     }

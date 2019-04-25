@@ -9,7 +9,7 @@ const {
 const { app, BrowserWindow, session, ipcMain } = require('electron');
 const fs = require('fs');
 const path = require('path');
-const { distinctUntilChanged } = require('rxjs/operators');
+const { distinctUntilChanged, filter } = require('rxjs/operators');
 const _ = require('lodash');
 const storage = require('electron-json-storage');
 let win;
@@ -23,6 +23,7 @@ if (process.env.NODE_HARD) {
 }
 
 let config = {};
+let rxListeners = [];
 const rxConfig = require('./helpers/rxConfig');
 rxConfig.subscribe(data => (config = data));
 let Commands = {};
@@ -118,6 +119,24 @@ function createWindow() {
         win.webContents.send('usermap', { Users });
         users = Users;
       });
+  });
+
+  ipcMain.on('getRxConfig', () => {
+    rxConfig.pipe(filter(x => !_.isEmpty(x))).subscribe(config => {
+      win.webContents.send('rxConfig', config);
+    });
+  });
+
+  ipcMain.on('setRxConfig', (event, Config) => {
+    if (Config !== config) {
+      console.log('inside else statement');
+      config = Config;
+      rxConfig.next(Config);
+    }
+  });
+
+  ipcMain.on('resetRxConfig', () => {
+    rxConfig.next({});
   });
 
   const ws = new WebSocket('wss://graphigostream.prd.dlive.tv', 'graphql-ws');

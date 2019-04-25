@@ -9,7 +9,6 @@ storage.get('users', (err, data) => {
   if (err) throw err;
   rxUsers.next(data);
   rxUsers.pipe(filter(x => !_.isEmpty(x))).subscribe(data => {
-    console.log('GOT DATA', data);
     storage.set('users', data);
   });
 });

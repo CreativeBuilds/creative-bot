@@ -18,7 +18,6 @@
     "axios": "^0.18.0",
     "electron-json-storage": "^4.1.6",
     "electron-reload": "^1.4.0",
-    "fs": "0.0.1-security",
     "https": "^1.0.0",
     "lino-js": "^1.0.19",
     "lodash": "^4.17.11",

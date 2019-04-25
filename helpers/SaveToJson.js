@@ -6,8 +6,6 @@ const storage = require('electron-json-storage');
 const SaveToJson = (name, fileToSave, cb = function() {}) => {
   storage.set(name, fileToSave, function(err, something) {
     if (err) throw err;
-    console.log('Saving to json', name, fileToSave);
-    console.log(something);
   });
 };
 

@@ -49,6 +49,7 @@ class RouterWrapper extends Component<any, any> {
   };
 
   closeCurrentPopup = () => {
+    console.log('RUNNING');
     let arr = this.state.popups.concat([]);
     arr.splice(-1, 1);
     this.setState({ popups: arr });
