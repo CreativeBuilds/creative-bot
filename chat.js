@@ -57,8 +57,7 @@ const onNewMsg = data => {
       let message = payData.streamMessageReceived[i];
       if (message.type === 'Follow') {
         console.log('NEW FOLLOW FROM:', message.sender.displayname);
-      }
-      if (message.type === 'Gift') {
+      } else if (message.type === 'Gift') {
         console.log(
           'NEW GIFT FROM:',
           message.sender.displayname,
@@ -67,8 +66,7 @@ const onNewMsg = data => {
           'AMOUNT:',
           message.amount
         );
-      }
-      if (message.type === 'Message') {
+      } else if (message.type === 'Message') {
         textMessage(message);
         let content = message.content;
         console.log(

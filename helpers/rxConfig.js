@@ -7,8 +7,9 @@ let rxConfig = new BehaviorSubject({});
 
 storage.get('config', (err, data) => {
   if (err) throw err;
+  data.init = true;
   rxConfig.next(data);
-  rxConfig.pipe(filter(x => !_.isEmpty(x))).subscribe(data => {
+  rxConfig.subscribe(data => {
     storage.set('config', data);
   });
 });

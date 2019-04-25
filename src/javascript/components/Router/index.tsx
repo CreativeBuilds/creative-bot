@@ -7,6 +7,8 @@ import { UsersPage } from '../Users';
 import { Menu } from '../Menu';
 import { Popup } from '../Popup';
 import { CommandsPage } from '../Commands';
+import { rxUsers } from '../../helpers/rxUsers';
+import { rxCommands } from '../../helpers/rxCommands';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -24,10 +26,11 @@ class RouterWrapper extends Component<any, any> {
     commands: {}
   };
   componentDidMount() {
-    ipcRenderer.send('getUsermap');
-    ipcRenderer.send('getCommands');
-    ipcRenderer.on('usermap', (event, { Users }) => {
+    rxUsers.subscribe(Users => {
       this.setState({ users: Users });
+    });
+    rxCommands.subscribe(Commands => {
+      this.setState({ commands: Commands });
     });
     ipcRenderer.on('updatedUser', (event, { user }) => {
       let users = Object.assign({}, this.state.users);
@@ -36,9 +39,6 @@ class RouterWrapper extends Component<any, any> {
     ipcRenderer.on('newmessage', (event, data) => {
       let newArr = [...this.state.messages, data.message];
       this.setState({ messages: newArr });
-    });
-    ipcRenderer.on('commands', (event, commands) => {
-      this.setState({ commands });
     });
   }
 

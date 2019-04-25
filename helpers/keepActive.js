@@ -28,7 +28,7 @@ let ticker = setInterval(() => {
       if (!storageUser) {
         storageUser = {
           // This will probably change once we add functionaly to edit different tiers of users to get different points
-          points: config.points,
+          points: config.points || 5,
           avatar: user.avatar,
           displayname: user.displayname,
           lino: 0,
@@ -37,7 +37,7 @@ let ticker = setInterval(() => {
         };
       } else {
         storageUser = Object.assign({}, storageUser, {
-          points: storageUser.points + config.points
+          points: storageUser.points + (config.points || 5)
         });
       }
       users[username] = storageUser;

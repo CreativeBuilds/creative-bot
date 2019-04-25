@@ -4,14 +4,11 @@ const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
 const rxConfig = new BehaviorSubject({});
-let first = true;
 
 ipcRenderer.send('getRxConfig');
 ipcRenderer.on('rxConfig', (event, config) => {
-  if (first) {
-    rxConfig.next(config);
-    first = false;
-  }
+  console.log('next config', config);
+  rxConfig.next(config);
 });
 
 const setRxConfig = config => {

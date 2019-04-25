@@ -69,7 +69,8 @@ const Chat = ({ props }) => {
   const [text, setText] = useState('');
   const { Messages, addPopup, closeCurrentPopup } = props;
 
-  const [config, setConfig]: any = useState({ first: true });
+  const [config, setConfig]: any = useState({});
+  const [firstRender, setFirstRender] = useState(true);
 
   const updateText = e => {
     setText(e.target.value);
@@ -105,7 +106,6 @@ const Chat = ({ props }) => {
       console.log('got data from rxConfig', data);
       delete data.first;
       setConfig(data);
-      setRxConfig(data);
     });
     return () => {
       listener.unsubscribe();
@@ -120,8 +120,8 @@ const Chat = ({ props }) => {
   useEffect(() => {
     // Test to see if the config includes the right variables
     // if's at the top of this will be rendered last
-    if (config.first) return;
-    if (!config.streamer) {
+    console.log(config.init);
+    if (!config.streamer && config.init) {
       addPopup(
         <AddCommandPopup
           styles={styles}
@@ -130,7 +130,7 @@ const Chat = ({ props }) => {
             if (input !== '') {
               console.log('config', config);
               let Config = Object.assign({}, { streamer: input }, config);
-              rxConfig.next(Config);
+              setRxConfig(Config);
               closeCurrentPopup();
             } else {
               setError('Input field must not be empty!');

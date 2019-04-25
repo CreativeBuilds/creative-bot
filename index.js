@@ -56,6 +56,7 @@ function createWindow() {
 
   ipcMain.on('editpoints', (event, { username, points }) => {
     let Users = Object.assign({}, users);
+    console.log('username', username, 'points', points, 'users', users);
     Users[username].points = points;
     rxUsers.next(Users);
   });
@@ -122,16 +123,57 @@ function createWindow() {
   });
 
   ipcMain.on('getRxConfig', () => {
-    rxConfig.pipe(filter(x => !_.isEmpty(x))).subscribe(config => {
-      win.webContents.send('rxConfig', config);
-    });
+    let first = true;
+    rxConfig
+      .pipe(
+        filter(x => {
+          if (first && !x.init) {
+            first = false;
+            return false;
+          }
+          return true;
+        })
+      )
+      .subscribe(config => {
+        win.webContents.send('rxConfig', config);
+      });
   });
 
   ipcMain.on('setRxConfig', (event, Config) => {
     if (Config !== config) {
-      console.log('inside else statement');
+      console.log(
+        'inside else statement',
+        Object.keys(config),
+        Object.keys(Config)
+      );
       config = Config;
       rxConfig.next(Config);
+    }
+  });
+  ipcMain.on('getRxCommands', () => {
+    rxCommands.pipe(filter(x => !_.isEmpty(x))).subscribe(config => {
+      win.webContents.send('rxCommands', config);
+    });
+  });
+
+  ipcMain.on('setRxCommands', (event, commands) => {
+    if (commands !== Commands) {
+      Commands = commands;
+      rxCommands.next(commands);
+    }
+  });
+  ipcMain.on('getRxUsers', () => {
+    rxUsers.pipe(filter(x => !_.isEmpty(x))).subscribe(Users => {
+      console.log('users', Users);
+      users = Users;
+      win.webContents.send('rxUsers', Users);
+    });
+  });
+
+  ipcMain.on('setRxUsers', (event, Users) => {
+    if (users !== Users) {
+      users = Users;
+      rxUsers.next(Users);
     }
   });
 
@@ -251,6 +293,7 @@ function createWindow() {
             inLino: inLino(message.gift, message.amount)
           });
           let username = message.sender.username;
+          console.log('users', users);
           let Users = Object.assign({}, users);
           if (!Users[username]) {
             Users[username] = {
@@ -345,31 +388,42 @@ function createWindow() {
 
   ws.on('message', data => {
     if (!data || data == null) return;
+
     onNewMsg(JSON.parse(data));
   });
 
   ws.on('open', function() {
-    ws.send(
-      JSON.stringify({
-        type: 'connection_init',
-        payload: {}
-      })
-    );
-    ws.send(
-      JSON.stringify({
-        id: '1',
-        type: 'start',
-        payload: {
-          variables: {
-            streamer: config.streamer
-          },
-          extensions: {},
-          operationName: 'StreamMessageSubscription',
-          query:
-            'subscription StreamMessageSubscription($streamer: String!) {\n  streamMessageReceived(streamer: $streamer) {\n    type\n    ... on ChatGift {\n      id\n      gift\n      amount\n      recentCount\n      expireDuration\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatHost {\n      id\n      viewer\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatSubscription {\n      id\n      month\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatChangeMode {\n      mode\n    }\n    ... on ChatText {\n      id\n      content\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatFollow {\n      id\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatDelete {\n      ids\n    }\n    ... on ChatBan {\n      id\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatModerator {\n      id\n      ...VStreamChatSenderInfoFrag\n      add\n    }\n    ... on ChatEmoteAdd {\n      id\n      ...VStreamChatSenderInfoFrag\n      emote\n    }\n  }\n}\n\nfragment VStreamChatSenderInfoFrag on SenderInfo {\n  subscribing\n  role\n  roomRole\n  sender {\n    id\n    username\n    displayname\n    avatar\n    partnerStatus\n  }\n}\n'
-        }
-      })
-    );
+    rxConfig
+      .pipe(
+        filter(x => {
+          console.log(Object.keys(x));
+          return !!x.streamer;
+        })
+      )
+      .subscribe(config => {
+        console.log('STARTED WS WITH CONFIG', config.streamer);
+        ws.send(
+          JSON.stringify({
+            type: 'connection_init',
+            payload: {}
+          })
+        );
+        ws.send(
+          JSON.stringify({
+            id: '1',
+            type: 'start',
+            payload: {
+              variables: {
+                streamer: config.streamer
+              },
+              extensions: {},
+              operationName: 'StreamMessageSubscription',
+              query:
+                'subscription StreamMessageSubscription($streamer: String!) {\n  streamMessageReceived(streamer: $streamer) {\n    type\n    ... on ChatGift {\n      id\n      gift\n      amount\n      recentCount\n      expireDuration\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatHost {\n      id\n      viewer\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatSubscription {\n      id\n      month\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatChangeMode {\n      mode\n    }\n    ... on ChatText {\n      id\n      content\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatFollow {\n      id\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatDelete {\n      ids\n    }\n    ... on ChatBan {\n      id\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatModerator {\n      id\n      ...VStreamChatSenderInfoFrag\n      add\n    }\n    ... on ChatEmoteAdd {\n      id\n      ...VStreamChatSenderInfoFrag\n      emote\n    }\n  }\n}\n\nfragment VStreamChatSenderInfoFrag on SenderInfo {\n  subscribing\n  role\n  roomRole\n  sender {\n    id\n    username\n    displayname\n    avatar\n    partnerStatus\n  }\n}\n'
+            }
+          })
+        );
+      });
   });
 }
 
