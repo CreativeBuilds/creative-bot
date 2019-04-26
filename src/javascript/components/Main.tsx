@@ -14,7 +14,6 @@ const styles: any = require('./Main.scss');
 
 const Main = props => {
   const [stateTheme, setStateTheme] = useState(theme.dark);
-  const [url, setURL] = useState('/');
 
   const style = (obj: {} = {}) => Object.assign(obj, stateTheme);
   // TODO swap theme based on currently selected (probably do this with context from react)

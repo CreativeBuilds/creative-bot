@@ -1,74 +1,68 @@
 const WebSocket = require('ws');
-const { sendMessage, keepActive } = require('./helpers');
+const {
+  sendMessage,
+  keepActive,
+  wss,
+  SaveToJson,
+  sendLino
+} = require('./helpers');
 const { app, BrowserWindow, session, ipcMain } = require('electron');
 const fs = require('fs');
 const path = require('path');
-const { distinctUntilChanged } = require('rxjs/operators');
-let config = require('./config');
+const { distinctUntilChanged, filter } = require('rxjs/operators');
 const _ = require('lodash');
+const storage = require('electron-json-storage');
 let win;
+var env = process.env.NODE_ENV || 'production';
+const open = require('open');
+console.print = console.log;
+if (env === 'production') {
+  console.log = () => {};
+}
+if (process.env.NODE_HARD) {
+  storage.clear();
+}
 
-let tryRequireFromStorage = path => {
-  try {
-    return require(path);
-  } catch (err) {
-    return {};
-  }
-};
-
-let Commands = tryRequireFromStorage('./storage/commands.json');
-
-let users = tryRequireFromStorage('./storage/users.json');
+let config = {};
+let rxListeners = [];
+const rxConfig = require('./helpers/rxConfig');
+rxConfig.subscribe(data => (config = data));
+let Commands = {};
 const rxUsers = require('./helpers/rxUsers');
 const rxCommands = require('./helpers/rxCommands');
-let { saveUsers, makeNewCommand, saveCommands } = require('./helpers');
+let { makeNewCommand, getBlockchainUsername } = require('./helpers');
+const { autoUpdater } = require('electron-updater');
 
-rxUsers
-  .pipe(
-    distinctUntilChanged(
-      (x, y) => _.isEqual(x, y) && Object.keys(x) === Object.keys(y)
-    )
-  )
-  .subscribe(Users => {
-    saveUsers(Users);
-  });
-
-rxCommands
-  .pipe(
-    distinctUntilChanged(
-      (x, y) => _.isEqual(x, y) && Object.keys(x) === Object.keys(y)
-    )
-  )
-  .subscribe(commands => {
-    Commands = commands;
-    saveCommands(Commands);
-  });
-
-require('electron-reload')(path.join(__dirname, 'dist'), {
-  electron: require(`${__dirname}/node_modules/electron`)
-});
+const sendError = (WS, error) => {
+  WS.send(JSON.stringify({ type: 'error', value: error }));
+};
+if (env === 'dev') {
+  console.log('inside if');
+  try {
+    require('electron-reload')(path.join(__dirname, 'dist'), {
+      electron: require(`${__dirname}/node_modules/electron`)
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 function createWindow() {
   // Create the browser window.
+  autoUpdater.checkForUpdatesAndNotify();
   win = new BrowserWindow({ width: 800, height: 600 });
 
   // and load the index.html of the app.
   win.loadFile(__dirname + '/dist/index.html');
+  win.on('close', function() {
+    process.exit();
+  });
 
   let users = {};
 
-  rxCommands
-    .pipe(
-      distinctUntilChanged(
-        (x, y) => _.isEqual(x, y) && Object.keys(x) === Object.keys(y)
-      )
-    )
-    .subscribe(commands => {
-      win.webContents.send('commands', commands);
-    });
-
   ipcMain.on('editpoints', (event, { username, points }) => {
     let Users = Object.assign({}, users);
+    console.log('username', username, 'points', points, 'users', users);
     Users[username].points = points;
     rxUsers.next(Users);
   });
@@ -112,6 +106,7 @@ function createWindow() {
 
   ipcMain.on('getCommands', () => {
     let commands = Object.assign({}, Commands);
+    console.log('getCommands isnt firing');
     win.webContents.send('commands', commands);
   });
 
@@ -132,6 +127,61 @@ function createWindow() {
         win.webContents.send('usermap', { Users });
         users = Users;
       });
+  });
+
+  ipcMain.on('getRxConfig', () => {
+    let first = true;
+    rxConfig
+      .pipe(
+        filter(x => {
+          if (first && !x.init) {
+            first = false;
+            return false;
+          }
+          return true;
+        })
+      )
+      .subscribe(config => {
+        win.webContents.send('rxConfig', config);
+      });
+  });
+
+  ipcMain.on('setRxConfig', (event, Config) => {
+    if (Config !== config) {
+      config = Config;
+      rxConfig.next(Config);
+    }
+  });
+  ipcMain.on('getRxCommands', () => {
+    rxCommands.subscribe(config => {
+      console.log('sending out commands');
+      win.webContents.send('rxCommands', config);
+    });
+  });
+
+  ipcMain.on('setRxCommands', (event, commands) => {
+    if (commands !== Commands) {
+      Commands = commands;
+      rxCommands.next(commands);
+    }
+  });
+  ipcMain.on('getRxUsers', () => {
+    rxUsers.pipe(filter(x => !_.isEmpty(x))).subscribe(Users => {
+      console.log('users', Users);
+      users = Users;
+      win.webContents.send('rxUsers', Users);
+    });
+  });
+
+  ipcMain.on('setRxUsers', (event, Users) => {
+    if (users !== Users) {
+      users = Users;
+      rxUsers.next(Users);
+    }
+  });
+
+  ipcMain.on('resetRxConfig', () => {
+    rxConfig.next({});
   });
 
   const ws = new WebSocket('wss://graphigostream.prd.dlive.tv', 'graphql-ws');
@@ -193,10 +243,24 @@ function createWindow() {
       let payData = payload.data;
       for (let i = 0; i < payData.streamMessageReceived.length; i++) {
         let message = payData.streamMessageReceived[i];
+        // console.log('MESSAGE', message);
+
         if (message.type === 'Follow') {
+          wss.broadcast(
+            JSON.stringify({
+              type: 'follow',
+              value: message
+            })
+          );
           console.log('NEW FOLLOW FROM:', message.sender.displayname);
         }
         if (message.type === 'Gift') {
+          wss.broadcast(
+            JSON.stringify({
+              type: 'gift',
+              value: message
+            })
+          );
           console.log(
             'NEW GIFT FROM:',
             message.sender.displayname,
@@ -232,6 +296,7 @@ function createWindow() {
             inLino: inLino(message.gift, message.amount)
           });
           let username = message.sender.username;
+          console.log('users', users);
           let Users = Object.assign({}, users);
           if (!Users[username]) {
             Users[username] = {
@@ -249,6 +314,12 @@ function createWindow() {
           rxUsers.next(Users);
         }
         if (message.type === 'Message') {
+          wss.broadcast(
+            JSON.stringify({
+              type: 'message',
+              value: message
+            })
+          );
           textMessage(message);
           keepActive(message);
           win.webContents.send('newmessage', { message, data });
@@ -264,33 +335,114 @@ function createWindow() {
     }
   };
 
+  function noop() {}
+
+  wss.on('connection', function connection(WS) {
+    let ws = new WebSocket('wss://graphigostream.prd.dlive.tv', 'graphql-ws');
+    ws.on('message', data => {
+      if (!data || data == null) return;
+      if (!WS.isAlive) return;
+      if (JSON.parse(data).type === 'ka') return;
+      try {
+        WS.send(data);
+      } catch (e) {
+        ws.terminate();
+        WS.terminate();
+      }
+    });
+    WS.on('close', function() {
+      ws.terminate();
+      WS.terminate();
+    });
+    WS.on('pong', function() {
+      WS.isAlive = true;
+    });
+    WS.on('message', function incoming(message) {
+      let msg = JSON.parse(message);
+      if (msg.type === 'send_message') {
+        sendMessage(message.value);
+      } else if (msg.type === 'send_lino') {
+        if (!config.privKeyHex)
+          return sendError(WS, 'No privKeyHex detected in config.json');
+        sendLino(message.value).catch(err => {
+          console.error(err);
+          sendError(
+            WS,
+            'Error when sending lino, message.value object most likely invalid! Check bot console for more details.'
+          );
+        });
+      } else if (msg.type === 'key_received') {
+        Config = Object.assign({}, { authKey: msg.value.key }, config);
+        SaveToJson('config', Config);
+      }
+    });
+    if (!config.authKey || config.authKey === '')
+      return WS.send(JSON.stringify({ type: 'key_init' }));
+  });
+
+  const interval = setInterval(function ping() {
+    wss.clients.forEach(function each(ws) {
+      if (ws.isAlive === false) return ws.terminate();
+
+      ws.isAlive = false;
+      ws.ping(noop);
+    });
+  }, 1000);
+
   ws.on('message', data => {
     if (!data || data == null) return;
+
     onNewMsg(JSON.parse(data));
   });
 
   ws.on('open', function() {
-    ws.send(
-      JSON.stringify({
-        type: 'connection_init',
-        payload: {}
-      })
-    );
-    ws.send(
-      JSON.stringify({
-        id: '1',
-        type: 'start',
-        payload: {
-          variables: {
-            streamer: config.streamer
-          },
-          extensions: {},
-          operationName: 'StreamMessageSubscription',
-          query:
-            'subscription StreamMessageSubscription($streamer: String!) {\n  streamMessageReceived(streamer: $streamer) {\n    type\n    ... on ChatGift {\n      id\n      gift\n      amount\n      recentCount\n      expireDuration\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatHost {\n      id\n      viewer\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatSubscription {\n      id\n      month\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatChangeMode {\n      mode\n    }\n    ... on ChatText {\n      id\n      content\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatFollow {\n      id\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatDelete {\n      ids\n    }\n    ... on ChatBan {\n      id\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatModerator {\n      id\n      ...VStreamChatSenderInfoFrag\n      add\n    }\n    ... on ChatEmoteAdd {\n      id\n      ...VStreamChatSenderInfoFrag\n      emote\n    }\n  }\n}\n\nfragment VStreamChatSenderInfoFrag on SenderInfo {\n  subscribing\n  role\n  roomRole\n  sender {\n    id\n    username\n    displayname\n    avatar\n    partnerStatus\n  }\n}\n'
-        }
-      })
-    );
+    rxConfig
+      .pipe(
+        filter(x => {
+          console.log(Object.keys(x));
+          let Config = Object.assign({}, x);
+          if (
+            Config.streamerDisplayName &&
+            Config.authKey &&
+            !Config.streamer
+          ) {
+            getBlockchainUsername(Config.streamerDisplayName).then(username => {
+              if (username.length === 0) return;
+              Config.streamer = username;
+              if (Config !== config) {
+                config = Config;
+                rxConfig.next(Config);
+              }
+            });
+            return false;
+          }
+          return !!x.streamer;
+        })
+      )
+      .subscribe(config => {
+        console.log('STARTED WS WITH CONFIG', config.streamer);
+        ws.send(
+          JSON.stringify({
+            type: 'connection_init',
+            payload: {}
+          })
+        );
+        ws.send(
+          JSON.stringify({
+            id: '1',
+            type: 'start',
+            payload: {
+              variables: {
+                streamer: config.streamer
+              },
+              extensions: {},
+              operationName: 'StreamMessageSubscription',
+              query:
+                'subscription StreamMessageSubscription($streamer: String!) {\n  streamMessageReceived(streamer: $streamer) {\n    type\n    ... on ChatGift {\n      id\n      gift\n      amount\n      recentCount\n      expireDuration\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatHost {\n      id\n      viewer\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatSubscription {\n      id\n      month\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatChangeMode {\n      mode\n    }\n    ... on ChatText {\n      id\n      content\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatFollow {\n      id\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatDelete {\n      ids\n    }\n    ... on ChatBan {\n      id\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatModerator {\n      id\n      ...VStreamChatSenderInfoFrag\n      add\n    }\n    ... on ChatEmoteAdd {\n      id\n      ...VStreamChatSenderInfoFrag\n      emote\n    }\n  }\n}\n\nfragment VStreamChatSenderInfoFrag on SenderInfo {\n  subscribing\n  role\n  roomRole\n  sender {\n    id\n    username\n    displayname\n    avatar\n    partnerStatus\n  }\n}\n'
+            }
+          })
+        );
+      });
   });
 }
 

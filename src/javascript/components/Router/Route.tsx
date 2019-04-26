@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { checkPropTypes } from 'prop-types';
 
 const Route = ({
   url,
@@ -8,7 +7,6 @@ const Route = ({
   Component,
   componentProps = {}
 }) => {
-    
   return (url === path && exact) || (!exact && url.includes(path)) ? (
     <Component props={componentProps} />
   ) : null;

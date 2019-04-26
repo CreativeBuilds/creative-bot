@@ -1,16 +1,16 @@
 const { BehaviorSubject } = require('rxjs');
+const storage = require('electron-json-storage');
+const _ = require('lodash');
+const { filter } = require('rxjs/operators');
 
-let tryRequireFromStorage = path => {
-  try {
-    return require(path);
-  } catch (err) {
-    return {};
-  }
-};
+let rxUsers = new BehaviorSubject({});
 
-const users = tryRequireFromStorage('../storage/users.json');
-
-// This creates a new B.S. which allows us to listen to this node and make changes whenever and whereever we want
-const rxUsers = new BehaviorSubject(users);
+storage.get('users', (err, data) => {
+  if (err) throw err;
+  rxUsers.next(data);
+  rxUsers.pipe(filter(x => !_.isEmpty(x))).subscribe(data => {
+    storage.set('users', data);
+  });
+});
 
 module.exports = rxUsers;
