@@ -107,6 +107,9 @@ const Chat = ({ props }) => {
   const [config, setConfig]: any = useState({});
   const [firstRender, setFirstRender] = useState(true);
 
+  let authKey = false;
+  let streamerDisplayName = false;
+
   const updateText = e => {
     setText(e.target.value);
   };
@@ -154,7 +157,8 @@ const Chat = ({ props }) => {
     // Test to see if the config includes the right variables
     // if's at the top of this will be rendered last
     if (!config.init) return;
-    if (!config.authKey && config.init) {
+    if (!config.authKey && config.init && !authKey) {
+      authKey = true;
       addPopup(
         <AddCommandPopup
           styles={styles}
@@ -185,12 +189,16 @@ const Chat = ({ props }) => {
               >
                 here
               </span>
+              <br /> note this is the account that will send messages, so if you
+              want to use a bot account other than your main account, make sure
+              to use that auth key!
             </div>
           }
         />
       );
     }
-    if (!config.streamerDisplayName && config.init) {
+    if (!config.streamerDisplayName && config.init && !streamerDisplayName) {
+      streamerDisplayName = true;
       addPopup(
         <AddCommandPopup
           styles={styles}

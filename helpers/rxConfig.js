@@ -8,6 +8,8 @@ let rxConfig = new BehaviorSubject({});
 storage.get('config', (err, data) => {
   if (err) throw err;
   data.init = true;
+  if (!data.commandPrefix) data.commandPrefix = '!';
+  if (!data.points) data.points = 5;
   rxConfig.next(data);
   rxConfig.subscribe(data => {
     storage.set('config', data);
