@@ -1,6 +1,8 @@
 const sendLino = require('../helpers/sendLino');
 const { tryRequireFromStorage } = require('../helpers');
-const config = tryRequireFromStorage('../config');
+let config = {};
+const rxConfig = require('../helpers/rxConfig');
+rxConfig.subscribe(data => (config = data));
 const run = ({ message, args }) => {
   // List all commands by default, if someone does !help commandName then show details on that command
   if (

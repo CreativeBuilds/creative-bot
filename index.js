@@ -9,76 +9,60 @@ const {
 const { app, BrowserWindow, session, ipcMain } = require('electron');
 const fs = require('fs');
 const path = require('path');
-const { distinctUntilChanged } = require('rxjs/operators');
+const { distinctUntilChanged, filter } = require('rxjs/operators');
 const _ = require('lodash');
+const storage = require('electron-json-storage');
 let win;
+var env = process.env.NODE_ENV || 'production';
+const open = require('open');
+console.print = console.log;
+if (env === 'production') {
+  console.log = () => {};
+}
+if (process.env.NODE_HARD) {
+  storage.clear();
+}
 
-let tryRequireFromStorage = path => {
-  try {
-    return require(path);
-  } catch (err) {
-    return {};
-  }
-};
-
-let config = tryRequireFromStorage('./config.json');
-let Commands = tryRequireFromStorage('./storage/commands.json');
-
-let users = tryRequireFromStorage('./storage/users.json');
+let config = {};
+let rxListeners = [];
+const rxConfig = require('./helpers/rxConfig');
+rxConfig.subscribe(data => (config = data));
+let Commands = {};
 const rxUsers = require('./helpers/rxUsers');
 const rxCommands = require('./helpers/rxCommands');
-let { saveUsers, makeNewCommand, saveCommands } = require('./helpers');
+let { makeNewCommand, getBlockchainUsername } = require('./helpers');
+const { autoUpdater } = require('electron-updater');
 
 const sendError = (WS, error) => {
   WS.send(JSON.stringify({ type: 'error', value: error }));
 };
-
-rxUsers
-  .pipe(
-    distinctUntilChanged(
-      (x, y) => _.isEqual(x, y) && Object.keys(x) === Object.keys(y)
-    )
-  )
-  .subscribe(Users => {
-    saveUsers(Users);
-  });
-
-rxCommands
-  .pipe(
-    distinctUntilChanged(
-      (x, y) => _.isEqual(x, y) && Object.keys(x) === Object.keys(y)
-    )
-  )
-  .subscribe(commands => {
-    Commands = commands;
-    saveCommands(Commands);
-  });
-
-require('electron-reload')(path.join(__dirname, 'dist'), {
-  electron: require(`${__dirname}/node_modules/electron`)
-});
+if (env === 'dev') {
+  console.log('inside if');
+  try {
+    require('electron-reload')(path.join(__dirname, 'dist'), {
+      electron: require(`${__dirname}/node_modules/electron`)
+    });
+  } catch (err) {
+    console.error(err);
+  }
+}
 
 function createWindow() {
   // Create the browser window.
+  autoUpdater.checkForUpdatesAndNotify();
   win = new BrowserWindow({ width: 800, height: 600 });
 
   // and load the index.html of the app.
   win.loadFile(__dirname + '/dist/index.html');
+  win.on('close', function() {
+    process.exit();
+  });
 
   let users = {};
 
-  rxCommands
-    .pipe(
-      distinctUntilChanged(
-        (x, y) => _.isEqual(x, y) && Object.keys(x) === Object.keys(y)
-      )
-    )
-    .subscribe(commands => {
-      win.webContents.send('commands', commands);
-    });
-
   ipcMain.on('editpoints', (event, { username, points }) => {
     let Users = Object.assign({}, users);
+    console.log('username', username, 'points', points, 'users', users);
     Users[username].points = points;
     rxUsers.next(Users);
   });
@@ -122,6 +106,7 @@ function createWindow() {
 
   ipcMain.on('getCommands', () => {
     let commands = Object.assign({}, Commands);
+    console.log('getCommands isnt firing');
     win.webContents.send('commands', commands);
   });
 
@@ -142,6 +127,61 @@ function createWindow() {
         win.webContents.send('usermap', { Users });
         users = Users;
       });
+  });
+
+  ipcMain.on('getRxConfig', () => {
+    let first = true;
+    rxConfig
+      .pipe(
+        filter(x => {
+          if (first && !x.init) {
+            first = false;
+            return false;
+          }
+          return true;
+        })
+      )
+      .subscribe(config => {
+        win.webContents.send('rxConfig', config);
+      });
+  });
+
+  ipcMain.on('setRxConfig', (event, Config) => {
+    if (Config !== config) {
+      config = Config;
+      rxConfig.next(Config);
+    }
+  });
+  ipcMain.on('getRxCommands', () => {
+    rxCommands.subscribe(config => {
+      console.log('sending out commands');
+      win.webContents.send('rxCommands', config);
+    });
+  });
+
+  ipcMain.on('setRxCommands', (event, commands) => {
+    if (commands !== Commands) {
+      Commands = commands;
+      rxCommands.next(commands);
+    }
+  });
+  ipcMain.on('getRxUsers', () => {
+    rxUsers.pipe(filter(x => !_.isEmpty(x))).subscribe(Users => {
+      console.log('users', Users);
+      users = Users;
+      win.webContents.send('rxUsers', Users);
+    });
+  });
+
+  ipcMain.on('setRxUsers', (event, Users) => {
+    if (users !== Users) {
+      users = Users;
+      rxUsers.next(Users);
+    }
+  });
+
+  ipcMain.on('resetRxConfig', () => {
+    rxConfig.next({});
   });
 
   const ws = new WebSocket('wss://graphigostream.prd.dlive.tv', 'graphql-ws');
@@ -256,6 +296,7 @@ function createWindow() {
             inLino: inLino(message.gift, message.amount)
           });
           let username = message.sender.username;
+          console.log('users', users);
           let Users = Object.assign({}, users);
           if (!Users[username]) {
             Users[username] = {
@@ -332,7 +373,7 @@ function createWindow() {
         });
       } else if (msg.type === 'key_received') {
         Config = Object.assign({}, { authKey: msg.value.key }, config);
-        SaveToJson('./config.json', Config);
+        SaveToJson('config', Config);
       }
     });
     if (!config.authKey || config.authKey === '')
@@ -350,31 +391,58 @@ function createWindow() {
 
   ws.on('message', data => {
     if (!data || data == null) return;
+
     onNewMsg(JSON.parse(data));
   });
 
   ws.on('open', function() {
-    ws.send(
-      JSON.stringify({
-        type: 'connection_init',
-        payload: {}
-      })
-    );
-    ws.send(
-      JSON.stringify({
-        id: '1',
-        type: 'start',
-        payload: {
-          variables: {
-            streamer: config.streamer
-          },
-          extensions: {},
-          operationName: 'StreamMessageSubscription',
-          query:
-            'subscription StreamMessageSubscription($streamer: String!) {\n  streamMessageReceived(streamer: $streamer) {\n    type\n    ... on ChatGift {\n      id\n      gift\n      amount\n      recentCount\n      expireDuration\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatHost {\n      id\n      viewer\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatSubscription {\n      id\n      month\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatChangeMode {\n      mode\n    }\n    ... on ChatText {\n      id\n      content\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatFollow {\n      id\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatDelete {\n      ids\n    }\n    ... on ChatBan {\n      id\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatModerator {\n      id\n      ...VStreamChatSenderInfoFrag\n      add\n    }\n    ... on ChatEmoteAdd {\n      id\n      ...VStreamChatSenderInfoFrag\n      emote\n    }\n  }\n}\n\nfragment VStreamChatSenderInfoFrag on SenderInfo {\n  subscribing\n  role\n  roomRole\n  sender {\n    id\n    username\n    displayname\n    avatar\n    partnerStatus\n  }\n}\n'
-        }
-      })
-    );
+    rxConfig
+      .pipe(
+        filter(x => {
+          console.log(Object.keys(x));
+          let Config = Object.assign({}, x);
+          if (
+            Config.streamerDisplayName &&
+            Config.authKey &&
+            !Config.streamer
+          ) {
+            getBlockchainUsername(Config.streamerDisplayName).then(username => {
+              if (username.length === 0) return;
+              Config.streamer = username;
+              if (Config !== config) {
+                config = Config;
+                rxConfig.next(Config);
+              }
+            });
+            return false;
+          }
+          return !!x.streamer;
+        })
+      )
+      .subscribe(config => {
+        console.log('STARTED WS WITH CONFIG', config.streamer);
+        ws.send(
+          JSON.stringify({
+            type: 'connection_init',
+            payload: {}
+          })
+        );
+        ws.send(
+          JSON.stringify({
+            id: '1',
+            type: 'start',
+            payload: {
+              variables: {
+                streamer: config.streamer
+              },
+              extensions: {},
+              operationName: 'StreamMessageSubscription',
+              query:
+                'subscription StreamMessageSubscription($streamer: String!) {\n  streamMessageReceived(streamer: $streamer) {\n    type\n    ... on ChatGift {\n      id\n      gift\n      amount\n      recentCount\n      expireDuration\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatHost {\n      id\n      viewer\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatSubscription {\n      id\n      month\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatChangeMode {\n      mode\n    }\n    ... on ChatText {\n      id\n      content\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatFollow {\n      id\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatDelete {\n      ids\n    }\n    ... on ChatBan {\n      id\n      ...VStreamChatSenderInfoFrag\n    }\n    ... on ChatModerator {\n      id\n      ...VStreamChatSenderInfoFrag\n      add\n    }\n    ... on ChatEmoteAdd {\n      id\n      ...VStreamChatSenderInfoFrag\n      emote\n    }\n  }\n}\n\nfragment VStreamChatSenderInfoFrag on SenderInfo {\n  subscribing\n  role\n  roomRole\n  sender {\n    id\n    username\n    displayname\n    avatar\n    partnerStatus\n  }\n}\n'
+            }
+          })
+        );
+      });
   });
 }
 

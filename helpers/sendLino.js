@@ -1,7 +1,9 @@
 // This file is used for the bot sending out lino to users due to safety reasons it can be completely disabled with an options setting in config.js
 const tryRequireFromStorage = require('./tryRequireFromStorage');
 const getLivestreamChatroomInfo = require('./getLivestreamChatroomInfo');
-const config = tryRequireFromStorage('../config.json');
+let config = {};
+const rxConfig = require('../helpers/rxConfig');
+rxConfig.subscribe(data => (config = data));
 const sendRequestToDlive = require('./sendRequestToDlive');
 const { lino } = require('./lino');
 const getBlockchainUsername = require('./getBlockchainUsername');

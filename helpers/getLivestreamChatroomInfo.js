@@ -1,6 +1,8 @@
 const tryRequireFromStorage = require('./tryRequireFromStorage');
 const sendRequestToDlive = require('./sendRequestToDlive');
-const config = tryRequireFromStorage('../config.json');
+let config = {};
+const rxConfig = require('./rxConfig');
+rxConfig.subscribe(data => (config = data));
 
 module.exports = displayname => {
   return sendRequestToDlive({

@@ -1,5 +1,7 @@
 const https = require('https');
-const config = require('../config');
+let config = {};
+let rxConfig = require('./rxConfig');
+rxConfig.subscribe(data => (config = data));
 const sendRequestToDlive = require('./sendRequestToDlive');
 
 let msgs = [];
@@ -59,14 +61,9 @@ const checkMessages = () => {
         subscribing: true
       }
     }
-  })
-    .then(body => {
-      console.log('Message sent!', body);
-      console.log('msg:', msg);
-    })
-    .catch(err => {
-      throw err;
-    });
+  }).catch(err => {
+    throw err;
+  });
 };
 
 const sendMessage = (message, streamer) => {
