@@ -3,16 +3,20 @@ import { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../../helpers';
 import * as _ from 'lodash';
 import { MdAddCircle } from 'react-icons/md';
-
 const { Command } = require('./Command');
 const { Sorting } = require('./Sorting');
+let { setRxCommands } = require('../../helpers/rxCommands');
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
 const styles: any = require('./Commands.scss');
-
-const AddCommandPopup = ({ styles, closeCurrentPopup, stateTheme }) => {
+const AddCommandPopup = ({
+  styles,
+  closeCurrentPopup,
+  stateTheme,
+  commands = {}
+}) => {
   const [name, setName] = useState<string>('');
   const [reply, setReply] = useState<string>('');
   const [uses, setUses] = useState<number>(0);
@@ -20,16 +24,16 @@ const AddCommandPopup = ({ styles, closeCurrentPopup, stateTheme }) => {
 
   const saveToDB = () => {
     if (name.length === 0) return;
-    ipcRenderer.send('editcommand', {
+    let Commands = Object.assign({}, commands);
+    Commands[name] = {
+      reply,
       name,
-      obj: {
-        reply,
-        name,
-        uses,
-        permissions,
-        enabled: true
-      }
-    });
+      uses,
+      permissions,
+      enabled: true
+    };
+    console.log('Commands being set', Commands);
+    setRxCommands(Commands);
   };
 
   return (
@@ -95,6 +99,7 @@ const CommandsPage = ({ props }) => {
         styles={styles}
         closeCurrentPopup={closeCurrentPopup}
         stateTheme={stateTheme}
+        commands={commands}
       />
     );
   };
@@ -138,6 +143,7 @@ const CommandsPage = ({ props }) => {
               nth={nth + 1}
               addPopup={addPopup}
               closeCurrentPopup={closeCurrentPopup}
+              commands={commands}
             />
           );
         })}

@@ -106,6 +106,7 @@ function createWindow() {
 
   ipcMain.on('getCommands', () => {
     let commands = Object.assign({}, Commands);
+    console.log('getCommands isnt firing');
     win.webContents.send('commands', commands);
   });
 
@@ -146,22 +147,14 @@ function createWindow() {
   });
 
   ipcMain.on('setRxConfig', (event, Config) => {
-    if (Config.streamerDisplayName && config.authKey) {
-      getBlockchainUsername(Config.streamerDisplayName).then(username => {
-        if (username.length === 0) return;
-        Config.streamer = username;
-        if (Config !== config) {
-          config = Config;
-          rxConfig.next(Config);
-        }
-      });
-    } else if (Config !== config) {
+    if (Config !== config) {
       config = Config;
       rxConfig.next(Config);
     }
   });
   ipcMain.on('getRxCommands', () => {
-    rxCommands.pipe(filter(x => !_.isEmpty(x))).subscribe(config => {
+    rxCommands.subscribe(config => {
+      console.log('sending out commands');
       win.webContents.send('rxCommands', config);
     });
   });
@@ -407,6 +400,22 @@ function createWindow() {
       .pipe(
         filter(x => {
           console.log(Object.keys(x));
+          let Config = Object.assign({}, x);
+          if (
+            Config.streamerDisplayName &&
+            Config.authKey &&
+            !Config.streamer
+          ) {
+            getBlockchainUsername(Config.streamerDisplayName).then(username => {
+              if (username.length === 0) return;
+              Config.streamer = username;
+              if (Config !== config) {
+                config = Config;
+                rxConfig.next(Config);
+              }
+            });
+            return false;
+          }
           return !!x.streamer;
         })
       )

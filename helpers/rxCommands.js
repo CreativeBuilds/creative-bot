@@ -8,7 +8,7 @@ let rxCommands = new BehaviorSubject({});
 storage.get('commands', (err, data) => {
   if (err) throw err;
   rxCommands.next(data);
-  rxCommands.pipe(filter(x => !_.isEmpty(x))).subscribe(data => {
+  rxCommands.subscribe(data => {
     storage.set('commands', data);
   });
 });

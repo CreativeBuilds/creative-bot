@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ToggleBox } from './ToggleBox';
 
 import { MdModeEdit, MdEdit, MdDelete } from 'react-icons/md';
+let { setRxCommands } = require('../../helpers/rxCommands');
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -80,18 +81,17 @@ const RemoveCommandPopup = ({
   command,
   styles,
   closeCurrentPopup,
-  stateTheme
+  stateTheme,
+  commands
 }) => {
-  const [name, setName] = useState<string>(command.name);
-  const [reply, setReply] = useState<string>(command.reply);
-  const [uses, setUses] = useState<number>(command.uses);
-  const [permissions, setPermissions] = useState(command.permissions);
+  let name = command.name;
 
   const saveToDB = () => {
     if (name.length === 0) return;
-    ipcRenderer.send('removecommand', {
-      name
-    });
+    let Commands = Object.assign({}, commands);
+    delete Commands[name];
+    console.log('SETTING COMMANDS AS', Commands, commands);
+    setRxCommands(Commands);
   };
 
   return (
@@ -118,7 +118,8 @@ const Command = ({
   nth,
   stateTheme,
   addPopup,
-  closeCurrentPopup
+  closeCurrentPopup,
+  commands
 }) => {
   const updateCommandPopup = command => {
     addPopup(
@@ -138,6 +139,7 @@ const Command = ({
         styles={styles}
         closeCurrentPopup={closeCurrentPopup}
         stateTheme={stateTheme}
+        commands={commands}
       />
     );
   };

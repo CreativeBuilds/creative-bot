@@ -4,11 +4,10 @@ const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
 const rxCommands = new BehaviorSubject({});
-let first = true;
 
 ipcRenderer.send('getRxCommands');
 ipcRenderer.on('rxCommands', (event, commands) => {
-  if (first) return (first = false);
+  console.log(Object.keys(commands));
   rxCommands.next(commands);
 });
 

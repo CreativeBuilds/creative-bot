@@ -9,6 +9,9 @@ import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
 
+let authKey = false;
+let streamerDisplayName = false;
+
 const styles: any = require('./Chat.scss');
 interface popup {
   styles: any;
@@ -55,7 +58,6 @@ const AddCommandPopup = ({
 
   useEffect(() => {
     if (JSON.stringify(Config) !== JSON.stringify(config)) {
-      console.log('Config changed!', Config, config);
       setConfig(Config);
       setName('');
       if (configName === 'Auth Key' && Config.authKey) {
@@ -107,9 +109,6 @@ const Chat = ({ props }) => {
   const [config, setConfig]: any = useState({});
   const [firstRender, setFirstRender] = useState(true);
 
-  let authKey = false;
-  let streamerDisplayName = false;
-
   const updateText = e => {
     setText(e.target.value);
   };
@@ -157,7 +156,12 @@ const Chat = ({ props }) => {
     // Test to see if the config includes the right variables
     // if's at the top of this will be rendered last
     if (!config.init) return;
-    if (!config.authKey && config.init && !authKey) {
+    if (
+      !config.authKey &&
+      config.init &&
+      !authKey &&
+      config.streamerDisplayName
+    ) {
       authKey = true;
       addPopup(
         <AddCommandPopup
