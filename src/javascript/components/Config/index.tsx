@@ -20,6 +20,10 @@ const whitelist = {
     name: 'Points',
     type: 'number'
   },
+  pointsTimer: {
+    name: 'Payout Interval',
+    type: 'number'
+  },
   streamerDisplayName: {
     name: 'Streamer Name'
   }

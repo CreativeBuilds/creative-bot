@@ -5,6 +5,8 @@ const makeWebSocketObservable = require('rxjs-websockets').default;
 const WebSocket = require('ws');
 const rxConfig = require('./rxConfig');
 
+const getBlockchainUsername = require('./getBlockchainUsername');
+
 const { filter, first } = require('rxjs/operators');
 
 const input$ = new QueueingSubject();
@@ -27,10 +29,7 @@ const socket$ = makeWebSocketObservable('wss://graphigostream.prd.dlive.tv', {
                 username => {
                   if (username.length === 0) return;
                   Config.streamer = username;
-                  if (Config !== config) {
-                    config = Config;
-                    rxConfig.next(Config);
-                  }
+                  rxConfig.next(Config);
                 }
               );
               return false;

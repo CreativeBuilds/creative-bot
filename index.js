@@ -34,6 +34,34 @@ const { messages$, input$ } = require('./helpers/rxChat');
 let { makeNewCommand, getBlockchainUsername } = require('./helpers');
 const { autoUpdater } = require('electron-updater');
 
+rxConfig
+  .pipe(
+    filter(x => {
+      let Config = Object.assign({}, x);
+      if (
+        Config.streamerDisplayName &&
+        Config.authKey &&
+        Config.streamerOldDisplayName !== Config.streamerDisplayName
+      ) {
+        getBlockchainUsername(Config.streamerDisplayName).then(username => {
+          console.log(
+            Config.streamerOldDisplayName,
+            config.streamerDisplayName
+          );
+          if (username.length === 0) return;
+          Config.streamer = username;
+          Config.streamerOldDisplayName = Config.streamerDisplayName;
+          rxConfig.next(Config);
+        });
+        return false;
+      }
+      return !!x.streamer;
+    })
+  )
+  .subscribe(config => {
+    console.log('set config streamer name');
+  });
+
 const sendError = (WS, error) => {
   WS.send(JSON.stringify({ type: 'error', value: error }));
 };
