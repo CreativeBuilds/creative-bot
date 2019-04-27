@@ -10,6 +10,6 @@ Currently it is only for people who know how to run node / have some basic under
 
 ### Installation Process
 
-1.  Download the latest release [here](https://github.com/creativebuilds/dlive-chat-bot)
+1.  Download the latest release [here](https://github.com/CreativeBuilds/dlive-chat-bot/releases/download/v1.0.0/dlive-chat-bot-setup-1.0.0.exe)
 2.  Run the exe and click the text that says `more info` and then `run anyway` *the reason this screen comes up is because I am currently an 'unknown publisher' but I am looking into how to fix this!*![Blockchain username found in bottom right](./readmefiles/protected-1.png)
 3.  After the install is completed and you launch the application, enter your stream username, then your authorization key from DLive.
