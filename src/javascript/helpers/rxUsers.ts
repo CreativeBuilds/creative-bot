@@ -8,7 +8,6 @@ let first = true;
 
 ipcRenderer.send('getRxUsers');
 ipcRenderer.on('rxUsers', (event, users) => {
-  console.log('got users', users);
   // if (first) return (first = false);
   rxUsers.next(users);
 });

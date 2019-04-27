@@ -39,6 +39,7 @@ const Popup = ({
             default:
               Config[configOption.key] = value;
           }
+          console.log(configOption, Config[configOption.key]);
           setRxConfig(Config);
           closeCurrentPopup();
         }}
@@ -57,7 +58,6 @@ const updateConfigOption = (
   addPopup,
   config
 ) => {
-  console.log('UPDATE CONFIG OPTION', closeCurrentPopup);
   addPopup(
     <Popup
       configOption={option}
@@ -103,7 +103,6 @@ const Config = ({
         <div className={styles.edit}>
           <MdModeEdit
             onClick={() => {
-              console.log('ON CLICK EDIT');
               updateConfigOption(
                 configOption,
                 styles,

@@ -40,7 +40,8 @@ const ConfigPage = ({ props }) => {
           name: whitelist[key].name,
           value: config[key],
           hidden: !!whitelist[key].hidden,
-          key: key
+          key: key,
+          type: whitelist[key].type
         };
       })
       .filter(obj => {
@@ -50,9 +51,6 @@ const ConfigPage = ({ props }) => {
     [toggle],
     [isDesc ? 'desc' : 'asc']
   );
-
-  console.log(configArray);
-
   return (
     <div style={stateTheme.menu} className={styles.Points}>
       <div style={stateTheme.menu.title} className={styles.header}>
@@ -78,7 +76,6 @@ const ConfigPage = ({ props }) => {
           stateTheme={stateTheme}
         />
         {configArray.map((option, nth) => {
-          console.log(configArray);
           return (
             <Config
               styles={styles}

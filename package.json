@@ -24,11 +24,13 @@
     "lino-js": "^1.0.19",
     "lodash": "^4.17.11",
     "open": "^6.2.0",
+    "queueing-subject": "^0.3.0",
     "react": "^16.8.6",
     "react-icons": "^3.5.0",
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",
     "rxjs": "^6.4.0",
+    "rxjs-websockets": "^7.0.0",
     "ws": "^6.2.1"
   },
   "devDependencies": {

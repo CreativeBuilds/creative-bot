@@ -86,10 +86,6 @@ module.exports = (index = 0, totalViewers = 0) => {
       totalViewers += stream.watchingCount;
     });
     if (parsed.data.category.livestreams.pageInfo.hasNextPage) {
-      console.log(
-        parsed.data.category.livestreams.pageInfo.endCursor,
-        totalViewers
-      );
       return module.exports(
         parsed.data.category.livestreams.pageInfo.endCursor,
         totalViewers

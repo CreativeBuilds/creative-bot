@@ -32,7 +32,6 @@ const AddCommandPopup = ({
       permissions,
       enabled: true
     };
-    console.log('Commands being set', Commands);
     setRxCommands(Commands);
   };
 

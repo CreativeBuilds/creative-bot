@@ -1,11 +1,3 @@
-let tryRequireFromStorage = path => {
-  try {
-    return require(path);
-  } catch (err) {
-    return {};
-  }
-};
-
 let users = {};
 let config = {};
 let rxConfig = require('./rxConfig');

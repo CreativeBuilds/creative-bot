@@ -9,9 +9,13 @@ storage.get('config', (err, data) => {
   if (err) throw err;
   data.init = true;
   if (!data.commandPrefix) data.commandPrefix = '!';
-  if (!data.points) data.points = 5;
+
+  // Set default points to 5, and if it's a string, set it to be a number
+  if (!data.points || isNaN(Number(data.points))) data.points = 5;
+
   rxConfig.next(data);
   rxConfig.subscribe(data => {
+    data.points = Number(data.points);
     storage.set('config', data);
   });
 });

@@ -7,7 +7,6 @@ const rxCommands = new BehaviorSubject({});
 
 ipcRenderer.send('getRxCommands');
 ipcRenderer.on('rxCommands', (event, commands) => {
-  console.log(Object.keys(commands));
   rxCommands.next(commands);
 });
 

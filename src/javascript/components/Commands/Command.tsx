@@ -90,7 +90,6 @@ const RemoveCommandPopup = ({
     if (name.length === 0) return;
     let Commands = Object.assign({}, commands);
     delete Commands[name];
-    console.log('SETTING COMMANDS AS', Commands, commands);
     setRxCommands(Commands);
   };
 
