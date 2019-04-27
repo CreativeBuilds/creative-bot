@@ -54,6 +54,16 @@ const Menu = props => {
           >
             COMMANDS
           </Li>
+          <Li
+            style={{}}
+            hoverStyle={stateTheme.menu.title_hover}
+            onClick={() => {
+              setUrl('/settings');
+              setIsOpen(false);
+            }}
+          >
+            SETTINGS
+          </Li>
         </ul>
       </div>
       <div

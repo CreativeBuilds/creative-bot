@@ -7,7 +7,6 @@ const rxConfig = new BehaviorSubject({});
 
 ipcRenderer.send('getRxConfig');
 ipcRenderer.on('rxConfig', (event, config) => {
-  console.log('next config', config);
   rxConfig.next(config);
 });
 
