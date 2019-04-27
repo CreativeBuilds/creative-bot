@@ -10,7 +10,8 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "electron": "cross-env NODE_ENV=dev electron .",
-    "electron-reset": "cross-env NODE_ENV=dev NODE_HARD=true electron ."
+    "electron-reset": "cross-env NODE_ENV=dev NODE_HARD=true electron .",
+    "release": "build"
   },
   "author": "CreativeBuilds",
   "license": "ISC",
@@ -60,19 +61,5 @@
     "webpack": "^4.29.6",
     "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.3.1"
-  },
-  "build": {
-    "appId": "com.creativebuilds.chatbot",
-    "mac": {
-      "category": "public.app-category.utilities"
-    },
-    "directories": {
-      "output": "build"
-    },
-    "target": "NSIS",
-    "nsis": {
-      "allowToChangeInstallationDirectory": true,
-      "oneClick": false
-    }
   }
 }

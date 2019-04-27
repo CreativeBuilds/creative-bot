@@ -9,6 +9,8 @@ import { Popup } from '../Popup';
 import { CommandsPage } from '../Commands';
 import { rxUsers } from '../../helpers/rxUsers';
 import { rxCommands } from '../../helpers/rxCommands';
+import { rxConfig } from '../../helpers/rxConfig';
+import { ConfigPage } from '../Config';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -23,7 +25,8 @@ class RouterWrapper extends Component<any, any> {
     users: {},
     messages: [],
     popups: [],
-    commands: {}
+    commands: {},
+    config: {}
   };
   componentDidMount() {
     rxUsers.subscribe(Users => {
@@ -40,6 +43,9 @@ class RouterWrapper extends Component<any, any> {
       let newArr = [...this.state.messages, data.message];
       this.setState({ messages: newArr });
     });
+    rxConfig.subscribe(Config => {
+      this.setState({ config: Config });
+    });
   }
 
   popups = [];
@@ -52,7 +58,9 @@ class RouterWrapper extends Component<any, any> {
   };
 
   closeCurrentPopup = () => {
+    console.log('CLOSE CURRENT POPUP');
     let arr = this.popups.concat([]);
+    console.log('arr', arr);
     arr.splice(-1, 1);
     this.popups = arr;
     this.setState({ popups: arr });
@@ -65,11 +73,7 @@ class RouterWrapper extends Component<any, any> {
         {popups.length > 0 ? (
           <Popup
             Component={popups[popups.length - 1]}
-            closePopup={() => {
-              let arr = this.state.popups.concat([]);
-              arr.splice(-1, 1);
-              this.setState({ popups: arr });
-            }}
+            closePopup={this.closeCurrentPopup}
           />
         ) : null}
         <div id='content'>
@@ -103,6 +107,16 @@ class RouterWrapper extends Component<any, any> {
               closeCurrentPopup: this.closeCurrentPopup
             }}
             Component={CommandsPage}
+          />
+          <Route
+            url={url}
+            path={'/settings'}
+            componentProps={{
+              config: this.state.config,
+              addPopup: this.addPopup,
+              closeCurrentPopup: this.closeCurrentPopup
+            }}
+            Component={ConfigPage}
           />
         </div>
       </React.Fragment>
