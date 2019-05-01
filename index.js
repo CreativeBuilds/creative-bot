@@ -29,6 +29,7 @@ rxConfig.subscribe(data => (config = data));
 let Commands = {};
 const rxUsers = require('./helpers/rxUsers');
 const rxCommands = require('./helpers/rxCommands');
+rxCommands.subscribe(commands => (Commands = commands));
 const rxTimers = require('./helpers/rxTimers');
 const { messages$, input$ } = require('./helpers/rxChat');
 let { makeNewCommand, getBlockchainUsername } = require('./helpers');
@@ -252,6 +253,7 @@ function createWindow() {
 
   const textMessage = (message, data) => {
     let { content } = message;
+    console.log('GOT MSG', content);
     if (content[0] == config.commandPrefix) {
       content = content.substring(1);
       let args = content.split(' ');
@@ -259,11 +261,13 @@ function createWindow() {
       let command = commands[commandName];
       if (command) {
         // TODO check permissions
+        console.log('It was a hard command');
         command.run({ message, data, args }).then(msg => {
           if (!msg) return;
           sendMessage(msg);
         });
       } else {
+        console.log(Object.keys(Commands), 'Command keys');
         command = Commands[commandName];
         if (!command) return;
         if (!command.reply) return;
