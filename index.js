@@ -9,12 +9,11 @@ const {
 const { app, BrowserWindow, session, ipcMain } = require('electron');
 const fs = require('fs');
 const path = require('path');
-const { distinctUntilChanged, filter } = require('rxjs/operators');
+const { distinctUntilChanged, filter, first } = require('rxjs/operators');
 const _ = require('lodash');
 const storage = require('electron-json-storage');
 let win;
 var env = process.env.NODE_ENV || 'production';
-const open = require('open');
 console.print = console.log;
 if (env === 'production') {
   console.log = () => {};
@@ -30,9 +29,11 @@ rxConfig.subscribe(data => (config = data));
 let Commands = {};
 const rxUsers = require('./helpers/rxUsers');
 const rxCommands = require('./helpers/rxCommands');
+const rxTimers = require('./helpers/rxTimers');
 const { messages$, input$ } = require('./helpers/rxChat');
 let { makeNewCommand, getBlockchainUsername } = require('./helpers');
 const { autoUpdater } = require('electron-updater');
+const timersListener = require('./helpers/startTimers');
 
 rxConfig
   .pipe(
@@ -193,6 +194,20 @@ function createWindow() {
       Commands = commands;
       rxCommands.next(commands);
     }
+  });
+  ipcMain.on('getRxTimers', () => {
+    rxTimers.subscribe(timers => {
+      console.log('sending out commands');
+      win.webContents.send('rxTimers', timers);
+    });
+  });
+
+  ipcMain.on('setRxTimers', (event, timers) => {
+    rxTimers.pipe(first()).subscribe(Timers => {
+      if (timers !== Timers) {
+        rxTimers.next(timers);
+      }
+    });
   });
   ipcMain.on('getRxUsers', () => {
     rxUsers.pipe(filter(x => !_.isEmpty(x))).subscribe(Users => {

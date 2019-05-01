@@ -2,5 +2,6 @@ config.json
 node_modules
 storage/*
 build/*
+extras
 
 electron-builder.json

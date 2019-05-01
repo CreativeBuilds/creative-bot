@@ -1,7 +1,5 @@
 const { BehaviorSubject } = require('rxjs');
 const storage = require('electron-json-storage');
-const { filter } = require('rxjs/operators');
-const getBlockchainUsername = require('./getBlockchainUsername');
 
 let rxConfig = new BehaviorSubject({});
 

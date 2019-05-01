@@ -22,6 +22,7 @@ interface popup {
   buttonText?: string | Function | Element;
   noInput?: boolean;
   Config?: any;
+  type?: string;
 }
 
 const AddCommandPopup = ({
@@ -32,7 +33,8 @@ const AddCommandPopup = ({
   text = '',
   buttonText = 'NEXT',
   noInput = false,
-  Config = {}
+  Config = {},
+  type = 'text'
 }: popup) => {
   const [name, setName] = useState<string>('');
   const [helperText, SetHelperText] = useState(text);
@@ -72,8 +74,9 @@ const AddCommandPopup = ({
         {noInput ? null : (
           <React.Fragment>
             <div className={styles.input_name}>{configName}</div>
-            <textarea
+            <input
               className={styles.input}
+              type={type}
               onChange={e => {
                 setName(e.target.value);
               }}
@@ -178,6 +181,7 @@ const Chat = ({ props }) => {
           }}
           stateTheme={stateTheme}
           configName={'Auth Key'}
+          type={'password'}
           text={
             <div>
               Check the instructions on how to get your Auth Key from DLive{' '}

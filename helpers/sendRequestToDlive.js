@@ -1,7 +1,7 @@
 const tryRequireFromStorage = require('./tryRequireFromStorage');
-let config = {};
-let rxConfig = require('./rxConfig');
-rxConfig.subscribe(data => (config = data));
+let config = require('../config.json');
+// let rxConfig = require('./rxConfig');
+// rxConfig.subscribe(data => (config = data));
 const https = require('https');
 
 module.exports = ({ operationName, query, variables }) => {
@@ -24,7 +24,7 @@ module.exports = ({ operationName, query, variables }) => {
         fingerprint: '',
         gacid: 'undefined',
         Origin: 'https://dlive.tv',
-        Referer: 'https://dlive.tv/' + config.streamer,
+        Referer: 'https://dlive.tv/creativebuilds',
         'User-Agent':
           'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/73.0.3683.86 Safari/537.36'
       }

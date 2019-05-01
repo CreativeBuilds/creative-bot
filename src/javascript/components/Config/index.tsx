@@ -58,7 +58,7 @@ const ConfigPage = ({ props }) => {
   return (
     <div style={stateTheme.menu} className={styles.Points}>
       <div style={stateTheme.menu.title} className={styles.header}>
-        USERS
+        CONFIG
         <textarea
           className={styles.usersearch}
           style={stateTheme.chat.message.alternate}

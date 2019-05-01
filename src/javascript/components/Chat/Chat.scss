@@ -97,7 +97,8 @@
     text-align: center;
     margin-bottom: 5px;
   }
-  textarea {
+  textarea,
+  input {
     flex: 1;
     border: 0;
     outline-width: 0;
@@ -106,7 +107,7 @@
     height: 20px;
     font-size: 15px;
     padding: 5px;
-    width: 150px;
+    width: 225px;
     overflow-y: hidden;
     overflow-x: auto;
     margin: 0 !important;

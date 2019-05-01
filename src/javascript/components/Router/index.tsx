@@ -11,6 +11,8 @@ import { rxUsers } from '../../helpers/rxUsers';
 import { rxCommands } from '../../helpers/rxCommands';
 import { rxConfig } from '../../helpers/rxConfig';
 import { ConfigPage } from '../Config';
+import { rxTimers } from '../../helpers/rxTimers';
+import { TimersPage } from '../Timers';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -26,6 +28,7 @@ class RouterWrapper extends Component<any, any> {
     messages: [],
     popups: [],
     commands: {},
+    timers: {},
     config: {}
   };
   componentDidMount() {
@@ -34,6 +37,9 @@ class RouterWrapper extends Component<any, any> {
     });
     rxCommands.subscribe(Commands => {
       this.setState({ commands: Commands });
+    });
+    rxTimers.subscribe(Timers => {
+      this.setState({ timers: Timers });
     });
     ipcRenderer.on('updatedUser', (event, { user }) => {
       let users = Object.assign({}, this.state.users);
@@ -105,6 +111,16 @@ class RouterWrapper extends Component<any, any> {
               closeCurrentPopup: this.closeCurrentPopup
             }}
             Component={CommandsPage}
+          />
+          <Route
+            url={url}
+            path={'/timers'}
+            componentProps={{
+              timers: this.state.timers,
+              addPopup: this.addPopup,
+              closeCurrentPopup: this.closeCurrentPopup
+            }}
+            Component={TimersPage}
           />
           <Route
             url={url}
