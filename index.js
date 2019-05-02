@@ -6,6 +6,7 @@ const {
   SaveToJson,
   sendLino
 } = require('./helpers');
+const log = require('electron-log');
 const { app, BrowserWindow, session, ipcMain } = require('electron');
 const fs = require('fs');
 const path = require('path');
@@ -35,6 +36,7 @@ const { messages$, input$ } = require('./helpers/rxChat');
 let { makeNewCommand, getBlockchainUsername } = require('./helpers');
 const { autoUpdater } = require('electron-updater');
 const timersListener = require('./helpers/startTimers');
+const DLive = require('dlive-js');
 
 rxConfig
   .pipe(
@@ -80,6 +82,25 @@ if (env === 'dev') {
 
 function createWindow() {
   // Create the browser window.
+  // autoUpdater.currentVersion = '1.0.0';
+  // autoUpdater.allowPrerelease = true;
+  // autoUpdater.logger = log;
+  // autoUpdater.logger['transports'].file.level = 'debug';
+  // autoUpdater.on('checking-for-update', i => {
+  //   log.debug('Downloading latest version!', i);
+  // });
+  // autoUpdater.on('update-available', info => {
+  //   log.debug('Update available!');
+  // });
+  // autoUpdater.on('update-not-available', () => {
+  //   log.debug('No update available!');
+  // });
+  // autoUpdater.on('download-progress', (info, versionInfo) => {
+  //   log.debug('Download progress', info, versionInfo);
+  // });
+  // autoUpdater.on('update-downloaded', info => {
+  //   log.debug('Downloaded!', info);
+  // });
   autoUpdater.checkForUpdatesAndNotify();
   win = new BrowserWindow({ width: 800, height: 600 });
 

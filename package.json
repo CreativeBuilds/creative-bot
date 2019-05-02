@@ -8,7 +8,7 @@
     "start": "webpack-dev-server --hot",
     "postinstall": "electron-builder install-app-deps",
     "pack": "electron-builder --dir",
-    "dist": "electron-builder",
+    "dist": "electron-builder --publish=always",
     "electron": "cross-env NODE_ENV=dev electron .",
     "electron-reset": "cross-env NODE_ENV=dev NODE_HARD=true electron .",
     "release": "build"
@@ -17,7 +17,9 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
+    "dlive-js": "^1.0.1",
     "electron-json-storage": "^4.1.6",
+    "electron-log": "^3.0.5",
     "electron-reload": "^1.4.0",
     "electron-updater": "^4.0.6",
     "https": "^1.0.0",

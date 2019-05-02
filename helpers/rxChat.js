@@ -1,6 +1,5 @@
 const { QueueingSubject } = require('queueing-subject');
-const { Subscription } = require('rxjs');
-const { share, switchMap } = require('rxjs/operators');
+const { switchMap, retryWhen, delay } = require('rxjs/operators');
 const makeWebSocketObservable = require('rxjs-websockets').default;
 const WebSocket = require('ws');
 const rxConfig = require('./rxConfig');
@@ -74,7 +73,7 @@ const messages$ = socket$.pipe(
     console.log('websocket opened');
     return getResponses(input$);
   }),
-  share()
+  retryWhen(errors => errors.pipe(delay(1000)))
 );
 
 module.exports = { messages$, input$ };
