@@ -191,7 +191,7 @@ const Chat = ({ props }) => {
                 onClick={e => {
                   e.preventDefault();
                   shell.openExternal(
-                    'https://github.com/CreativeBuilds/dlive-chat-bot'
+                    'https://github.com/CreativeBuilds/dlive-chat-bot/blob/master/FINDAUTHKEY.md'
                   );
                 }}
               >
