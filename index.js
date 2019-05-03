@@ -28,8 +28,10 @@ let rxListeners = [];
 const rxConfig = require('./helpers/rxConfig');
 rxConfig.subscribe(data => (config = data));
 let Commands = {};
+let Giveaways = {};
 const rxUsers = require('./helpers/rxUsers');
 const rxCommands = require('./helpers/rxCommands');
+const rxGiveaways = require('./helpers/rxGiveaways');
 rxCommands.subscribe(commands => (Commands = commands));
 const rxTimers = require('./helpers/rxTimers');
 const { messages$, input$ } = require('./helpers/rxChat');
@@ -109,12 +111,91 @@ function createWindow() {
   win.on('close', function() {
     process.exit();
   });
+  let oldGiveaways = { first: true };
+  let timeouts = [];
+  rxGiveaways.subscribe(giveaways => {
+    /**
+     * 1. Detect new giveaways
+     * 2. get rid of old ones?
+     */
+    timeouts.forEach(interval => {
+      clearTimeout(interval);
+    });
+    let determineDifference = (arr, obj) => {
+      let newArr = [];
+      arr.forEach(key => {
+        if (obj[key]) return;
+        newArr.push(key);
+      });
+      return newArr;
+    };
+    if (oldGiveaways.first && Object.keys(giveaways).length === 0)
+      return (oldGiveaways.first = false);
+    if (oldGiveaways.first) oldGiveaways = giveaways;
+
+    let keysNew = Object.keys(giveaways);
+    let keysOld = Object.keys(oldGiveaways);
+    console.log(keysNew, keysOld);
+    if (keysNew !== keysOld) {
+      let newGiveaways = determineDifference(keysNew, oldGiveaways);
+      if (newGiveaways.length > 0) {
+        newGiveaways.forEach(key => {
+          let giveaway = giveaways[key];
+          sendMessage(
+            `A new giveaway has started for '${
+              giveaway.reward
+            }'! Ticket cost: ${giveaway.cost} | Max Tickets: ${
+              giveaway.maxEntries
+            } | Join with !${giveaway.name} ${
+              giveaway.cost > 0 && giveaway.maxEntries > 0
+                ? 'amountOfTicketsToBuy'
+                : ''
+            }`
+          );
+        });
+      }
+    }
+    Object.keys(giveaways).forEach(key => {
+      let giveaway = giveaways[key];
+      if (giveaway.secondsUntilClose !== 0) {
+        let milliSecondsLeft = Math.floor(
+          giveaway.createdAt + giveaway.secondsUntilClose * 1000 - Date.now()
+        );
+        timeouts.push(
+          setTimeout(() => {
+            sendMessage(
+              `Giveaway ${giveaway.name} has ended for ${giveaway.reward}!`
+            );
+          }, milliSecondsLeft)
+        );
+        if (milliSecondsLeft > 15000)
+          timeouts.push(
+            setTimeout(() => {
+              sendMessage(
+                `Giveaway ${giveaway.name} for ${
+                  giveaway.reward
+                } has 15 seconds left hurry up and enter with !${
+                  giveaway.name
+                } !`
+              );
+            }, milliSecondsLeft - 15000)
+          );
+      }
+      if (giveaway.winners) {
+        if (giveaway.winners.length > 0) {
+          let winner = giveaway.winners[giveaway.winners.length - 1];
+          sendMessage(`${winner.name} has won the giveaway! Speak up in chat!`);
+        }
+      }
+    });
+
+    if (giveaways !== oldGiveaways) oldGiveaways = giveaways;
+  });
 
   let users = {};
 
   ipcMain.on('editpoints', (event, { username, points }) => {
     let Users = Object.assign({}, users);
-    console.log('username', username, 'points', points, 'users', users);
     Users[username].points = points;
     rxUsers.next(Users);
   });
@@ -123,6 +204,7 @@ function createWindow() {
     let CommandsCopy = Object.assign({}, Commands);
     if (!CommandsCopy[name]) return;
     delete CommandsCopy[name];
+    d;
     rxCommands.next(CommandsCopy);
   });
 
@@ -217,6 +299,21 @@ function createWindow() {
       rxCommands.next(commands);
     }
   });
+
+  ipcMain.on('getRxGiveaways', () => {
+    rxGiveaways.subscribe(giveaways => {
+      console.log('sending out commands');
+      win.webContents.send('rxGiveaways', giveaways);
+    });
+  });
+
+  ipcMain.on('setRxGiveaways', (event, giveaways) => {
+    if (giveaways !== Giveaways) {
+      Giveaways = giveaways;
+      rxGiveaways.next(giveaways);
+    }
+  });
+
   ipcMain.on('getRxTimers', () => {
     rxTimers.subscribe(timers => {
       console.log('sending out commands');
@@ -274,7 +371,6 @@ function createWindow() {
 
   const textMessage = (message, data) => {
     let { content } = message;
-    console.log('GOT MSG', content);
     if (content[0] == config.commandPrefix) {
       content = content.substring(1);
       let args = content.split(' ');
@@ -282,13 +378,11 @@ function createWindow() {
       let command = commands[commandName];
       if (command) {
         // TODO check permissions
-        console.log('It was a hard command');
         command.run({ message, data, args }).then(msg => {
           if (!msg) return;
           sendMessage(msg);
         });
-      } else {
-        console.log(Object.keys(Commands), 'Command keys');
+      } else if (Commands[commandName]) {
         command = Commands[commandName];
         if (!command) return;
         if (!command.reply) return;
@@ -300,6 +394,130 @@ function createWindow() {
         if (!command.enabled) return;
         sendMessage(command.reply);
         rxCommands.next(Commands);
+      } else {
+        rxGiveaways.pipe(first()).subscribe(giveaways => {
+          let giveaway = Object.assign({}, giveaways[commandName]);
+          if (!giveaways[commandName]) return;
+          if (typeof giveaway.winners !== 'undefined')
+            return sendMessage(
+              `${
+                message.sender.displayname
+              } that giveaway already has a winner!`
+            );
+          let one = giveaway.createdAt + giveaway.secondsUntilClose * 1000;
+          let secondsLeft = one - Date.now();
+          if (giveaway.secondsUntilClose === 0 || secondsLeft > 0) {
+            // User can enter check to see if they have enough in their balance;
+            rxUsers.pipe(first()).subscribe(users => {
+              let sender = message.sender.username;
+              if (!users[sender]) return;
+              let user = Object.assign({}, users[sender]);
+              if (user.points > giveaway.cost) {
+                if (giveaway.cost === 0) {
+                  if (giveaway.entries[sender]) return;
+                  let newObj = {};
+                  newObj[sender] = {
+                    tickets: 1,
+                    displayname: message.sender.displayname,
+                    username: sender
+                  };
+                  giveaway.entries = Object.assign(
+                    {},
+                    giveaway.entries[sender],
+                    newObj
+                  );
+                  sendMessage(
+                    `${
+                      message.sender.displayname
+                    } has entered the giveaway with 1 ticket!`
+                  );
+                } else if (
+                  giveaway.maxEntries > 0 &&
+                  giveaway.entires[sender]
+                ) {
+                  let giveawayUser = giveaway.entires[sender];
+                  if (giveawayUser.tickets >= giveaway.maxEntries) return;
+                  let ticketsToPurchase = Number(args[1]);
+                  if (isNaN(ticketsToPurchase)) ticketsToPurchase = 1;
+                  ticketsToPurchase = Math.abs(ticketsToPurchase);
+                  let totalCost = ticketsToPurchase * giveaway.cost;
+                  if (totalCost >= user.points)
+                    return sendMessage(
+                      `${
+                        message.sender.displayname
+                      } there has been an error, you do not have enough points to purchase this ticket(s). Total Cost: ${totalCost}`
+                    );
+                  let newObj = {};
+                  newObj[sender] = {
+                    tickets: ticketsToPurchase + giveawayUser.tickets,
+                    displayname: message.sender.displayname,
+                    username: sender
+                  };
+                  giveaway.entries = Object.assign(
+                    {},
+                    giveaway.entries[sender],
+                    newObj
+                  );
+                  user.points -= totalCost;
+                  let usersObj = {};
+                  usersObj[sender] = user;
+                  rxUsers.next(Object.assign({}, users, usersObj));
+                  sendMessage(
+                    `${
+                      message.sender.displayname
+                    } has purchased more tickets for the giveaway with a total of ${ticketsToPurchase +
+                      giveawayUser.tickets} tickets!`
+                  );
+                  // Check to see
+                } else {
+                  let ticketsToPurchase = Number(args[1]);
+                  if (isNaN(ticketsToPurchase)) ticketsToPurchase = 1;
+                  if (ticketsToPurchase > giveaway.maxEntries)
+                    ticketsToPurchase = giveaway.maxEntries;
+                  let totalCost = ticketsToPurchase * giveaway.cost;
+                  if (totalCost > user.points)
+                    return sendMessage(
+                      `${
+                        message.sender.displayname
+                      } there has been an error, you do not have enough points to purchase this ticket(s). Total Cost: ${totalCost}`
+                    );
+                  let newObj = {};
+                  newObj[sender] = {
+                    tickets: ticketsToPurchase,
+                    displayname: message.sender.displayname,
+                    username: sender
+                  };
+                  giveaway.entries = Object.assign(
+                    {},
+                    giveaway.entries[sender],
+                    newObj
+                  );
+                  user.points -= totalCost;
+                  let usersObj = {};
+                  usersObj[sender] = user;
+                  rxUsers.next(Object.assign({}, users, usersObj));
+                  // TODO make helper file to handle a lot of users joining at once, so the bot doesnt lag aka (john, steve, and sam have entered the giveaway!);
+                  sendMessage(
+                    `${
+                      message.sender.displayname
+                    } has entered the giveaway with ${ticketsToPurchase} ticket(s)!`
+                  );
+                }
+                let newObj = {};
+                newObj[commandName] = giveaway;
+                if (giveaway === giveaways[commandName]) return;
+
+                rxGiveaways.next(Object.assign({}, giveaways, newObj));
+              } else {
+                sendMessage(
+                  `${
+                    message.sender.displayname
+                  } you do not have enough points for that!`
+                );
+              }
+            });
+          }
+        });
       }
     }
   };

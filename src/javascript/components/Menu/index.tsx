@@ -48,6 +48,16 @@ const Menu = props => {
             style={{}}
             hoverStyle={stateTheme.menu.title_hover}
             onClick={() => {
+              setUrl('/giveaways');
+              setIsOpen(false);
+            }}
+          >
+            GIVEAWAYS
+          </Li>
+          <Li
+            style={{}}
+            hoverStyle={stateTheme.menu.title_hover}
+            onClick={() => {
               setUrl('/commands');
               setIsOpen(false);
             }}

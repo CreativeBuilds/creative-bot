@@ -13,6 +13,8 @@ import { rxConfig } from '../../helpers/rxConfig';
 import { ConfigPage } from '../Config';
 import { rxTimers } from '../../helpers/rxTimers';
 import { TimersPage } from '../Timers';
+import { GiveawaysPage } from '../Giveaways';
+import { rxGiveaways } from '../../helpers/rxGiveaways';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -28,6 +30,7 @@ class RouterWrapper extends Component<any, any> {
     messages: [],
     popups: [],
     commands: {},
+    giveaways: {},
     timers: {},
     config: {}
   };
@@ -40,6 +43,10 @@ class RouterWrapper extends Component<any, any> {
     });
     rxTimers.subscribe(Timers => {
       this.setState({ timers: Timers });
+    });
+    rxGiveaways.subscribe(Giveaways => {
+      console.log('GOT GIVEAWAYS', Giveaways);
+      this.setState({ giveaways: Giveaways });
     });
     ipcRenderer.on('updatedUser', (event, { user }) => {
       let users = Object.assign({}, this.state.users);
@@ -91,6 +98,16 @@ class RouterWrapper extends Component<any, any> {
             }}
             Component={Chat}
             exact={true}
+          />
+          <Route
+            url={url}
+            path={'/giveaways'}
+            componentProps={{
+              giveaways: this.state.giveaways,
+              addPopup: this.addPopup,
+              closeCurrentPopup: this.closeCurrentPopup
+            }}
+            Component={GiveawaysPage}
           />
           <Route
             url={url}
