@@ -34,10 +34,9 @@ const rxCommands = require('./helpers/rxCommands');
 const rxGiveaways = require('./helpers/rxGiveaways');
 rxCommands.subscribe(commands => (Commands = commands));
 const rxTimers = require('./helpers/rxTimers');
-const { messages$, input$ } = require('./helpers/rxChat');
+const { messages$ } = require('./helpers/rxChat');
 let { makeNewCommand, getBlockchainUsername } = require('./helpers');
 const { autoUpdater } = require('electron-updater');
-const timersListener = require('./helpers/startTimers');
 
 rxConfig
   .pipe(

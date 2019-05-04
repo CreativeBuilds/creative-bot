@@ -1,5 +1,5 @@
 const rxTimers = require('./rxTimers');
-const { messages$, input$ } = require('./rxChat');
+const { messages$ } = require('./rxChat');
 const sendMessage = require('./sendMessage');
 
 let intervals = {};
