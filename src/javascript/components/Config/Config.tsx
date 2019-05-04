@@ -31,6 +31,11 @@ const Popup = ({
       />
       <div
         className={styles.submit}
+        style={{
+          backgroundColor: stateTheme.menu.backgroundColor,
+          color: stateTheme.menu.color,
+          borderColor: stateTheme.menu.backgroundColor
+        }}
         onClick={() => {
           let Config = Object.assign({}, config);
           switch (configOption.type) {
@@ -39,7 +44,6 @@ const Popup = ({
             default:
               Config[configOption.key] = value;
           }
-          console.log(configOption, Config[configOption.key]);
           setRxConfig(Config);
           closeCurrentPopup();
         }}
@@ -95,10 +99,10 @@ const Config = ({
           className={styles.value}
           onClick={() => {
             if (!configOption.hidden) return;
-            setHidden(!hidden);
+            // setHidden(!hidden);
           }}
         >
-          {hidden ? 'HIDDEN, CLICK TO SHOW' : configOption.value}
+          {hidden ? 'HIDDEN' : configOption.value}
         </div>
         <div className={styles.edit}>
           <MdModeEdit

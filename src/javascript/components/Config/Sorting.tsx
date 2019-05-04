@@ -35,10 +35,10 @@ const Sorting = ({
         <div
           className={styles.username}
           onClick={() => {
-            swapOrToggle(isDesc, toggle, 'name');
+            // swapOrToggle(isDesc, toggle, 'name');
           }}
         >
-          NAME <Arrow isDesc={isDesc} toggle={toggle} type={'name'} />
+          NAME
         </div>
         <div className={styles.value}>VALUE</div>
         <div className={styles.edit}>EDIT</div>

@@ -35,6 +35,13 @@ const AddCommandPopup = ({
     setRxCommands(Commands);
   };
 
+  const save = () => {
+    if (isNaN(Number(uses))) return;
+    setUses(Number(uses));
+    saveToDB();
+    closeCurrentPopup();
+  };
+
   return (
     <div className={styles.popup} style={stateTheme.main}>
       <div className={styles.input_wrapper}>
@@ -55,15 +62,20 @@ const AddCommandPopup = ({
             setReply(e.target.value);
           }}
           value={reply}
+          onKeyDown={e => {
+            if (e.key === 'Enter') {
+              save();
+            }
+          }}
         />
       </div>
       <div
         className={styles.submit}
-        onClick={() => {
-          if (isNaN(Number(uses))) return;
-          setUses(Number(uses));
-          saveToDB();
-          closeCurrentPopup();
+        onClick={save}
+        style={{
+          backgroundColor: stateTheme.menu.backgroundColor,
+          color: stateTheme.menu.color,
+          borderColor: stateTheme.menu.backgroundColor
         }}
       >
         CREATE

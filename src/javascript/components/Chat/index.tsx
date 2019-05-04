@@ -68,6 +68,12 @@ const AddCommandPopup = ({
     }
   }, [Config]);
 
+  let keyDown = e => {
+    if (e.key === 'Enter') {
+      closeCurrentPopup(name, setError);
+    }
+  };
+
   return (
     <div className={styles.popup} style={stateTheme.main}>
       <div className={styles.input_wrapper}>
@@ -76,6 +82,7 @@ const AddCommandPopup = ({
             <div className={styles.input_name}>{configName}</div>
             <input
               className={styles.input}
+              onKeyDown={keyDown}
               type={type}
               onChange={e => {
                 setName(e.target.value);
@@ -93,6 +100,11 @@ const AddCommandPopup = ({
       </div>
       <div
         className={styles.submit}
+        style={{
+          backgroundColor: stateTheme.menu.backgroundColor,
+          color: stateTheme.menu.color,
+          borderColor: stateTheme.menu.backgroundColor
+        }}
         onClick={() => {
           closeCurrentPopup(name, setError);
         }}
@@ -275,7 +287,9 @@ const Chat = ({ props }) => {
       <div style={stateTheme.menu['title_hover']} className={styles.input}>
         {/* TODO change maxLength to be limitless and then send messages once every 2 seconds to get around chat slowmode */}
         <textarea
-          style={stateTheme.chat.input}
+          style={Object.assign({}, stateTheme.chat.input, {
+            borderColor: stateTheme.chat.input.backgroundColor
+          })}
           value={text}
           maxLength={140}
           onKeyDown={onEnterPress}
@@ -285,7 +299,9 @@ const Chat = ({ props }) => {
         />
         <div
           className={styles.send}
-          style={stateTheme.chat.input}
+          style={Object.assign({}, stateTheme.chat.input, {
+            borderColor: stateTheme.chat.input.backgroundColor
+          })}
           onClick={sendMessage}
         >
           <MdSend />

@@ -90,6 +90,11 @@ const Popup = ({ command, styles, closeCurrentPopup, stateTheme }) => {
       </div>
       <div
         className={styles.submit}
+        style={{
+          backgroundColor: stateTheme.menu.backgroundColor,
+          color: stateTheme.menu.color,
+          borderColor: stateTheme.menu.backgroundColor
+        }}
         onClick={() => {
           if (isNaN(Number(messages)) || isNaN(Number(seconds))) return;
           saveToDB();

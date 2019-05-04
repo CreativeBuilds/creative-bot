@@ -24,12 +24,16 @@
     font-size: 3em;
     position: absolute;
     right: 0;
+    transition: all 0.15s;
   }
   svg:hover {
     cursor: pointer;
+    fill: #ffd300 !important;
+    stroke: #ffd300 !important;
   }
   &.menu_toggled {
     left: 0;
+    box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
   }
   ul {
     list-style-type: none;
@@ -46,9 +50,11 @@
       height: 48px;
       &:hover {
         cursor: pointer;
+        color: #ffd300;
       }
       &:hover:nth-child(1) {
         cursor: default;
+        color: inherit;
       }
     }
   }

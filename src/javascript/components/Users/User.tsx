@@ -10,7 +10,7 @@ const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
 const Popup = ({ user, styles, closeCurrentPopup, stateTheme }) => {
-  const [points, setpoints] = useState<string>(user.points.toString());
+  const [points, setPoints] = useState<string>(user.points.toString());
 
   const saveToDB = points => {
     ipcRenderer.send('editpoints', { username: user.username, points });
@@ -18,22 +18,36 @@ const Popup = ({ user, styles, closeCurrentPopup, stateTheme }) => {
 
   return (
     <div className={styles.popup} style={stateTheme.main}>
-      <h1>
+      {/* <h1>
         Edit {user.displayname}
         {user.displayname[user.displayname.length - 1].toLowerCase() === 's'
           ? `'`
           : `'s`}{' '}
         Points
-      </h1>
-      <textarea
-        className={styles.input}
-        onChange={e => {
-          setpoints(e.target.value);
-        }}
-        value={points}
-      />
+      </h1> */}
+      <div className={styles.input_wrapper}>
+        <div className={styles.input_name}>
+          {user.displayname}
+          {user.displayname[user.displayname.length - 1].toLowerCase() === 's'
+            ? `'`
+            : `'s`}
+          {' points'}
+        </div>
+        <textarea
+          className={styles.input}
+          onChange={e => {
+            setPoints(e.target.value);
+          }}
+          value={points}
+        />
+      </div>
       <div
         className={styles.submit}
+        style={{
+          backgroundColor: stateTheme.menu.backgroundColor,
+          color: stateTheme.menu.color,
+          borderColor: stateTheme.menu.backgroundColor
+        }}
         onClick={() => {
           if (isNaN(Number(points))) return;
           saveToDB(Number(points));

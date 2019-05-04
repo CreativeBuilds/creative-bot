@@ -5,6 +5,10 @@ body {
   width: 100vw;
   overflow: hidden;
 }
+svg:hover {
+  fill: #ffd300 !important;
+  stroke: #ffd300 !important;
+}
 #app {
   height: 100%;
   width: 100%;

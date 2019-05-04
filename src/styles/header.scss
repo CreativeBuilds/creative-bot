@@ -1,0 +1,31 @@
+.header {
+  height: 44px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+textarea.usersearch {
+  flex: 1;
+  border: 0;
+  outline-width: 0;
+  resize: none;
+  height: 16px;
+  font-size: 15px;
+  width: 150px;
+  overflow-y: hidden;
+  overflow-x: auto;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 5px;
+  padding: 5px;
+  border: 2px solid;
+  border-radius: 5px;
+  transition: all 0.15s ease-in-out;
+  &:focus {
+    border-color: #ffd300 !important;
+    caret-color: #ffd300;
+  }
+}

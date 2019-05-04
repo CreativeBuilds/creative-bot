@@ -37,7 +37,9 @@ const UsersPage = ({ props }) => {
         USERS
         <textarea
           className={styles.usersearch}
-          style={stateTheme.chat.message.alternate}
+          style={Object.assign({}, stateTheme.chat.message.alternate, {
+            borderColor: stateTheme.menu.backgroundColor
+          })}
           placeholder={'Search...'}
           value={searchUsername}
           onChange={e => {

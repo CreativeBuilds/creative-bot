@@ -16,6 +16,8 @@
   max-height: 90%;
   overflow: auto;
   padding: 10px;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
 }
 
 .close {
@@ -26,8 +28,11 @@
     position: absolute;
     top: 0;
     right: 0;
+    transition: all 0.15s ease-in-out;
     &:hover {
       cursor: pointer;
+      fill: #ffd300 !important;
+      stroke: #ffd300 !important;
     }
   }
 }

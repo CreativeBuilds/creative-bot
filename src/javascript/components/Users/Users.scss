@@ -1,3 +1,5 @@
+@import '../../../styles/header.scss', '../../../styles/popup.scss';
+
 .Points {
   width: 100%;
   height: 100%;
@@ -5,14 +7,6 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-}
-
-.header {
-  height: 44px;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .content {
@@ -36,67 +30,6 @@
   svg {
     stroke-width: 2px;
     font-size: 1.2em;
-  }
-}
-
-textarea.usersearch {
-  flex: 1;
-  border: 0;
-  outline-width: 0;
-  resize: none;
-  height: 16px;
-  font-size: 15px;
-  width: 150px;
-  overflow-y: hidden;
-  overflow-x: auto;
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  border-radius: 5px;
-  padding: 5px;
-}
-
-.popup {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  h1 {
-    text-transform: uppercase;
-    margin: 0px;
-    font-size: 1.5em;
-  }
-  textarea {
-    flex: 1;
-    border: 0;
-    outline-width: 0;
-    resize: none;
-    text-align: center;
-    height: 40px;
-    font-size: 30px;
-    padding: 12px;
-    width: 250px;
-    overflow-y: hidden;
-    overflow-x: auto;
-  }
-  .input {
-    margin: 10px;
-    outline-width: 0;
-    background: rgba(0, 0, 0, 0);
-    border: 2px solid;
-    color: inherit;
-  }
-  .submit {
-    width: 80%;
-    height: 40px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 30px;
-    border: 3px solid;
-    &:hover {
-      cursor: pointer;
-    }
   }
 }
 
