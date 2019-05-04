@@ -38,7 +38,6 @@ const { messages$, input$ } = require('./helpers/rxChat');
 let { makeNewCommand, getBlockchainUsername } = require('./helpers');
 const { autoUpdater } = require('electron-updater');
 const timersListener = require('./helpers/startTimers');
-const DLive = require('dlive-js');
 
 rxConfig
   .pipe(

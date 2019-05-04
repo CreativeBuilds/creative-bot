@@ -1,5 +1,4 @@
 const getLiveChannels = require('../helpers/getLiveChannels');
-const { tryRequireFromStorage } = require('../helpers');
 let config = {};
 const rxConfig = require('../helpers/rxConfig');
 rxConfig.subscribe(data => (config = data));
