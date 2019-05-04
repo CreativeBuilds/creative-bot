@@ -1,4 +1,3 @@
-const WebSocket = require('ws');
 const {
   sendMessage,
   keepActive,
@@ -7,12 +6,13 @@ const {
   sendLino
 } = require('./helpers');
 const log = require('electron-log');
-const { app, BrowserWindow, session, ipcMain } = require('electron');
+const { app, BrowserWindow, ipcMain } = require('electron');
 const fs = require('fs');
 const path = require('path');
 const { distinctUntilChanged, filter, first } = require('rxjs/operators');
 const _ = require('lodash');
 const storage = require('electron-json-storage');
+const DLive = require('dlive-js');
 let win;
 var env = process.env.NODE_ENV || 'production';
 console.print = console.log;
@@ -34,7 +34,6 @@ const rxCommands = require('./helpers/rxCommands');
 const rxGiveaways = require('./helpers/rxGiveaways');
 rxCommands.subscribe(commands => (Commands = commands));
 const rxTimers = require('./helpers/rxTimers');
-const { messages$ } = require('./helpers/rxChat');
 let { makeNewCommand, getBlockchainUsername } = require('./helpers');
 const { autoUpdater } = require('electron-updater');
 
@@ -82,25 +81,6 @@ if (env === 'dev') {
 
 function createWindow() {
   // Create the browser window.
-  // autoUpdater.currentVersion = '1.0.0';
-  // autoUpdater.allowPrerelease = true;
-  // autoUpdater.logger = log;
-  // autoUpdater.logger['transports'].file.level = 'debug';
-  // autoUpdater.on('checking-for-update', i => {
-  //   log.debug('Downloading latest version!', i);
-  // });
-  // autoUpdater.on('update-available', info => {
-  //   log.debug('Update available!');
-  // });
-  // autoUpdater.on('update-not-available', () => {
-  //   log.debug('No update available!');
-  // });
-  // autoUpdater.on('download-progress', (info, versionInfo) => {
-  //   log.debug('Download progress', info, versionInfo);
-  // });
-  // autoUpdater.on('update-downloaded', info => {
-  //   log.debug('Downloaded!', info);
-  // });
   autoUpdater.checkForUpdatesAndNotify();
   win = new BrowserWindow({ width: 1280, height: 720 });
 
@@ -520,124 +500,111 @@ function createWindow() {
     }
   };
 
-  const onNewMsg = data => {
-    if (data.type === 'ka') return;
-    if (data.type === 'data') {
-      let payload = data.payload;
-      let payData = payload.data;
-      for (let i = 0; i < payData.streamMessageReceived.length; i++) {
-        let message = payData.streamMessageReceived[i];
-        // console.log('MESSAGE', message);
-
-        if (message.type === 'Follow') {
-          wss.broadcast(
-            JSON.stringify({
-              type: 'follow',
-              value: message
-            })
-          );
-          console.log('NEW FOLLOW FROM:', message.sender.displayname);
+  const onNewMsg = message => {
+    if (message.type === 'Follow') {
+      wss.broadcast(
+        JSON.stringify({
+          type: 'follow',
+          value: message
+        })
+      );
+      console.log('NEW FOLLOW FROM:', message.sender.dliveUsername);
+    }
+    if (message.type === 'Gift') {
+      wss.broadcast(
+        JSON.stringify({
+          type: 'gift',
+          value: message
+        })
+      );
+      console.log(
+        'NEW GIFT FROM:',
+        message.sender.dliveUsername,
+        'TYPE:',
+        message.gift,
+        'AMOUNT:',
+        message.amount
+      );
+      const inLino = (gift, amount) => {
+        let multiplier = 9.01e2;
+        switch (gift) {
+          case 'ICE_CREAM':
+            multiplier = 9.01e3;
+            break;
+          case 'DIAMOND':
+            multiplier = 9.01e4;
+            break;
+          case 'NINJAGHINI':
+            multiplier = 9.01e5;
+            break;
+          case 'NINJET':
+            multiplier = 9.01e6;
+            break;
+          default:
+            multiplier = 9.01e2;
+            break;
         }
-        if (message.type === 'Gift') {
-          wss.broadcast(
-            JSON.stringify({
-              type: 'gift',
-              value: message
-            })
-          );
-          console.log(
-            'NEW GIFT FROM:',
-            message.sender.displayname,
-            'TYPE:',
-            message.gift,
-            'AMOUNT:',
-            message.amount
-          );
-          const inLino = (gift, amount) => {
-            let multiplier = 9.01e2;
-            switch (gift) {
-              case 'ICE_CREAM':
-                multiplier = 9.01e3;
-                break;
-              case 'DIAMOND':
-                multiplier = 9.01e4;
-                break;
-              case 'NINJAGHINI':
-                multiplier = 9.01e5;
-                break;
-              case 'NINJET':
-                multiplier = 9.01e6;
-                break;
-              default:
-                multiplier = 9.01e2;
-                break;
-            }
-            return amount * multiplier;
-          };
-          win.webContents.send('newdonation', {
-            message,
-            data,
-            inLino: inLino(message.gift, message.amount)
-          });
-          let username = message.sender.username;
-          let Users = Object.assign({}, users);
-          if (!Users[username]) {
-            Users[username] = {
-              points: 0,
-              avatar: message.sender.avatar,
-              displayname: message.sender.displayname,
-              lino: 0,
-              username: username,
-              role: message.roomRole
-            };
-          }
-          Users[username].lino =
-            (Users[username].lino ? Users[username].lino : 0) +
-            inLino(message.gift, message.amount);
-          rxUsers.next(Users);
-        }
-        if (message.type === 'Message') {
-          wss.broadcast(
-            JSON.stringify({
-              type: 'message',
-              value: message
-            })
-          );
-          textMessage(message);
-          keepActive(message);
-          win.webContents.send('newmessage', { message, data });
-          let content = message.content;
-          console.log(
-            'NEW MSG FROM:',
-            message.sender.displayname,
-            'MESSAGE: ',
-            content
-          );
-        }
+        return amount * multiplier;
+      };
+      // TODO ADD FRONTEND STUFF FOR THIS
+      win.webContents.send('newdonation', {
+        message,
+        inLino: message.inLino
+      });
+      let username = message.sender.username;
+      let Users = Object.assign({}, users);
+      if (!Users[username]) {
+        Users[username] = {
+          points: 0,
+          avatar: message.sender.avatar,
+          displayname: message.sender.dliveUsername,
+          lino: 0,
+          username: username,
+          role: message.roomRole
+        };
       }
+      Users[username].lino =
+        (Users[username].lino ? Users[username].lino : 0) +
+        inLino(message.gift, message.amount);
+      rxUsers.next(Users);
+    }
+    if (message.type === 'Message') {
+      wss.broadcast(
+        JSON.stringify({
+          type: 'message',
+          value: message
+        })
+      );
+      textMessage(message);
+      keepActive(message);
+      win.webContents.send('newmessage', { message });
+      let content = message.content;
+      console.log(
+        'NEW MSG FROM:',
+        message.sender.dliveUsername,
+        'MESSAGE: ',
+        content
+      );
     }
   };
 
-  function noop() {}
-
+  // This wss is for ben
   wss.on('connection', function connection(WS) {
-    let subscriber = messages$.subscribe(
-      data => {
-        if (!data || data == null) return;
-        if (!WS.isAlive) return;
-        if (JSON.parse(data).type === 'ka') return;
-        try {
-          WS.send(data);
-        } catch (e) {
-          subscriber.unsubscribe();
-          WS.terminate();
-        }
-      },
-      err => console.error(err),
-      () => {
-        console.log('CLOSED');
-      }
-    );
+    let subscriber;
+    rxConfig
+      .pipe(
+        filter(x => !!x.authKey),
+        first()
+      )
+      .subscribe(config => {
+        let dlive = new DLive({ authKey: config.authKey });
+        dlive.listenToChat(config.streamerDisplayName).then(messages => {
+          subscriber = messages.subscribe(message => {
+            console.log('NEW MSG FROM DLIVE JS', JSON.stringify(message));
+            WS.send(JSON.stringify(message));
+          });
+        });
+      });
     WS.on('close', function() {
       subscriber.unsubscribe();
       WS.terminate();
@@ -667,32 +634,25 @@ function createWindow() {
     if (!config.authKey || config.authKey === '')
       return WS.send(JSON.stringify({ type: 'key_init' }));
   });
-
-  const interval = setInterval(function ping() {
-    wss.clients.forEach(function each(ws) {
-      if (ws.isAlive === false) return ws.terminate();
-      ws.isAlive = false;
-      ws.ping(noop);
+  // This is for the app
+  rxConfig
+    .pipe(
+      filter(x => !!x.authKey),
+      first()
+    )
+    .subscribe(config => {
+      let dlive = new DLive({ authKey: config.authKey });
+      dlive.listenToChat(config.streamerDisplayName).then(messages => {
+        messages.subscribe(message => {
+          console.log('NEW MSG FROM DLIVE JS', message);
+          onNewMsg(message);
+        });
+      });
     });
-  }, 1000);
-  let rxConfigListener;
-  let subscriber = messages$.subscribe(
-    data => {
-      if (!data || data == null) return;
-      onNewMsg(JSON.parse(data));
-    },
-    err => console.error(err),
-    () => {
-      firstConnect = true;
-      if (rxConfigListener) {
-        rxConfigListener.unsubscribe();
-      }
-      subscriber.unsubscribe();
-    }
-  );
 }
 
 ipcMain.on('sendmessage', (event, { from, message }) => {
+  console.log('SENDING MESSAGE');
   sendMessage(message);
 });
 

@@ -1,5 +1,4 @@
 const rxTimers = require('./rxTimers');
-const { messages$ } = require('./rxChat');
 const sendMessage = require('./sendMessage');
 
 let intervals = {};
@@ -14,14 +13,19 @@ rxTimers.subscribe(timers => {
   if (Object.keys(timers).length === 0) {
     Object.keys(intervals).forEach(key => clearInterval(intervals[key]));
   }
-  messages$.subscribe(data => {
-    // Check if the message came from the bot
-
-    if (data.type === 'data') {
-      messages.push(Date.now());
-      //   TODO add max length to messages
-    }
-  });
+  rxConfig
+    .pipe(
+      filter(x => !!x.authKey),
+      first()
+    )
+    .subscribe(config => {
+      let dlive = new DLive({ authKey: config.authKey });
+      dlive.listenToChat(config.streamerDisplayName).then(messages => {
+        messages.subscribe(message => {
+          messages.push(Date.now());
+        });
+      });
+    });
   Object.keys(timers).forEach(key => {
     const run = () => {
       let timer = timers[key];

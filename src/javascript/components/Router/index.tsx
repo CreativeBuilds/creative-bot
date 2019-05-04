@@ -52,8 +52,9 @@ class RouterWrapper extends Component<any, any> {
       let users = Object.assign({}, this.state.users);
       users[user.username] = user;
     });
-    ipcRenderer.on('newmessage', (event, data) => {
-      let newArr = [...this.state.messages, data.message];
+    ipcRenderer.on('newmessage', (event, { message }) => {
+      console.log('got message', message);
+      let newArr = [...this.state.messages, message];
       this.setState({ messages: newArr });
     });
     rxConfig.subscribe(Config => {

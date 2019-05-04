@@ -1,6 +1,6 @@
 {
   "name": "dlive-chat-bot",
-  "version": "1.2.4",
+  "version": "1.2.5-beta",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -17,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
+    "dlive-js": "^1.0.4",
     "electron-json-storage": "^4.1.6",
     "electron-log": "^3.0.5",
     "electron-reload": "^1.4.0",

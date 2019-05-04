@@ -14,7 +14,7 @@ const Message = ({ styles, message, nth, stateTheme }) => {
         <img src={message.sender.avatar} width={26} height={26} />
       </div>
       <div className={styles.message_content}>
-        <span>{message.sender.displayname}</span>
+        <span>{message.sender.dliveUsername}</span>
         {': '}
         {message.content}
       </div>
