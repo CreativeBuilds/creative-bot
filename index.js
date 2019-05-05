@@ -391,17 +391,29 @@ function createWindow() {
         obj[commandName].uses += 1;
         Commands = Object.assign({}, Commands, obj);
         if (!command.enabled) return;
-        dlive.getChannel(streamerDisplayName).then(streamChannel => {
+        if (!dlive) {
           parseReply({
             reply: command.reply,
             message,
             custom_variables,
-            streamChannel
+            streamChannel: null
           }).then(reply => {
             sendMessage(reply);
             rxCommands.next(Commands);
           });
-        });
+        } else {
+          dlive.getChannel(streamerDisplayName).then(streamChannel => {
+            parseReply({
+              reply: command.reply,
+              message,
+              custom_variables,
+              streamChannel
+            }).then(reply => {
+              sendMessage(reply);
+              rxCommands.next(Commands);
+            });
+          });
+        }
       } else {
         rxGiveaways.pipe(first()).subscribe(giveaways => {
           let giveaway = Object.assign({}, giveaways[commandName]);
