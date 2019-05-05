@@ -2,7 +2,6 @@ import * as React from 'react';
 import { useState } from 'react';
 
 import { ModBox } from './ModBox';
-import { BannedBox } from './BannedBox';
 
 import { MdModeEdit } from 'react-icons/md';
 
@@ -13,22 +12,27 @@ const Popup = ({ user, styles, closeCurrentPopup, stateTheme }) => {
   const [points, setPoints] = useState<string>(user.points.toString());
 
   const saveToDB = points => {
-    ipcRenderer.send('editpoints', { username: user.username, points });
+    ipcRenderer.send('editpoints', {
+      username: user.blockchainUsername,
+      points
+    });
   };
 
   return (
     <div className={styles.popup} style={stateTheme.main}>
       {/* <h1>
-        Edit {user.displayname}
-        {user.displayname[user.displayname.length - 1].toLowerCase() === 's'
+        Edit {user.dliveUsername}
+        {user.dliveUsername[user.dliveUsername.length - 1].toLowerCase() === 's'
           ? `'`
           : `'s`}{' '}
         Points
       </h1> */}
       <div className={styles.input_wrapper}>
         <div className={styles.input_name}>
-          {user.displayname}
-          {user.displayname[user.displayname.length - 1].toLowerCase() === 's'
+          {user.dliveUsername ? user.dliveUsername : user.dliveUsername}
+          {(user.dliveUsername ? user.dliveUsername : user.dliveUsername)[
+            user.dliveUsername.length - 1
+          ].toLowerCase() === 's'
             ? `'`
             : `'s`}
           {' points'}
@@ -101,7 +105,7 @@ const User = ({
         />
       </div>
       <div className={styles.toggle_wrappers}>
-        <div className={styles.username}>{User.displayname}</div>
+        <div className={styles.username}>{User.dliveUsername}</div>
         <div className={styles.points}>
           {User.points}
           <MdModeEdit

@@ -26,7 +26,7 @@ rxConfig.pipe(filter(x => x.points && x.pointsTimer)).subscribe(config => {
             // This will probably change once we add functionaly to edit different tiers of users to get different points
             points: config.points || 5,
             avatar: user.avatar,
-            displayname: user.displayname,
+            displayname: user.dliveUsername,
             lino: 0,
             username,
             role: activeUsers[username].roomRole

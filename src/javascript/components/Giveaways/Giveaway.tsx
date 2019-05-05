@@ -96,7 +96,7 @@ const Giveaway = ({
       if (entry.alreadyPicked) return;
       for (let x = 0; x < entry.tickets; x++) {
         totalEntries.push({
-          name: entry.displayname,
+          name: entry.dliveUsername,
           username: entry.username,
           tickets: entry.tickets
         });

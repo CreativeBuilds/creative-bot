@@ -7,7 +7,7 @@ const run = ({ message, args }) => {
       // TODO in dlive-js format username will be blockchainUsername
       let username = message.sender.blockchainUsername;
       return res(
-        `${message.sender.displayname}, you have ${
+        `${message.sender.dliveUsername}, you have ${
           users[username] ? users[username].points : 0
         } point${
           users[username]

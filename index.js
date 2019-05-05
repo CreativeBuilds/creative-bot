@@ -69,7 +69,6 @@ const sendError = (WS, error) => {
   WS.send(JSON.stringify({ type: 'error', value: error }));
 };
 if (env === 'dev') {
-  console.log('inside if');
   try {
     require('electron-reload')(path.join(__dirname, 'dist'), {
       electron: require(`${__dirname}/node_modules/electron`)
@@ -113,7 +112,6 @@ function createWindow() {
 
     let keysNew = Object.keys(giveaways);
     let keysOld = Object.keys(oldGiveaways);
-    console.log(keysNew, keysOld);
     if (keysNew !== keysOld) {
       let newGiveaways = determineDifference(keysNew, oldGiveaways);
       if (newGiveaways.length > 0) {
@@ -174,6 +172,7 @@ function createWindow() {
 
   ipcMain.on('editpoints', (event, { username, points }) => {
     let Users = Object.assign({}, users);
+    console.log('username', username);
     Users[username].points = points;
     rxUsers.next(Users);
   });
@@ -218,7 +217,6 @@ function createWindow() {
 
   ipcMain.on('getCommands', () => {
     let commands = Object.assign({}, Commands);
-    console.log('getCommands isnt firing');
     win.webContents.send('commands', commands);
   });
 
@@ -266,7 +264,6 @@ function createWindow() {
   });
   ipcMain.on('getRxCommands', () => {
     rxCommands.subscribe(config => {
-      console.log('sending out commands');
       win.webContents.send('rxCommands', config);
     });
   });
@@ -280,7 +277,6 @@ function createWindow() {
 
   ipcMain.on('getRxGiveaways', () => {
     rxGiveaways.subscribe(giveaways => {
-      console.log('sending out commands');
       win.webContents.send('rxGiveaways', giveaways);
     });
   });
@@ -294,7 +290,6 @@ function createWindow() {
 
   ipcMain.on('getRxTimers', () => {
     rxTimers.subscribe(timers => {
-      console.log('sending out commands');
       win.webContents.send('rxTimers', timers);
     });
   });
@@ -308,8 +303,27 @@ function createWindow() {
   });
   ipcMain.on('getRxUsers', () => {
     rxUsers.pipe(filter(x => !_.isEmpty(x))).subscribe(Users => {
-      users = Users;
-      win.webContents.send('rxUsers', Users);
+      let obj = {};
+      let change = false;
+      Object.keys(Users).forEach(blockchainUsername => {
+        let user = Users[blockchainUsername];
+        if (user.username) {
+          user.blockchainUsername = user.username;
+          delete user.username;
+          change = true;
+        }
+        if (user.displayname) {
+          user.dliveUsername = user.displayname;
+          delete user.displayname;
+          change = true;
+        }
+        obj[blockchainUsername] = user;
+      });
+      users = obj;
+      if (change) {
+        rxUsers.next(obj);
+      }
+      win.webContents.send('rxUsers', obj);
     });
   });
 
@@ -379,7 +393,7 @@ function createWindow() {
           if (typeof giveaway.winners !== 'undefined')
             return sendMessage(
               `${
-                message.sender.displayname
+                message.sender.dliveUsername
               } that giveaway already has a winner!`
             );
           let one = giveaway.createdAt + giveaway.secondsUntilClose * 1000;
@@ -397,7 +411,7 @@ function createWindow() {
                     let newObj = {};
                     newObj[sender] = {
                       tickets: 1,
-                      displayname: message.sender.displayname,
+                      displayname: message.sender.dliveUsername,
                       username: sender
                     };
                     giveaway.entries = Object.assign(
@@ -407,7 +421,7 @@ function createWindow() {
                     );
                     sendMessage(
                       `${
-                        message.sender.displayname
+                        message.sender.dliveUsername
                       } has entered the giveaway with 1 ticket!`
                     );
                   }
@@ -424,13 +438,13 @@ function createWindow() {
                   if (totalCost >= user.points)
                     return sendMessage(
                       `${
-                        message.sender.displayname
+                        message.sender.dliveUsername
                       } there has been an error, you do not have enough points to purchase this ticket(s). Total Cost: ${totalCost}`
                     );
                   let newObj = {};
                   newObj[sender] = {
                     tickets: ticketsToPurchase + giveawayUser.tickets,
-                    displayname: message.sender.displayname,
+                    displayname: message.sender.dliveUsername,
                     username: sender
                   };
                   giveaway.entries = Object.assign(
@@ -444,7 +458,7 @@ function createWindow() {
                   rxUsers.next(Object.assign({}, users, usersObj));
                   sendMessage(
                     `${
-                      message.sender.displayname
+                      message.sender.dliveUsername
                     } has purchased more tickets for the giveaway with a total of ${ticketsToPurchase +
                       giveawayUser.tickets} tickets!`
                   );
@@ -458,13 +472,13 @@ function createWindow() {
                   if (totalCost > user.points)
                     return sendMessage(
                       `${
-                        message.sender.displayname
+                        message.sender.dliveUsername
                       } there has been an error, you do not have enough points to purchase this ticket(s). Total Cost: ${totalCost}`
                     );
                   let newObj = {};
                   newObj[sender] = {
                     tickets: ticketsToPurchase,
-                    displayname: message.sender.displayname,
+                    displayname: message.sender.dliveUsername,
                     username: sender
                   };
                   giveaway.entries = Object.assign(
@@ -479,7 +493,7 @@ function createWindow() {
                   // TODO make helper file to handle a lot of users joining at once, so the bot doesnt lag aka (john, steve, and sam have entered the giveaway!);
                   sendMessage(
                     `${
-                      message.sender.displayname
+                      message.sender.dliveUsername
                     } has entered the giveaway with ${ticketsToPurchase} ticket(s)!`
                   );
                 }
@@ -491,7 +505,7 @@ function createWindow() {
               } else {
                 sendMessage(
                   `${
-                    message.sender.displayname
+                    message.sender.dliveUsername
                   } you do not have enough points for that!`
                 );
               }
@@ -602,7 +616,6 @@ function createWindow() {
         let dlive = new DLive({ authKey: config.authKey });
         dlive.listenToChat(config.streamerDisplayName).then(messages => {
           subscriber = messages.subscribe(message => {
-            console.log('NEW MSG FROM DLIVE JS', JSON.stringify(message));
             WS.send(JSON.stringify(message));
           });
         });
@@ -646,7 +659,6 @@ function createWindow() {
       let dlive = new DLive({ authKey: config.authKey });
       dlive.listenToChat(config.streamerDisplayName).then(messages => {
         messages.subscribe(message => {
-          console.log('NEW MSG FROM DLIVE JS', message);
           onNewMsg(message);
         });
       });
@@ -654,7 +666,6 @@ function createWindow() {
 }
 
 ipcMain.on('sendmessage', (event, { from, message }) => {
-  console.log('SENDING MESSAGE');
   sendMessage(message);
 });
 

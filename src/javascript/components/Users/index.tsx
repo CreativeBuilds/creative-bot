@@ -23,7 +23,7 @@ const UsersPage = ({ props }) => {
       .map(username => Users[username])
       .filter(user => {
         if (searchUsername.trim() === '') return true;
-        return user.displayname
+        return user.dliveUsername
           .toLowerCase()
           .includes(searchUsername.trim().toLowerCase());
       }),
