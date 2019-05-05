@@ -692,11 +692,11 @@ function createWindow() {
       });
       dlive.getChannel(config.streamerDisplayName).then(channel => {
         channel.rxLivestream.subscribe(livestream => {
-          console.log('GOT LIVESTREAM', livestream);
-          if (typeof livestream == 'object') {
+          if (!livestream) return;
+          if (typeof livestream === 'object') {
             if (Object.keys(livestream).length === 0) return;
+            win.webContents.send('livestreamObject', livestream);
           }
-          win.webContents.send('livestreamObject', livestream);
         });
       });
     });
