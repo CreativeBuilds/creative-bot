@@ -690,6 +690,16 @@ function createWindow() {
           onNewMsg(message, config.streamerDisplayName);
         });
       });
+    });
+  rxConfig
+    .pipe(
+      filter(x => !!x.authKey),
+      filter(x => {
+        return !x.streamerDisplayName;
+      }),
+      first()
+    )
+    .subscribe(config => {
       dlive.getChannel(config.streamerDisplayName).then(channel => {
         channel.rxLivestream.subscribe(livestream => {
           if (!livestream) return;
