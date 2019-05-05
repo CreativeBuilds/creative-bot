@@ -9,8 +9,12 @@ module.exports = ({ reply, custom_variables, message, streamChannel }) => {
         console.log('str', str);
         let run = custom_variables[key].function;
         if (new RegExp(str, 'gi').test(reply) && run) {
-          console.log('object keys', Object.keys(streamChannel));
-          run({ message, streamChannel }).then(replacement => {
+          console.log('streamChannel', streamChannel);
+          run({
+            message,
+            streamChannel: streamChannel ? streamChannel : null
+          }).then(replacement => {
+            console.log('REPLACEMENT', replacement);
             reply = reply.replace(new RegExp(str, 'gi'), replacement);
             return res(replace(i + 1));
           });

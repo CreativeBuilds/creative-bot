@@ -17,7 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
-    "dlive-js": "^1.0.10",
+    "dlive-js": "^1.0.12",
     "electron-json-storage": "^4.1.6",
     "electron-log": "^3.0.5",
     "electron-reload": "^1.4.0",
