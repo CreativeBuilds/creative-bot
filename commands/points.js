@@ -5,7 +5,7 @@ const run = ({ message, args }) => {
     console.log(message, args);
     rxUsers.pipe(first()).subscribe(users => {
       // TODO in dlive-js format username will be blockchainUsername
-      let username = message.sender.username;
+      let username = message.sender.blockchainUsername;
       return res(
         `${message.sender.displayname}, you have ${
           users[username] ? users[username].points : 0

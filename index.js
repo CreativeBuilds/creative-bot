@@ -387,7 +387,7 @@ function createWindow() {
           if (giveaway.secondsUntilClose === 0 || secondsLeft > 0) {
             // User can enter check to see if they have enough in their balance;
             rxUsers.pipe(first()).subscribe(users => {
-              let sender = message.sender.username;
+              let sender = message.sender.blockchainUsername;
               if (!users[sender]) return;
               let user = Object.assign({}, users[sender]);
               if (user.points > giveaway.cost) {
@@ -553,7 +553,7 @@ function createWindow() {
         message,
         inLino: message.inLino
       });
-      let username = message.sender.username;
+      let username = message.sender.blockchainUsername;
       let Users = Object.assign({}, users);
       if (!Users[username]) {
         Users[username] = {
