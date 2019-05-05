@@ -411,24 +411,26 @@ function createWindow() {
               if (!users[sender]) return;
               let user = Object.assign({}, users[sender]);
               if (user.points > giveaway.cost) {
+                if (!giveaway.entires) giveaway.entires = {};
                 if (giveaway.cost === 0) {
-                  if (giveaway.entries[sender]) return;
-                  let newObj = {};
-                  newObj[sender] = {
-                    tickets: 1,
-                    displayname: message.sender.displayname,
-                    username: sender
-                  };
-                  giveaway.entries = Object.assign(
-                    {},
-                    giveaway.entries[sender],
-                    newObj
-                  );
-                  sendMessage(
-                    `${
-                      message.sender.displayname
-                    } has entered the giveaway with 1 ticket!`
-                  );
+                  if (!giveaway.entries[sender]) {
+                    let newObj = {};
+                    newObj[sender] = {
+                      tickets: 1,
+                      displayname: message.sender.displayname,
+                      username: sender
+                    };
+                    giveaway.entries = Object.assign(
+                      {},
+                      giveaway.entries,
+                      newObj
+                    );
+                    sendMessage(
+                      `${
+                        message.sender.displayname
+                      } has entered the giveaway with 1 ticket!`
+                    );
+                  }
                 } else if (
                   giveaway.maxEntries > 0 &&
                   giveaway.entires[sender]
@@ -453,7 +455,7 @@ function createWindow() {
                   };
                   giveaway.entries = Object.assign(
                     {},
-                    giveaway.entries[sender],
+                    giveaway.entries,
                     newObj
                   );
                   user.points -= totalCost;
@@ -487,7 +489,7 @@ function createWindow() {
                   };
                   giveaway.entries = Object.assign(
                     {},
-                    giveaway.entries[sender],
+                    giveaway.entries,
                     newObj
                   );
                   user.points -= totalCost;
