@@ -8,7 +8,7 @@ const { Sorting } = require('./Sorting');
 let { setRxCommands } = require('../../helpers/rxCommands');
 
 const Window: any = window;
-const { ipcRenderer } = Window.require('electron');
+const { ipcRenderer, shell } = Window.require('electron');
 
 const styles: any = require('./Commands.scss');
 const AddCommandPopup = ({
@@ -68,6 +68,23 @@ const AddCommandPopup = ({
             }
           }}
         />
+        <div className={styles.input_name}>
+          <span
+            className={styles.hover}
+            style={{
+              color: stateTheme.main.highlightColor,
+              fontWeight: 'bold'
+            }}
+            onClick={e => {
+              e.preventDefault();
+              shell.openExternal(
+                'https://github.com/CreativeBuilds/dlive-chat-bot/wiki/Custom-Commands'
+              );
+            }}
+          >
+            Advanced Command Useage
+          </span>
+        </div>
       </div>
       <div
         className={styles.submit}

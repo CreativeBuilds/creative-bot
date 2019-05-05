@@ -57,6 +57,24 @@
   padding: 5px;
 }
 
+.viewers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 5px;
+  transition: all 0.15s ease-in-out;
+  &:hover {
+    color: #ffd300 !important;
+    stroke: #ffd300 !important;
+    fill: #ffd300 !important;
+    cursor: pointer;
+  }
+  span {
+    font-size: 0.8em;
+  }
+}
+
 .input {
   width: calc(100% - 10px);
   height: 48px;

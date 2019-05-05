@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
 import { ThemeContext } from '../../helpers';
-import { MdSend } from 'react-icons/md';
+import { MdSend, MdPerson } from 'react-icons/md';
 
 import { Message } from './Message';
 import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
@@ -120,7 +120,9 @@ const Chat = ({ props }) => {
   const [isScrolledUp, setIsScrolledUp] = useState(false);
   const [text, setText] = useState('');
   const { Messages, addPopup, closeCurrentPopup } = props;
+  const viewers = props.viewers;
 
+  const [viewersToggle, setViewersToggle] = useState<boolean>(true);
   const [config, setConfig]: any = useState({});
   const [firstRender, setFirstRender] = useState(true);
 
@@ -269,6 +271,15 @@ const Chat = ({ props }) => {
     <div style={stateTheme.menu} className={styles.Chat}>
       <div style={stateTheme.menu.title} className={styles.header}>
         CHAT
+        <div
+          className={styles.viewers}
+          onClick={() => {
+            setViewersToggle(!viewersToggle);
+          }}
+        >
+          <MdPerson />
+          <span> {viewersToggle ? viewers : 'HIDDEN'}</span>
+        </div>
       </div>
       <div style={{}} className={styles.content} id='messages'>
         {Messages.map((message, nth) => {

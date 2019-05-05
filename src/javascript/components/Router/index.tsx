@@ -32,7 +32,8 @@ class RouterWrapper extends Component<any, any> {
     commands: {},
     giveaways: {},
     timers: {},
-    config: {}
+    config: {},
+    livestream: { watchingCount: 0 }
   };
   componentDidMount() {
     rxUsers.subscribe(Users => {
@@ -56,6 +57,10 @@ class RouterWrapper extends Component<any, any> {
       console.log('got message', message);
       let newArr = [...this.state.messages, message];
       this.setState({ messages: newArr });
+    });
+    ipcRenderer.on('livestreamObject', (event, livestream) => {
+      console.log('got livestream', livestream);
+      this.setState({ livestream });
     });
     rxConfig.subscribe(Config => {
       this.setState({ config: Config });
@@ -95,7 +100,8 @@ class RouterWrapper extends Component<any, any> {
             componentProps={{
               Messages: this.state.messages,
               addPopup: this.addPopup,
-              closeCurrentPopup: this.closeCurrentPopup
+              closeCurrentPopup: this.closeCurrentPopup,
+              viewers: this.state.livestream.watchingCount || 0
             }}
             Component={Chat}
             exact={true}

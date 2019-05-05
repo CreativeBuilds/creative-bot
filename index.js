@@ -392,7 +392,6 @@ function createWindow() {
         Commands = Object.assign({}, Commands, obj);
         if (!command.enabled) return;
         dlive.getChannel(streamerDisplayName).then(streamChannel => {
-          console.log('streamChannel', streamChannel);
           parseReply({
             reply: command.reply,
             message,
@@ -677,6 +676,15 @@ function createWindow() {
       dlive.listenToChat(config.streamerDisplayName).then(messages => {
         messages.subscribe(message => {
           onNewMsg(message, config.streamerDisplayName);
+        });
+      });
+      dlive.getChannel(config.streamerDisplayName).then(channel => {
+        channel.rxLivestream.subscribe(livestream => {
+          console.log('GOT LIVESTREAM', livestream);
+          if (typeof livestream == 'object') {
+            if (Object.keys(livestream).length === 0) return;
+          }
+          win.webContents.send('livestreamObject', livestream);
         });
       });
     });
