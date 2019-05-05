@@ -17,7 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
-    "dlive-js": "^1.0.8",
+    "dlive-js": "^1.0.10",
     "electron-json-storage": "^4.1.6",
     "electron-log": "^3.0.5",
     "electron-reload": "^1.4.0",
@@ -25,6 +25,7 @@
     "https": "^1.0.0",
     "lino-js": "^1.0.19",
     "lodash": "^4.17.11",
+    "moment": "^2.24.0",
     "open": "^6.2.0",
     "queueing-subject": "^0.3.0",
     "react": "^16.8.6",

@@ -13,6 +13,7 @@ const { distinctUntilChanged, filter, first } = require('rxjs/operators');
 const _ = require('lodash');
 const storage = require('electron-json-storage');
 const DLive = require('dlive-js');
+let dlive;
 let win;
 var env = process.env.NODE_ENV || 'production';
 console.print = console.log;
@@ -32,6 +33,8 @@ let Giveaways = {};
 const rxUsers = require('./helpers/rxUsers');
 const rxCommands = require('./helpers/rxCommands');
 const rxGiveaways = require('./helpers/rxGiveaways');
+const getCustomVariables = require('./helpers/getCustomVariables');
+const parseReply = require('./helpers/parseReply');
 rxCommands.subscribe(commands => (Commands = commands));
 const rxTimers = require('./helpers/rxTimers');
 let { makeNewCommand, getBlockchainUsername } = require('./helpers');
@@ -341,6 +344,10 @@ function createWindow() {
   // const ws = new WebSocket('wss://graphigostream.prd.dlive.tv', 'graphql-ws');
 
   const commands = {};
+  let custom_variables = {};
+  getCustomVariables().then(variables => {
+    custom_variables = variables;
+  });
 
   const loadCommands = () => {
     fs.readdir(__dirname + '/commands', (err, files) => {
@@ -361,14 +368,14 @@ function createWindow() {
 
   loadCommands();
 
-  const textMessage = (message, data) => {
+  const textMessage = (message, streamerDisplayName, data) => {
     let { content } = message;
     if (content[0] == config.commandPrefix) {
       content = content.substring(1);
       let args = content.split(' ');
       commandName = args[0];
       let command = commands[commandName];
-      if (command) {
+      if (command && !(commandName === 'points' && !!Commands[commandName])) {
         // TODO check permissions
         command.run({ message, data, args }).then(msg => {
           if (!msg) return;
@@ -384,8 +391,18 @@ function createWindow() {
         obj[commandName].uses += 1;
         Commands = Object.assign({}, Commands, obj);
         if (!command.enabled) return;
-        sendMessage(command.reply);
-        rxCommands.next(Commands);
+        dlive.getChannel(streamerDisplayName).then(streamChannel => {
+          console.log('streamChannel', streamChannel);
+          parseReply({
+            reply: command.reply,
+            message,
+            custom_variables,
+            streamChannel
+          }).then(reply => {
+            sendMessage(reply);
+            rxCommands.next(Commands);
+          });
+        });
       } else {
         rxGiveaways.pipe(first()).subscribe(giveaways => {
           let giveaway = Object.assign({}, giveaways[commandName]);
@@ -516,7 +533,7 @@ function createWindow() {
     }
   };
 
-  const onNewMsg = message => {
+  const onNewMsg = (message, streamerDisplayName) => {
     if (message.type === 'Follow') {
       wss.broadcast(
         JSON.stringify({
@@ -591,7 +608,7 @@ function createWindow() {
           value: message
         })
       );
-      textMessage(message);
+      textMessage(message, streamerDisplayName);
       keepActive(message);
       win.webContents.send('newmessage', { message });
       let content = message.content;
@@ -613,7 +630,7 @@ function createWindow() {
         first()
       )
       .subscribe(config => {
-        let dlive = new DLive({ authKey: config.authKey });
+        dlive = new DLive({ authKey: config.authKey });
         dlive.listenToChat(config.streamerDisplayName).then(messages => {
           subscriber = messages.subscribe(message => {
             WS.send(JSON.stringify(message));
@@ -659,7 +676,7 @@ function createWindow() {
       let dlive = new DLive({ authKey: config.authKey });
       dlive.listenToChat(config.streamerDisplayName).then(messages => {
         messages.subscribe(message => {
-          onNewMsg(message);
+          onNewMsg(message, config.streamerDisplayName);
         });
       });
     });
