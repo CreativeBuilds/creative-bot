@@ -5,3 +5,5 @@ build/*
 extras
 
 electron-builder.json
+yarn-error.log
+*.log
