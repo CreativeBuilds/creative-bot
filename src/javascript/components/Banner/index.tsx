@@ -6,13 +6,12 @@ const { ipcRenderer, shell } = Window.require('electron');
 
 const styles: any = require('./Banner.scss');
 
-const Banner = ({ }) => { 
+const Banner = ({ }) => {
 
     return (
-        <div className="banner">
-            
-        </div>
-    );
+        <div className={styles.banner}>
+            <span>Test Banner</span>
+        </div>);
 };
 
-export { Banner }
+export { Banner };
