@@ -20,7 +20,7 @@ const Main = props => {
   // TODO swap theme based on currently selected (probably do this with context from react)
   return (
     <div className={styles.appFrame}>
-      <Banner />
+      <Banner isOpen={true} alertType="warning" />
       <ThemeContext.Provider value={{ stateTheme, setStateTheme }}>
         <div className={styles.main} style={style().main}>
           <Router />
