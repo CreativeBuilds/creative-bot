@@ -106,7 +106,8 @@
                 height: 100%;
                 width: 100%;
                 -webkit-mask-size: 23.1%;
-            
+
+
                 &.minimize {
                     //-webkit-mask-image: url('chrome-minimize.svg') no-repeat 50% 50%;
                 }
@@ -117,9 +118,15 @@
 
                 &.close {
                    // -webkit-mask: url('chrome-close.svg') no-repeat 50% 50%;
+                   img {
+
+                    &:hover {
+                        filter: invert(100%);
+                    }
+                    }
                 }
 
-                svg {
+                img {
                     shape-rendering: crispEdges;
                     text-align: center;
                     stroke: none;

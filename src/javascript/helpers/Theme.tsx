@@ -21,7 +21,10 @@ const theme = {
     },
     titleBar: {
       backgroundColor: '#333333',
-      color: '#CCCCCC'
+      color: '#CCCCCC',
+    },
+    titleBarActionIcon: {
+      '-webkit-filter': 'invert(80%)'
     },
     chat: {
       input: {
@@ -59,6 +62,9 @@ const theme = {
     titleBar: {
       backgroundColor: '#cccccc',
       color: '#333333'
+    },
+    titleBarActionIcon: {
+      '-webkit-filter': 'invert(30%)'
     },
     chat: {
       input: {
