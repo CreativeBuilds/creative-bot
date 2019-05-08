@@ -1,0 +1,135 @@
+.titleBar {
+    display: flex;
+    height: 30px;
+    min-width: 100%;
+    -webkit-app-region: drag;
+    user-select: none;
+
+    .dragRegion {
+        top: 0;
+        left: 0;
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 30px;
+        z-index: -1;
+        -webkit-app-region: drag;
+    }
+
+    .iconContainer, .contentContainer, .windowControlsContainer {
+        display: table-column;
+        height: 30px;
+    }
+
+    .iconContainer {
+        float: left;
+        height: 30px;
+        width: 35px;
+
+        .appIcon {
+            width: 18px;
+            margin: auto;
+            margin-top: 6px;
+            display: block;
+        }
+    }
+
+    .contentContainer {
+        width: calc(100% - (35px + 138px));
+        float: left;
+
+        .windowTitle {
+            display: inline-block;
+            flex: 0 1 auto;
+            font-size: 12px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 30px;
+            zoom: 1;
+            font-family: Segoe WPC,Segoe UI,sans-serif;
+
+        }
+
+        .actionBtn {
+            display: inline-block;
+            font-size: 12px;
+            -webkit-app-region: no-drag;
+            height: 100%;
+            line-height: 30px;
+            width: 46px;
+            font-family: Segoe WPC,Segoe UI,sans-serif;
+            text-align: center;
+            float: right;
+
+            &:hover {
+                background-color: hsla(0,0%,100%,.1);
+            }
+        }
+    }
+
+    .windowControlsContainer {
+        display: flex;
+        flex-grow: 0;
+        flex-shrink: 0;
+        text-align: center;
+        position: relative;
+        z-index: 3000;
+        -webkit-app-region: no-drag;
+        height: 100%;
+        width: 138px;
+        margin-left: auto;
+
+        .actionBtn {
+            display: inline-block;
+            -webkit-app-region: no-drag;
+            height: 100%;
+            width: 33.34%;
+
+            cursor: pointer;
+            box-sizing: border-box;
+            padding: 5px;
+
+            &:hover {
+                &:not(:last-of-type) {
+                    background-color: hsla(0,0%,100%,.1);
+                }
+
+                &:last-of-type {
+                    background-color: rgba(232,17,35,.9);
+                }
+            }
+
+            .icon {
+                height: 100%;
+                width: 100%;
+                -webkit-mask-size: 23.1%;
+            
+                &.minimize {
+                    //-webkit-mask-image: url('chrome-minimize.svg') no-repeat 50% 50%;
+                }
+
+                &.maximize {
+                    //-webkit-mask: url('chrome-maxmize.svg') no-repeat 50% 50%;
+                }
+
+                &.close {
+                   // -webkit-mask: url('chrome-close.svg') no-repeat 50% 50%;
+                }
+
+                svg {
+                    shape-rendering: crispEdges;
+                    text-align: center;
+                    stroke: none;
+                    &:hover {
+                        stroke: none;
+                    }
+                }
+            }
+        }
+    }
+
+}
+

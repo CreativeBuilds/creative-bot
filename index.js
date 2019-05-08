@@ -84,13 +84,14 @@ if (env === 'dev') {
 function createWindow() {
   // Create the browser window.
   autoUpdater.checkForUpdatesAndNotify();
-  win = new BrowserWindow({ width: 1280, height: 720 });
+  win = new BrowserWindow({ width: 1280, height: 720, frame: false });
 
   // and load the index.html of the app.
   win.loadFile(__dirname + '/dist/index.html');
   win.on('close', function() {
     process.exit();
   });
+
   let oldGiveaways = { first: true };
   let timeouts = [];
   rxGiveaways.subscribe(giveaways => {

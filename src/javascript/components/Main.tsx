@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ThemeContext, theme } from '../helpers';
 
 import { Router } from './Router';
+import { TitleBar } from './TitleBar';
 import { Banner } from './Banner';
 
 const Window: any = window;
@@ -21,10 +22,8 @@ const Main = props => {
   return (
     <ThemeContext.Provider value={{ stateTheme, setStateTheme }}>
         <div className={styles.appFrame}>
-          <div className={styles.appTitleBarContainer}>
-            Test Title Bar
-          </div>
-          <Banner isOpen={true} alertType="warning" />
+          <TitleBar />
+          <Banner isOpen={false} alertType="warning" />
           <div className={styles.main} style={style().main}>
             <Router />
           </div>

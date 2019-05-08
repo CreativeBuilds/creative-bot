@@ -19,6 +19,10 @@ const theme = {
         backgroundColor: '#0e0f10'
       }
     },
+    titleBar: {
+      backgroundColor: '#333333',
+      color: '#CCCCCC'
+    },
     chat: {
       input: {
         backgroundColor: '#202225',
@@ -51,6 +55,10 @@ const theme = {
       title_hover: {
         backgroundColor: '#dddddd'
       }
+    },
+    titleBar: {
+      backgroundColor: '#cccccc',
+      color: '#333333'
     },
     chat: {
       input: {
