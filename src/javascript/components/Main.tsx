@@ -19,14 +19,17 @@ const Main = props => {
   const style = (obj: {} = {}) => Object.assign(obj, stateTheme);
   // TODO swap theme based on currently selected (probably do this with context from react)
   return (
-    <div className={styles.appFrame}>
-      <Banner isOpen={true} alertType="warning" />
-      <ThemeContext.Provider value={{ stateTheme, setStateTheme }}>
-        <div className={styles.main} style={style().main}>
-          <Router />
+    <ThemeContext.Provider value={{ stateTheme, setStateTheme }}>
+        <div className={styles.appFrame}>
+          <div className={styles.appTitleBarContainer}>
+            Test Title Bar
+          </div>
+          <Banner isOpen={true} alertType="warning" />
+          <div className={styles.main} style={style().main}>
+            <Router />
+          </div>
         </div>
       </ThemeContext.Provider>
-    </div>
   );
 };
 
