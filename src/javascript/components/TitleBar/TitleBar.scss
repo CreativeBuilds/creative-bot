@@ -87,8 +87,6 @@
             -webkit-app-region: no-drag;
             height: 100%;
             width: 33.34%;
-
-            cursor: pointer;
             box-sizing: border-box;
             padding: 5px;
 
@@ -120,23 +118,29 @@
                    // -webkit-mask: url('chrome-close.svg') no-repeat 50% 50%;
                    img {
 
-                    &:hover {
-                        filter: invert(100%);
-                    }
+                        &:hover {
+                            filter: invert(100%);
+                        }
                     }
                 }
 
-                img {
-                    shape-rendering: crispEdges;
+                svg {
+                    vertical-align: middle;
                     text-align: center;
-                    stroke: none;
-                    &:hover {
-                        stroke: none;
+
+                    &.maximized {
+                        width: 14px;
                     }
                 }
             }
         }
     }
 
+}
+
+.actionBtn { 
+    cursor: pointer;
+
+    &.devTools { width: 64px !important; }
 }
 

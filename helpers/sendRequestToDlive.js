@@ -45,7 +45,6 @@ module.exports = ({ operationName, query, variables }) => {
             RES(body);
           });
           res.on('error', function(e) {
-            console.log("TEST");
             rej(e);
           });
         });

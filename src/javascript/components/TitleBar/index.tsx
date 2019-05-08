@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
 import { theme } from '../../helpers';
+import { MdClose, MdCheckBoxOutlineBlank, MdFlipToFront, Md3DRotation, MdRemove  } from 'react-icons/md';
 
 const Window: any = window;
 const { ipcRenderer, shell, remote } = Window.require('electron');
@@ -8,9 +9,6 @@ const { ipcRenderer, shell, remote } = Window.require('electron');
 const styles: any = require('./TitleBar.scss');
 
 const minimizeIcon: any = require('./chrome-minimize.svg');
-const maximizeIcon: any = require('./chrome-maximize.svg');
-const unmaximizeIcon: any = require('./chrome-restore.svg');
-const closeIcon: any = require('./chrome-close.svg');
 
 interface TitleBar {
 
@@ -50,7 +48,7 @@ const TitleBar = () => {
 
     // get maximized icon depending if unmaximized or maximized
     const getMaximizedIcon = () => {
-        return isMaximize ? unmaximizeIcon : maximizeIcon;
+        return isMaximize ? <MdFlipToFront /> : <MdCheckBoxOutlineBlank  className={styles.maximized}/>;
     }
 
     // Closes current window
@@ -72,24 +70,24 @@ const TitleBar = () => {
                 <div className={styles.windowTitle}>
                     {remote.getCurrentWindow().getTitle()}
                 </div>
-                <div className={`${styles.actionBtn}`} onClick={() => { showDevTools(); }}>
-                    Dev
+                <div className={`${styles.actionBtn} ${styles.devTools}`} onClick={() => { showDevTools(); }}>
+                    Dev Tools
                 </div>
             </div>
             <div className={styles.windowControlsContainer}>
                 <div className={`${styles.actionBtn}`} onClick={() => { minimize(); }}>
                     <div className={`${styles.icon} ${styles.minimize}`} >
-                        <img src={minimizeIcon} style={stateTheme.titleBarActionIcon} />
+                        <MdRemove />
                     </div>
                 </div>
                 <div className={`${styles.actionBtn}`} onClick={() => { maximize();}}>
                     <div className={`${styles.icon} ${styles.maximize}`}> 
-                        <img src={getMaximizedIcon()} style={stateTheme.titleBarActionIcon}/>
+                        {getMaximizedIcon()} 
                     </div>
                 </div>
                 <div className={`${styles.actionBtn}`} onClick={() => { close(); }}>
                     <div className={`${styles.icon} ${styles.close}`} >
-                        <img src={closeIcon} style={stateTheme.titleBarActionIcon} />
+                        <MdClose />
                     </div>
                 </div>
             </div>
