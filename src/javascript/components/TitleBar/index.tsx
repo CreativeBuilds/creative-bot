@@ -8,8 +8,6 @@ const { ipcRenderer, shell, remote } = Window.require('electron');
 
 const styles: any = require('./TitleBar.scss');
 
-const minimizeIcon: any = require('./chrome-minimize.svg');
-
 interface TitleBar {
 
 }
