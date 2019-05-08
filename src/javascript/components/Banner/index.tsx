@@ -8,8 +8,8 @@ const { ipcRenderer, shell } = Window.require('electron');
 const styles: any = require('./Banner.scss');
 
 interface Banner {
-    isOpen: Boolean,
-    alertType: String
+    isOpen?: Boolean,
+    alertType?: String
 }
 
 const Banner = ( {isOpen, alertType } : Banner) => {
@@ -34,10 +34,10 @@ const Banner = ( {isOpen, alertType } : Banner) => {
 
     return (
         <div className={`${setAlertType(alert)} ${opened ? styles.opened : styles.closed}`} >
-            <div className={styles.bannerItem + " " + styles.content }>
+            <div className={`${styles.bannerItem} ${styles.content}`}>
                 <div>Test Banner for Alerts like for Latest Update Avaliable</div>
             </div>
-            <MdClose className={styles.bannerItem + " " + styles.closeBtn }  onClick={() => {
+            <MdClose className={`${styles.bannerItem} ${styles.closeBtn}`}  onClick={() => {
                 setIsOpen(false);
             }} />
         </div>);

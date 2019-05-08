@@ -41,11 +41,26 @@
   .message_content {
     flex: 1;
     text-align: left;
-    span {
+    div {
+      display: table-cell;
+      vertical-align: middle;
       font-weight: bold;
       &:hover {
         cursor: pointer;
       }
+    }
+
+    .message {
+      font-weight: normal;
+    }
+  }
+
+  .sticker_container {
+    display: table-cell;
+    .sticker {
+      margin-left: 10px;
+      max-width: 80px;
+      max-height: 80px;
     }
   }
 }

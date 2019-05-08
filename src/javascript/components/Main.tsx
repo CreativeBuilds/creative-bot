@@ -23,7 +23,7 @@ const Main = props => {
     <ThemeContext.Provider value={{ stateTheme, setStateTheme }}>
         <div className={styles.appFrame}>
           <TitleBar />
-          <Banner isOpen={false} alertType="warning" />
+          <Banner />
           <div className={styles.main} style={style().main}>
             <Router />
           </div>
