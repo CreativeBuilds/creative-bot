@@ -7,8 +7,12 @@ module.exports = {
     return new Promise((res, rej) => {
       if (!streamChannel || !streamChannel.getUptime) res('null');
       streamChannel.getUptime().then(seconds => {
+        console.log('Seconds', seconds);
         if (!seconds) res(`OFFLINE`);
-        res(`${moment.utc(seconds * 1000).format('hh:mm:ss')}`);
+        let duration = moment.duration(seconds, 'seconds');
+        // console.log('DURATION', duration);
+        let format = moment.utc(duration.asMilliseconds()).format('HH:mm:ss');
+        res(`${format}`);
       });
     });
   }

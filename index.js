@@ -39,6 +39,7 @@ rxCommands.subscribe(commands => (Commands = commands));
 const rxTimers = require('./helpers/rxTimers');
 let { makeNewCommand, getBlockchainUsername } = require('./helpers');
 const { autoUpdater } = require('electron-updater');
+require('./helpers/startTimers').run();
 
 rxConfig
   .pipe(
@@ -641,7 +642,7 @@ function createWindow() {
         first()
       )
       .subscribe(config => {
-        dlive = new DLive({ authKey: config.authKey });
+        if (!dlive) dlive = new DLive({ authKey: config.authKey });
         dlive.listenToChat(config.streamerDisplayName).then(messages => {
           subscriber = messages.subscribe(message => {
             WS.send(JSON.stringify(message));
@@ -684,7 +685,7 @@ function createWindow() {
       first()
     )
     .subscribe(config => {
-      let dlive = new DLive({ authKey: config.authKey });
+      dlive = new DLive({ authKey: config.authKey });
       dlive.listenToChat(config.streamerDisplayName).then(messages => {
         messages.subscribe(message => {
           onNewMsg(message, config.streamerDisplayName);
@@ -695,7 +696,7 @@ function createWindow() {
     .pipe(
       filter(x => !!x.authKey),
       filter(x => {
-        return !x.streamerDisplayName;
+        return typeof x.streamerDisplayName === 'string';
       }),
       first()
     )
