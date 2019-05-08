@@ -714,7 +714,21 @@ function createWindow() {
 }
 
 ipcMain.on('sendmessage', (event, { from, message }) => {
-  sendMessage(message);
+  if (config.authKey != null || config.username != null) {
+    sendMessage(message);
+  } else {
+    console.log("Can't Connect to Dlive Channel because you possibly havent entered a Username and Auth Key");
+
+    var bannerMessage = {
+      needsBanner: true,
+      message: "Can't Connect to Dlive because You may have not correctly entered a Username and Auth Key",
+      type: "error",
+      alertType: "alert"
+    };
+
+    event.sender.send('bannermessage', [bannerMessage]);
+  }
 });
 
 app.on('ready', createWindow);
+

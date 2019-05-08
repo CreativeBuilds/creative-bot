@@ -16,6 +16,7 @@ const Banner = ( {isOpen, alertType } : Banner) => {
     
     var [opened, setIsOpen] = useState<Boolean>(isOpen);
     const [alert] = useState(alertType);
+    const [message, setMessage] = useState('');
     //var Opened = props.isOpen;
 
     const setAlertType = (type : String) => {
@@ -32,10 +33,18 @@ const Banner = ( {isOpen, alertType } : Banner) => {
         }
     }
 
+    ipcRenderer.on('bannermessage', function(event, args) {
+        if (args[0].needsBanner == true) {
+            setIsOpen(true);
+            setMessage(args[0].message);
+            setAlertType(args[0].alertType);
+        }
+    });
+
     return (
         <div className={`${setAlertType(alert)} ${opened ? styles.opened : styles.closed}`} >
             <div className={`${styles.bannerItem} ${styles.content}`}>
-                <div>Test Banner for Alerts like for Latest Update Avaliable</div>
+                <div>{message}</div>
             </div>
             <MdClose className={`${styles.bannerItem} ${styles.closeBtn}`}  onClick={() => {
                 setIsOpen(false);
