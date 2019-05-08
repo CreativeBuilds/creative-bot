@@ -1,9 +1,15 @@
 import * as React from 'react';
+import Styles from './Message.scss';
 
-const Message = ({ styles, message, nth, stateTheme }) => {
+const Message = ({ styles, message, nth, stateTheme, ownerName }) => {
+  console.log(message.content.toLowerCase().includes(ownerName));
   return (
     <div
-      className={styles.message}
+      className={`${styles.message} ${
+        message.content.toLowerCase().includes(ownerName)
+          ? Styles.highlighted
+          : ''
+      }`}
       style={Object.assign(
         {},
         stateTheme.chat.message,

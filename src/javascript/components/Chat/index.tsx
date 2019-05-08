@@ -290,6 +290,10 @@ const Chat = ({ props }) => {
               message={message}
               stateTheme={stateTheme}
               nth={nth}
+              ownerName={(config.streamerDisplayName
+                ? config.streamerDisplayName
+                : ''
+              ).toLowerCase()}
             />
           );
         })}
