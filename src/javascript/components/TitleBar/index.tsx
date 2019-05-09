@@ -3,10 +3,59 @@ import { useContext, Component, useState, useEffect } from 'react';
 import { theme } from '../../helpers';
 import { MdClose, MdCheckBoxOutlineBlank, MdFlipToFront, Md3DRotation, MdRemove  } from 'react-icons/md';
 
+import { MenuBar } from '../MenuBar';
+
 const Window: any = window;
 const { ipcRenderer, shell, remote } = Window.require('electron');
 
 const styles: any = require('./TitleBar.scss');
+
+const menuItems = [
+    {
+        title: 'File',
+        contextMenu: [
+            {
+                icon: null,
+                title: 'Exit',
+                shortcut: '',
+                action: null             
+            }
+        ]
+    },
+    {
+        title: 'Edit',
+        contextMenu: [
+            {
+                icon: null,
+                title: 'Exit',
+                shortcut: '',
+                action: null             
+            }
+        ]
+    },
+    {
+        title: 'View',
+        contextMenu: [
+            {
+                icon: null,
+                title: 'Exit',
+                shortcut: '',
+                action: null             
+            }
+        ]
+    },
+    {
+        title: 'Help',
+        contextMenu: [
+            {
+                icon: null,
+                title: 'Exit',
+                shortcut: '',
+                action: null             
+            }
+        ]
+    }
+];
 
 interface TitleBar {
 
@@ -65,6 +114,7 @@ const TitleBar = () => {
                 <img className={styles.appIcon} src=".icon-ico/icon.ico" />
             </div>
             <div className={styles.contentContainer}>
+                <MenuBar menuItems={menuItems} />
                 <div className={styles.windowTitle}>
                     {remote.getCurrentWindow().getTitle()}
                 </div>
