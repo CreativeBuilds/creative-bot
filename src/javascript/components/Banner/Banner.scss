@@ -1,0 +1,51 @@
+.banner {
+    display: table-row;
+    height: 32px !important;
+    min-width: 100%;
+    text-align: center;
+    vertical-align: middle;
+    margin-top: auto;
+    margin-bottom: auto;
+
+    &.opened {
+        display: table-row;
+    }
+
+    &.closed {
+        display: none;
+    }
+
+    &.alert {
+        background-color: crimson;
+        color: white;
+    }
+
+    &.action {
+        background-color: royalblue;
+        color: white;
+    }
+
+    &.warning {
+        background-color: orange;
+        color: white;
+    }
+}
+
+.bannerItem {
+    display: inline-block;
+    height: 100%;
+    vertical-align: -webkit-baseline-middle;
+
+    &.content {
+        width: calc(100% - 32px);
+        
+    }
+
+    &.closeBtn {
+        float: right;
+        width: 24px;
+        height: 24px;
+        margin-top: 3px;
+        margin-right: 5px;
+    }
+}

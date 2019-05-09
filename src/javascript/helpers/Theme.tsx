@@ -19,6 +19,13 @@ const theme = {
         backgroundColor: '#0e0f10'
       }
     },
+    titleBar: {
+      backgroundColor: '#333333',
+      color: '#CCCCCC',
+    },
+    titleBarActionIcon: {
+      '-webkit-filter': 'invert(80%)'
+    },
     chat: {
       input: {
         backgroundColor: '#202225',
@@ -51,6 +58,13 @@ const theme = {
       title_hover: {
         backgroundColor: '#dddddd'
       }
+    },
+    titleBar: {
+      backgroundColor: '#cccccc',
+      color: '#333333'
+    },
+    titleBarActionIcon: {
+      '-webkit-filter': 'invert(30%)'
     },
     chat: {
       input: {

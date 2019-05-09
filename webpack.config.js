@@ -21,6 +21,10 @@ module.exports = {
         }
       },
       {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+        loader: 'url-loader'
+      },
+      {
         test: /\.(sa|sc|c)ss$/,
         use: [
           'style-loader',
@@ -32,6 +36,11 @@ module.exports = {
           },
           'sass-loader'
         ]
+      },
+      
+      {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        loader: 'url-loader'
       },
       {
         test: /\.(t|j)sx?$/,
