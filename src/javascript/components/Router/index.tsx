@@ -46,20 +46,27 @@ class RouterWrapper extends Component<any, any> {
       this.setState({ timers: Timers });
     });
     rxGiveaways.subscribe(Giveaways => {
-      console.log('GOT GIVEAWAYS', Giveaways);
       this.setState({ giveaways: Giveaways });
     });
     ipcRenderer.on('updatedUser', (event, { user }) => {
       let users = Object.assign({}, this.state.users);
       users[user.username] = user;
     });
+    ipcRenderer.on('removedMessage', (event, { id, streamer }) => {
+      let arr = [...this.state.messages];
+      let newArr = arr.reduce((acc, item) => {
+        if (item.id !== id) acc.push(item);
+        return acc;
+      }, []);
+      this.setState({
+        messages: newArr
+      });
+    });
     ipcRenderer.on('newmessage', (event, { message }) => {
-      console.log('got message', message);
       let newArr = [...this.state.messages, message];
       this.setState({ messages: newArr });
     });
     ipcRenderer.on('livestreamObject', (event, livestream) => {
-      console.log('got livestream', livestream);
       this.setState({ livestream });
     });
     rxConfig.subscribe(Config => {

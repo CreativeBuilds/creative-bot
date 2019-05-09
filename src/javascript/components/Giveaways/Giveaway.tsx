@@ -54,7 +54,6 @@ const Giveaway = ({
   const [currentTime, setCurrentTime] = useState(Date.now());
 
   useEffect(() => {
-    console.log('UPDATED');
     setInterval(() => {
       setCurrentTime(Date.now());
     }, 1000);
@@ -102,7 +101,6 @@ const Giveaway = ({
         });
       }
     });
-    console.log(totalEntries);
     let total = totalEntries.length;
     if (total === 0) {
       throw new Error('No one has entered the giveaway');

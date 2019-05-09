@@ -25,13 +25,15 @@
 }
 
 .message {
-  width: calc(100% - 10px);
+  width: calc(100% - 35px);
   padding: 5px;
   text-overflow: wrap;
   margin-bottom: 5px;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding-right: 30px;
+  position: relative;
   .image_container {
     padding-right: 5px;
     img {
@@ -41,10 +43,14 @@
   .message_content {
     flex: 1;
     text-align: left;
-    div {
-      display: table-cell;
-      vertical-align: middle;
+    display: flex;
+    align-items: center;
+
+    span {
       font-weight: bold;
+      padding-right: 5px;
+      height: 100%;
+      display: block;
       &:hover {
         cursor: pointer;
       }
@@ -87,6 +93,16 @@
   }
   span {
     font-size: 0.8em;
+  }
+}
+
+.message_remove {
+  position: absolute;
+  right: 0px;
+  font-size: 2em;
+  top: 0px;
+  &:hover {
+    cursor: pointer;
   }
 }
 

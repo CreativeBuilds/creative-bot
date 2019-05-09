@@ -39,6 +39,9 @@ rxCommands.subscribe(commands => (Commands = commands));
 const rxTimers = require('./helpers/rxTimers');
 let { makeNewCommand, getBlockchainUsername } = require('./helpers');
 const { autoUpdater } = require('electron-updater');
+require('./helpers/startTimers').run();
+
+const { removeMessage } = require('./helpers/removeMessage');
 
 rxConfig
   .pipe(
@@ -176,7 +179,6 @@ function createWindow() {
 
   ipcMain.on('editpoints', (event, { username, points }) => {
     let Users = Object.assign({}, users);
-    console.log('username', username);
     Users[username].points = points;
     rxUsers.next(Users);
   });
@@ -222,6 +224,12 @@ function createWindow() {
   ipcMain.on('getCommands', () => {
     let commands = Object.assign({}, Commands);
     win.webContents.send('commands', commands);
+  });
+
+  ipcMain.on('removeMessage', (event, { id, streamer }) => {
+    removeMessage(id, streamer).then(() => {
+      win.webContents.send('removedMessage', { id, streamer });
+    });
   });
 
   ipcMain.on('createCommand', (event, { commandName, commandReply }) => {
@@ -642,7 +650,7 @@ function createWindow() {
         first()
       )
       .subscribe(config => {
-        dlive = new DLive({ authKey: config.authKey });
+        if (!dlive) dlive = new DLive({ authKey: config.authKey });
         dlive.listenToChat(config.streamerDisplayName).then(messages => {
           subscriber = messages.subscribe(message => {
             WS.send(JSON.stringify(message));
@@ -685,7 +693,7 @@ function createWindow() {
       first()
     )
     .subscribe(config => {
-      let dlive = new DLive({ authKey: config.authKey });
+      dlive = new DLive({ authKey: config.authKey });
       dlive.listenToChat(config.streamerDisplayName).then(messages => {
         messages.subscribe(message => {
           onNewMsg(message, config.streamerDisplayName);
@@ -696,7 +704,7 @@ function createWindow() {
     .pipe(
       filter(x => !!x.authKey),
       filter(x => {
-        return !x.streamerDisplayName;
+        return typeof x.streamerDisplayName === 'string';
       }),
       first()
     )
