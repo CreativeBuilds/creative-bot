@@ -283,7 +283,6 @@ const Chat = ({ props }) => {
       </div>
       <div style={{}} className={styles.content} id='messages'>
         {Messages.map((message, nth) => {
-          console.log(message);
           return (
             <Message
               styles={styles}

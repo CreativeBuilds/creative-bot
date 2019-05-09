@@ -7,7 +7,6 @@ module.exports = {
     return new Promise((res, rej) => {
       if (!streamChannel || !streamChannel.getUptime) res('null');
       streamChannel.getUptime().then(seconds => {
-        console.log('Seconds', seconds);
         if (!seconds) res(`OFFLINE`);
         let duration = moment.duration(seconds, 'seconds');
         // console.log('DURATION', duration);

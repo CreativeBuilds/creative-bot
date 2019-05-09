@@ -41,6 +41,8 @@ let { makeNewCommand, getBlockchainUsername } = require('./helpers');
 const { autoUpdater } = require('electron-updater');
 require('./helpers/startTimers').run();
 
+const { removeMessage } = require('./helpers/removeMessage');
+
 rxConfig
   .pipe(
     filter(x => {
@@ -176,7 +178,6 @@ function createWindow() {
 
   ipcMain.on('editpoints', (event, { username, points }) => {
     let Users = Object.assign({}, users);
-    console.log('username', username);
     Users[username].points = points;
     rxUsers.next(Users);
   });
@@ -222,6 +223,12 @@ function createWindow() {
   ipcMain.on('getCommands', () => {
     let commands = Object.assign({}, Commands);
     win.webContents.send('commands', commands);
+  });
+
+  ipcMain.on('removeMessage', (event, { id, streamer }) => {
+    removeMessage(id, streamer).then(() => {
+      win.webContents.send('removedMessage', { id, streamer });
+    });
   });
 
   ipcMain.on('createCommand', (event, { commandName, commandReply }) => {

@@ -17,7 +17,6 @@ const socket$ = makeWebSocketObservable('wss://graphigostream.prd.dlive.tv', {
       rxConfig
         .pipe(
           filter(x => {
-            console.log(Object.keys(x));
             let Config = Object.assign({}, x);
             if (
               Config.streamerDisplayName &&
@@ -38,7 +37,6 @@ const socket$ = makeWebSocketObservable('wss://graphigostream.prd.dlive.tv', {
           first()
         )
         .subscribe(config => {
-          console.log('STARTED WS WITH CONFIG', config.streamer);
           ws.send(
             JSON.stringify({
               type: 'connection_init',
@@ -70,7 +68,6 @@ const socket$ = makeWebSocketObservable('wss://graphigostream.prd.dlive.tv', {
 const messages$ = socket$.pipe(
   // the observable produces a value once the websocket has been opened
   switchMap(getResponses => {
-    console.log('websocket opened');
     return getResponses(input$);
   }),
   retryWhen(errors => errors.pipe(delay(1000)))

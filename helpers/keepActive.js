@@ -15,7 +15,6 @@ rxConfig.pipe(filter(x => x.points && x.pointsTimer)).subscribe(config => {
   if (ticker) {
     clearInterval(ticker);
   }
-  console.log('GOT CONFIG', config.pointsTimer);
   ticker = setInterval(() => {
     if (Object.keys(activeUsers).length > 0) {
       Object.keys(activeUsers).forEach(username => {

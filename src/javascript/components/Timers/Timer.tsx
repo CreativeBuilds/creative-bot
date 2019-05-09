@@ -168,15 +168,12 @@ const Timer = ({
   };
 
   const editTimer = (name, enabled) => {
-    console.log('EDIT TIMER', name, enabled);
     rxTimers.pipe(first()).subscribe(Timers => {
-      console.log('ALL TIMERS', Timers);
       let timer = Object.assign({}, Timers[name]);
       timer.enabled = enabled;
       let obj = {};
       obj[name] = timer;
       let timers = Object.assign({}, Timers, obj);
-      console.log('pushing', timers);
       setRxTimers(timers);
     });
   };

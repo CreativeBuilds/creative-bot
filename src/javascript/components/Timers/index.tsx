@@ -119,8 +119,6 @@ const TimersPage = ({ props }) => {
     [isDesc ? 'desc' : 'asc']
   );
 
-  console.log('ALL TIMERS', timers);
-
   const addCommandPopup = () => {
     addPopup(
       <AddCommandPopup

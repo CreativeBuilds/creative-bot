@@ -6,15 +6,12 @@ module.exports = ({ reply, custom_variables, message, streamChannel }) => {
         if (i === keys.length) return res(reply);
         let key = keys[i];
         let str = `{${key}}`;
-        console.log('str', str);
         let run = custom_variables[key].function;
         if (new RegExp(str, 'gi').test(reply) && run) {
-          console.log('streamChannel', streamChannel);
           run({
             message,
             streamChannel: streamChannel ? streamChannel : null
           }).then(replacement => {
-            console.log('REPLACEMENT', replacement);
             reply = reply.replace(new RegExp(str, 'gi'), replacement);
             return res(replace(i + 1));
           });
