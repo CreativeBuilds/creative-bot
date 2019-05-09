@@ -28,9 +28,8 @@
   width: calc(100% - 35px);
   padding: 5px;
   text-overflow: wrap;
-  margin-bottom: 5px;
   display: flex;
-  justify-content: center;
+  // justify-content: center;
   align-items: center;
   padding-right: 30px;
   position: relative;
@@ -54,6 +53,19 @@
       &:hover {
         cursor: pointer;
       }
+    }
+
+    .message {
+      font-weight: normal;
+    }
+  }
+
+  .sticker_container {
+    display: table-cell;
+    .sticker {
+      margin-left: 10px;
+      max-width: 80px;
+      max-height: 80px;
     }
   }
 }

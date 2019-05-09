@@ -12,12 +12,13 @@ svg:hover {
 #app {
   height: 100%;
   width: 100%;
+  position: fixed;
 }
 #content {
   position: absolute;
   top: 0;
   left: 0;
-  height: 100vh;
+  height: 100%;
   width: 100vw;
   overflow: hidden;
 }
