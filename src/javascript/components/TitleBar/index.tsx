@@ -19,14 +19,7 @@ const menuItems : Array<MenuItem> = [
             {
                 role: 'normal',
                 title: 'Exit',
-                shortcut: 'Ctrl+C+V',
-                enabled: true
-            },
-            {
-                role: 'normal',
-                icon: null,
-                title: 'Exit',
-                shortcut: '',
+                shortcut: 'Ctrl+Esc',
                 enabled: true
             }
         ] as unknown as Array<ContextItem>
@@ -35,10 +28,55 @@ const menuItems : Array<MenuItem> = [
         title: 'Edit',
         contextMenu: [
             {
-                icon: null,
-                title: 'Exit',
+                role: 'normal',
+                title: 'Undo',
+                shortcut: 'Ctrl+Z',
+                enabled: true
+            },
+            {
+                role: 'normal',
+                title: 'Redo',
+                shortcut: 'Ctrl+Y',
+                enabled: true
+            },
+            {
+                role: 'seperator'
+            },
+            {
+                role: 'normal',
+                title: 'Cut',
+                shortcut: 'Ctrl+X',
+                enabled: true
+            },
+            {
+                role: 'normal',
+                title: 'Copy',
+                shortcut: 'Ctrl+C',
+                enabled: true
+            },
+            {
+                role: 'normal',
+                title: 'Paste',
+                shortcut: 'Ctrl+V',
+                enabled: true
+            },
+            {
+                role: 'normal',
+                title: 'Paste & Match Style',
+                shortcut: 'Ctrl+Shift+V',
+                enabled: true
+            },
+            {
+                role: 'normal',
+                title: 'Delete',
                 shortcut: '',
-                action: null             
+                enabled: true
+            },
+            {
+                role: 'normal',
+                title: 'Select All',
+                shortcut: 'Ctrl+A',
+                enabled: true
             }
         ] as unknown as Array<ContextItem>
     },
@@ -46,33 +84,105 @@ const menuItems : Array<MenuItem> = [
         title: 'View',
         contextMenu: [
             {
-                icon: null,
-                title: 'Exit',
-                shortcut: '',
-                action: null             
-            }
+                role: 'normal',
+                title: 'Reload',
+                shortcut: 'Ctrl+R',
+                enabled: true
+            },
+            {
+                role: 'normal',
+                title: 'Force Reload',
+                shortcut: 'Ctrl+Shift+R',
+                enabled: true
+            },
+            {
+                role: 'normal',
+                title: 'Toggle Developer Tools',
+                shortcut: 'Ctrl+Shift+I',
+                enabled: true
+            },
+            {
+                role: 'seperator',
+            },
+            {
+                role: 'normal',
+                title: 'Actual Size',
+                shortcut: 'Ctrl+0',
+                enabled: true
+            },
+            {
+                role: 'normal',
+                title: 'Zoom In',
+                shortcut: 'Ctrl+Shift+=',
+                enabled: true
+            },
+            {
+                role: 'normal',
+                title: 'Zoom Out',
+                shortcut: 'Ctrl+Shift+-',
+                enabled: true
+            },
+            {
+                role: 'seperator'
+            },
+            {
+                role: 'normal',
+                title: 'Toggle Full Screen',
+                shortcut: 'F11',
+                enabled: true
+            },
         ] as unknown as Array<ContextItem>
     },
     {
         title: 'Window',
         contextMenu: [
             {
-                icon: null,
-                title: 'Exit',
-                shortcut: '',
-                action: null             
-            }
+                role: 'normal',
+                title: 'Minimize',
+                shortcut: 'Ctrl+M',
+                enabled: true
+            },
+            {
+                role: 'normal',
+                title: 'Close',
+                shortcut: 'Ctrl+W',
+                enabled: true
+            },
         ] as unknown as Array<ContextItem>
     },
     {
         title: 'Help',
         contextMenu: [
             {
-                icon: null,
-                title: 'Exit',
+                role: 'normal',
+                title: 'Learn More',
                 shortcut: '',
-                action: null             
-            }
+                enabled: true
+            },
+            {
+                role: 'normal',
+                title: 'Documentation',
+                shortcut: '',
+                enabled: true
+            },
+            {
+                role: 'normal',
+                title: 'Community Discussions',
+                shortcut: '',
+                enabled: true
+            },
+            {
+                role: 'normal',
+                title: 'Github Page',
+                shortcut: '',
+                enabled: true
+            },
+            {
+                role: 'normal',
+                title: 'About App',
+                shortcut: '',
+                enabled: true
+            },
         ] as unknown as Array<ContextItem>
     }
 ];
