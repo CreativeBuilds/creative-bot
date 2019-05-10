@@ -7,6 +7,20 @@ const { ipcRenderer, shell } = Window.require('electron');
 
 const styles: any = require('./Banner.scss');
 
+interface MessageLink {
+    type: String,
+    url: String
+}
+
+interface BannerMessage {
+    needsBanner: Boolean,
+    message: String,
+    type: String,
+    alertType: String,
+    hasLink: Boolean,
+    link?: MessageLink
+}
+
 interface Banner {
     isOpen?: Boolean,
     alertType?: String
@@ -34,10 +48,11 @@ const Banner = ( {isOpen, alertType } : Banner) => {
     }
 
     ipcRenderer.on('bannermessage', function(event, args) {
-        if (args[0].needsBanner == true) {
+        var bannerMessage = args[0] as BannerMessage
+        if (bannerMessage.needsBanner == true) {
             setIsOpen(true);
-            setMessage(args[0].message);
-            setAlertType(args[0].alertType);
+            setMessage(bannerMessage.message as string);
+            setAlertType(bannerMessage.alertType);
         }
     });
 

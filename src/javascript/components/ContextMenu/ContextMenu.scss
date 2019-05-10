@@ -1,0 +1,55 @@
+@import './../../../styles/variables.scss';
+
+.contextMenu {
+    list-style-type: none;
+    display: inline-block;
+    .contextMenuContent {
+        position: absolute;
+        font-size: 12px;
+        background-color: #1f1f1f;
+        color: #b4b4b4;
+        margin: 0;
+        margin-top: 1px;
+        padding: 0;
+        width: auto;
+        min-width: 170px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        user-select: none;
+        -webkit-box-shadow: 1px 1px 3px 1px rgba(21,21,21,0.6);
+        z-index: 100000000000;
+    }
+}
+
+.contextMenuItem {
+    display: flow-root !important;
+    padding: 5px;
+    padding-left: 20px;
+    padding-right: 20px;
+
+    .title, .shortcut { display: inline-block; }
+
+    .title {
+        float: left;
+    }
+    .shortcut {
+        float: right;
+        color: darkgrey;
+        &:hover { color: black; }
+    }
+
+    &.inactive { color: gray; }
+
+    &:hover {
+        &:not(.inactive) {
+            background-color: $dliveaccent;
+            color: black;
+            cursor: pointer;
+
+            .shortcut {
+                color: black;
+            }
+        }
+    }
+
+}

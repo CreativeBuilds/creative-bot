@@ -2,23 +2,24 @@ import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
 import { theme } from '../../helpers';
 
-import { MenuItem } from './MenuItem';
+import { MenuBarItem } from './MenuBarItem';
+import { ContextItem } from './../ContextMenu/index';
 
 const Window: any = window;
 const { ipcRenderer, shell, remote } = Window.require('electron');
 
 const styles: any = require('./MenuBar.scss');
 
-interface MenuItems {
+interface MenuItem {
     title: String,
-    contextMenu?: Array<Object>,
+    contextMenu?: Array<ContextItem>,
     action?: any,
     enabled?: Boolean
 }
 
 interface MenuBar {
     hidden?: Boolean,
-    menuItems?: Array<MenuItems>
+    menuItems?: Array<MenuItem>
 }
 
 const MenuBar = ({menuItems, hidden = true} : MenuBar) => {
@@ -27,7 +28,7 @@ const MenuBar = ({menuItems, hidden = true} : MenuBar) => {
         var menuItemsObjs = []
 
         for (var i = 0; i < menuItems.length; i++) {
-            menuItemsObjs.push(<MenuItem title={menuItems[i].title} />);
+            menuItemsObjs.push(<MenuBarItem menuItem={menuItems[i]} />);
         }
 
         return menuItemsObjs;
@@ -40,4 +41,4 @@ const MenuBar = ({menuItems, hidden = true} : MenuBar) => {
      );
 }
 
-export {MenuBar}
+export {MenuBar, MenuItem}

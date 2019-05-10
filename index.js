@@ -731,7 +731,8 @@ ipcMain.on('sendmessage', (event, { from, message }) => {
       needsBanner: true,
       message: "Can't Connect to Dlive because You may have not correctly entered a Username and Auth Key",
       type: "error",
-      alertType: "alert"
+      alertType: "alert",
+      hasLink: false
     };
 
     event.sender.send('bannermessage', [bannerMessage]);

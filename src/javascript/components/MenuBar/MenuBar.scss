@@ -11,21 +11,26 @@
 }
 
 .menuItem {
-    height: 30px;
-    width: auto;
-    font-size: 12px;
-    -webkit-app-region: no-drag;
-    line-height: 30px;
-    font-family: Segoe WPC,Segoe UI,sans-serif;
-    text-align: center;
-    box-sizing: border-box;
-    margin: 0;
-    padding-left: 10px;
-    padding-right: 10px;
+    .menuItemTitleContainer {
+        display: block !important;
 
-    cursor: pointer;
+        .menuItemTitle {
+            height: 30px;
+            width: auto;
+            font-size: 12px;
+            line-height: 30px;
+            -webkit-app-region: no-drag;
+            font-family: Segoe WPC,Segoe UI,sans-serif;
+            text-align: center;
+            box-sizing: border-box;
+            margin: 0;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
 
-    &:hover {
-        background-color: hsla(0,0%,100%,.1);
+        &:hover {
+            background-color: hsla(0,0%,100%,.1);
+            cursor: pointer;
+        }
     }
 }

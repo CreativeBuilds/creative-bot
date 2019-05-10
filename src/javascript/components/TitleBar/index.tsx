@@ -3,24 +3,33 @@ import { useContext, Component, useState, useEffect } from 'react';
 import { theme } from '../../helpers';
 import { MdClose, MdCheckBoxOutlineBlank, MdFlipToFront, Md3DRotation, MdRemove  } from 'react-icons/md';
 
-import { MenuBar } from '../MenuBar';
+import { MenuBar, MenuItem } from '../MenuBar';
+import {ContextMenu, ContextItem} from '../ContextMenu';
+import { ContextMenuItem } from '../ContextMenu/ContextMenuItem';
 
 const Window: any = window;
 const { ipcRenderer, shell, remote } = Window.require('electron');
 
 const styles: any = require('./TitleBar.scss');
 
-const menuItems = [
+const menuItems : Array<MenuItem> = [
     {
-        title: 'File',
+        title: "File",
         contextMenu: [
             {
+                role: 'normal',
+                title: 'Exit',
+                shortcut: 'Ctrl+C+V',
+                enabled: true
+            },
+            {
+                role: 'normal',
                 icon: null,
                 title: 'Exit',
                 shortcut: '',
-                action: null             
+                enabled: true
             }
-        ]
+        ] as unknown as Array<ContextItem>
     },
     {
         title: 'Edit',
@@ -31,7 +40,7 @@ const menuItems = [
                 shortcut: '',
                 action: null             
             }
-        ]
+        ] as unknown as Array<ContextItem>
     },
     {
         title: 'View',
@@ -42,7 +51,18 @@ const menuItems = [
                 shortcut: '',
                 action: null             
             }
-        ]
+        ] as unknown as Array<ContextItem>
+    },
+    {
+        title: 'Window',
+        contextMenu: [
+            {
+                icon: null,
+                title: 'Exit',
+                shortcut: '',
+                action: null             
+            }
+        ] as unknown as Array<ContextItem>
     },
     {
         title: 'Help',
@@ -53,7 +73,7 @@ const menuItems = [
                 shortcut: '',
                 action: null             
             }
-        ]
+        ] as unknown as Array<ContextItem>
     }
 ];
 
