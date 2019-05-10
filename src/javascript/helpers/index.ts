@@ -1,2 +1,3 @@
 const {ThemeContext, theme} = require('./Theme');
-export {ThemeContext, theme}
+const { WatchClickOutside } = require('./WatchClickOutside');
+export {ThemeContext, theme, WatchClickOutside}
