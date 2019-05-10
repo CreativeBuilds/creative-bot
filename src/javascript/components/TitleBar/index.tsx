@@ -99,7 +99,11 @@ const menuItems : Array<MenuItem> = [
                 role: 'normal',
                 title: 'Toggle Developer Tools',
                 shortcut: 'Ctrl+Shift+I',
-                enabled: true
+                enabled: true,
+                action:  function() { 
+                    console.log('This Menu Context Item action is working!');
+                    remote.getCurrentWindow().webContents.toggleDevTools()
+                }
             },
             {
                 role: 'seperator',
@@ -131,7 +135,7 @@ const menuItems : Array<MenuItem> = [
                 shortcut: 'F11',
                 enabled: true
             },
-        ] as unknown as Array<ContextItem>
+        ] as Array<ContextItem>
     },
     {
         title: 'Window',

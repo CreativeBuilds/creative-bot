@@ -30,8 +30,8 @@ const MenuBarItem = ({menuItem, hidden = true, action} : MenuBar) => {
 
      return (
          <WatchClickOutside onClickedOutside={() => {showMenu(false);}}>
-            <li className={styles.menuItem} onClick={() => { showContextMenu(); }}>
-                <div className={styles.menuItemTitleContainer}>
+            <li className={styles.menuItem}>
+                <div className={styles.menuItemTitleContainer} onClick={() => { showContextMenu(); }}>
                     <div className={styles.menuItemTitle}>{menuItem.title}</div>
                 </div>
                 {show === true && <ContextMenu contextItems={menuItem.contextMenu} />}

@@ -32,7 +32,7 @@ const ContextMenuItem = ({ contextItem } : ContextMenuItem) => {
     }
 
     return (
-        <li className={`${styles.contextMenuItem} ${isEnabled()}`}>
+        <li className={`${styles.contextMenuItem} ${isEnabled()}`} onClick={() => contextItem.action()  }>
              {isSeperator() ? <div><hr className={styles.seperatorLine}/></div>: 
              <div> 
                  <div className={styles.title}>{contextItem.title}</div>

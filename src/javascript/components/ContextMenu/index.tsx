@@ -13,7 +13,7 @@ interface ContextItem {
     icon?: Object,
     title?: String,
     shortcut?: String,
-    action?: any,
+    action?: Function,
     enabled: Boolean,
     contextMenu?: Array<ContextItem>,
 }
