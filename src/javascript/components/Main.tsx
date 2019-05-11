@@ -15,27 +15,6 @@ const styles: any = require('./Main.scss');
 
 // TODO move theme/style function to a different file
 
-var contextItems : Array<ContextItem> = [
-  {
-    role: 'normal',
-    icon: null,
-    title: 'Exit',
-    shortcut: 'Ctrl+C+V',
-    action: null,
-    enabled: true,
-    contextMenu: null             
-  },
-  {
-    role: 'normal',
-    icon: null,
-    title: 'Exit',
-    shortcut: '',
-    action: null,
-    enabled: false,
-    contextMenu: null             
-  }
-]; 
-
 const Main = props => {
   const [stateTheme, setStateTheme] = useState(theme.dark);
 

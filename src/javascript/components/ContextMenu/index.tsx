@@ -13,16 +13,20 @@ interface ContextItem {
     icon?: Object,
     title?: String,
     shortcut?: String,
-    action?: Function,
+    action?: () => void,
     enabled: Boolean,
     contextMenu?: Array<ContextItem>,
 }
 
 interface ContextMenu {
+    isOpen?: Boolean,
+    onClickedOutside?: () => void,
     contextItems: Array<ContextItem>
 }
 
-const ContextMenu = ({contextItems} : ContextMenu) => {
+const ContextMenu = ({contextItems, isOpen = false, onClickedOutside} : ContextMenu) => {
+
+    const [opened, setOpened] = useState<Boolean>(isOpen);
 
     const loadContextMenuItems = () => {
         var contextMenuItemsObjs = []
@@ -35,7 +39,7 @@ const ContextMenu = ({contextItems} : ContextMenu) => {
     }
 
     return (
-        <div className={`${styles.contextMenu}`}>
+        <div className={`${styles.contextMenu}`} onClick={() => onClickedOutside() }>
             <ul className={`${styles.contextMenuContent}`}>
                 {loadContextMenuItems()}
             </ul>

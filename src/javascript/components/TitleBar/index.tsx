@@ -6,6 +6,7 @@ import { MdClose, MdCheckBoxOutlineBlank, MdFlipToFront, Md3DRotation, MdRemove 
 import { MenuBar, MenuItem } from '../MenuBar';
 import {ContextMenu, ContextItem} from '../ContextMenu';
 import { ContextMenuItem } from '../ContextMenu/ContextMenuItem';
+import { webContents } from 'electron';
 
 const Window: any = window;
 const { ipcRenderer, shell, remote } = Window.require('electron');
@@ -20,9 +21,12 @@ const menuItems : Array<MenuItem> = [
                 role: 'normal',
                 title: 'Exit',
                 shortcut: 'Ctrl+Esc',
-                enabled: true
+                enabled: true,
+                action() { 
+                    remote.getCurrentWindow().close();
+                }
             }
-        ] as unknown as Array<ContextItem>
+        ] as Array<ContextItem>
     },
     {
         title: 'Edit',
@@ -31,13 +35,19 @@ const menuItems : Array<MenuItem> = [
                 role: 'normal',
                 title: 'Undo',
                 shortcut: 'Ctrl+Z',
-                enabled: true
+                enabled: true,
+                action() { 
+                    remote.getCurrentWindow().webContents.undo();
+                }
             },
             {
                 role: 'normal',
                 title: 'Redo',
                 shortcut: 'Ctrl+Y',
-                enabled: true
+                enabled: true,
+                action() { 
+                    remote.getCurrentWindow().webContents.redo();
+                }
             },
             {
                 role: 'seperator'
@@ -46,39 +56,57 @@ const menuItems : Array<MenuItem> = [
                 role: 'normal',
                 title: 'Cut',
                 shortcut: 'Ctrl+X',
-                enabled: true
+                enabled: true,
+                action() { 
+                    remote.getCurrentWindow().webContents.cut();
+                }
             },
             {
                 role: 'normal',
                 title: 'Copy',
                 shortcut: 'Ctrl+C',
-                enabled: true
+                enabled: true,
+                action() { 
+                    remote.getCurrentWindow().webContents.copy();
+                }
             },
             {
                 role: 'normal',
                 title: 'Paste',
                 shortcut: 'Ctrl+V',
-                enabled: true
+                enabled: true,
+                action() { 
+                    remote.getCurrentWindow().webContents.Paste();
+                }
             },
             {
                 role: 'normal',
                 title: 'Paste & Match Style',
                 shortcut: 'Ctrl+Shift+V',
-                enabled: true
+                enabled: true,
+                action() { 
+                    remote.getCurrentWindow().webContents.pasteAndMatchStyle();
+                }
             },
             {
                 role: 'normal',
                 title: 'Delete',
                 shortcut: '',
-                enabled: true
+                enabled: true,
+                action() { 
+                    remote.getCurrentWindow().webContents.delete();
+                }
             },
             {
                 role: 'normal',
                 title: 'Select All',
                 shortcut: 'Ctrl+A',
-                enabled: true
+                enabled: true,
+                action() { 
+                    remote.getCurrentWindow().webContents.selectAll();
+                }
             }
-        ] as unknown as Array<ContextItem>
+        ] as Array<ContextItem>
     },
     {
         title: 'View',
@@ -87,21 +115,26 @@ const menuItems : Array<MenuItem> = [
                 role: 'normal',
                 title: 'Reload',
                 shortcut: 'Ctrl+R',
-                enabled: true
+                enabled: true,
+                action() { 
+                    remote.getCurrentWindow().reload();
+                }
             },
             {
                 role: 'normal',
                 title: 'Force Reload',
                 shortcut: 'Ctrl+Shift+R',
-                enabled: true
+                enabled: true,
+                action() { 
+                    remote.getCurrentWindow().webContents.reloadIgnoringCache();
+                }
             },
             {
                 role: 'normal',
                 title: 'Toggle Developer Tools',
                 shortcut: 'Ctrl+Shift+I',
                 enabled: true,
-                action:  function() { 
-                    console.log('This Menu Context Item action is working!');
+                action() { 
                     remote.getCurrentWindow().webContents.toggleDevTools()
                 }
             },
@@ -112,19 +145,28 @@ const menuItems : Array<MenuItem> = [
                 role: 'normal',
                 title: 'Actual Size',
                 shortcut: 'Ctrl+0',
-                enabled: true
+                enabled: true,
+                action() { 
+                    remote.getCurrentWindow().webContents.setZoomLevel(1);
+                }
             },
             {
                 role: 'normal',
                 title: 'Zoom In',
                 shortcut: 'Ctrl+Shift+=',
-                enabled: true
+                enabled: true,
+                action() { 
+                    remote.getCurrentWindow().webContents.setZoomFactor(-1);
+                }
             },
             {
                 role: 'normal',
                 title: 'Zoom Out',
                 shortcut: 'Ctrl+Shift+-',
-                enabled: true
+                enabled: true,
+                action() { 
+                    remote.getCurrentWindow().webContents.setZoomFactor(1);
+                }
             },
             {
                 role: 'seperator'
@@ -133,26 +175,12 @@ const menuItems : Array<MenuItem> = [
                 role: 'normal',
                 title: 'Toggle Full Screen',
                 shortcut: 'F11',
-                enabled: true
+                enabled: true,
+                action() { 
+                    remote.getCurrentWindow().setFullScreen(!remote.getCurrentWindow().isFullScreen());
+                }
             },
         ] as Array<ContextItem>
-    },
-    {
-        title: 'Window',
-        contextMenu: [
-            {
-                role: 'normal',
-                title: 'Minimize',
-                shortcut: 'Ctrl+M',
-                enabled: true
-            },
-            {
-                role: 'normal',
-                title: 'Close',
-                shortcut: 'Ctrl+W',
-                enabled: true
-            },
-        ] as unknown as Array<ContextItem>
     },
     {
         title: 'Help',
@@ -251,9 +279,6 @@ const TitleBar = () => {
                 <MenuBar menuItems={menuItems} />
                 <div className={styles.windowTitle}>
                     {remote.getCurrentWindow().getTitle()}
-                </div>
-                <div className={`${styles.actionBtn} ${styles.devTools}`} onClick={() => { showDevTools(); }}>
-                    Dev Tools
                 </div>
             </div>
             <div className={styles.windowControlsContainer}>

@@ -1,3 +1,3 @@
 const {ThemeContext, theme} = require('./Theme');
-const { WatchClickOutside } = require('./WatchClickOutside');
-export {ThemeContext, theme, WatchClickOutside}
+const { useComponentVisible } = require('./useComponentVisible');
+export {ThemeContext, theme, useComponentVisible};
