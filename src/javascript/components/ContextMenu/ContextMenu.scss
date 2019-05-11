@@ -9,7 +9,7 @@
         background-color: #1f1f1f;
         color: #b4b4b4;
         margin: 0;
-        margin-top: 1px;
+        margin-top: 0px;
         padding: 0;
         width: auto;
         min-width: 170px;
@@ -19,6 +19,11 @@
         -webkit-box-shadow: 2px 2px 1px rgba(21,21,21,0.6);
         z-index: 100000000000;
     }
+
+    &.sideMenu {
+        position: absolute;
+        right: 0;
+    }
 }
 
 .contextMenuItem {
@@ -26,29 +31,78 @@
     padding: 5px;
     padding-left: 20px;
     padding-right: 20px;
+    max-height: 24.4px;
 
-    .title, .shortcut { display: inline-block; }
-
-    .title {
-        float: left;
+    .contextItemContent, .itemContainer {
+        display: flow-root !important;
+        height: 100%;
+        width: 100%;
     }
-    .shortcut {
-        float: right;
-        color: darkgrey;
-        margin-left: 20px;
-        &:hover { color: black; }
-    }
+    
+    .contextItemContent {
 
-    &.inactive { color: gray; }
+        .title, .shortcut, .arrow { 
+            display: inline-block; 
+            height: auto;
+
+            span {
+                display: inline-block;
+                vertical-align: middle;
+                line-height: normal;
+            }
+        }
+
+        .title {
+            float: left;
+        }
+        .shortcut {
+            float: right;
+            color: darkgrey;
+            margin-left: 20px;
+            &:hover { color: black; }
+        }
+
+        svg.arrow {
+            float: right;
+            color: darkgrey;
+            margin-left: 20px;
+            height: 18px;
+            width: 18px;
+            fill: darkgrey !important;
+                stroke: darkgrey !important;
+
+            &:hover { 
+                color: black;
+
+                svg {
+                    fill: black !important;
+                    stroke: black !important;
+                }
+            }
+        }
+
+        &.inactive { color: gray; }
+
+        &:hover {
+            &:not(.inactive) {
+                .contextItemContent {
+                    .title, .shortcut, .arrow {
+                        color: black;
+                    }
+                }
+            }
+        }
+    }
 
     &:hover {
         &:not(.inactive) {
             background-color: $dliveaccent;
-            color: black;
             cursor: pointer;
 
-            .shortcut {
-                color: black;
+            :not(.contextMenu) {
+                .title, .shortcut, .arrow {
+                    color: black;
+                }
             }
         }
     }
