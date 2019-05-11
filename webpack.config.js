@@ -5,6 +5,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 module.exports = {
   // context: __dirname + '\\src\\javascript',
   entry: ['./src/javascript/index.tsx'],
+  target: 'electron-renderer',
   resolve: {
     // changed from extensions: [".js", ".jsx"]
     extensions: ['.ts', '.tsx', '.js', '.jsx']

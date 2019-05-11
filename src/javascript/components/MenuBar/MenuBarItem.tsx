@@ -19,7 +19,9 @@ interface MenuBar {
 
 const MenuBarItem = ({menuItem, hidden = true, action} : MenuBar) => {
 
+    const [stateTheme, setStateTheme] = useState(theme.dark);
     const [show, showMenu] = useState<Boolean>(false);
+
     const {
         ref,
         isComponentVisible,
@@ -34,9 +36,13 @@ const MenuBarItem = ({menuItem, hidden = true, action} : MenuBar) => {
         }
     }
 
-     return (
+    remote.getCurrentWindow().once('blur', function(event, args) { 
+        setIsComponentVisible(false);
+    });
 
-            <li ref={ref} className={styles.menuItem}>
+    return (
+
+            <li ref={ref} className={styles.menuItem} style={isComponentVisible ? stateTheme.menuItemSelected : null }>
                 <div className={styles.menuItemTitleContainer} onClick={() => setIsComponentVisible(true)}>
                     <div className={styles.menuItemTitle}>{menuItem.title}</div>
                 </div>
