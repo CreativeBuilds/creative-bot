@@ -2,6 +2,7 @@ import { MenuItem } from '../components/MenuBar';
 import {ContextItem} from '../components/ContextMenu';
 
 const { ipcRenderer, shell, remote } = require('electron');
+const {dialog, BrowserWindow, app} = remote;
 
 const menuItems_win : Array<MenuItem> = [
     {
@@ -208,7 +209,20 @@ const menuItems_win : Array<MenuItem> = [
                 shortcut: '',
                 enabled: true,
                 action() { 
-                    
+                    let options = {
+                        type: 'info',
+                        title: 'About App',
+                        message: 'About Dlive Chat Bot',
+                        detail: `
+                        Version: ${app.getVersion()}, 
+                        Electron: ${process.versions.electron}, 
+                        chrome: ${process.versions.chrome}, 
+                        node: ${process.versions.node}, 
+                        v8: ${process.versions.v8}, 
+                        Developed By CreativeBuilds`
+                    };
+
+                    dialog.showMessageBox(options);
                 }
             },
         ] as Array<ContextItem>

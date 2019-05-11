@@ -74,6 +74,14 @@ const theme = {
     titleBarActionIcon: {
       '-webkit-filter': 'invert(30%)'
     },
+    menuItemSelected: {
+      backgroundColor: '#e3e3e3',
+    },
+    contextMenu: {
+      backgroundColor: '#e3e3e3',
+      color: '#1f1f1f'
+
+    },
     chat: {
       input: {
         backgroundColor: '#ffffff',
