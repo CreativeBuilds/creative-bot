@@ -10,6 +10,7 @@ import { webContents } from 'electron';
 
 const Window: any = window;
 const { ipcRenderer, shell, remote } = Window.require('electron');
+const { app } = remote;
 
 const styles: any = require('./TitleBar.scss');
 
@@ -73,6 +74,9 @@ const TitleBar = () => {
                 <MenuBar menuItems={menuItems_win} />
                 <div className={styles.windowTitle}>
                     {remote.getCurrentWindow().getTitle()}
+                </div>
+                <div className={`${styles.versionTag}`}>
+                    {app.getVersion()}
                 </div>
             </div>
             <div className={styles.windowControlsContainer}>
