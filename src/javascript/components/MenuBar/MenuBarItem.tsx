@@ -21,6 +21,7 @@ const MenuBarItem = ({menuItem, hidden = true, action} : MenuBar) => {
 
     const [stateTheme, setStateTheme] = useState(theme.dark);
     const [show, showMenu] = useState<Boolean>(false);
+    const [isHovering, setHovering] = useState<Boolean>(false);
 
     const {
         ref,
@@ -42,7 +43,7 @@ const MenuBarItem = ({menuItem, hidden = true, action} : MenuBar) => {
 
     return (
 
-            <li ref={ref} className={styles.menuItem} style={isComponentVisible ? stateTheme.menuItemSelected : null }>
+            <li ref={ref} className={styles.menuItem} style={isComponentVisible ? ( isHovering ? stateTheme.menuItemSelected : stateTheme.menuItemSelected) : ( isHovering ? stateTheme.titleBarHover : null) } onMouseEnter={() => setHovering(true)} onMouseLeave={() => setHovering(false)}>
                 <div className={styles.menuItemTitleContainer} onClick={() => setIsComponentVisible(true)}>
                     <div className={styles.menuItemTitle}>{menuItem.title}</div>
                 </div>

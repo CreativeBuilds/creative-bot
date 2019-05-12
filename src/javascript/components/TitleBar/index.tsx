@@ -80,7 +80,7 @@ const TitleBar = () => {
                 </div>
             </div>
             <div className={styles.windowControlsContainer}>
-                <div className={`${styles.actionBtn}`} onClick={() => { minimize(); }}>
+                <div className={`${styles.actionBtn}`} onClick={() => { minimize(); }} >
                     <div className={`${styles.icon} ${styles.minimize}`} >
                         <MdRemove />
                     </div>

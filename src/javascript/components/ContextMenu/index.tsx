@@ -20,12 +20,12 @@ interface ContextItem {
 
 interface ContextMenu {
     isOpen?: Boolean,
-    isSideMenu?: Boolean,
+    isSubMenu?: Boolean,
     onClickedOutside?: () => void,
     contextItems: Array<ContextItem>
 }
 
-const ContextMenu = ({contextItems, isOpen = false, onClickedOutside, isSideMenu = false} : ContextMenu) => {
+const ContextMenu = ({contextItems, isOpen = false, onClickedOutside, isSubMenu = false} : ContextMenu) => {
 
     const [stateTheme, setStateTheme] = useState(theme.dark);
     const [opened, setOpened] = useState<Boolean>(isOpen);
@@ -41,7 +41,7 @@ const ContextMenu = ({contextItems, isOpen = false, onClickedOutside, isSideMenu
     }
 
     return (
-        <div className={`${styles.contextMenu} ${isSideMenu ? styles.sideMenu : null }`} onClick={() => onClickedOutside() } >
+        <div className={`${styles.contextMenu} ${isSubMenu ? styles.subMenu : null }`} onClick={() => onClickedOutside() } >
             <ul className={`${styles.contextMenuContent}`}  style={stateTheme.contextMenu}>
                 {loadContextMenuItems()}
             </ul>

@@ -2,6 +2,9 @@ import * as React from 'react';
 
 const theme = {
   dark: {
+    transparent: {
+      backgroundColor: 'transparent'
+    },
     main: {
       backgroundColor: '#202225',
       color: '#f0f0f0',
@@ -25,6 +28,9 @@ const theme = {
     },
     titleBarActionIcon: {
       '-webkit-filter': 'invert(80%)'
+    },
+    titleBarHover: {
+      backgroundColor: 'hsla(0,0%,100%,.1)'
     },
     menuItemSelected: {
       backgroundColor: '#1f1f1f',
@@ -50,6 +56,9 @@ const theme = {
     }
   },
   light: {
+    transparent: {
+      backgroundColor: 'transparent'
+    },
     main: {
       backgroundColor: '#ffffff',
       color: `#202225`,
@@ -73,6 +82,9 @@ const theme = {
     },
     titleBarActionIcon: {
       '-webkit-filter': 'invert(30%)'
+    },
+    titleBarHover: {
+      backgroundColor: '#e3e3e3'
     },
     menuItemSelected: {
       backgroundColor: '#e3e3e3',

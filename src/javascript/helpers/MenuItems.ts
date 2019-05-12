@@ -132,15 +132,14 @@ const menuItems_win : Array<MenuItem> = [
             {
                 role: 'seperator',
             },
-            /*{
-                role: 'menu',
+            {
+                role: 'submenu',
                 title: 'Appearance',
                 enabled: true,
                 contextMenu: [
                     {
                         role: 'normal',
                         title: 'Dark Theme',
-                        shortcut: 'Ctrl+R',
                         enabled: true,
                         action() { 
                             
@@ -149,7 +148,6 @@ const menuItems_win : Array<MenuItem> = [
                     {
                         role: 'normal',
                         title: 'Light Theme',
-                        shortcut: 'Ctrl+R',
                         enabled: true,
                         action() { 
                             
@@ -159,7 +157,7 @@ const menuItems_win : Array<MenuItem> = [
             },
             {
                 role: 'seperator',
-            },*/
+            },
             {
                 role: 'normal',
                 title: 'Actual Size',

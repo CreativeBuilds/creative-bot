@@ -48,14 +48,14 @@ const ContextMenuItem = ({ contextItem } : ContextMenuItem) => {
                             <div className={styles.shortcut}><span>{contextItem.shortcut}</span></div>
                         </div>
                     </div>;
-        } else if (contextItem.role.toLowerCase() == "menu") {
-            return <div className={`${styles.itemContainer}`} onMouseOver={() => setIsComponentVisible(true)}> 
+        } else if (contextItem.role.toLowerCase() == "submenu") {
+            return <div className={`${styles.itemContainer}`} onMouseOver={() => setIsComponentVisible(true)} onMouseLeave={() => setIsComponentVisible(false)}> 
                         <div className={`${styles.contextItemContent} ${styles.multimenu}`}>
                             <div className={styles.title}><span>{contextItem.title}</span></div>
                             <MdKeyboardArrowRight className={styles.arrow} />
                         </div>
-                        <div>
-                            {isComponentVisible && (<ContextMenu isSideMenu={true} contextItems={contextItem.contextMenu} onClickedOutside={() => setIsComponentVisible(false)}/>)}
+                        <div className={styles.submenuContainer}>
+                            {isComponentVisible && (<ContextMenu isSubMenu={true} contextItems={contextItem.contextMenu} onClickedOutside={() => setIsComponentVisible(false)}/>)}
                         </div>
                 </div>;
         }
