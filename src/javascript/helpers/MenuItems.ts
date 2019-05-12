@@ -4,6 +4,8 @@ import {ContextItem} from '../components/ContextMenu';
 const { ipcRenderer, shell, remote } = require('electron');
 const {dialog, BrowserWindow, app} = remote;
 
+var win = remote.getCurrentWindow();
+
 const menuItems_win : Array<MenuItem> = [
     {
         title: "File",
@@ -164,7 +166,7 @@ const menuItems_win : Array<MenuItem> = [
                 shortcut: 'Ctrl+0',
                 enabled: true,
                 action() { 
-                    remote.getCurrentWindow().webContents.setZoomLevel(1);
+                    //remote.getCurrentWindow().webContents.get
                 }
             },
             {
@@ -173,7 +175,8 @@ const menuItems_win : Array<MenuItem> = [
                 shortcut: 'Ctrl+Shift+=',
                 enabled: true,
                 action() { 
-                    remote.getCurrentWindow().webContents.setZoomFactor(-1);
+                    //const currentZoomLevel = win.webContents.
+                    win.webContents.setZoomLevel(+0.2);
                 }
             },
             {
@@ -182,7 +185,7 @@ const menuItems_win : Array<MenuItem> = [
                 shortcut: 'Ctrl+Shift+-',
                 enabled: true,
                 action() { 
-                    remote.getCurrentWindow().webContents.setZoomFactor(1);
+                    remote.getCurrentWindow().webContents.setZoomFactor(0.2);
                 }
             },
             {
