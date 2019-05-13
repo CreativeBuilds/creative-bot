@@ -33,8 +33,7 @@ const Banner = ( {isOpen, alertType } : Banner) => {
     const [alert, setAlert] = useState(alertType);
     const [message, setMessage] = useState('');
     var [hasAction, setHasAction] = useState<Boolean>(false);
-    const [actionTitle, setActionTitle] = useState('');
-    const [action, setAction] = useState<() => void>(null);
+    const [bannerActionMessage, setBannerActionMessage] = useState<BannerActionInfo>(null);
     //var Opened = props.isOpen;
 
     const setAlertType = (type : String) => {
@@ -53,23 +52,26 @@ const Banner = ( {isOpen, alertType } : Banner) => {
         }
     }
 
-    ipcRenderer.on('bannermessage', function(event, args) {
+    ipcRenderer.on('show-bannermessage', function(event, args) {
         var bannerMessage = args[0] as BannerMessage
         if (bannerMessage.needsBanner == true) {
             setIsOpen(true);
             setMessage(bannerMessage.message as string);
+            setBannerActionMessage(bannerMessage.actionInfo);
             setAlert(bannerMessage.alertType)
             setAlertType(alert);
             setHasAction(bannerMessage.hasAction)
-            setActionTitle(bannerMessage.actionInfo.title as string);
-            setAction(bannerMessage.actionInfo.action);
         }
+    });
+
+    ipcRenderer.on('hide-bannermessage', function(event) {
+        setIsOpen(false)
     });
 
     return (
         <div className={`${setAlertType(alert)} ${opened ? styles.opened : styles.closed}`} >
             <div className={`${styles.bannerItem} ${styles.content}`}>
-                <BannerItem message={message} hasAction={hasAction} actionTitle={actionTitle} action={action} />
+                <BannerItem message={message} hasAction={hasAction} actionInfo={bannerActionMessage} />
             </div>
             <MdClose className={`${styles.bannerItem} ${styles.closeBtn}`}  onClick={() => {
                 setIsOpen(false);
@@ -77,4 +79,4 @@ const Banner = ( {isOpen, alertType } : Banner) => {
         </div>);
 };
 
-export { Banner };
+export { Banner, BannerMessage, BannerActionInfo };

@@ -226,7 +226,11 @@ function createWindow() {
   });
 
   ipcMain.on('triggerBannerMessage', (event, bannerMessage) => {
-    event.sender.send('bannermessage', [bannerMessage]);
+    event.sender.send('show-bannermessage', [bannerMessage]);
+  });
+
+  ipcMain.on('closeBannerMessage', (event) => {
+    event.sender.send('hide-bannermessage');
   });
 
   ipcMain.on('getCommands', () => {
@@ -743,7 +747,7 @@ ipcMain.on('sendmessage', (event, { from, message }) => {
       hasAction: false
     };
 
-    event.sender.send('bannermessage', [bannerMessage]);
+    event.sender.send('show-bannermessage', [bannerMessage]);
   }
 });
 

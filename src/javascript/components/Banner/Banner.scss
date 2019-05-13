@@ -36,6 +36,24 @@
         background-color: orange;
         color: white;
     }
+
+    &.alert, &.action, &.normal, &.warning { 
+        a {
+            text-decoration: none;
+        }
+    }
+
+    &.alert, &.action { 
+        a {
+            color: $dliveaccent;
+        }
+    }
+
+    &.normal, &.warning { 
+        a {
+            color: royalblue;
+        }
+    }
 }
 
 .bannerItem {
