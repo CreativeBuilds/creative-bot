@@ -2,23 +2,24 @@ import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
 import { MdMenu, MdClose, MdEventBusy } from 'react-icons/md';
 
+import { BannerItem } from './BannerItems';
+
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
 
 const styles: any = require('./Banner.scss');
 
-interface MessageLink {
-    type: String,
-    url: String
+interface BannerActionInfo {
+    title: String,
+    action: () => void
 }
 
 interface BannerMessage {
     needsBanner: Boolean,
     message: String,
-    type: String,
     alertType: String,
-    hasLink: Boolean,
-    link?: MessageLink
+    hasAction: Boolean,
+    actionInfo?: BannerActionInfo
 }
 
 interface Banner {
@@ -29,12 +30,17 @@ interface Banner {
 const Banner = ( {isOpen, alertType } : Banner) => {
     
     var [opened, setIsOpen] = useState<Boolean>(isOpen);
-    const [alert] = useState(alertType);
+    const [alert, setAlert] = useState(alertType);
     const [message, setMessage] = useState('');
+    var [hasAction, setHasAction] = useState<Boolean>(false);
+    const [actionTitle, setActionTitle] = useState('');
+    const [action, setAction] = useState<() => void>(null);
     //var Opened = props.isOpen;
 
     const setAlertType = (type : String) => {
         switch(type) {
+            case 'normal':
+                return styles.banner + " " + styles.normal;
             case 'alert':
                 return styles.banner + " " + styles.alert;
             case 'action':
@@ -52,14 +58,18 @@ const Banner = ( {isOpen, alertType } : Banner) => {
         if (bannerMessage.needsBanner == true) {
             setIsOpen(true);
             setMessage(bannerMessage.message as string);
-            setAlertType(bannerMessage.alertType);
+            setAlert(bannerMessage.alertType)
+            setAlertType(alert);
+            setHasAction(bannerMessage.hasAction)
+            setActionTitle(bannerMessage.actionInfo.title as string);
+            setAction(bannerMessage.actionInfo.action);
         }
     });
 
     return (
         <div className={`${setAlertType(alert)} ${opened ? styles.opened : styles.closed}`} >
             <div className={`${styles.bannerItem} ${styles.content}`}>
-                <div>{message}</div>
+                <BannerItem message={message} hasAction={hasAction} actionTitle={actionTitle} action={action} />
             </div>
             <MdClose className={`${styles.bannerItem} ${styles.closeBtn}`}  onClick={() => {
                 setIsOpen(false);

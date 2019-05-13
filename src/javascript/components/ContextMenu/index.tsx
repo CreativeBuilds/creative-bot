@@ -15,7 +15,7 @@ interface ContextItem {
     shortcut?: String,
     action?: () => void,
     enabled: Boolean,
-    contextMenu?: Array<ContextItem>,
+    contextMenu?: Array<ContextItem>
 }
 
 interface ContextMenu {

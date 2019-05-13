@@ -16,5 +16,17 @@
             "timeout": 40000,
             "port": 9229
         },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch App",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "electron"
+            ],
+            "timeout": 20000,
+            "port": 9229
+        },
     ]
 }

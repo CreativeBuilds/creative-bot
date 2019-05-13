@@ -1,3 +1,5 @@
+@import './../../../styles/variables.scss';
+
 .banner {
     display: table-row;
     height: 32px !important;
@@ -13,6 +15,11 @@
 
     &.closed {
         display: none;
+    }
+
+    &.normal {
+        background-color: $dliveaccent;
+        color: black;
     }
 
     &.alert {

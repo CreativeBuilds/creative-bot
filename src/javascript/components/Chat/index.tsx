@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
 import { ThemeContext } from '../../helpers';
-import { MdSend, MdPerson } from 'react-icons/md';
+import { MdSend, MdPerson, MdMood } from 'react-icons/md';
 
 import { Message } from './Message';
 import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
+import { Action } from 'rxjs/internal/scheduler/Action';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -133,6 +134,22 @@ const Chat = ({ props }) => {
   const sendMessage = () => {
     ipcRenderer.send('sendmessage', { from: 'bot', message: text });
     setText('');
+
+    var bannerMessage = {
+      needsBanner: true,
+      message: "This is a Test Message to see if links will work",
+      alertType: "action",
+      hasAction: true,
+      link: {
+        title: "Click Me",
+        action() {
+          console.log("Click Me Works!");
+        }
+      }
+     
+    };
+
+    ipcRenderer.send('triggerBannerMessage', bannerMessage);
   };
 
   const onEnterPress = e => {

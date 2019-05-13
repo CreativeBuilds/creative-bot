@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
 import { theme, menuItems_win } from '../../helpers';
-import { MdClose, MdCheckBoxOutlineBlank, MdFlipToFront, Md3DRotation, MdRemove  } from 'react-icons/md';
+import { MdClose, MdCheckBoxOutlineBlank, MdFlipToFront, MdRemove  } from 'react-icons/md';
 
 import { MenuBar, MenuItem } from '../MenuBar';
 import {ContextMenu, ContextItem} from '../ContextMenu';

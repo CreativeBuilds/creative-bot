@@ -4,7 +4,9 @@ var CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   // context: __dirname + '\\src\\javascript',
-  entry: ['./src/javascript/index.tsx'],
+  entry: [
+    './src/javascript/index.tsx'
+  ],
   target: 'electron-renderer',
   resolve: {
     // changed from extensions: [".js", ".jsx"]
@@ -66,12 +68,15 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.join(__dirname, '/src/index.ejs')
     }),
-    new CopyWebpackPlugin([{ from: 'src/styles', to: 'styles' }])
+    new CopyWebpackPlugin([{ from: 'src/styles', to: 'styles' }]),
   ],
   node: {
     fs: 'empty'
   },
   devtool: 'eval-source-map',
+  devServer: {
+    inline: false
+  },
   watchOptions: {
     ignored: ['storage/*']
   }

@@ -1,7 +1,7 @@
 import { MenuItem } from '../components/MenuBar';
 import {ContextItem} from '../components/ContextMenu';
 
-const { ipcRenderer, shell, remote } = require('electron');
+const { ipcRenderer, shell, remote, webFrame } = require('electron');
 const {dialog, BrowserWindow, app} = remote;
 
 var win = remote.getCurrentWindow();
@@ -13,7 +13,6 @@ const menuItems_win : Array<MenuItem> = [
             {
                 role: 'normal',
                 title: 'Exit',
-                shortcut: 'Ctrl+Esc',
                 enabled: true,
                 action() { 
                     remote.getCurrentWindow().close();
@@ -134,7 +133,7 @@ const menuItems_win : Array<MenuItem> = [
             {
                 role: 'seperator',
             },
-            {
+            /*{
                 role: 'submenu',
                 title: 'Appearance',
                 enabled: true,
@@ -159,14 +158,15 @@ const menuItems_win : Array<MenuItem> = [
             },
             {
                 role: 'seperator',
-            },
+            },*/
             {
                 role: 'normal',
                 title: 'Actual Size',
                 shortcut: 'Ctrl+0',
                 enabled: true,
                 action() { 
-                    //remote.getCurrentWindow().webContents.get
+                    remote.getCurrentWindow().webContents.setZoomFactor(1);
+                    
                 }
             },
             {
@@ -175,8 +175,8 @@ const menuItems_win : Array<MenuItem> = [
                 shortcut: 'Ctrl+Shift+=',
                 enabled: true,
                 action() { 
-                    //const currentZoomLevel = win.webContents.
-                    win.webContents.setZoomLevel(+0.2);
+                    const currentZoomLevel : any = webFrame.getZoomFactor();
+                    remote.getCurrentWindow().webContents.setZoomFactor(currentZoomLevel + 0.2);
                 }
             },
             {
@@ -185,7 +185,8 @@ const menuItems_win : Array<MenuItem> = [
                 shortcut: 'Ctrl+Shift+-',
                 enabled: true,
                 action() { 
-                    remote.getCurrentWindow().webContents.setZoomFactor(0.2);
+                    const currentZoomLevel : any = webFrame.getZoomFactor();
+                    remote.getCurrentWindow().webContents.setZoomFactor(currentZoomLevel - 0.2);
                 }
             },
             {

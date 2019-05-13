@@ -105,15 +105,6 @@
                 width: 100%;
                 -webkit-mask-size: 23.1%;
 
-
-                &.minimize {
-                    //-webkit-mask-image: url('chrome-minimize.svg') no-repeat 50% 50%;
-                }
-
-                &.maximize {
-                    //-webkit-mask: url('chrome-maxmize.svg') no-repeat 50% 50%;
-                }
-
                 &.close {
                    // -webkit-mask: url('chrome-close.svg') no-repeat 50% 50%;
                    img {
