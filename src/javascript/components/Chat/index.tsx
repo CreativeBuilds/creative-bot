@@ -134,22 +134,6 @@ const Chat = ({ props }) => {
   const sendMessage = () => {
     ipcRenderer.send('sendmessage', { from: 'bot', message: text });
     setText('');
-
-    var bannerMessage = {
-      needsBanner: true,
-      message: "This is a Test Message to see if links will work",
-      alertType: "action",
-      hasAction: true,
-      link: {
-        title: "Click Me",
-        action() {
-          console.log("Click Me Works!");
-        }
-      }
-     
-    };
-
-    ipcRenderer.send('triggerBannerMessage', bannerMessage);
   };
 
   const onEnterPress = e => {
