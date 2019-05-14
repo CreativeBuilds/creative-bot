@@ -11,7 +11,7 @@ const styles: any = require('./Banner.scss');
 
 interface BannerActionInfo {
     title: String,
-    action: () => void
+    action: Function
 }
 
 interface BannerMessage {
@@ -34,7 +34,6 @@ const Banner = ( {isOpen, alertType } : Banner) => {
     const [message, setMessage] = useState('');
     var [hasAction, setHasAction] = useState<Boolean>(false);
     const [bannerActionMessage, setBannerActionMessage] = useState<BannerActionInfo>(null);
-    //var Opened = props.isOpen;
 
     const setAlertType = (type : String) => {
         switch(type) {
@@ -57,10 +56,11 @@ const Banner = ( {isOpen, alertType } : Banner) => {
         if (bannerMessage.needsBanner == true) {
             setIsOpen(true);
             setMessage(bannerMessage.message as string);
-            setBannerActionMessage(bannerMessage.actionInfo);
+            setBannerActionMessage(bannerMessage.actionInfo as BannerActionInfo);
             setAlert(bannerMessage.alertType)
             setAlertType(alert);
             setHasAction(bannerMessage.hasAction)
+            bannerMessage.actionInfo.action();
         }
     });
 

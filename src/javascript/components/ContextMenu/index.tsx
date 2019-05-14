@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
-import { theme } from '../../helpers';
+import { theme, ThemeContext } from '../../helpers';
 import { ContextMenuItem } from './ContextMenuItem';
 
 const Window: any = window;
@@ -21,20 +21,30 @@ interface ContextItem {
 interface ContextMenu {
     isOpen?: Boolean,
     isSubMenu?: Boolean,
+    themeStyle?: any,
     onClickedOutside?: () => void,
     contextItems: Array<ContextItem>
 }
 
-const ContextMenu = ({contextItems, isOpen = false, onClickedOutside, isSubMenu = false} : ContextMenu) => {
+const ContextMenu = ({contextItems, isOpen = false, onClickedOutside, isSubMenu = false, themeStyle = theme.dark} : ContextMenu) => {
 
-    const [stateTheme, setStateTheme] = useState(theme.dark);
+    const [stateTheme, setStateTheme] = useState(themeStyle);
     const [opened, setOpened] = useState<Boolean>(isOpen);
+
+    ipcRenderer.once('change-theme', function(event, args) { 
+        var value = args[0] as string
+        if (value == "dark") {
+          setStateTheme(theme.dark);
+        } else {
+          setStateTheme(theme.light);
+        }
+      });
 
     const loadContextMenuItems = () => {
         var contextMenuItemsObjs = []
 
         for (var i = 0; i < contextItems.length; i++) {
-            contextMenuItemsObjs.push(<ContextMenuItem contextItem={contextItems[i]} />);
+            contextMenuItemsObjs.push(<ContextMenuItem contextItem={contextItems[i]} themeStyle={stateTheme} />);
         }
 
         return contextMenuItemsObjs;

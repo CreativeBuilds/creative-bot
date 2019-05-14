@@ -23,6 +23,15 @@ const MenuBarItem = ({menuItem, hidden = true, action} : MenuBar) => {
     const [show, showMenu] = useState<Boolean>(false);
     const [isHovering, setHovering] = useState<Boolean>(false);
 
+    ipcRenderer.once('change-theme', function(event, args) { 
+        var value = args[0] as string
+        if (value == "dark") {
+          setStateTheme(theme.dark);
+        } else {
+          setStateTheme(theme.light);
+        }
+      });
+
     const {
         ref,
         isComponentVisible,
@@ -47,7 +56,7 @@ const MenuBarItem = ({menuItem, hidden = true, action} : MenuBar) => {
                 <div className={styles.menuItemTitleContainer} onClick={() => setIsComponentVisible(true)}>
                     <div className={styles.menuItemTitle}>{menuItem.title}</div>
                 </div>
-                {isComponentVisible && (<ContextMenu contextItems={menuItem.contextMenu} onClickedOutside={() => setIsComponentVisible(false)}/>)}
+                {isComponentVisible && (<ContextMenu contextItems={menuItem.contextMenu} onClickedOutside={() => setIsComponentVisible(false)} themeStyle={stateTheme}/>)}
             </li>
      );
 }

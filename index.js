@@ -233,6 +233,10 @@ function createWindow() {
     event.sender.send('hide-bannermessage');
   });
 
+  ipcMain.on('changeAppTheme', (event, themeVal) => {
+    event.sender.send('change-theme', [themeVal]);
+  });
+
   ipcMain.on('getCommands', () => {
     let commands = Object.assign({}, Commands);
     win.webContents.send('commands', commands);
@@ -742,7 +746,7 @@ ipcMain.on('sendmessage', (event, { from, message }) => {
 
     var bannerMessage = {
       needsBanner: true,
-      message: "Can't Connect to Dlive because You may have not correctly entered a Username and Auth Key",
+      message: "Can't Connect to Dlive because You may have the correct User Info",
       alertType: "alert",
       hasAction: false
     };

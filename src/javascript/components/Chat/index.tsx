@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
-import { ThemeContext } from '../../helpers';
+import { theme, ThemeContext } from '../../helpers';
 import { MdSend, MdPerson, MdMood } from 'react-icons/md';
 
 import { Message } from './Message';
@@ -173,6 +173,7 @@ const Chat = ({ props }) => {
   useEffect(() => {
     // Test to see if the config includes the right variables
     // if's at the top of this will be rendered last
+
     if (!config.init) return;
     if (
       !config.authKey &&

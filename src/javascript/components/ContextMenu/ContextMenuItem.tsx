@@ -11,12 +11,14 @@ const { ipcRenderer, shell, remote } = Window.require('electron');
 const styles: any = require('./ContextMenu.scss');
 
 interface ContextMenuItem {
-    contextItem: ContextItem
+    contextItem: ContextItem,
+    themeStyle?: any
 }
 
-const ContextMenuItem = ({ contextItem } : ContextMenuItem) => {
+const ContextMenuItem = ({ contextItem, themeStyle = theme.dark } : ContextMenuItem) => {
 
     const [show, showMenu] = useState<Boolean>(false);
+    const [stateTheme, setStateTheme] = useState(themeStyle);
 
     const {
         ref,
@@ -55,7 +57,7 @@ const ContextMenuItem = ({ contextItem } : ContextMenuItem) => {
                             <MdKeyboardArrowRight className={styles.arrow} />
                         </div>
                         <div className={styles.submenuContainer}>
-                            {isComponentVisible && (<ContextMenu isSubMenu={true} contextItems={contextItem.contextMenu} onClickedOutside={() => setIsComponentVisible(false)}/>)}
+                            {isComponentVisible && (<ContextMenu isSubMenu={true} contextItems={contextItem.contextMenu} onClickedOutside={() => setIsComponentVisible(false)} themeStyle={stateTheme}/>)}
                         </div>
                 </div>;
         }

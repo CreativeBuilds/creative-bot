@@ -133,7 +133,7 @@ const menuItems_win : Array<MenuItem> = [
             {
                 role: 'seperator',
             },
-            /*{
+            {
                 role: 'submenu',
                 title: 'Appearance',
                 enabled: true,
@@ -143,7 +143,7 @@ const menuItems_win : Array<MenuItem> = [
                         title: 'Dark Theme',
                         enabled: true,
                         action() { 
-                            
+                            ipcRenderer.send('changeAppTheme', ['dark']);
                         }
                     },
                     {
@@ -151,14 +151,14 @@ const menuItems_win : Array<MenuItem> = [
                         title: 'Light Theme',
                         enabled: true,
                         action() { 
-                            
+                            ipcRenderer.send('changeAppTheme', ['light']);
                         }
                     },
                 ] as Array<ContextItem>
             },
             {
                 role: 'seperator',
-            },*/
+            },
             {
                 role: 'normal',
                 title: 'Actual Size',

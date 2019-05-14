@@ -14,7 +14,7 @@ const BannerItem = ( { message, hasAction = false, actionInfo  } : BannerItem) =
 
     return (
         <div className={null} >
-            {hasAction ? <span>{`${message}: `} <a onClick={() => actionInfo.action()} href="#">{actionInfo.title}</a></span> :
+            {hasAction ? <span>{`${message}: `} <a onClick={() => { actionInfo.action(); }} href="#">{actionInfo.title}</a></span> :
             <span>{message}</span>
             }
         </div>);

@@ -20,14 +20,24 @@ const Main = props => {
 
   const style = (obj: {} = {}) => Object.assign(obj, stateTheme);
   // TODO swap theme based on currently selected (probably do this with context from react)
+
+  ipcRenderer.once('change-theme', function(event, args) { 
+    var value = args[0] as string
+    if (value == "dark") {
+      setStateTheme(theme.dark);
+    } else {
+      setStateTheme(theme.light);
+    }
+  });
+
   return (
     <ThemeContext.Provider value={{ stateTheme, setStateTheme }}>
-        <div className={styles.appFrame}>
+        <div className={styles.appFrame} style={style().main}>
           
 
           <TitleBar />
           <Banner />
-          <div className={styles.main} style={style().main}>
+          <div className={styles.main}>
             <Router />
           </div>
         </div>

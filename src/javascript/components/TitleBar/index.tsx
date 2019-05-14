@@ -22,6 +22,15 @@ const TitleBar = () => {
 
     const [stateTheme, setStateTheme] = useState(theme.dark);
 
+    ipcRenderer.once('change-theme', function(event, args) { 
+        var value = args[0] as string
+        if (value == "dark") {
+          setStateTheme(theme.dark);
+        } else {
+          setStateTheme(theme.light);
+        }
+      });
+
     // Toggle the Dev Tools from Electron in the current window
     const showDevTools = () => {
 
