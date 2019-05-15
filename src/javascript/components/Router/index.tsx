@@ -15,6 +15,8 @@ import { rxTimers } from '../../helpers/rxTimers';
 import { TimersPage } from '../Timers';
 import { GiveawaysPage } from '../Giveaways';
 import { rxGiveaways } from '../../helpers/rxGiveaways';
+import { rxLists } from '../../helpers/rxLists';
+import { ListsPage } from '../Lists';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -33,6 +35,7 @@ class RouterWrapper extends Component<any, any> {
     giveaways: {},
     timers: {},
     config: {},
+    lists: {},
     livestream: { watchingCount: 0 }
   };
   componentDidMount() {
@@ -47,6 +50,9 @@ class RouterWrapper extends Component<any, any> {
     });
     rxGiveaways.subscribe(Giveaways => {
       this.setState({ giveaways: Giveaways });
+    });
+    rxLists.subscribe(Lists => {
+      this.setState({ lists: Lists });
     });
     ipcRenderer.on('updatedUser', (event, { user }) => {
       let users = Object.assign({}, this.state.users);
@@ -152,6 +158,16 @@ class RouterWrapper extends Component<any, any> {
               closeCurrentPopup: this.closeCurrentPopup
             }}
             Component={TimersPage}
+          />
+          <Route
+            url={url}
+            path={'/lists'}
+            componentProps={{
+              lists: this.state.lists,
+              addPopup: this.addPopup,
+              closeCurrentPopup: this.closeCurrentPopup
+            }}
+            Component={ListsPage}
           />
           <Route
             url={url}

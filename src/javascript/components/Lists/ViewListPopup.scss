@@ -1,0 +1,29 @@
+.popup {
+  h1 {
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    font-size: 1.5em;
+  }
+}
+.button {
+  width: calc(100% - 14px);
+  margin-top: 10px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  padding: 6px;
+  border: 2px solid;
+  border-radius: 5px;
+  transition: all 0.15s ease-in-out;
+  &:active,
+  &:hover {
+    border-color: #ffd300 !important;
+    color: #ffd300 !important;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+}

@@ -131,6 +131,8 @@ textarea.usersearch {
       width: 150px;
       text-align: left;
       text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
     &.value {
       width: 100px;

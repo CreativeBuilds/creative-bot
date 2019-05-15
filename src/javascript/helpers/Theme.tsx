@@ -21,7 +21,7 @@ const theme = {
     },
     titleBar: {
       backgroundColor: '#333333',
-      color: '#CCCCCC',
+      color: '#CCCCCC'
     },
     titleBarActionIcon: {
       '-webkit-filter': 'invert(80%)'
@@ -34,6 +34,10 @@ const theme = {
       message: {
         backgroundColor: '#202225',
         color: '#f0f0f0',
+        secondAlternate: {
+          backgroundColor: 'rgb(24, 25, 26)',
+          color: '#f0f0f0'
+        },
         alternate: {
           backgroundColor: 'rgb(14, 15, 16)',
           color: '#f0f0f0'
@@ -74,6 +78,10 @@ const theme = {
       message: {
         backgroundColor: '#ffffff',
         color: '#202225',
+        secondAlternate: {
+          backgroundColor: '#dddddd',
+          color: '#202225'
+        },
         alternate: {
           backgroundColor: '#eeeeee',
           color: '#202225'
