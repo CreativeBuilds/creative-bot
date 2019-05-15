@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
-import { theme, menuItems_win } from '../../helpers';
+import { theme, ThemeContext, menuItems_win } from '../../helpers';
 import { MdClose, MdCheckBoxOutlineBlank, MdFlipToFront, MdRemove  } from 'react-icons/md';
 
 import { MenuBar, MenuItem } from '../MenuBar';
@@ -20,7 +20,7 @@ interface TitleBar {
 
 const TitleBar = () => {
 
-    const [stateTheme, setStateTheme] = useState(theme.dark);
+    const [stateTheme, setStateTheme] = useState(ThemeContext);
 
     ipcRenderer.once('change-theme', function(event, args) { 
         var value = args[0] as string

@@ -51,7 +51,7 @@ const Banner = ( {isOpen, alertType } : Banner) => {
         }
     }
 
-    ipcRenderer.on('show-bannermessage', function(event, args) {
+    ipcRenderer.once('show-bannermessage', function(event, args) {
         var bannerMessage = args[0] as BannerMessage
         if (bannerMessage.needsBanner == true) {
             setIsOpen(true);
@@ -64,7 +64,7 @@ const Banner = ( {isOpen, alertType } : Banner) => {
         }
     });
 
-    ipcRenderer.on('hide-bannermessage', function(event) {
+    ipcRenderer.once('hide-bannermessage', function(event) {
         setIsOpen(false)
     });
 

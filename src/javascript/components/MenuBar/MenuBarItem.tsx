@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect, useRef } from 'react';
-import { theme, useComponentVisible } from '../../helpers';
+import { theme, ThemeContext, useComponentVisible } from '../../helpers';
 
 import { MenuItem } from './index';
 import { ContextMenu, ContextItem } from './../ContextMenu/index';
@@ -19,7 +19,7 @@ interface MenuBar {
 
 const MenuBarItem = ({menuItem, hidden = true, action} : MenuBar) => {
 
-    const [stateTheme, setStateTheme] = useState(theme.dark);
+    const [stateTheme, setStateTheme] = useState(ThemeContext);
     const [show, showMenu] = useState<Boolean>(false);
     const [isHovering, setHovering] = useState<Boolean>(false);
 

@@ -13,6 +13,7 @@ interface ContextItem {
     icon?: Object,
     title?: String,
     shortcut?: String,
+    selected?: Boolean,
     action?: () => void,
     enabled: Boolean,
     contextMenu?: Array<ContextItem>

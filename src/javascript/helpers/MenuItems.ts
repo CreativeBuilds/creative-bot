@@ -1,10 +1,20 @@
 import { MenuItem } from '../components/MenuBar';
 import {ContextItem} from '../components/ContextMenu';
 
+import { rxConfig, setRxConfig } from './rxConfig';
+
 const { ipcRenderer, shell, remote, webFrame } = require('electron');
 const {dialog, BrowserWindow, app} = remote;
 
 var win = remote.getCurrentWindow();
+
+const isDark = () => {
+    
+}
+
+const isLight = () => {
+    
+}
 
 const menuItems_win : Array<MenuItem> = [
     {
