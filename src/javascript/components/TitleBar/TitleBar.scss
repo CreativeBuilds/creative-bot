@@ -79,14 +79,14 @@
         z-index: 3000;
         -webkit-app-region: no-drag;
         height: 100%;
-        width: 138px;
+        width: auto;
         margin-left: auto;
 
         .actionBtn {
             display: inline-block;
             -webkit-app-region: no-drag;
             height: 30px;
-            width: 33.34%;
+            width: 46px;
             box-sizing: border-box;
             padding: 4px;
 
@@ -96,8 +96,18 @@
                 }
 
                 &:last-of-type {
+                    svg {
+                        svg { 
+                            fill: white !important;
+                            stroke: white !important;
+                        }
+                    }
                     background-color: rgba(232,17,35,.9);
                 }
+            }
+
+            &.close {
+                width: 46px !important;
             }
 
             .icon {
@@ -133,5 +143,11 @@
     cursor: pointer;
 
     &.devTools { width: 64px !important; }
+    &.appearance { 
+        svg { 
+            width: 14px !important;
+            height: 14px !important;
+        } 
+    }
 }
 

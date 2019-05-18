@@ -13,13 +13,13 @@ storage.get('config', (err, data) => {
   // Defaults to 5 minutes
   if (!data.pointsTimer || isNaN(Number(data.pointsTimer))) data.pointsTimer = 300;
   // Defaults to Dark Theme 'dark'
-  if (!data.themeType || isNaN(Number(data.themeType))) data.themeType = String('dark');
+  if (!data.themeType) data.themeType = 'dark';
 
   rxConfig.next(data);
   rxConfig.subscribe(data => {
     data.points = Number(data.points);
     data.pointsTimer = Number(data.pointsTimer);
-    data.themeType = String('dark');
+    data.themeType = String(data.themeType);
     storage.set('config', data);
   });
 });

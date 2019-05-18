@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
-import { MdKeyboardArrowRight } from 'react-icons/md';
+import { MdKeyboardArrowRight, MdDone } from 'react-icons/md';
 import { theme, useComponentVisible } from '../../helpers';
 
 import { ContextMenu ,ContextItem } from './index';
@@ -18,6 +18,7 @@ interface ContextMenuItem {
 const ContextMenuItem = ({ contextItem, themeStyle = theme.dark } : ContextMenuItem) => {
 
     const [show, showMenu] = useState<Boolean>(false);
+    const [isChecked, setChecked] = useState<Boolean>(contextItem.selected);
     const [stateTheme, setStateTheme] = useState(themeStyle);
 
     const {
@@ -46,6 +47,14 @@ const ContextMenuItem = ({ contextItem, themeStyle = theme.dark } : ContextMenuI
         if (contextItem.role.toLowerCase() == "normal") {
             return <div className={`${styles.itemContainer}`}>
                         <div className={`${styles.contextItemContent} ${styles.normal}`}> 
+                            <div className={styles.iconContainer}>
+                                <div className={styles.icon}>
+
+                                </div>
+                                {isChecked ? <div className={styles.checkedIcon}>
+                                    <MdDone />
+                                </div> : null }
+                            </div>
                             <div className={styles.title}><span>{contextItem.title}</span></div>
                             <div className={styles.shortcut}><span>{contextItem.shortcut}</span></div>
                         </div>
@@ -53,6 +62,11 @@ const ContextMenuItem = ({ contextItem, themeStyle = theme.dark } : ContextMenuI
         } else if (contextItem.role.toLowerCase() == "submenu") {
             return <div className={`${styles.itemContainer}`} onMouseOver={() => setIsComponentVisible(true)} onMouseLeave={() => setIsComponentVisible(false)}> 
                         <div className={`${styles.contextItemContent} ${styles.multimenu}`}>
+                            <div className={styles.iconContainer}>
+                                <div className={styles.icon}>
+
+                                </div>
+                            </div>
                             <div className={styles.title}><span>{contextItem.title}</span></div>
                             <MdKeyboardArrowRight className={styles.arrow} />
                         </div>

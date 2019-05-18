@@ -23,7 +23,7 @@ const theme = {
       }
     },
     titleBar: {
-      backgroundColor: '#333333',
+      backgroundColor: '#202225',
       color: '#CCCCCC',
     },
     titleBarActionIcon: {

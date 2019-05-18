@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
 import { theme, ThemeContext, menuItems_win } from '../../helpers';
-import { MdClose, MdCheckBoxOutlineBlank, MdFlipToFront, MdRemove  } from 'react-icons/md';
+import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
+import { MdClose, MdCheckBoxOutlineBlank, MdFlipToFront, MdRemove, MdBrightnessLow, MdBrightness3  } from 'react-icons/md';
 
 import { MenuBar, MenuItem } from '../MenuBar';
 import {ContextMenu, ContextItem} from '../ContextMenu';
@@ -21,6 +22,15 @@ interface TitleBar {
 const TitleBar = () => {
 
     const [stateTheme, setStateTheme] = useState(ThemeContext);
+    const [isDarkMode, setDarkMode] = useState<Boolean>(true);
+    const [menuItems, setMenuItems] = useState<Array<MenuItem>>(menuItems_win);
+    const [config, setConfig] = useState<any>(null);
+
+    useEffect(() => {
+        rxConfig.subscribe((data: any) => {
+          setConfig(data);
+        }); 
+    }, []);
 
     ipcRenderer.once('change-theme', function(event, args) { 
         var value = args[0] as string
@@ -35,6 +45,18 @@ const TitleBar = () => {
     const showDevTools = () => {
 
         remote.getCurrentWindow().webContents.toggleDevTools();
+    }
+
+    // Toggles Between Dark and Light Mode
+    const toggleDarkMode = () => {
+        setDarkMode(!isDarkMode);
+
+        if (isDarkMode) {
+            ipcRenderer.send('changeAppTheme', ['dark']);
+        } else 
+        {
+            ipcRenderer.send('changeAppTheme', ['light']);
+        }
     }
 
     // minimize the current Window
@@ -80,7 +102,7 @@ const TitleBar = () => {
                 <img className={styles.appIcon} src=".icon-ico/icon.ico" />
             </div>
             <div className={styles.contentContainer}>
-                <MenuBar menuItems={menuItems_win} />
+                <MenuBar menuItems={menuItems} />
                 <div className={styles.windowTitle}>
                     {remote.getCurrentWindow().getTitle()}
                 </div>
@@ -89,7 +111,12 @@ const TitleBar = () => {
                 </div>
             </div>
             <div className={styles.windowControlsContainer}>
-                <div className={`${styles.actionBtn}`} onClick={() => { minimize(); }} >
+                <div className={`${styles.actionBtn} ${styles.appearance}`} onClick={() => { toggleDarkMode(); }} >
+                    <div className={`${styles.icon}`} >
+                        { isDarkMode ? <MdBrightnessLow /> : <MdBrightness3 /> }
+                    </div>
+                </div>
+                <div className={`${styles.actionBtn}  ${styles.minimize}`} onClick={() => { minimize(); }} >
                     <div className={`${styles.icon} ${styles.minimize}`} >
                         <MdRemove />
                     </div>
@@ -99,7 +126,7 @@ const TitleBar = () => {
                         {getMaximizedIcon()} 
                     </div>
                 </div>
-                <div className={`${styles.actionBtn}`} onClick={() => { close(); }}>
+                <div className={`${styles.actionBtn}  ${styles.close}`} onClick={() => { close(); }}>
                     <div className={`${styles.icon} ${styles.close}`} >
                         <MdClose />
                     </div>

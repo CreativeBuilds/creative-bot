@@ -46,6 +46,7 @@ const Popup = ({
             default:
               Config[configOption.key] = value;
           }
+          console.log(Config);
           setRxConfig(Config);
           closeCurrentPopup();
         }}

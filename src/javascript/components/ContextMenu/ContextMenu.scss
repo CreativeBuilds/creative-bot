@@ -52,14 +52,17 @@
             &:not(.inactive) {
                 background-color: $dliveaccent;
                 cursor: pointer;
-                .title, .shortcut, .arrow {
+                .title, .shortcut, .arrow, .iconContainer {
                     color: black;
                     fill: black !important;
                     stroke: black !important;
                 }
             }
         }
-        .title, .shortcut, .arrow { 
+
+        
+
+        .title, .shortcut, .arrow, .iconContainer { 
             padding-bottom: 5px;
             padding-top: 5px;
             display: inline-block; 
@@ -69,6 +72,25 @@
                 display: inline-block;
                 vertical-align: middle;
                 line-height: normal;
+            }
+        }
+
+        .iconContainer { 
+            float: left;
+            margin-right: 10px;
+            .icon, .checkedIcon {
+                height: auto;
+
+                svg {
+                    vertical-align: middle;
+                }
+
+                &:hover { 
+                    svg {
+                        fill: black !important;
+                        stroke: black !important;
+                    }
+                }
             }
         }
 

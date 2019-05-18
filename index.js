@@ -287,6 +287,7 @@ function createWindow() {
   ipcMain.on('setRxConfig', (event, Config) => {
     if (Config !== config) {
       config = Config;
+      console.log(Config);
       rxConfig.next(Config);
     }
   });

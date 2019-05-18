@@ -28,40 +28,33 @@ const Main = ({ Config } : Main) => {
   // TODO swap theme based on currently selected (probably do this with context from react)
 
   useEffect(() => {
-    let listener = rxConfig.subscribe((data: any) => {
-      delete data.first;
+
+    rxConfig.subscribe((data: any) => {
       setConfig(data);
     });
-    return () => {
-      listener.unsubscribe();
-    };
-  }, []);
 
-  ipcRenderer.on('change-theme', function(event, args) { 
-    var value = args[0] as string
-    if (value == 'dark') {
-      setStateTheme(theme.dark);
-      let Config = Object.assign({}, { themeType: 'dark' }, config);
-      //setRxConfig(Config);
-      ipcRenderer.send('setRxConfig', config);
-      console.log(Config);  
-    } else if (value == 'light') {
-      setStateTheme(theme.light);
-      let Config = Object.assign({}, { themeType: 'light' }, config);
-      ipcRenderer.send('setRxConfig', config);
-      //setRxConfig(Config);
-      console.log(Config);
-    }
-  });
+    ipcRenderer.on('change-theme', function(event, args) { 
+      var value = args[0] as string
+  
+      if (value == 'dark') {
+        setStateTheme(theme.dark);
+        let tConfig = Object.assign({}, { themeType: 'dark' }, config);
+        setRxConfig(tConfig);  
+      } else if (value == 'light') {
+        setStateTheme(theme.light);
+        let tConfig = Object.assign({}, { themeType: 'light' }, config);
+        setRxConfig(tConfig);
+      }
+    });
+    
+  }, []);
 
   return (
     <ThemeContext.Provider value={{ stateTheme, setStateTheme }}>
-        <div className={styles.appFrame} style={style().main}>
-          
-
+        <div className={styles.appFrame}>         
           <TitleBar />
           <Banner />
-          <div className={styles.main}>
+          <div className={styles.main} style={style().main}>
             <Router />
           </div>
         </div>

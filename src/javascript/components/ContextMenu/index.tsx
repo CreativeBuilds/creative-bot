@@ -27,7 +27,7 @@ interface ContextMenu {
     contextItems: Array<ContextItem>
 }
 
-const ContextMenu = ({contextItems, isOpen = false, onClickedOutside, isSubMenu = false, themeStyle = theme.dark} : ContextMenu) => {
+const ContextMenu = ({contextItems, isOpen = false, onClickedOutside, isSubMenu = false, themeStyle = ThemeContext} : ContextMenu) => {
 
     const [stateTheme, setStateTheme] = useState(themeStyle);
     const [opened, setOpened] = useState<Boolean>(isOpen);
