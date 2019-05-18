@@ -1,87 +1,88 @@
 const rxTimers = require('./rxTimers');
 const rxConfig = require('./rxConfig');
 const sendMessage = require('./sendMessage');
-const { filter, first } = require('rxjs/operators');
+const { filter, first, distinctUntilChanged } = require('rxjs/operators');
 const DLive = require('dlive-js');
-
-let intervals = {};
-const messages = [];
-
-let timerMap = {};
+const _ = require('lodash');
 
 let oldTimers = {};
 
-let listeners = [];
+let allRunningTimers = {};
+
+class Timer {
+  constructor(timer, key) {
+    this.messages = [];
+    this.lastSent = 0;
+    this.minMsgs = timer.messages;
+    this.reply = timer.reply;
+    this.name = key;
+    this.timerObj = timer;
+    this.seconds = (timer.seconds || 600) * 1000;
+    this.timer = setInterval(() => {
+      let now = Date.now(); // Push adds to the back of the array
+      let minMsgs = this.minMsgs;
+
+      // IF Minamount of msgs has passed
+      // Then check if amount of time has passed
+
+      if (minMsgs === 0 || this.lastSent === 0) {
+        return this.send();
+      }
+      if (this.messages.length > minMsgs) {
+        let last = this.messages[this.messages.length - 1];
+        // Takes current date and subtracts ms date of oldest message in array and checks to see if enough time has passed
+        if (now - last > this.seconds) {
+          return this.send();
+        }
+      }
+    }, 1000 * (timer.seconds || 600));
+  }
+
+  send() {
+    this.lastSent = Date.now();
+    this.messages = [];
+    sendMessage(this.reply);
+  }
+}
 
 module.exports = {
   run: () => {
-    rxTimers.subscribe(timers => {
-      if (timers === oldTimers) return;
-      if (Object.keys(timers).length === 0) {
-        Object.keys(intervals).forEach(key => clearInterval(intervals[key]));
-      }
-      if (listeners.length) {
-        listeners.forEach(listener => listener.unsubscribe());
-        Object.keys(intervals).forEach(key => clearInterval(intervals[key]));
-        intervals = [];
-      }
-      listeners.push(
-        rxConfig
-          .pipe(
-            filter(x => !!x.authKey),
-            first()
-          )
-          .subscribe(config => {
-            let dlive = new DLive({ authKey: config.authKey });
-
-            dlive.listenToChat(config.streamerDisplayName).then(Messages => {
-              listeners.push(
-                Messages.subscribe(message => {
-                  Object.keys(intervals).forEach(key => {
-                    let intervalObj = intervals[key];
-                    intervalObj.messages.push(Date.now());
-                  });
-                })
-              );
-            });
-          })
-      );
-      Object.keys(timers).forEach(key => {
-        const run = () => {
-          let timer = timers[key];
-          if (!timer.enabled) return;
-          let messages = [];
-          intervals[key] = {
-            messages: messages,
-            timer: setInterval(() => {
-              let now = Date.now(); // Push adds to the back of the array
-              let minMsgs = timer.messages;
-              if (!timerMap[timer.name] || minMsgs === 0) {
-                timerMap[timer.name] = now;
-                return sendMessage(timer.reply);
-              }
-              if (messages.length < minMsgs) return;
-              if (
-                now - messages[messages.length - (minMsgs - 1)] >
-                (timer.seconds || 600) * 1000
-              ) {
-                timerMap[timer.name] = now;
-                return sendMessage(timer.reply);
-              }
-            }, 1000 * (timer.seconds || 600))
-          };
-        };
-        if (intervals[key]) {
-          if (JSON.stringify(timers[key]) !== JSON.stringify(oldTimers[key])) {
-            clearInterval(intervals[key].timer);
-            return run();
+    rxTimers.pipe(distinctUntilChanged()).subscribe(timers => {
+      let determineWhichChanged = () => {
+        // Compare timers with oldTimers to see if something exists
+        // The object that is returned will be which timers to create in an array of strings
+        return Object.keys(timers).reduce((acc, key) => {
+          let oldTimer = oldTimers[key];
+          if (!oldTimer) {
+            acc.push(key);
+            return acc;
+          } else if (!_.isEqual(oldTimer, timers[key])) {
+            acc.push(key);
+            return acc;
           }
-        } else {
-          run();
+          return acc;
+        }, []);
+      };
+      Object.keys(allRunningTimers)
+        .reduce((acc, key) => {
+          if (!timers[key]) acc.push(key);
+          return acc;
+        }, [])
+        .forEach(key => {
+          let timer = allRunningTimers[key];
+          clearInterval(timer.timer);
+          delete allRunningTimers[key];
+        });
+      let changed = determineWhichChanged();
+      changed.forEach(key => {
+        let timer = timers[key];
+        if (allRunningTimers[key]) {
+          clearInterval(allRunningTimers[key].timer);
+          delete allRunningTimers[key];
         }
-      });
-      Object.keys(intervals).forEach(key => {
-        if (!timers[key]) clearInterval(intervals[key].timer);
+        if (!timer.enabled) return;
+        // generate a new timer
+        allRunningTimers[key] = new Timer(timer, key);
       });
       oldTimers = timers;
     });
