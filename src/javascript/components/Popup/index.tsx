@@ -10,7 +10,7 @@ const Popup = ({ Component, closePopup }) => {
   const [stateTheme, setStateTheme] = useState(theme.dark);
 
   ipcRenderer.once('change-theme', function(event, args) { 
-    var value = args[0] as string
+    var value = args as string
     if (value == "dark") {
       setStateTheme(theme.dark);
     } else {

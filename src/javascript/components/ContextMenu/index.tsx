@@ -27,19 +27,23 @@ interface ContextMenu {
     contextItems: Array<ContextItem>
 }
 
-const ContextMenu = ({contextItems, isOpen = false, onClickedOutside, isSubMenu = false, themeStyle = ThemeContext} : ContextMenu) => {
+const ContextMenu = ({contextItems, isOpen = false, onClickedOutside, isSubMenu = false, themeStyle} : ContextMenu) => {
 
     const [stateTheme, setStateTheme] = useState(themeStyle);
     const [opened, setOpened] = useState<Boolean>(isOpen);
 
-    ipcRenderer.once('change-theme', function(event, args) { 
-        var value = args[0] as string
-        if (value == "dark") {
-          setStateTheme(theme.dark);
-        } else {
+    const changeTheme = (themeVal : String) => {
+        if (themeVal == 'dark') {
+          setStateTheme(theme.dark); 
+        } else if (themeVal == 'light') {
           setStateTheme(theme.light);
-        }
-      });
+        }   
+    }
+
+    ipcRenderer.once('change-theme', function(event, args) { 
+        var value = args as string
+        changeTheme(value);
+    });
 
     const loadContextMenuItems = () => {
         var contextMenuItemsObjs = []

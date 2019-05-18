@@ -27,19 +27,35 @@ const TitleBar = () => {
     const [config, setConfig] = useState<any>(null);
 
     useEffect(() => {
-        rxConfig.subscribe((data: any) => {
-          setConfig(data);
-        }); 
-    }, []);
 
-    ipcRenderer.once('change-theme', function(event, args) { 
-        var value = args[0] as string
-        if (value == "dark") {
-          setStateTheme(theme.dark);
-        } else {
+        let listener = rxConfig.subscribe((data: any) => {
+          delete data.first;
+          setConfig(data);
+          changeTheme(data.themeType);
+
+          setDarkMode(data.themeType != 'light' ? true : false);
+        });
+    
+        return () => {
+          listener.unsubscribe();
+        };
+        
+      }, []);
+
+    const changeTheme = (themeVal : String) => {
+        if (themeVal == 'dark') {
+          setStateTheme(theme.dark); 
+          //setDarkMode(true);
+        } else if (themeVal == 'light') {
           setStateTheme(theme.light);
-        }
-      });
+          //setDarkMode(false);
+        }   
+    }
+
+    ipcRenderer.on('change-theme', function(event, args) { 
+        var value = args as string
+        changeTheme(String(value));
+    });
 
     // Toggle the Dev Tools from Electron in the current window
     const showDevTools = () => {

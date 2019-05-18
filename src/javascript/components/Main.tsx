@@ -21,31 +21,45 @@ interface Main {
 }
 
 const Main = ({ Config } : Main) => {
+
+  
+
   const [stateTheme, setStateTheme] = useState(theme.dark);
   const [config, setConfig] = useState(Config);
 
   const style = (obj: {} = {}) => Object.assign(obj, stateTheme);
   // TODO swap theme based on currently selected (probably do this with context from react)
 
+  const changeTheme = (themeVal : String) => {
+    if (themeVal == 'dark') {
+      setStateTheme(theme.dark); 
+    } else if (themeVal == 'light') {
+      setStateTheme(theme.light);
+    }
+  }
+
   useEffect(() => {
 
-    rxConfig.subscribe((data: any) => {
+    let listener = rxConfig.subscribe((data: any) => {
+      delete data.first;
       setConfig(data);
+      changeTheme(data.themeType);
+
+      //ipcRenderer.send('changeAppThemeWithoutChange', data.themeType);
     });
 
     ipcRenderer.on('change-theme', function(event, args) { 
-      var value = args[0] as string
-  
-      if (value == 'dark') {
-        setStateTheme(theme.dark);
-        let tConfig = Object.assign({}, { themeType: 'dark' }, config);
-        setRxConfig(tConfig);  
-      } else if (value == 'light') {
-        setStateTheme(theme.light);
-        let tConfig = Object.assign({}, { themeType: 'light' }, config);
-        setRxConfig(tConfig);
-      }
+      var value = args as string
+      
+      changeTheme(value);
+
+      let tConfig = Object.assign({}, { themeType: String(value) }, config);
+      setRxConfig(tConfig);
     });
+
+    return () => {
+      listener.unsubscribe();
+    };
     
   }, []);
 
