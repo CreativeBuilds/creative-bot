@@ -7,6 +7,8 @@ const _ = require('lodash');
 
 let oldTimers = {};
 
+let listeners = [];
+
 let allRunningTimers = {};
 
 class Timer {
@@ -47,6 +49,20 @@ class Timer {
 
 module.exports = {
   run: () => {
+    rxConfig.pipe(filter(x => !!x.authKey)).subscribe(config => {
+      listeners.forEach(listener => listener.unnsubscribe());
+      let dlive = new DLive({ authKey: config.authKey });
+      dlive.listenToChat(config.streamerDisplayName).then(Messages => {
+        listeners.push(
+          Messages.subscribe(() => {
+            Object.keys(allRunningTimers).forEach(key => {
+              let timer = allRunningTimers[key];
+              timer.messages.push(Date.now());
+            });
+          })
+        );
+      });
+    });
     rxTimers.pipe(distinctUntilChanged()).subscribe(timers => {
       let determineWhichChanged = () => {
         // Compare timers with oldTimers to see if something exists
