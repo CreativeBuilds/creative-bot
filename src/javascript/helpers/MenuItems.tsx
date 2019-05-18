@@ -11,11 +11,7 @@ var themeType = 'dark'
 var config = {};
 
 ipcRenderer.on('change-theme', function(event, args) { 
-    themeType = args[0] as string
-});
-
-rxConfig.subscribe(Config => {
-    config = Config;   
+    themeType = args as string
 });
 
 

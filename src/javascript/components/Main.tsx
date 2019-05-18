@@ -44,6 +44,7 @@ const Main = ({ Config } : Main) => {
       delete data.first;
       setConfig(data);
       changeTheme(data.themeType);
+      console.log(data);
 
       //ipcRenderer.send('changeAppThemeWithoutChange', data.themeType);
     });
@@ -52,7 +53,7 @@ const Main = ({ Config } : Main) => {
       var value = args as string
       
       changeTheme(value);
-
+  
       let tConfig = Object.assign({}, { themeType: String(value) }, config);
       setRxConfig(tConfig);
     });

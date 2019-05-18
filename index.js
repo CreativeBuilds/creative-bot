@@ -236,8 +236,13 @@ function createWindow() {
   ipcMain.on('changeAppTheme', (event, themeVal) => {
     event.sender.send('change-theme', themeVal);
   });
+
   ipcMain.on('changeAppThemeWithoutChange', (event, themeVal) => {
     event.sender.send('change-theme-nochange', themeVal);
+  });
+
+  ipcMain.on('getAppTheme', (event) => {
+    event.sender.send('change-theme-nochange', config.themeType);
   });
 
   ipcMain.on('getCommands', () => {

@@ -1,6 +1,7 @@
 import * as React from 'react';
+import { useContext, Component, useState, useEffect } from 'react';
+import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
 import { MdClose } from 'react-icons/md';
-const { useState } = React;
 import { theme } from '../../helpers';
 
 const { ipcRenderer, shell, remote } = require('electron');
@@ -8,14 +9,32 @@ const styles: any = require('./Popup.scss');
 
 const Popup = ({ Component, closePopup }) => {
   const [stateTheme, setStateTheme] = useState(theme.dark);
+  const [config, setConfig] = useState<any>(null);
+
+  const changeTheme = (themeVal : String) => {
+    if (themeVal == 'dark') {
+      setStateTheme(theme.dark); 
+    } else if (themeVal == 'light') {
+      setStateTheme(theme.light);
+    }
+  }
+
+  useEffect(() => {
+
+    rxConfig.subscribe((data: any) => {
+      delete data.first;
+      setConfig(data);
+      changeTheme(data.themeType);
+      console.log(data);
+
+      //ipcRenderer.send('changeAppThemeWithoutChange', data.themeType);
+    });
+    
+  }, []);
 
   ipcRenderer.once('change-theme', function(event, args) { 
     var value = args as string
-    if (value == "dark") {
-      setStateTheme(theme.dark);
-    } else {
-      setStateTheme(theme.light);
-    }
+    changeTheme(value);
   });
 
   return (

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { rxConfig, setRxConfig } from '../helpers/rxConfig';
 const { ipcRenderer, shell, remote, webFrame } = require('electron');
 
 const theme = {
@@ -114,13 +115,18 @@ const theme = {
 
 var themeObj: any = null;
 
-ipcRenderer.once('change-theme-nochange', function(event, args) { 
-  var themeVal = args as string
+const changeTheme = (themeVal : String) => {
   if (themeVal == 'dark') {
     themeObj = theme.dark;
   } else if (themeVal == 'light') {
     themeObj = theme.light;
   }
+}
+
+ipcRenderer.send('getAppTheme');
+ipcRenderer.on('change-theme-nochange', function(event, args) { 
+  var themeVal = args as string
+  changeTheme(themeVal);
 });
 
 const ThemeContext = React.createContext({ stateTheme: themeObj });

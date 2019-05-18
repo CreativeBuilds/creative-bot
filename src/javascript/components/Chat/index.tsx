@@ -127,6 +127,8 @@ const Chat = ({ props }) => {
   const [config, setConfig]: any = useState({});
   const [firstRender, setFirstRender] = useState(true);
 
+
+
   const updateText = e => {
     setText(e.target.value);
   };
@@ -142,6 +144,14 @@ const Chat = ({ props }) => {
       sendMessage();
     }
   };
+
+  const changeTheme = (themeVal : String) => {
+    if (themeVal == 'dark') {
+      setStateTheme(theme.dark); 
+    } else if (themeVal == 'light') {
+      setStateTheme(theme.light);
+    }
+  }
 
   useEffect(() => {
     let element: any = document.getElementById('messages');
@@ -159,6 +169,7 @@ const Chat = ({ props }) => {
     let listener = rxConfig.subscribe((data: any) => {
       delete data.first;
       setConfig(data);
+      changeTheme(data.themeType);
     });
     return () => {
       listener.unsubscribe();
@@ -173,6 +184,8 @@ const Chat = ({ props }) => {
   useEffect(() => {
     // Test to see if the config includes the right variables
     // if's at the top of this will be rendered last
+
+    changeTheme(config.themeType);
 
     if (!config.init) return;
     if (
