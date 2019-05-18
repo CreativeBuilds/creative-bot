@@ -92,7 +92,7 @@
 
             &:hover {
                 &:not(:last-of-type) {
-                    background-color: rgba(0, 0, 0, 0.1);
+                    background-color: hsla(0,0%,100%,.1);
                 }
 
                 &:last-of-type {

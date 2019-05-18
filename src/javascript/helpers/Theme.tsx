@@ -85,7 +85,7 @@ const theme = {
       '-webkit-filter': 'invert(30%)'
     },
     titleBarHover: {
-      backgroundColor: '#e3e3e3'
+      backgroundColor: 'rgba(0, 0, 0, 0.1)'
     },
     menuItemSelected: {
       backgroundColor: '#e3e3e3',
