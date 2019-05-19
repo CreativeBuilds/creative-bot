@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
-import { theme, ThemeContext, menuItems_win } from '../../helpers';
+import { theme, ThemeContext, MenuItems } from '../../helpers';
 import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
 import { MdClose, MdCheckBoxOutlineBlank, MdFlipToFront, MdRemove, MdBrightnessLow, MdBrightness3  } from 'react-icons/md';
 
@@ -23,24 +23,8 @@ const TitleBar = () => {
 
     const [stateTheme, setStateTheme] = useState(ThemeContext);
     const [isDarkMode, setDarkMode] = useState<Boolean>(true);
-    const [menuItems, setMenuItems] = useState<Array<MenuItem>>(menuItems_win);
+    const [menuItems, setMenuItems] = useState<Array<MenuItem>>(MenuItems('dark'));
     const [config, setConfig] = useState<any>(null);
-
-    useEffect(() => {
-
-        let listener = rxConfig.subscribe((data: any) => {
-          delete data.first;
-          setConfig(data);
-          changeTheme(data.themeType);
-
-          setDarkMode(data.themeType != 'light' ? true : false);
-        });
-    
-        return () => {
-          listener.unsubscribe();
-        };
-        
-      }, []);
 
     const changeTheme = (themeVal : String) => {
         if (themeVal == 'dark') {
@@ -50,7 +34,23 @@ const TitleBar = () => {
           setStateTheme(theme.light);
           //setDarkMode(false);
         }   
+        setMenuItems(MenuItems(themeVal));
+        //setDarkMode(themeVal != 'light' ? true : false);
     }
+
+    useEffect(() => {
+
+        let listener = rxConfig.subscribe((data: any) => {
+          delete data.first;
+          setConfig(data);
+          changeTheme(data.themeType);
+        });
+    
+        return () => {
+          listener.unsubscribe();
+        };
+        
+      }, []);
 
     ipcRenderer.on('change-theme', function(event, args) { 
         var value = args as string

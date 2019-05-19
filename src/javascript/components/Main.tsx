@@ -54,14 +54,10 @@ const Main = ({ Config } : Main) => {
       
       changeTheme(value);
   
-      let tConfig = Object.assign({}, { themeType: String(value) }, config);
-      setRxConfig(tConfig);
+      Config = Object.assign({}, { themeType: String(value) }, config);
+      setRxConfig(Config);
     });
 
-    return () => {
-      listener.unsubscribe();
-    };
-    
   }, []);
 
   return (

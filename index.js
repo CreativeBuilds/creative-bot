@@ -241,10 +241,6 @@ function createWindow() {
     event.sender.send('change-theme-nochange', themeVal);
   });
 
-  ipcMain.on('getAppTheme', (event) => {
-    event.sender.send('change-theme-nochange', config.themeType);
-  });
-
   ipcMain.on('getCommands', () => {
     let commands = Object.assign({}, Commands);
     win.webContents.send('commands', commands);

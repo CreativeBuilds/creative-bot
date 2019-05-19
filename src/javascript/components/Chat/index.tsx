@@ -185,8 +185,6 @@ const Chat = ({ props }) => {
     // Test to see if the config includes the right variables
     // if's at the top of this will be rendered last
 
-    changeTheme(config.themeType);
-
     if (!config.init) return;
     if (
       !config.authKey &&

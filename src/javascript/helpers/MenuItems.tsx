@@ -2,22 +2,17 @@ import { MenuItem } from '../components/MenuBar';
 import {ContextItem} from '../components/ContextMenu';
 
 import { rxConfig, setRxConfig } from './rxConfig';
+import { setConfig } from 'react-hot-loader';
 
 const { ipcRenderer, shell, remote, webFrame } = require('electron');
 const {dialog, BrowserWindow, app} = remote;
 
 var win = remote.getCurrentWindow();
-var themeType = 'dark'
-var config = {};
 
-ipcRenderer.on('change-theme', function(event, args) { 
-    themeType = args as string
-});
+const MenuItems = (themeType, platform = "windows") => {
 
-
-class MenuItems {
-
-    isDark = () : Boolean => {
+    const isDark = () : Boolean => {
+        
         if (themeType == 'dark') {
             return true;
         } else {
@@ -25,7 +20,8 @@ class MenuItems {
         }
     }
     
-    isLight = () : Boolean => {
+    const isLight = () : Boolean => {
+        
         if (themeType == 'light') {
             return true;
         } else {
@@ -33,7 +29,7 @@ class MenuItems {
         }
     }
     
-    win = () : Array<MenuItem> => { 
+    const win = () : Array<MenuItem> => { 
         return [
             {
                 title: "File",
@@ -140,7 +136,7 @@ class MenuItems {
                                 role: 'normal',
                                 title: 'Dark Theme',
                                 enabled: true,
-                                selected: this.isDark(),
+                                selected: isDark(),
                                 action() { 
                                     ipcRenderer.send('changeAppTheme', ['dark']);
                                 }
@@ -149,7 +145,7 @@ class MenuItems {
                                 role: 'normal',
                                 title: 'Light Theme',
                                 enabled: true,
-                                selected: this.isLight(),
+                                selected: isLight(),
                                 action() { 
                                     ipcRenderer.send('changeAppTheme', ['light']);
                                 }
@@ -259,9 +255,10 @@ class MenuItems {
             }
         ] as Array<MenuItem>;
     }
+
+    return win();
 }
 
-const menuItems = new MenuItems();
-const menuItems_win = menuItems.win();
+const menuItems_win = MenuItems;
 
-export { menuItems_win }
+export { MenuItems }
