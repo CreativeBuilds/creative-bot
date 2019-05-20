@@ -169,7 +169,6 @@ const Chat = ({ props }) => {
     let listener = rxConfig.subscribe((data: any) => {
       delete data.first;
       setConfig(data);
-      changeTheme(data.themeType);
     });
     return () => {
       listener.unsubscribe();

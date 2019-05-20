@@ -69,7 +69,7 @@ const MenuBarItem = ({menuItem, hidden = true, action} : MenuBar) => {
                 <div className={styles.menuItemTitleContainer} onClick={() => setIsComponentVisible(true)}>
                     <div className={styles.menuItemTitle}>{menuItem.title}</div>
                 </div>
-                {isComponentVisible && (<ContextMenu contextItems={menuItem.contextMenu} onClickedOutside={() => setIsComponentVisible(false)} themeStyle={stateTheme}/>)}
+                {isComponentVisible && (<ContextMenu contextItems={menuItem.contextMenu} onClickedOutside={() => setIsComponentVisible(false)} />)}
             </li>
      );
 }

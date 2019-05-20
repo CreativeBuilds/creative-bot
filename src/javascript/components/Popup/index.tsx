@@ -25,9 +25,6 @@ const Popup = ({ Component, closePopup }) => {
       delete data.first;
       setConfig(data);
       changeTheme(data.themeType);
-      console.log(data);
-
-      //ipcRenderer.send('changeAppThemeWithoutChange', data.themeType);
     });
     
   }, []);

@@ -6,7 +6,7 @@ import { MdClose, MdCheckBoxOutlineBlank, MdFlipToFront, MdRemove, MdBrightnessL
 
 import { MenuBar, MenuItem } from '../MenuBar';
 import { WindowsActionButton } from './WindowsActionButton';
-import {ContextMenu, ContextItem} from '../ContextMenu';
+import { ContextMenu, ContextItem } from '../ContextMenu';
 import { ContextMenuItem } from '../ContextMenu/ContextMenuItem';
 import { webContents } from 'electron';
 
@@ -23,36 +23,30 @@ interface TitleBar {
 const TitleBar = ({ Config = null } : TitleBar) => {
 
     const [stateTheme, setStateTheme] = useState(ThemeContext);
-    const [themeType, setThemeType] = useState<String>('dark');
     const [isDarkMode, setDarkMode] = useState<Boolean>(true);
     const [menuItems, setMenuItems] = useState<Array<MenuItem>>(MenuItems('dark'));
-    const [isHovering, setHovering] = useState<Boolean>(false);
     const [config, setConfig] = useState<any>(Config);
 
     const changeTheme = (themeVal : String) => {
-        if (themeVal == 'dark') {
-          setStateTheme(theme.dark); 
-          setThemeType(themeVal);
-        } else if (themeVal == 'light') {
-          setStateTheme(theme.light);
-          setThemeType(themeVal);
-        }   
-        setMenuItems(MenuItems(themeVal, config));
+        setStateTheme(themeVal == 'dark' ? theme.dark : theme.light);  
     }
 
     useEffect(() => {
         let listener = rxConfig.subscribe((data: any) => {
           delete data.first;
           setConfig(data);
+          setMenuItems(MenuItems(data.themeType, data));
           changeTheme(data.themeType);
         });
+
         return () => {
           listener.unsubscribe();
         };
     }, []);
 
-    const saveThemeType = () => {
-        var tConfig = Object.assign({}, { themeType: themeType }, config);
+    const saveThemeType = (value) => {
+        let tConfig = Object.assign({}, config);
+        tConfig['themeType'] = value;
         setRxConfig(tConfig);
     }
 
@@ -66,7 +60,7 @@ const TitleBar = ({ Config = null } : TitleBar) => {
     const toggleDarkMode = () => {
         setDarkMode(!isDarkMode);
         changeTheme(isDarkMode ? 'dark' : 'light');
-        saveThemeType();
+        saveThemeType(isDarkMode ? 'dark' : 'light');
     }
 
     // minimize the current Window
@@ -121,14 +115,10 @@ const TitleBar = ({ Config = null } : TitleBar) => {
                 </div>
             </div>
             <div className={styles.windowControlsContainer}>
-                <WindowsActionButton Config={config} Icon={ isDarkMode ? <MdBrightnessLow /> : <MdBrightness3 /> } type={styles.appearance} onClick={() => { toggleDarkMode(); }}/>
-                <WindowsActionButton Config={config} Icon={ <MdRemove /> } type={styles.appearance} onClick={() => { minimize(); }}/>
-                <WindowsActionButton Config={config} Icon={getMaximizedIcon()}  type={styles.appearance} onClick={() => { maximize(); }}/>
-                <div className={`${styles.actionBtn}  ${styles.close}`} onClick={() => { close(); }}>
-                    <div className={`${styles.icon} ${styles.close}`} >
-                        <MdClose />
-                    </div>
-                </div>
+                <WindowsActionButton Config={config} Icon={ stateTheme == theme.dark ? <MdBrightness3 /> : <MdBrightnessLow /> } type={'appearance'} onClick={() => { toggleDarkMode(); }}/>
+                <WindowsActionButton Config={config} Icon={ <MdRemove /> } type={'minimize'} onClick={() => { minimize(); }}/>
+                <WindowsActionButton Config={config} Icon={getMaximizedIcon()}  type={'maximize'} onClick={() => { maximize(); }}/>
+                <WindowsActionButton Config={config} Icon={<MdClose />}  type={'close'} onClick={() => { close(); }}/>
             </div>
         </div>
     );

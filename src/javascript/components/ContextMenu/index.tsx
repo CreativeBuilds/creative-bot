@@ -23,14 +23,13 @@ interface ContextItem {
 interface ContextMenu {
     isOpen?: Boolean,
     isSubMenu?: Boolean,
-    themeStyle?: any,
     onClickedOutside?: () => void,
     contextItems: Array<ContextItem>
 }
 
-const ContextMenu = ({contextItems, isOpen = false, onClickedOutside, isSubMenu = false, themeStyle} : ContextMenu) => {
+const ContextMenu = ({contextItems, isOpen = false, onClickedOutside, isSubMenu = false} : ContextMenu) => {
 
-    const [stateTheme, setStateTheme] = useState(themeStyle);
+    const [stateTheme, setStateTheme] = useState(ThemeContext);
     const [opened, setOpened] = useState<Boolean>(isOpen);
     const [config, setConfig] = useState<any>(null);
 
@@ -53,16 +52,11 @@ const ContextMenu = ({contextItems, isOpen = false, onClickedOutside, isSubMenu 
         };
     }, []);
 
-    /*ipcRenderer.once('change-theme', function(event, args) { 
-        var value = args as string
-        changeTheme(value);
-    });*/
-
     const loadContextMenuItems = () => {
         var contextMenuItemsObjs = []
 
         for (var i = 0; i < contextItems.length; i++) {
-            contextMenuItemsObjs.push(<ContextMenuItem contextItem={contextItems[i]} themeStyle={stateTheme} />);
+            contextMenuItemsObjs.push(<ContextMenuItem contextItem={contextItems[i]} />);
         }
 
         return contextMenuItemsObjs;

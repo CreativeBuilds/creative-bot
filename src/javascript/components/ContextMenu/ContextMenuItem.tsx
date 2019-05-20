@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
 import { MdKeyboardArrowRight, MdDone } from 'react-icons/md';
-import { theme, useComponentVisible } from '../../helpers';
+import { theme, useComponentVisible, ThemeContext } from '../../helpers';
+import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
 
 import { ContextMenu ,ContextItem } from './index';
 
@@ -11,21 +12,40 @@ const { ipcRenderer, shell, remote } = Window.require('electron');
 const styles: any = require('./ContextMenu.scss');
 
 interface ContextMenuItem {
-    contextItem: ContextItem,
-    themeStyle?: any
+    contextItem: ContextItem
 }
 
-const ContextMenuItem = ({ contextItem, themeStyle = theme.dark } : ContextMenuItem) => {
+const ContextMenuItem = ({ contextItem } : ContextMenuItem) => {
 
     const [show, showMenu] = useState<Boolean>(false);
     const [isChecked, setChecked] = useState<Boolean>(contextItem.selected);
-    const [stateTheme, setStateTheme] = useState(themeStyle);
+    const [stateTheme, setStateTheme] = useState(ThemeContext);
+    const [config, setConfig] = useState<any>(null);
 
     const {
         ref,
         isComponentVisible,
         setIsComponentVisible
       } = useComponentVisible(show);
+
+    const changeTheme = (themeVal : String) => {
+        if (themeVal == 'dark') {
+          setStateTheme(theme.dark); 
+        } else if (themeVal == 'light') {
+          setStateTheme(theme.light);
+        }   
+    }
+
+    useEffect(() => {
+        let listener = rxConfig.subscribe((data: any) => {
+          delete data.first;
+          setConfig(data);
+          changeTheme(data.themeType);
+        });
+        return () => {
+          listener.unsubscribe();
+        };
+    }, []);
 
     const isEnabled = () => {
         if (contextItem.enabled) {
@@ -71,7 +91,7 @@ const ContextMenuItem = ({ contextItem, themeStyle = theme.dark } : ContextMenuI
                             <MdKeyboardArrowRight className={styles.arrow} />
                         </div>
                         <div className={styles.submenuContainer}>
-                            {isComponentVisible && (<ContextMenu isSubMenu={true} contextItems={contextItem.contextMenu} onClickedOutside={() => setIsComponentVisible(false)} themeStyle={stateTheme}/>)}
+                            {isComponentVisible && (<ContextMenu isSubMenu={true} contextItems={contextItem.contextMenu} onClickedOutside={() => setIsComponentVisible(false)} />)}
                         </div>
                 </div>;
         }

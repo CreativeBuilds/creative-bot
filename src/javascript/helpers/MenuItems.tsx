@@ -138,7 +138,8 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                                 enabled: true,
                                 selected: isDark(),
                                 action() { 
-                                    var Config = Object.assign({}, { themeType: 'dark' }, config);
+                                    let Config = Object.assign({}, config);
+                                    Config['themeType'] = 'dark';
                                     setRxConfig(Config);
                                 }
                             },
@@ -148,7 +149,8 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                                 enabled: true,
                                 selected: isLight(),
                                 action() { 
-                                    var Config = Object.assign({}, { themeType: 'light' }, config);
+                                    let Config = Object.assign({}, config);
+                                    Config['themeType'] = 'light';
                                     setRxConfig(Config);
                                 }
                             },

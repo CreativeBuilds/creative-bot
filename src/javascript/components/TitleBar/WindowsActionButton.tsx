@@ -41,8 +41,20 @@ const WindowsActionButton = ({ Config, Icon, type, onClick } : WindowsActionButt
         };
     }, []);
 
+    const getType = (value) => {
+      if (value == 'appearance') {
+        return styles.appearance;
+      } else if (value == 'minimize') {
+        return styles.minimize;
+      } else if (value == 'maximize') {
+        return styles.maximize;
+      } else if (value == 'close') {
+        return styles.close;
+      }
+    }
+
     return (
-        <div className={`${styles.actionBtn} ${type}`} style={isHovering ? stateTheme.titleBarHover : null} onClick={onClick} onMouseEnter={() => setHovering(true)} onMouseLeave={() => setHovering(false)}>
+        <div className={`${styles.actionBtn} ${getType(type)}`} style={isHovering ? stateTheme.titleBarHover : null} onClick={onClick} onMouseEnter={() => setHovering(true)} onMouseLeave={() => setHovering(false)}>
             <div className={`${styles.icon}`} >
                 {Icon}
             </div>

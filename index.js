@@ -283,7 +283,6 @@ function createWindow() {
   ipcMain.on('setRxConfig', (event, Config) => {
     if (Config !== config) {
       config = Config;
-      console.log(Config);
       rxConfig.next(Config);
     }
   });
@@ -739,7 +738,6 @@ ipcMain.on('sendmessage', (event, { from, message }) => {
     sendMessage(message);
 
   } else {
-    console.log("Can't Connect to Dlive Channel because you possibly havent entered a Username and Auth Key");
 
     var bannerMessage = {
       needsBanner: true,
