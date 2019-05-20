@@ -25,39 +25,25 @@ const MenuBarItem = ({menuItem, hidden = true, action} : MenuBar) => {
     const [isHovering, setHovering] = useState<Boolean>(false);
     const [config, setConfig] = useState<any>(null);
 
-    useEffect(() => {
-
-        let listener = rxConfig.subscribe((data: any) => {
-          delete data.first;
-          setConfig(data);
-          changeTheme(data.themeType);
-    
-          //ipcRenderer.send('changeAppThemeWithoutChange', data.themeType);
-        });
-    
-        return () => {
-          listener.unsubscribe();
-        };
-        
-      }, []);
 
     const changeTheme = (themeVal : String) => {
-        if (themeVal == 'dark') {
-          setStateTheme(theme.dark); 
-        } else if (themeVal == 'light') {
-          setStateTheme(theme.light);
-        }   
+      if (themeVal == 'dark') {
+        setStateTheme(theme.dark); 
+      } else if (themeVal == 'light') {
+        setStateTheme(theme.light);
+      }   
     }
 
-    ipcRenderer.once('change-theme', function(event, args) { 
-        var value = args[0] as string
-        changeTheme(value);
-    });
-
-    ipcRenderer.once('change-theme-nochange', function(event, args) { 
-        var value = args[0] as string
-        changeTheme(value);
-    });
+    useEffect(() => {
+      let listener = rxConfig.subscribe((data: any) => {
+        delete data.first;
+        setConfig(data);
+        changeTheme(data.themeType);
+      });
+      return () => {
+        listener.unsubscribe();
+      };
+    }, []);
 
     const {
         ref,

@@ -22,8 +22,6 @@ interface Main {
 
 const Main = ({ Config } : Main) => {
 
-  
-
   const [stateTheme, setStateTheme] = useState(theme.dark);
   const [config, setConfig] = useState(Config);
 
@@ -39,31 +37,20 @@ const Main = ({ Config } : Main) => {
   }
 
   useEffect(() => {
-
     let listener = rxConfig.subscribe((data: any) => {
       delete data.first;
       setConfig(data);
       changeTheme(data.themeType);
-      console.log(data);
-
-      //ipcRenderer.send('changeAppThemeWithoutChange', data.themeType);
     });
-
-    ipcRenderer.on('change-theme', function(event, args) { 
-      var value = args as string
-      
-      changeTheme(value);
-  
-      Config = Object.assign({}, { themeType: String(value) }, config);
-      setRxConfig(Config);
-    });
-
+    return () => {
+      listener.unsubscribe();
+    };
   }, []);
 
   return (
     <ThemeContext.Provider value={{ stateTheme, setStateTheme }}>
         <div className={styles.appFrame}>         
-          <TitleBar />
+          <TitleBar Config={config}/>
           <Banner />
           <div className={styles.main} style={style().main}>
             <Router />

@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
 import { theme, ThemeContext } from '../../helpers';
 import { ContextMenuItem } from './ContextMenuItem';
+import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
 
 const Window: any = window;
 const { ipcRenderer, shell, remote } = Window.require('electron');
@@ -31,6 +32,7 @@ const ContextMenu = ({contextItems, isOpen = false, onClickedOutside, isSubMenu 
 
     const [stateTheme, setStateTheme] = useState(themeStyle);
     const [opened, setOpened] = useState<Boolean>(isOpen);
+    const [config, setConfig] = useState<any>(null);
 
     const changeTheme = (themeVal : String) => {
         if (themeVal == 'dark') {
@@ -40,10 +42,21 @@ const ContextMenu = ({contextItems, isOpen = false, onClickedOutside, isSubMenu 
         }   
     }
 
-    ipcRenderer.once('change-theme', function(event, args) { 
+    useEffect(() => {
+        let listener = rxConfig.subscribe((data: any) => {
+          delete data.first;
+          setConfig(data);
+          changeTheme(data.themeType);
+        });
+        return () => {
+          listener.unsubscribe();
+        };
+    }, []);
+
+    /*ipcRenderer.once('change-theme', function(event, args) { 
         var value = args as string
         changeTheme(value);
-    });
+    });*/
 
     const loadContextMenuItems = () => {
         var contextMenuItemsObjs = []

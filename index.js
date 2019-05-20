@@ -233,14 +233,6 @@ function createWindow() {
     event.sender.send('hide-bannermessage');
   });
 
-  ipcMain.on('changeAppTheme', (event, themeVal) => {
-    event.sender.send('change-theme', themeVal);
-  });
-
-  ipcMain.on('changeAppThemeWithoutChange', (event, themeVal) => {
-    event.sender.send('change-theme-nochange', themeVal);
-  });
-
   ipcMain.on('getCommands', () => {
     let commands = Object.assign({}, Commands);
     win.webContents.send('commands', commands);

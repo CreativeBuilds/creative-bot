@@ -123,12 +123,6 @@ const changeTheme = (themeVal : String) => {
   }
 }
 
-ipcRenderer.send('getAppTheme');
-ipcRenderer.on('change-theme-nochange', function(event, args) { 
-  var themeVal = args as string
-  changeTheme(themeVal);
-});
-
 const ThemeContext = React.createContext({ stateTheme: themeObj });
 
 export { ThemeContext, theme };

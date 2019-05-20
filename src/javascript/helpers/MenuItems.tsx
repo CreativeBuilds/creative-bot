@@ -9,7 +9,7 @@ const {dialog, BrowserWindow, app} = remote;
 
 var win = remote.getCurrentWindow();
 
-const MenuItems = (themeType, platform = "windows") => {
+const MenuItems = (themeType, config = null, platform = "windows") => {
 
     const isDark = () : Boolean => {
         
@@ -138,7 +138,8 @@ const MenuItems = (themeType, platform = "windows") => {
                                 enabled: true,
                                 selected: isDark(),
                                 action() { 
-                                    ipcRenderer.send('changeAppTheme', ['dark']);
+                                    var Config = Object.assign({}, { themeType: 'dark' }, config);
+                                    setRxConfig(Config);
                                 }
                             },
                             {
@@ -147,7 +148,8 @@ const MenuItems = (themeType, platform = "windows") => {
                                 enabled: true,
                                 selected: isLight(),
                                 action() { 
-                                    ipcRenderer.send('changeAppTheme', ['light']);
+                                    var Config = Object.assign({}, { themeType: 'light' }, config);
+                                    setRxConfig(Config);
                                 }
                             },
                         ] as Array<ContextItem>
