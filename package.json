@@ -1,11 +1,11 @@
 {
   "name": "dlive-chat-bot",
-  "version": "1.4.3-beta",
+  "version": "1.4.4-beta",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --hot",
+    "start": "webpack-dev-server --hot | cross-env NODE_ENV=dev_watch electron .",
     "postinstall": "electron-builder install-app-deps",
     "pack": "electron-builder --dir",
     "dist": "electron-builder --publish=always",
@@ -54,6 +54,7 @@
     "css-loader": "^2.1.1",
     "electron": "^4.2.0",
     "electron-builder": "^20.40.2",
+    "electron-webpack-plugin": "^2.0.0",
     "file-loader": "^3.0.1",
     "html-webpack-plugin": "^3.2.0",
     "less-loader": "^4.1.0",
@@ -67,6 +68,9 @@
     "url-loader": "^1.1.2",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.1",
-    "webpack-dev-server": "^3.3.1"
+    "webpack-dev-middleware": "^3.6.2",
+    "webpack-dev-server": "^3.3.1",
+    "webpack-hot-middleware": "^2.24.4",
+    "webpack-target-electron-renderer": "^0.4.0"
   }
 }

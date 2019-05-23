@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
-import { ThemeContext } from '../../helpers';
-import { MdSend, MdPerson } from 'react-icons/md';
+import { theme, ThemeContext } from '../../helpers';
+import { MdSend, MdPerson, MdMood } from 'react-icons/md';
 
 import { Message } from './Message';
 import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
+import { Action } from 'rxjs/internal/scheduler/Action';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -126,6 +127,8 @@ const Chat = ({ props }) => {
   const [config, setConfig]: any = useState({});
   const [firstRender, setFirstRender] = useState(true);
 
+
+
   const updateText = e => {
     setText(e.target.value);
   };
@@ -141,6 +144,14 @@ const Chat = ({ props }) => {
       sendMessage();
     }
   };
+
+  const changeTheme = (themeVal : String) => {
+    if (themeVal == 'dark') {
+      setStateTheme(theme.dark); 
+    } else if (themeVal == 'light') {
+      setStateTheme(theme.light);
+    }
+  }
 
   useEffect(() => {
     let element: any = document.getElementById('messages');
@@ -172,6 +183,7 @@ const Chat = ({ props }) => {
   useEffect(() => {
     // Test to see if the config includes the right variables
     // if's at the top of this will be rendered last
+
     if (!config.init) return;
     if (
       !config.authKey &&
