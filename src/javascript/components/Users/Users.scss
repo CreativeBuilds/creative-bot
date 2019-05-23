@@ -63,6 +63,8 @@
     &.username {
       width: 110px;
       text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
     }
     &.points {
       width: 100px;

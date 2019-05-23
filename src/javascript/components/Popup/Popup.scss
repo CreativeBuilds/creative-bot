@@ -23,6 +23,7 @@
 .close {
   position: relative;
   svg {
+    z-index: 999;
     font-size: 2em;
     stroke-width: 1px;
     position: absolute;

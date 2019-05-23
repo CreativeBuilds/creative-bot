@@ -24,6 +24,11 @@
   }
 }
 
+#messages > div {
+  margin-bottom: 5px;
+  border-radius: 5px;
+}
+
 .message {
   width: calc(100% - 35px);
   padding: 5px;
@@ -33,6 +38,8 @@
   align-items: center;
   padding-right: 30px;
   position: relative;
+  margin-bottom: 5px;
+  border-radius: 5px;
   .image_container {
     padding-right: 5px;
     img {
@@ -64,7 +71,7 @@
     display: table-cell;
     .sticker {
       margin-left: 10px;
-      max-width: 80px;
+      // max-width: 80px;
       max-height: 80px;
     }
   }

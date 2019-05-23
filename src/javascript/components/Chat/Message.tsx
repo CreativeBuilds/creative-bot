@@ -54,15 +54,10 @@ const Message = ({ styles, message, nth, stateTheme, ownerName }) => {
         </span>
         {isSticker() ? (
           <div className={styles.sticker_container}>
-            <img
-              className={styles.sticker}
-              src={getSticker(message.content)}
-              width='80'
-              height='80px'
-            />
+            <img className={styles.sticker} src={getSticker(message.content)} />
           </div>
         ) : (
-          <div className={styles.message}>{message.content}</div>
+          <div className={styles.message_content}>{message.content}</div>
         )}
       </div>
       {canDelete() ? (

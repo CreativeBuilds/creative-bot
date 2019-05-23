@@ -33,6 +33,7 @@ let Giveaways = {};
 const rxUsers = require('./helpers/rxUsers');
 const rxCommands = require('./helpers/rxCommands');
 const rxGiveaways = require('./helpers/rxGiveaways');
+const rxLists = require('./helpers/rxLists');
 const getCustomVariables = require('./helpers/getCustomVariables');
 const parseReply = require('./helpers/parseReply');
 rxCommands.subscribe(commands => (Commands = commands));
@@ -261,6 +262,21 @@ function createWindow() {
         win.webContents.send('usermap', { Users });
         users = Users;
       });
+  });
+
+  let lists = {};
+
+  ipcMain.on('getRxLists', () => {
+    rxLists.subscribe(lists => {
+      win.webContents.send('rxLists', lists);
+    });
+  });
+
+  ipcMain.on('setRxLists', (event, Lists) => {
+    if (Lists !== lists) {
+      lists = Lists;
+      rxLists.next(Lists);
+    }
   });
 
   ipcMain.on('getRxConfig', () => {
@@ -741,9 +757,10 @@ ipcMain.on('sendmessage', (event, { from, message }) => {
 
     var bannerMessage = {
       needsBanner: true,
-      message: "Can't Connect to Dlive because You may have the correct User Info",
-      alertType: "alert",
-      hasAction: false
+      message:
+        "Can't Connect to Dlive because You may have not correctly entered a Username and Auth Key",
+      type: 'error',
+      alertType: 'alert'
     };
 
     event.sender.send('show-bannermessage', [bannerMessage]);
@@ -751,4 +768,3 @@ ipcMain.on('sendmessage', (event, { from, message }) => {
 });
 
 app.on('ready', createWindow);
-
