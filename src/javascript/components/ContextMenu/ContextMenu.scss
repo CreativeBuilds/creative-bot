@@ -83,6 +83,8 @@
 
                 svg {
                     vertical-align: middle;
+                    height: 12px;
+                    width: 12px;
                 }
 
                 &:hover { 
@@ -92,6 +94,15 @@
                     }
                 }
             }
+
+            .icon {
+                svg {
+                    height: 16px;
+                    width: 16px;
+                }
+            }
+
+            .checkedIcon { margin-right: 5px; }
         }
 
         .title {
