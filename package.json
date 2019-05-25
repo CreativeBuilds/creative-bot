@@ -1,6 +1,6 @@
 {
   "name": "dlive-chat-bot",
-  "version": "1.4.3-beta",
+  "version": "1.4.4-beta",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -35,6 +35,7 @@
     "react-router-dom": "^5.0.0",
     "rxjs": "^6.5.1",
     "rxjs-websockets": "^7.0.0",
+    "tar": "^2.2.2",
     "ws": "^6.2.1"
   },
   "devDependencies": {
