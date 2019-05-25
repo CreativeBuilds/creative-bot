@@ -50,7 +50,7 @@ class Timer {
 module.exports = {
   run: () => {
     rxConfig.pipe(filter(x => !!x.authKey)).subscribe(config => {
-      listeners.forEach(listener => listener.unnsubscribe());
+      listeners.forEach(listener => listener.unsubscribe());
       let dlive = new DLive({ authKey: config.authKey });
       dlive.listenToChat(config.streamerDisplayName).then(Messages => {
         listeners.push(
