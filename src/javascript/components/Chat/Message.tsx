@@ -3,7 +3,17 @@ import Styles from './Message.scss';
 import { MdClose } from 'react-icons/md';
 import { removeMessage } from '../../helpers/removeMessage';
 
-const Message = ({ styles, message, nth, stateTheme, ownerName }) => {
+import { UserPopup } from './UserPopup';
+
+const Message = ({
+  styles,
+  message,
+  nth,
+  stateTheme,
+  ownerName,
+  addPopup,
+  closeCurrentPopup
+}) => {
   // Boolean Checks if Message is a Sticker or not
   const isSticker = () => {
     var content = message.content;
@@ -31,6 +41,16 @@ const Message = ({ styles, message, nth, stateTheme, ownerName }) => {
     return message.roomRole === 'Member' && message.role === 'None';
   };
 
+  const addUserPopup = () => {
+    addPopup(
+      <UserPopup
+        closeCurrentPopup={closeCurrentPopup}
+        user={message.sender}
+        stateTheme={stateTheme}
+      />
+    );
+  };
+
   return (
     <div
       className={`${styles.message} ${
@@ -48,7 +68,12 @@ const Message = ({ styles, message, nth, stateTheme, ownerName }) => {
         <img src={message.sender.avatar} width={26} height={26} />
       </div>
       <div className={styles.message_content}>
-        <span>
+        <span
+          onClick={e => {
+            console.log(e);
+            addUserPopup();
+          }}
+        >
           {message.sender.dliveUsername}
           {': '}
         </span>
