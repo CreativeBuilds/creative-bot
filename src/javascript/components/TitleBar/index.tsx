@@ -1,25 +1,66 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
-import { theme } from '../../helpers';
-import { MdClose, MdCheckBoxOutlineBlank, MdFlipToFront, Md3DRotation, MdRemove  } from 'react-icons/md';
+import { theme, ThemeContext, MenuItems } from '../../helpers';
+import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
+import { MdClose, MdCheckBoxOutlineBlank, MdFlipToFront, MdRemove, MdBrightnessLow, MdBrightness3  } from 'react-icons/md';
+
+import { MenuBar, MenuItem } from '../MenuBar';
+import { WindowsActionButton } from './WindowsActionButton';
+import { ContextMenu, ContextItem } from '../ContextMenu';
+import { ContextMenuItem } from '../ContextMenu/ContextMenuItem';
+import { webContents } from 'electron';
 
 const Window: any = window;
 const { ipcRenderer, shell, remote } = Window.require('electron');
+const { app } = remote;
 
 const styles: any = require('./TitleBar.scss');
 
 interface TitleBar {
-
+    Config?: {}
 }
 
-const TitleBar = () => {
+const TitleBar = ({ Config = null } : TitleBar) => {
 
-    const [stateTheme, setStateTheme] = useState(theme.dark);
+    const [stateTheme, setStateTheme] = useState(ThemeContext);
+    const [isDarkMode, setDarkMode] = useState<Boolean>(true);
+    const [menuItems, setMenuItems] = useState<Array<MenuItem>>(MenuItems('dark'));
+    const [config, setConfig] = useState<any>(Config);
+
+    const changeTheme = (themeVal : String) => {
+        setStateTheme(themeVal == 'dark' ? theme.dark : theme.light);  
+    }
+
+    useEffect(() => {
+        let listener = rxConfig.subscribe((data: any) => {
+          delete data.first;
+          setConfig(data);
+          setMenuItems(MenuItems(data.themeType, data));
+          changeTheme(data.themeType);
+        });
+
+        return () => {
+          listener.unsubscribe();
+        };
+    }, []);
+
+    const saveThemeType = (value) => {
+        let tConfig = Object.assign({}, config);
+        tConfig['themeType'] = value;
+        setRxConfig(tConfig);
+    }
 
     // Toggle the Dev Tools from Electron in the current window
     const showDevTools = () => {
 
         remote.getCurrentWindow().webContents.toggleDevTools();
+    }
+
+    // Toggles Between Dark and Light Mode
+    const toggleDarkMode = () => {
+        setDarkMode(!isDarkMode);
+        changeTheme(isDarkMode ? 'dark' : 'light');
+        saveThemeType(isDarkMode ? 'dark' : 'light');
     }
 
     // minimize the current Window
@@ -65,29 +106,19 @@ const TitleBar = () => {
                 <img className={styles.appIcon} src=".icon-ico/icon.ico" />
             </div>
             <div className={styles.contentContainer}>
+                <MenuBar menuItems={menuItems} />
                 <div className={styles.windowTitle}>
                     {remote.getCurrentWindow().getTitle()}
                 </div>
-                <div className={`${styles.actionBtn} ${styles.devTools}`} onClick={() => { showDevTools(); }}>
-                    Dev Tools
+                <div className={`${styles.versionTag}`}>
+                    {app.getVersion()}
                 </div>
             </div>
             <div className={styles.windowControlsContainer}>
-                <div className={`${styles.actionBtn}`} onClick={() => { minimize(); }}>
-                    <div className={`${styles.icon} ${styles.minimize}`} >
-                        <MdRemove />
-                    </div>
-                </div>
-                <div className={`${styles.actionBtn}`} onClick={() => { maximize();}}>
-                    <div className={`${styles.icon} ${styles.maximize}`}> 
-                        {getMaximizedIcon()} 
-                    </div>
-                </div>
-                <div className={`${styles.actionBtn}`} onClick={() => { close(); }}>
-                    <div className={`${styles.icon} ${styles.close}`} >
-                        <MdClose />
-                    </div>
-                </div>
+                <WindowsActionButton Config={config} Icon={ stateTheme == theme.dark ? <MdBrightness3 /> : <MdBrightnessLow /> } type={'appearance'} onClick={() => { toggleDarkMode(); }}/>
+                <WindowsActionButton Config={config} Icon={ <MdRemove /> } type={'minimize'} onClick={() => { minimize(); }}/>
+                <WindowsActionButton Config={config} Icon={getMaximizedIcon()}  type={'maximize'} onClick={() => { maximize(); }}/>
+                <WindowsActionButton Config={config} Icon={<MdClose />}  type={'close'} onClick={() => { close(); }}/>
             </div>
         </div>
     );

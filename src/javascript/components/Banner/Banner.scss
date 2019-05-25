@@ -1,3 +1,5 @@
+@import './../../../styles/variables.scss';
+
 .banner {
     display: table-row;
     height: 32px !important;
@@ -15,6 +17,11 @@
         display: none;
     }
 
+    &.normal {
+        background-color: $dliveaccent;
+        color: black;
+    }
+
     &.alert {
         background-color: crimson;
         color: white;
@@ -28,6 +35,24 @@
     &.warning {
         background-color: orange;
         color: white;
+    }
+
+    &.alert, &.action, &.normal, &.warning { 
+        a {
+            text-decoration: none;
+        }
+    }
+
+    &.alert, &.action { 
+        a {
+            color: $dliveaccent;
+        }
+    }
+
+    &.normal, &.warning { 
+        a {
+            color: royalblue;
+        }
     }
 }
 

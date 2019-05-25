@@ -1,6 +1,8 @@
 .titleBar {
     display: table-row;
     height: 30px;
+    min-height: 30px;
+    max-height: 30px;
     min-width: 100%;
     -webkit-app-region: drag;
     user-select: none;
@@ -35,11 +37,13 @@
     }
 
     .contentContainer {
-        width: calc(100% - (35px + 138px));
+        display: inline-flex;
+        width: calc(100% - (35px + 140px));
         float: left;
 
+        div, ul { display: inline; }
+
         .windowTitle {
-            display: inline-block;
             flex: 0 1 auto;
             font-size: 12px;
             overflow: hidden;
@@ -53,20 +57,16 @@
 
         }
 
-        .actionBtn {
-            display: inline-block;
+        .versionTag {
             font-size: 12px;
-            -webkit-app-region: no-drag;
             height: 100%;
             line-height: 30px;
-            width: 46px;
+            width: auto;
             font-family: Segoe WPC,Segoe UI,sans-serif;
             text-align: center;
             float: right;
-
-            &:hover {
-                background-color: hsla(0,0%,100%,.1);
-            }
+            padding-left: 5px;
+            padding-right: 5px;
         }
     }
 
@@ -79,40 +79,41 @@
         z-index: 3000;
         -webkit-app-region: no-drag;
         height: 100%;
-        width: 138px;
+        width: auto;
         margin-left: auto;
 
         .actionBtn {
             display: inline-block;
             -webkit-app-region: no-drag;
-            height: 100%;
-            width: 33.34%;
+            height: 30px;
+            width: 46px;
             box-sizing: border-box;
-            padding: 5px;
+            padding: 4px;
 
             &:hover {
                 &:not(:last-of-type) {
-                    background-color: hsla(0,0%,100%,.1);
+                    
                 }
 
                 &:last-of-type {
-                    background-color: rgba(232,17,35,.9);
+                    svg {
+                        svg { 
+                            fill: white !important;
+                            stroke: white !important;
+                        }
+                    }
+                    background-color: rgba(232,17,35,.9) !important;
                 }
+            }
+
+            &.close {
+                width: 46px !important;
             }
 
             .icon {
                 height: 100%;
                 width: 100%;
                 -webkit-mask-size: 23.1%;
-
-
-                &.minimize {
-                    //-webkit-mask-image: url('chrome-minimize.svg') no-repeat 50% 50%;
-                }
-
-                &.maximize {
-                    //-webkit-mask: url('chrome-maxmize.svg') no-repeat 50% 50%;
-                }
 
                 &.close {
                    // -webkit-mask: url('chrome-close.svg') no-repeat 50% 50%;
@@ -142,5 +143,11 @@
     cursor: pointer;
 
     &.devTools { width: 64px !important; }
+    &.appearance { 
+        svg { 
+            width: 14px !important;
+            height: 14px !important;
+        } 
+    }
 }
 

@@ -1,0 +1,38 @@
+.menuBar {
+    display: inline-block !important;
+    margin: 0;
+    padding: 0;
+    height: 30px;
+    width: auto;
+
+    li {
+        display: inline-block;
+    }
+}
+
+.menuItem {
+    height: 30px;
+    .menuItemTitleContainer {
+        display: block !important;
+
+        .menuItemTitle {
+            display: flow-root;
+            height: 30px;
+            width: auto;
+            font-size: 12px;
+            line-height: 30px;
+            -webkit-app-region: no-drag;
+            font-family: Segoe WPC,Segoe UI,sans-serif;
+            text-align: center;
+            box-sizing: border-box;
+            margin: 0;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+
+        &:hover {
+            /*background-color: hsla(0,0%,100%,.1);*/
+            cursor: pointer;
+        }
+    }
+}

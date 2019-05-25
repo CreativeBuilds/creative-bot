@@ -41,6 +41,8 @@ const Popup = ({
           switch (configOption.type) {
             case 'number':
               Config[configOption.key] = Number(value);
+            case 'string':
+              Config[configOption.key] = String(value);
             default:
               Config[configOption.key] = value;
           }

@@ -91,7 +91,11 @@ function createWindow() {
   win = new BrowserWindow({ width: 1280, height: 720, frame: false });
 
   // and load the index.html of the app.
-  win.loadFile(__dirname + '/dist/index.html');
+  if (env === 'dev_watch') {
+    win.loadURL("http://localhost:8080/webpack-dev-server/");
+  } else {
+    win.loadURL(`file://${__dirname}/dist/index.html`);
+  }
   win.on('close', function() {
     process.exit();
   });
@@ -220,6 +224,14 @@ function createWindow() {
     );
     CommandsCopy[name] = command;
     rxCommands.next(CommandsCopy);
+  });
+
+  ipcMain.on('triggerBannerMessage', (event, bannerMessage) => {
+    event.sender.send('show-bannermessage', [bannerMessage]);
+  });
+
+  ipcMain.on('closeBannerMessage', (event) => {
+    event.sender.send('hide-bannermessage');
   });
 
   ipcMain.on('getCommands', () => {
@@ -740,10 +752,8 @@ function createWindow() {
 ipcMain.on('sendmessage', (event, { from, message }) => {
   if (config.authKey != null || config.username != null) {
     sendMessage(message);
+
   } else {
-    console.log(
-      "Can't Connect to Dlive Channel because you possibly havent entered a Username and Auth Key"
-    );
 
     var bannerMessage = {
       needsBanner: true,
@@ -753,7 +763,7 @@ ipcMain.on('sendmessage', (event, { from, message }) => {
       alertType: 'alert'
     };
 
-    event.sender.send('bannermessage', [bannerMessage]);
+    event.sender.send('show-bannermessage', [bannerMessage]);
   }
 });
 

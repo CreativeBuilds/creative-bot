@@ -1,2 +1,4 @@
 const {ThemeContext, theme} = require('./Theme');
-export {ThemeContext, theme}
+const { useComponentVisible } = require('./useComponentVisible');
+const { MenuItems } = require('./MenuItems');
+export {ThemeContext, theme, useComponentVisible, MenuItems};

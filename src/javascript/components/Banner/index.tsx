@@ -2,10 +2,25 @@ import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
 import { MdMenu, MdClose, MdEventBusy } from 'react-icons/md';
 
+import { BannerItem } from './BannerItems';
+
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
 
 const styles: any = require('./Banner.scss');
+
+interface BannerActionInfo {
+    title: String,
+    action: Function
+}
+
+interface BannerMessage {
+    needsBanner: Boolean,
+    message: String,
+    alertType: String,
+    hasAction: Boolean,
+    actionInfo?: BannerActionInfo
+}
 
 interface Banner {
     isOpen?: Boolean,
@@ -15,12 +30,15 @@ interface Banner {
 const Banner = ( {isOpen, alertType } : Banner) => {
     
     var [opened, setIsOpen] = useState<Boolean>(isOpen);
-    const [alert] = useState(alertType);
+    const [alert, setAlert] = useState(alertType);
     const [message, setMessage] = useState('');
-    //var Opened = props.isOpen;
+    var [hasAction, setHasAction] = useState<Boolean>(false);
+    const [bannerActionMessage, setBannerActionMessage] = useState<BannerActionInfo>(null);
 
     const setAlertType = (type : String) => {
         switch(type) {
+            case 'normal':
+                return styles.banner + " " + styles.normal;
             case 'alert':
                 return styles.banner + " " + styles.alert;
             case 'action':
@@ -33,18 +51,27 @@ const Banner = ( {isOpen, alertType } : Banner) => {
         }
     }
 
-    ipcRenderer.on('bannermessage', function(event, args) {
-        if (args[0].needsBanner == true) {
+    ipcRenderer.once('show-bannermessage', function(event, args) {
+        var bannerMessage = args[0] as BannerMessage
+        if (bannerMessage.needsBanner == true) {
             setIsOpen(true);
-            setMessage(args[0].message);
-            setAlertType(args[0].alertType);
+            setMessage(bannerMessage.message as string);
+            setBannerActionMessage(bannerMessage.actionInfo as BannerActionInfo);
+            setAlert(bannerMessage.alertType)
+            setAlertType(alert);
+            setHasAction(bannerMessage.hasAction)
+            bannerMessage.actionInfo.action();
         }
+    });
+
+    ipcRenderer.once('hide-bannermessage', function(event) {
+        setIsOpen(false)
     });
 
     return (
         <div className={`${setAlertType(alert)} ${opened ? styles.opened : styles.closed}`} >
             <div className={`${styles.bannerItem} ${styles.content}`}>
-                <div>{message}</div>
+                <BannerItem message={message} hasAction={hasAction} actionInfo={bannerActionMessage} />
             </div>
             <MdClose className={`${styles.bannerItem} ${styles.closeBtn}`}  onClick={() => {
                 setIsOpen(false);
@@ -52,4 +79,4 @@ const Banner = ( {isOpen, alertType } : Banner) => {
         </div>);
 };
 
-export { Banner };
+export { Banner, BannerMessage, BannerActionInfo };

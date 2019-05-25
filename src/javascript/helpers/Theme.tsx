@@ -2,6 +2,9 @@ import * as React from 'react';
 
 const theme = {
   dark: {
+    transparent: {
+      backgroundColor: 'transparent'
+    },
     main: {
       backgroundColor: '#202225',
       color: '#f0f0f0',
@@ -20,11 +23,22 @@ const theme = {
       }
     },
     titleBar: {
-      backgroundColor: '#333333',
-      color: '#CCCCCC'
+      backgroundColor: '#202225',
+      color: '#CCCCCC',
     },
     titleBarActionIcon: {
       '-webkit-filter': 'invert(80%)'
+    },
+    titleBarHover: {
+      backgroundColor: 'hsla(0,0%,100%,.1)'
+    },
+    menuItemSelected: {
+      backgroundColor: '#1f1f1f',
+    },
+    contextMenu: {
+      backgroundColor: '#1f1f1f',
+      color: '#b4b4b4'
+
     },
     chat: {
       input: {
@@ -46,6 +60,9 @@ const theme = {
     }
   },
   light: {
+    transparent: {
+      backgroundColor: 'transparent'
+    },
     main: {
       backgroundColor: '#ffffff',
       color: `#202225`,
@@ -69,6 +86,17 @@ const theme = {
     },
     titleBarActionIcon: {
       '-webkit-filter': 'invert(30%)'
+    },
+    titleBarHover: {
+      backgroundColor: 'rgba(0, 0, 0, 0.1)'
+    },
+    menuItemSelected: {
+      backgroundColor: '#e3e3e3',
+    },
+    contextMenu: {
+      backgroundColor: '#e3e3e3',
+      color: '#1f1f1f'
+
     },
     chat: {
       input: {

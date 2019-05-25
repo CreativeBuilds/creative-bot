@@ -1,0 +1,137 @@
+@import './../../../styles/variables.scss';
+
+.contextMenu {
+    list-style-type: none;
+    display: inline-block;
+    .contextMenuContent {
+        position: absolute;
+        font-size: 12px;
+        background-color: #1f1f1f;
+        color: #b4b4b4;
+        margin: 0;
+        margin-top: 0px;
+        padding: 0;
+        width: auto;
+        min-width: 170px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        user-select: none;
+        -webkit-box-shadow: 2px 2px 1px rgba(21,21,21,0.6);
+        z-index: 100000000000;
+    }
+
+    &.subMenu {
+        position: absolute;
+        right: 0;
+    }
+}
+
+.contextMenuItem {
+    display: flow-root !important;
+    height: auto;
+
+    .itemContainer {
+        .submenuContainer {
+            display: inline-block !important;
+            float: right;
+            position: relative;
+        }
+    }
+
+    .contextItemContent, .itemContainer {
+        display: flow-root !important;
+        height: 26px;
+    }
+    
+    .contextItemContent {
+        display: inline-block !important;
+        padding-left: 20px;
+        padding-right: 20px;
+        width: calc(100% - 40px);
+        &:hover {
+            &:not(.inactive) {
+                background-color: $dliveaccent;
+                cursor: pointer;
+                .title, .shortcut, .arrow, .iconContainer {
+                    color: black;
+                    fill: black !important;
+                    stroke: black !important;
+                }
+            }
+        }
+
+        
+
+        .title, .shortcut, .arrow, .iconContainer { 
+            padding-bottom: 5px;
+            padding-top: 5px;
+            display: inline-block; 
+            height: auto;
+
+            span {
+                display: inline-block;
+                vertical-align: middle;
+                line-height: normal;
+            }
+        }
+
+        .iconContainer { 
+            float: left;
+            margin-right: 10px;
+            .icon, .checkedIcon {
+                height: auto;
+
+                svg {
+                    vertical-align: middle;
+                }
+
+                &:hover { 
+                    svg {
+                        fill: black !important;
+                        stroke: black !important;
+                    }
+                }
+            }
+        }
+
+        .title {
+            float: left;
+        }
+        .shortcut {
+            float: right;
+            color: darkgrey;
+            margin-left: 20px;
+            &:hover { color: black; }
+        }
+
+        svg.arrow {
+            float: right;
+            color: darkgrey;
+            margin-left: 20px;
+            height: 18px;
+            width: 18px;
+            fill: darkgrey !important;
+                stroke: darkgrey !important;
+
+            &:hover { 
+                color: black;
+
+                svg {
+                    fill: black !important;
+                    stroke: black !important;
+                }
+            }
+        }
+
+        &.inactive { color: gray; }
+    }
+
+    .seperatorLine {
+        display: block;
+        height: 0.5px;
+        border: 0;
+        border-top: 0.5px solid #616161;
+        padding: 0;
+    }
+
+}
