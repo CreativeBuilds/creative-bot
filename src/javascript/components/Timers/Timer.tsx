@@ -23,10 +23,13 @@ const Popup = ({ command, styles, closeCurrentPopup, stateTheme }) => {
       if (command.name !== name) {
         delete Timers[name];
       }
+      if (isNaN(Number(messages)) || isNaN(Number(seconds))) return;
       Timers[name] = {
         reply,
         name,
         permissions,
+        messages: Number(messages),
+        seconds: Number(seconds),
         enabled: command.enabled
       };
       setRxTimers(Timers);
