@@ -1,7 +1,11 @@
 import * as React from 'react';
 import Styles from './Message.scss';
 import { MdClose } from 'react-icons/md';
-import { removeMessage, timeoutUser } from '../../helpers/removeMessage';
+import {
+  removeMessage,
+  timeoutUser,
+  muteUser
+} from '../../helpers/removeMessage';
 
 import { UserPopup } from './UserPopup';
 
@@ -48,6 +52,12 @@ const Message = ({
         user={message.sender}
         stateTheme={stateTheme}
         canDelete={canDelete()}
+        muteUser={() => {
+          muteUser(
+            message.sender.blockchainUsername,
+            message.streamerBlockchainUsername
+          );
+        }}
         timeoutUser={() => {
           timeoutUser(
             message.sender.blockchainUsername,

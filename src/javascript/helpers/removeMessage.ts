@@ -6,8 +6,11 @@ const removeMessage = (id, streamer) => {
 };
 
 const timeoutUser = (id, streamer) => {
-  console.log('TIMING OUT USER', id, streamer);
   ipcRenderer.send('timeoutUser', { id, streamer });
 };
 
-export { removeMessage, timeoutUser };
+const muteUser = (id, streamer) => {
+  ipcRenderer.send('muteUser', { id, streamer });
+};
+
+export { removeMessage, timeoutUser, muteUser };

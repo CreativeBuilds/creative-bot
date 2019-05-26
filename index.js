@@ -42,7 +42,11 @@ let { makeNewCommand, getBlockchainUsername } = require('./helpers');
 const { autoUpdater } = require('electron-updater');
 require('./helpers/startTimers').run();
 
-const { removeMessage, timeoutUser } = require('./helpers/removeMessage');
+const {
+  removeMessage,
+  timeoutUser,
+  muteUser
+} = require('./helpers/removeMessage');
 
 rxConfig
   .pipe(
@@ -244,9 +248,13 @@ function createWindow() {
       win.webContents.send('removedMessage', { id, streamer });
     });
   });
+
   ipcMain.on('timeoutUser', (event, { id, streamer }) => {
-    console.log('IPC MAIN', id, streamer);
     timeoutUser(id, streamer);
+  });
+
+  ipcMain.on('muteUser', (event, { id, streamer }) => {
+    muteUser(id, streamer);
   });
 
   ipcMain.on('createCommand', (event, { commandName, commandReply }) => {

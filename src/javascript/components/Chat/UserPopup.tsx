@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import { MdClose, MdTimer, MdDoNotDisturb, MdCancel } from 'react-icons/md';
 import { removeMessage } from '../../helpers/removeMessage';
+import ReactTooltip from 'react-tooltip';
 
 import { rxUsers, setRxUsers } from '../../helpers/rxUsers';
 
@@ -14,7 +15,8 @@ const UserPopup = ({
   stateTheme,
   canDelete,
   deleteMessage,
-  timeoutUser
+  timeoutUser,
+  muteUser
 }) => {
   const [points, setPoints] = useState('0');
   const [isAdmin, setIsAdmin] = useState(false);
@@ -65,22 +67,34 @@ const UserPopup = ({
               <div>{user.dliveUsername}</div>
             </div>
             <div className={Styles.UserPopup_header_up_right}>
-              {canDelete ? (
-                <MdCancel
+              <div data-tip='Remove Message'>
+                {canDelete ? (
+                  <MdCancel
+                    onClick={() => {
+                      deleteMessage();
+                      closeCurrentPopup();
+                    }}
+                  />
+                ) : null}
+              </div>
+              <div data-tip='Timeout for 5 Minutes'>
+                {canDelete ? (
+                  <MdTimer
+                    onClick={() => {
+                      timeoutUser();
+                    }}
+                  />
+                ) : null}
+              </div>
+              <div data-tip='Ban User'>
+                <MdDoNotDisturb
                   onClick={() => {
-                    deleteMessage();
-                    closeCurrentPopup();
+                    muteUser();
                   }}
                 />
-              ) : null}
-              {canDelete ? (
-                <MdTimer
-                  onClick={() => {
-                    timeoutUser();
-                  }}
-                />
-              ) : null}
-              {/* <MdDoNotDisturb /> */}
+              </div>
+
+              <ReactTooltip />
             </div>
           </div>
           <div style={stateTheme.main}>
