@@ -37,6 +37,7 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                     {
                         role: 'normal',
                         title: 'Exit',
+                        icon: 'MdExitToApp',
                         enabled: true,
                         action() { 
                             remote.getCurrentWindow().close();
@@ -51,6 +52,7 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                         role: 'normal',
                         title: 'Cut',
                         shortcut: 'Ctrl+X',
+                        icon: 'MdContentCut',
                         enabled: true,
                         action() { 
                             remote.getCurrentWindow().webContents.cut();
@@ -60,6 +62,7 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                         role: 'normal',
                         title: 'Copy',
                         shortcut: 'Ctrl+C',
+                        icon: 'MdContentCopy',
                         enabled: true,
                         action() { 
                             remote.getCurrentWindow().webContents.copy();
@@ -69,6 +72,7 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                         role: 'normal',
                         title: 'Paste',
                         shortcut: 'Ctrl+V',
+                        icon: 'MdContentPaste',
                         enabled: true,
                         action() { 
                             remote.getCurrentWindow().webContents.paste();
@@ -78,6 +82,7 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                         role: 'normal',
                         title: 'Delete',
                         shortcut: '',
+                        icon: 'MdDelete',
                         enabled: true,
                         action() { 
                             remote.getCurrentWindow().webContents.delete();
@@ -87,6 +92,7 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                         role: 'normal',
                         title: 'Select All',
                         shortcut: 'Ctrl+A',
+                        icon: 'MdSelectAll',
                         enabled: true,
                         action() { 
                             remote.getCurrentWindow().webContents.selectAll();
@@ -101,6 +107,7 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                         role: 'normal',
                         title: 'Reload',
                         shortcut: 'Ctrl+R',
+                        icon: 'MdRefresh',
                         enabled: true,
                         action() { 
                             remote.getCurrentWindow().reload();
@@ -110,6 +117,7 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                         role: 'normal',
                         title: 'Force Reload',
                         shortcut: 'Ctrl+Shift+R',
+                        icon: 'MdReplay',
                         enabled: true,
                         action() { 
                             remote.getCurrentWindow().webContents.reloadIgnoringCache();
@@ -119,6 +127,7 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                         role: 'normal',
                         title: 'Toggle Developer Tools',
                         shortcut: 'Ctrl+Shift+I',
+                        icon: 'MdExtension',
                         enabled: true,
                         action() { 
                             remote.getCurrentWindow().webContents.toggleDevTools()
@@ -130,11 +139,13 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                     {
                         role: 'submenu',
                         title: 'Appearance',
+                        icon: 'MdBrightness3',
                         enabled: true,
                         contextMenu: [
                             {
                                 role: 'normal',
                                 title: 'Dark Theme',
+                                icon: 'MdBrightnessLow',
                                 enabled: true,
                                 selected: isDark(),
                                 action() { 
@@ -146,6 +157,7 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                             {
                                 role: 'normal',
                                 title: 'Light Theme',
+                                icon: 'MdBrightness3',
                                 enabled: true,
                                 selected: isLight(),
                                 action() { 
@@ -163,6 +175,7 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                         role: 'normal',
                         title: 'Actual Size',
                         shortcut: 'Ctrl+0',
+                        icon: 'MdZoomOutMap',
                         enabled: true,
                         action() { 
                             remote.getCurrentWindow().webContents.setZoomFactor(1);
@@ -173,6 +186,7 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                         role: 'normal',
                         title: 'Zoom In',
                         shortcut: 'Ctrl+Shift+=',
+                        icon: 'MdZoomIn',
                         enabled: true,
                         action() { 
                             const currentZoomLevel : any = webFrame.getZoomFactor();
@@ -183,6 +197,7 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                         role: 'normal',
                         title: 'Zoom Out',
                         shortcut: 'Ctrl+Shift+-',
+                        icon: 'MdZoomOut',
                         enabled: true,
                         action() { 
                             const currentZoomLevel : any = webFrame.getZoomFactor();
@@ -196,6 +211,7 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                         role: 'normal',
                         title: 'Toggle Full Screen',
                         shortcut: 'F11',
+                        icon: 'MdFullscreen',
                         enabled: true,
                         action() { 
                             remote.getCurrentWindow().setFullScreen(!remote.getCurrentWindow().isFullScreen());
@@ -210,6 +226,7 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                         role: 'normal',
                         title: 'Official CB DLive Channel',
                         shortcut: '',
+                        icon: 'GoLink',
                         enabled: true,
                         action() { 
                             shell.openExternal("https://dlive.tv/creativebuilds");
@@ -219,6 +236,7 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                         role: 'normal',
                         title: 'CreativeBuilds Discord',
                         shortcut: '',
+                        icon: 'GoLink',
                         enabled: true,
                         action() { 
                             shell.openExternal("https://discord.gg/2DGaWDW");
@@ -228,6 +246,7 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                         role: 'normal',
                         title: 'Github Page',
                         shortcut: '',
+                        icon: 'GoMarkGithub',
                         enabled: true,
                         action() { 
                             shell.openExternal("https://github.com/CreativeBuilds/dlive-chat-bot");
@@ -237,6 +256,7 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                         role: 'normal',
                         title: 'About App',
                         shortcut: '',
+                        icon: 'MdHelpOutline',
                         enabled: true,
                         action() { 
                             let options = {
