@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
 import { theme, ThemeContext } from '../../helpers';
-import { MdSend, MdPerson, MdMood } from 'react-icons/md';
+import { MdSend, MdPerson, MdMood, MdFace } from 'react-icons/md';
 
 import { Message } from './Message';
 import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
@@ -16,7 +16,7 @@ let streamerDisplayName = false;
 const styles: any = require('./Chat.scss');
 interface popup {
   styles: any;
-  closeCurrentPopup: any;
+  closeCurrentPopup?: any;
   stateTheme: any;
   configName?: any;
   text?: string | Function | Element | any;
@@ -25,6 +25,43 @@ interface popup {
   Config?: any;
   type?: string;
 }
+
+const StickerPopup = ({
+  styles,
+  stateTheme,
+  text = '',
+  Config = {},
+}: popup) => {
+  const [name, setName] = useState<string>('');
+  const [helperText, SetHelperText] = useState(text);
+  const [error, SetError] = useState(false);
+  const [config, setConfig] = useState(Config);
+
+  const setError = error => {
+    SetError(true);
+    SetHelperText(error);
+    setTimeout(() => {
+      SetError(false);
+      SetHelperText(text);
+    }, 5000);
+  };
+
+  const isError = () => {
+    if (text !== helperText && !error) {
+      SetHelperText(text);
+      setName('');
+    }
+    return error;
+  };
+
+  return (
+    <div className={styles.popup} style={stateTheme.main}>
+      <div className={styles.input_wrapper}>
+        <h2>Sticker Popup</h2>
+      </div>
+    </div>
+  );
+};
 
 const AddCommandPopup = ({
   styles,
@@ -136,6 +173,10 @@ const Chat = ({ props }) => {
   const sendMessage = () => {
     ipcRenderer.send('sendmessage', { from: 'bot', message: text });
     setText('');
+  };
+
+  const openStickerPanel = () => {
+    addPopup(<StickerPopup stateTheme={stateTheme} styles={styles} Config={Object.assign({}, config)} text={<span>Stickers</span>}/>);
   };
 
   const onEnterPress = e => {
@@ -324,6 +365,15 @@ const Chat = ({ props }) => {
             updateText(e);
           }}
         />
+        <div
+          className={styles.send}
+          style={Object.assign({}, stateTheme.chat.input, {
+            borderColor: stateTheme.chat.input.backgroundColor
+          })}
+          onClick={openStickerPanel}
+        >
+          <MdFace />
+        </div>
         <div
           className={styles.send}
           style={Object.assign({}, stateTheme.chat.input, {
