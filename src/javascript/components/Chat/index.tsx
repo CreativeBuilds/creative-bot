@@ -4,6 +4,7 @@ import { theme, ThemeContext } from '../../helpers';
 import { MdSend, MdPerson, MdMood, MdFace } from 'react-icons/md';
 
 import { Message } from './Message';
+import { StickerPopup } from './StickerPopup';
 import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
 import { Action } from 'rxjs/internal/scheduler/Action';
 
@@ -25,43 +26,6 @@ interface popup {
   Config?: any;
   type?: string;
 }
-
-const StickerPopup = ({
-  styles,
-  stateTheme,
-  text = '',
-  Config = {},
-}: popup) => {
-  const [name, setName] = useState<string>('');
-  const [helperText, SetHelperText] = useState(text);
-  const [error, SetError] = useState(false);
-  const [config, setConfig] = useState(Config);
-
-  const setError = error => {
-    SetError(true);
-    SetHelperText(error);
-    setTimeout(() => {
-      SetError(false);
-      SetHelperText(text);
-    }, 5000);
-  };
-
-  const isError = () => {
-    if (text !== helperText && !error) {
-      SetHelperText(text);
-      setName('');
-    }
-    return error;
-  };
-
-  return (
-    <div className={styles.popup} style={stateTheme.main}>
-      <div className={styles.input_wrapper}>
-        <h2>Sticker Popup</h2>
-      </div>
-    </div>
-  );
-};
 
 const AddCommandPopup = ({
   styles,

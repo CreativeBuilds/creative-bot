@@ -17,6 +17,13 @@
   align-items: center;
 }
 
+.stickersPopup {
+  width: 100% !important;
+  .content {
+    width: 100%;
+  }
+}
+
 .link {
   font-weight: bold;
   &:hover {
