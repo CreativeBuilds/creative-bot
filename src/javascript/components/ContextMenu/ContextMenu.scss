@@ -45,9 +45,9 @@
     
     .contextItemContent {
         display: inline-block !important;
-        padding-left: 20px;
-        padding-right: 20px;
-        width: calc(100% - 40px);
+        padding-left: 0px;
+        padding-right: 10px;
+        width: calc(100% - 10px);
         &:hover {
             &:not(.inactive) {
                 background-color: $dliveaccent;
@@ -75,9 +75,15 @@
             }
         }
 
+        .shortcut, .arrow {
+            margin-right: 10px;
+        }
+
         .iconContainer { 
             float: left;
+            margin-left: 5px;
             margin-right: 10px;
+            width: 34px;
             .icon, .checkedIcon {
                 height: auto;
 
@@ -96,13 +102,18 @@
             }
 
             .icon {
+                width: 16px !important;
+                float: right;
                 svg {
                     height: 16px;
                     width: 16px;
                 }
             }
 
-            .checkedIcon { margin-right: 5px; }
+            .checkedIcon { 
+                width: 12px !important;
+                margin-right: 5px;
+            }
         }
 
         .title {
