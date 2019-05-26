@@ -24,10 +24,6 @@ const whitelist = {
     name: 'Payout Interval',
     type: 'number'
   },
-  themeType: {
-    name: 'Theme',
-    type: 'string'
-  },
   streamerDisplayName: {
     name: 'Streamer Name'
   }

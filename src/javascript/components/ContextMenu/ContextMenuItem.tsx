@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
-import { MdKeyboardArrowRight, MdDone } from 'react-icons/md';
+import { MdHelpOutline, MdKeyboardArrowRight, MdDone, MdExitToApp, MdContentCut, MdContentCopy, MdContentPaste, MdDelete, MdSelectAll, MdRefresh, MdReplay, MdExtension, MdZoomOutMap, MdZoomIn, MdZoomOut, MdBrightnessLow, MdBrightness3, MdFullscreen, MdClose  } from 'react-icons/md';
+import { GoMarkGithub, GoLink } from 'react-icons/go';
 import { theme, useComponentVisible, ThemeContext } from '../../helpers';
 import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
 
@@ -36,6 +37,32 @@ const ContextMenuItem = ({ contextItem } : ContextMenuItem) => {
         }   
     }
 
+    const getIconComponent = (name) => {
+        let map = {
+            'MdExitToApp': <MdExitToApp />,
+            'MdContentCut': <MdContentCut />,
+            'MdContentCopy': <MdContentCopy />,
+            'MdContentPaste': <MdContentPaste />,
+            'MdDelete': <MdDelete />,
+            'MdSelectAll': <MdSelectAll />,
+            'MdRefresh': <MdRefresh />,
+            'MdReplay': <MdReplay />,
+            'MdExtension': <MdExtension />,
+            'MdBrightness3': <MdBrightness3 />,
+            'MdBrightnessLow': <MdBrightnessLow />,
+            'MdZoomOutMap': <MdZoomOutMap />,
+            'MdZoomIn': <MdZoomIn />,
+            'MdZoomOut': <MdZoomOut />,
+            'MdFullscreen': <MdFullscreen />,
+            'GoMarkGithub': <GoMarkGithub />,
+            'GoLink': <GoLink />,
+            'MdHelpOutline': <MdHelpOutline />,
+    
+    
+          }
+        return map[name];
+    }
+
     useEffect(() => {
         let listener = rxConfig.subscribe((data: any) => {
           delete data.first;
@@ -68,12 +95,12 @@ const ContextMenuItem = ({ contextItem } : ContextMenuItem) => {
             return <div className={`${styles.itemContainer}`}>
                         <div className={`${styles.contextItemContent} ${styles.normal}`}> 
                             <div className={styles.iconContainer}>
-                                <div className={styles.icon}>
-
-                                </div>
                                 {isChecked ? <div className={styles.checkedIcon}>
                                     <MdDone />
                                 </div> : null }
+                                <div className={styles.icon}>
+                                    {getIconComponent(contextItem.icon)}
+                                </div>
                             </div>
                             <div className={styles.title}><span>{contextItem.title}</span></div>
                             <div className={styles.shortcut}><span>{contextItem.shortcut}</span></div>
@@ -84,7 +111,7 @@ const ContextMenuItem = ({ contextItem } : ContextMenuItem) => {
                         <div className={`${styles.contextItemContent} ${styles.multimenu}`}>
                             <div className={styles.iconContainer}>
                                 <div className={styles.icon}>
-
+                                    {getIconComponent(contextItem.icon)}
                                 </div>
                             </div>
                             <div className={styles.title}><span>{contextItem.title}</span></div>

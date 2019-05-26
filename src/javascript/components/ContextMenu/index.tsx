@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
-import { theme, ThemeContext } from '../../helpers';
+import { theme, ThemeContext, useComponentVisible } from '../../helpers';
 import { ContextMenuItem } from './ContextMenuItem';
 import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
 
@@ -31,7 +31,14 @@ const ContextMenu = ({contextItems, isOpen = false, onClickedOutside, isSubMenu 
 
     const [stateTheme, setStateTheme] = useState(ThemeContext);
     const [opened, setOpened] = useState<Boolean>(isOpen);
+    const [show, showMenu] = useState<Boolean>(false);
     const [config, setConfig] = useState<any>(null);
+
+    const {
+        ref,
+        isComponentVisible,
+        setIsComponentVisible
+      } = useComponentVisible(false);
 
     const changeTheme = (themeVal : String) => {
         if (themeVal == 'dark') {
@@ -52,20 +59,12 @@ const ContextMenu = ({contextItems, isOpen = false, onClickedOutside, isSubMenu 
         };
     }, []);
 
-    const loadContextMenuItems = () => {
-        var contextMenuItemsObjs = []
-
-        for (var i = 0; i < contextItems.length; i++) {
-            contextMenuItemsObjs.push(<ContextMenuItem contextItem={contextItems[i]} />);
-        }
-
-        return contextMenuItemsObjs;
-    }
-
     return (
         <div className={`${styles.contextMenu} ${isSubMenu ? styles.subMenu : null }`} onClick={() => onClickedOutside() } >
             <ul className={`${styles.contextMenuContent}`}  style={stateTheme.contextMenu}>
-                {loadContextMenuItems()}
+                {contextItems.map(i => (
+                    <ContextMenuItem contextItem={i} />
+                ))}
             </ul>
         </div>
     );
