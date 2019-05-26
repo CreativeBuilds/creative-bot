@@ -1,6 +1,6 @@
 {
   "name": "dlive-chat-bot",
-  "version": "1.4.5-canary",
+  "version": "1.4.6-canary",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -35,6 +35,7 @@
     "react-router-dom": "^5.0.0",
     "rxjs": "^6.5.1",
     "rxjs-websockets": "^7.0.0",
+    "tar": "^2.2.2",
     "ws": "^6.2.1"
   },
   "devDependencies": {
