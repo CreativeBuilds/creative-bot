@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Styles from './Message.scss';
 import { MdClose } from 'react-icons/md';
-import { removeMessage } from '../../helpers/removeMessage';
+import { removeMessage, timeoutUser } from '../../helpers/removeMessage';
 
 import { UserPopup } from './UserPopup';
 
@@ -38,7 +38,7 @@ const Message = ({
   };
 
   const canDelete = () => {
-    return message.roomRole === 'Member' && message.role === 'None';
+    return message.roomRole !== 'Owner' && message.role === 'None';
   };
 
   const addUserPopup = () => {
@@ -47,6 +47,20 @@ const Message = ({
         closeCurrentPopup={closeCurrentPopup}
         user={message.sender}
         stateTheme={stateTheme}
+        canDelete={canDelete()}
+        timeoutUser={() => {
+          timeoutUser(
+            message.sender.blockchainUsername,
+            message.streamerBlockchainUsername
+          );
+        }}
+        deleteMessage={
+          canDelete()
+            ? () => {
+                removeMessage(message.id, message.streamerBlockchainUsername);
+              }
+            : () => {}
+        }
       />
     );
   };

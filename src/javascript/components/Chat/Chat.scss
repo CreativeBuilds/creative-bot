@@ -29,37 +29,133 @@
   border-radius: 5px;
 }
 
+.input_points {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  input {
+    flex: 1;
+    border: 0px solid #000;
+    border-radius: 5px;
+    padding: 5px;
+    outline: none;
+    height: 20px;
+    font-size: 16px;
+  }
+}
+.input_wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.input_is_admin {
+  width: 85px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  & > div:nth-child(1) {
+    // Name
+  }
+  & > div:nth-child(2) {
+    // toggle
+    transition: all 0.15s ease-in-out;
+    border-radius: 25px;
+    width: 75px;
+    height: 25px;
+    &:hover {
+      cursor: pointer;
+    }
+    div {
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      transition: all 0.15s ease-in-out;
+      &.isAdmin {
+        margin-left: 50px;
+      }
+    }
+  }
+}
+.user_submit {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.6em;
+  font-weight: bold;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .UserPopup {
   min-height: min-content;
   height: 300px;
   max-height: 90vh;
   .UserPopup_header {
     width: 100%;
-    height: 50px;
-    .UserPopup_header_left {
-      width: 75px;
-      border-radius: 5px;
+    height: min-content;
+    .UserPopup_header_up {
       display: flex;
-      height: 75px;
-      align-items: center;
+      width: 100%;
+      height: 192.5px;
       position: relative;
+      .UserPopup_header_up_right {
+        position: absolute;
+        bottom: 72.5px;
+        right: 5px;
+        width: min-content;
+        height: min-content;
+        display: flex;
+        font-size: 1.6em;
+        & > svg {
+          margin-left: 10px;
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
       & > div:nth-child(1) {
-        width: 50px;
-        height: 100%;
-        border-radius: 10px;
+        width: 100%;
+        height: 125px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        & > div.username {
+          & > div {
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 1.6em;
+            font-weight: bold;
+            text-align: center;
+          }
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          width: 70%;
+          height: calc(100% - 67.5px);
+          align-items: center;
+          height: calc(100% - 67.5px);
+          letter-spacing: 1px;
+        }
       }
       & > div:nth-child(2) {
-        width: 50px;
-        height: 50px;
-        position: absolute;
-        left: 25px;
         border-radius: 50%;
+        width: 125px;
+        height: 125px;
+        position: absolute;
+        left: calc(50% - 62.5px);
         display: flex;
         justify-content: center;
         align-items: center;
+        top: calc(125px - 62.5px);
         img {
-          height: 40px;
-          width: 40px;
+          width: 115px;
           border-radius: 50%;
           box-shadow: 1px 1px 5px #000;
         }

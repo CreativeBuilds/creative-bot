@@ -22,5 +22,25 @@ module.exports = {
         id
       }
     });
+  },
+  timeoutUser: (id, streamer) => {
+    return sendRequestToDlive({
+      operationName: 'UserTimeoutSet',
+      query: `mutation UserTimeoutSet($streamer: String!, $username: String!, $duration: Int!) {
+        userTimeoutSet(streamer: $streamer, username: $username, duration: $duration) {
+          err {
+            code
+            message
+            __typename
+          }
+          __typename
+        }
+      }`,
+      variables: {
+        duration: 1,
+        streamer,
+        username: id
+      }
+    });
   }
 };

@@ -42,7 +42,7 @@ let { makeNewCommand, getBlockchainUsername } = require('./helpers');
 const { autoUpdater } = require('electron-updater');
 require('./helpers/startTimers').run();
 
-const { removeMessage } = require('./helpers/removeMessage');
+const { removeMessage, timeoutUser } = require('./helpers/removeMessage');
 
 rxConfig
   .pipe(
@@ -92,7 +92,7 @@ function createWindow() {
 
   // and load the index.html of the app.
   if (env === 'dev_watch') {
-    win.loadURL("http://localhost:8080/webpack-dev-server/");
+    win.loadURL('http://localhost:8080/webpack-dev-server/');
   } else {
     win.loadURL(`file://${__dirname}/dist/index.html`);
   }
@@ -230,7 +230,7 @@ function createWindow() {
     event.sender.send('show-bannermessage', [bannerMessage]);
   });
 
-  ipcMain.on('closeBannerMessage', (event) => {
+  ipcMain.on('closeBannerMessage', event => {
     event.sender.send('hide-bannermessage');
   });
 
@@ -243,6 +243,10 @@ function createWindow() {
     removeMessage(id, streamer).then(() => {
       win.webContents.send('removedMessage', { id, streamer });
     });
+  });
+  ipcMain.on('timeoutUser', (event, { id, streamer }) => {
+    console.log('IPC MAIN', id, streamer);
+    timeoutUser(id, streamer);
   });
 
   ipcMain.on('createCommand', (event, { commandName, commandReply }) => {
@@ -752,9 +756,7 @@ function createWindow() {
 ipcMain.on('sendmessage', (event, { from, message }) => {
   if (config.authKey != null || config.username != null) {
     sendMessage(message);
-
   } else {
-
     var bannerMessage = {
       needsBanner: true,
       message:
