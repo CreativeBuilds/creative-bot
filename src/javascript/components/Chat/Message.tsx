@@ -2,8 +2,10 @@ import * as React from 'react';
 import Styles from './Message.scss';
 import { MdClose } from 'react-icons/md';
 import { removeMessage } from '../../helpers/removeMessage';
+import { AddStickerPopup } from './AddStickerPopup';
 
-const Message = ({ styles, message, nth, stateTheme, ownerName }) => {
+const Message = ({ styles, message, nth, stateTheme, ownerName, addPopup, config}) => {
+
   // Boolean Checks if Message is a Sticker or not
   const isSticker = () => {
     var content = message.content;
@@ -31,6 +33,10 @@ const Message = ({ styles, message, nth, stateTheme, ownerName }) => {
     return message.roomRole === 'Member' && message.role === 'None';
   };
 
+  const addSticker = () => {
+    addPopup(<AddStickerPopup stickerId={message.content} stickerUrl={getSticker(message.content)} stateTheme={stateTheme} styles={styles} Config={Object.assign({}, config)} text={<span>Stickers</span>}/>);
+  }
+
   return (
     <div
       className={`${styles.message} ${
@@ -53,7 +59,7 @@ const Message = ({ styles, message, nth, stateTheme, ownerName }) => {
           {': '}
         </span>
         {isSticker() ? (
-          <div className={styles.sticker_container}>
+          <div className={styles.sticker_container} onClick={addSticker}>
             <img className={styles.sticker} src={getSticker(message.content)} />
           </div>
         ) : (

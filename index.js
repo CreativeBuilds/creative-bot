@@ -34,6 +34,7 @@ const rxUsers = require('./helpers/rxUsers');
 const rxCommands = require('./helpers/rxCommands');
 const rxGiveaways = require('./helpers/rxGiveaways');
 const rxLists = require('./helpers/rxLists');
+const rxEmotes = require('./helpers/rxEmotes');
 const getCustomVariables = require('./helpers/getCustomVariables');
 const parseReply = require('./helpers/parseReply');
 rxCommands.subscribe(commands => (Commands = commands));
@@ -276,6 +277,21 @@ function createWindow() {
     if (Lists !== lists) {
       lists = Lists;
       rxLists.next(Lists);
+    }
+  });
+
+  let emotes = {};
+
+  ipcMain.on('getRxEmotes', () => {
+    rxEmotes.subscribe(emotes => {
+      win.webContents.send('rxEmotes', emotes);
+    });
+  });
+
+  ipcMain.on('setRxEmotes', (event, Emotes) => {
+    if (Emotes !== emotes) {
+      emotes = Emotes;
+      rxEmotes.next(Emotes);
     }
   });
 

@@ -302,6 +302,8 @@ const Chat = ({ props }) => {
         {Messages.map((message, nth) => {
           return (
             <Message
+              addPopup={addPopup}
+              config={config}
               styles={styles}
               message={message}
               stateTheme={stateTheme}

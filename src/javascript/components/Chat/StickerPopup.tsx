@@ -5,6 +5,7 @@ import { MdSend, MdPerson, MdMood, MdFace } from 'react-icons/md';
 
 import { Message } from './Message';
 import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
+import { rxEmotes, setRxEmotes } from '../../helpers/rxEmotes';
 import { Action } from 'rxjs/internal/scheduler/Action';
 
 import { SegmentControl, SegmentControlSource } from '../SegmentControl/index';
