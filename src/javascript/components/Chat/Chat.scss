@@ -84,9 +84,23 @@
   }
 }
 
+.noStickers {
+  vertical-align: middle;
+    position: absolute;
+    top: 34%;
+    width: 100%;
+
+    svg {
+      width: 72px;
+      height: 72px;
+    }
+}
+
 .gridView {
   display: block;
   text-align: center;
+  position: relative;
+  height: 100%;
 }
 
 .previewSticker {

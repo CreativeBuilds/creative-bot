@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
 import * as _ from 'lodash';
 import { theme, ThemeContext } from '../../helpers';
-import { MdSend, MdPerson, MdMood, MdFace } from 'react-icons/md';
+import { MdSend, MdPerson, MdMood, MdFace, MdSentimentDissatisfied } from 'react-icons/md';
 
 import { Message } from './Message';
 import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
@@ -50,41 +50,64 @@ const StickerPopup = ({
       };
     }, []);
 
-    let emoteSavedArray = _.orderBy(
-      _.sortBy(Object.keys(emotes))
-        .map(name => emotes[name])
-    );
-
     const segmentControlItems = () => {
-      console.log(emoteSavedArray);
+        let emoteSavedArray = _.orderBy(
+        _.sortBy(Object.keys(emotes))
+          .map(name => emotes[name])
+        );
         var items : Array<SegmentControlSource> = [
             {
                 id: 0,
                 name: "All",
                 page: <div className={styles.gridView}>
-                  {emoteSavedArray.map(i => <Emote stickerDLiveId={i.dliveid} stickerUrl={i.url}/>)}
+                  {emoteSavedArray.length > 0 ? emoteSavedArray.map(i => <Emote stickerDLiveId={i.dliveid} stickerUrl={i.url}/>) : 
+                  <div className={styles.noStickers}>
+                    <MdSentimentDissatisfied />
+                    <h3>No Stickers</h3>
+                  </div>
+                  }
                 </div>
             },
             {
                 id: 1,
                 name: "Favourites",
-                page: <h4>Test 2</h4>
+                page: <div className={styles.gridView}>
+                  <div className={styles.noStickers}>
+                    <MdSentimentDissatisfied />
+                    <h3>No Favourites Stickers</h3>
+                  </div>
+                </div>
             },
             {
                 id: 2,
                 name: "Channel",
-                page: <h4>Test 3</h4>
+                page: <div className={styles.gridView}>
+                  <div className={styles.noStickers}>
+                    <MdSentimentDissatisfied />
+                    <h3>No Channel Stickers</h3>
+                  </div>
+                </div>
             },
             {
                 id: 3,
                 name: "Global",
-                page: <h4>Test 4</h4>
+                page: <div className={styles.gridView}>
+                  <div className={styles.noStickers}>
+                    <MdSentimentDissatisfied />
+                    <h3>No Global Stickers</h3>
+                  </div>
+                </div>
             },
             {
                 id: 4,
                 name: "Saved",
                 page: <div className={styles.gridView}>
-                  {emoteSavedArray.map(i => <Emote stickerDLiveId={i.dliveid} stickerUrl={i.url}/>)}
+                  {emoteSavedArray.length > 0 ? emoteSavedArray.map(i => <Emote stickerDLiveId={i.dliveid} stickerUrl={i.url}/>) : 
+                  <div className={styles.noStickers}>
+                    <MdSentimentDissatisfied />
+                    <h3>No Stickers</h3>
+                  </div>
+                  }
                 </div>
             },
         ]
