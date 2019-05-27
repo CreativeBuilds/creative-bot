@@ -54,23 +54,6 @@ const StickerPopup = ({
       _.sortBy(Object.keys(emotes))
         .map(name => emotes[name])
     );
-  
-    const setError = error => {
-      SetError(true);
-      SetHelperText(error);
-      setTimeout(() => {
-        SetError(false);
-        SetHelperText(text);
-      }, 5000);
-    };
-  
-    const isError = () => {
-      if (text !== helperText && !error) {
-        SetHelperText(text);
-        setName('');
-      }
-      return error;
-    };
 
     const segmentControlItems = () => {
       console.log(emoteSavedArray);
@@ -111,7 +94,7 @@ const StickerPopup = ({
   
     return (
       <div className={styles.popup} style={stateTheme.main}>
-        <h1>Stickers</h1>
+        <h2>Stickers</h2>
         <div className={`${styles.stickersPopup}`}>
             <SegmentControl source={segmentControlItems()} defaultValue="All"/>
         </div>

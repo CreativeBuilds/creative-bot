@@ -72,8 +72,8 @@ const AddStickerPopup = ({
 
     return (
       <div className={styles.popup} style={stateTheme.main}>
+        <h2>Add Sticker</h2>
         <div className={`${styles.stickersPopup}`}>
-            <h2>Add Sticker</h2>
             <div>
                 <div className={styles.sticker_container}>
                     <img className={`${styles.previewSticker}`} src={`${stickerUrl}`} />
