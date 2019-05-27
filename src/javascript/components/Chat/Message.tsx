@@ -4,7 +4,7 @@ import { MdClose } from 'react-icons/md';
 import { removeMessage } from '../../helpers/removeMessage';
 import { AddStickerPopup } from './AddStickerPopup';
 
-const Message = ({ styles, message, nth, stateTheme, ownerName, addPopup, config}) => {
+const Message = ({ styles, message, nth, stateTheme, ownerName, addPopup, config, closeCurrentPopup}) => {
 
   // Boolean Checks if Message is a Sticker or not
   const isSticker = () => {
@@ -34,7 +34,7 @@ const Message = ({ styles, message, nth, stateTheme, ownerName, addPopup, config
   };
 
   const addSticker = () => {
-    addPopup(<AddStickerPopup stickerId={message.content} stickerUrl={getSticker(message.content)} stateTheme={stateTheme} styles={styles} Config={Object.assign({}, config)} text={<span>Stickers</span>}/>);
+    addPopup(<AddStickerPopup stickerId={message.content} stickerUrl={getSticker(message.content)} stateTheme={stateTheme} styles={styles} Config={Object.assign({}, config)} text={<span>Stickers</span>} closeCurrentPopup={closeCurrentPopup}/>);
   }
 
   return (

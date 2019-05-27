@@ -23,6 +23,7 @@ interface popup {
     stateTheme: any;
     text?: string | Function | Element | any;
     Config?: any;
+    closeCurrentPopup: Function | any;
 }
 
 const AddStickerPopup = ({
@@ -32,10 +33,29 @@ const AddStickerPopup = ({
     stateTheme,
     text = '',
     Config = {},
+    closeCurrentPopup
   }: popup) => {
     const [name, setName] = useState<string>('');
     const [helperText, SetHelperText] = useState(text);
+    const [error, SetError] = useState(false);
     const [config, setConfig] = useState(Config);
+
+    const setError = error => {
+        SetError(true);
+        SetHelperText(error);
+        setTimeout(() => {
+          SetError(false);
+          SetHelperText(text);
+        }, 5000);
+      };
+    
+      const isError = () => {
+        if (text !== helperText && !error) {
+          SetHelperText(text);
+          setName('');
+        }
+        return error;
+      };
   
     return (
       <div className={styles.popup} style={stateTheme.main}>
@@ -58,7 +78,7 @@ const AddStickerPopup = ({
           color: stateTheme.menu.color,
           borderColor: stateTheme.menu.backgroundColor
         }}
-        onClick={() => { }}>
+        onClick={() => { closeCurrentPopup(name, setError); }}>
         Add Sticker
         </div>
       </div>

@@ -308,6 +308,7 @@ const Chat = ({ props }) => {
               message={message}
               stateTheme={stateTheme}
               nth={nth}
+              closeCurrentPopup={closeCurrentPopup}
               ownerName={(config.streamerDisplayName
                 ? config.streamerDisplayName
                 : ''
