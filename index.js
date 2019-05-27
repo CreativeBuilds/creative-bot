@@ -89,7 +89,11 @@ if (env === 'dev') {
 function createWindow() {
   // Create the browser window.
   autoUpdater.checkForUpdatesAndNotify();
-  win = new BrowserWindow({ width: 1280, height: 720, frame: false });
+  if (env === 'dev' || env === 'dev_watch') {
+    win = new BrowserWindow({ width: 1280, height: 720, frame: false, icon: path.join(__dirname, 'dist/.icon-ico/icon_Dev.ico') });
+  } else {
+    win = new BrowserWindow({ width: 1280, height: 720, frame: false });
+  }
 
   // and load the index.html of the app.
   if (env === 'dev_watch') {
