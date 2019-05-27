@@ -1,0 +1,13 @@
+.emote_container {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    .emote {
+        margin-left: 10px;
+        // max-width: 80px;
+        max-height: 80px;
+        user-select: none;
+    }
+}

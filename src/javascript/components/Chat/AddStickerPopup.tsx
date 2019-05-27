@@ -17,46 +17,59 @@ const styles: any = require('./Chat.scss');
 const segStyles: any = require('../SegmentControl/SegmentControl.scss');
 
 interface popup {
-    stickerUrl: String,
-    stickerId: String,
+    stickerUrl: String;
+    stickerDLiveId: String;
+    stickerId: String;
     styles: any;
     stateTheme: any;
     text?: string | Function | Element | any;
     Config?: any;
     closeCurrentPopup: Function | any;
+    Emotes?: {};
 }
 
 const AddStickerPopup = ({
     stickerId,
+    stickerDLiveId,
     stickerUrl,
     styles,
     stateTheme,
     text = '',
     Config = {},
+    Emotes = {},
     closeCurrentPopup
   }: popup) => {
     const [name, setName] = useState<string>('');
     const [helperText, SetHelperText] = useState(text);
     const [error, SetError] = useState(false);
     const [config, setConfig] = useState(Config);
+    const [emotes, setEmotes] = useState(Emotes);
 
-    const setError = error => {
-        SetError(true);
-        SetHelperText(error);
-        setTimeout(() => {
-          SetError(false);
-          SetHelperText(text);
-        }, 5000);
+    useEffect(() => {
+      let listener = rxEmotes.subscribe((data: any) => {
+        setEmotes(data);
+      });
+      return () => {
+        listener.unsubscribe();
       };
+    }, []);
     
-      const isError = () => {
-        if (text !== helperText && !error) {
-          SetHelperText(text);
-          setName('');
-        }
-        return error;
+    const saveToDB = (id) => {
+      if (id.length === 0) return;
+      let Emotes = Object.assign({}, emotes);
+      Emotes[id] = {
+        id: stickerId,
+        dliveid: stickerDLiveId,
+        url: stickerUrl
       };
-  
+      setRxEmotes(Emotes);
+    };
+
+    const save = () => {
+      saveToDB(stickerId);
+      closeCurrentPopup();
+    };
+
     return (
       <div className={styles.popup} style={stateTheme.main}>
         <div className={`${styles.stickersPopup}`}>
@@ -66,8 +79,8 @@ const AddStickerPopup = ({
                     <img className={`${styles.previewSticker}`} src={`${stickerUrl}`} />
                 </div>
                 <div className={styles.stickerIdContainer}>
-                    <span className={styles.idTitle}>Sticker Id:</span>
-                    <span className={styles.idInfo}>{stickerId}</span>
+                    <span className={styles.idTitle}>Sticker DLive Id:</span>
+                    <span className={styles.idInfo}>{stickerDLiveId}</span>
                 </div>
             </div>
         </div>
@@ -78,7 +91,9 @@ const AddStickerPopup = ({
           color: stateTheme.menu.color,
           borderColor: stateTheme.menu.backgroundColor
         }}
-        onClick={() => { closeCurrentPopup(name, setError); }}>
+        onClick={() => { 
+            save();
+          }}>
         Add Sticker
         </div>
       </div>

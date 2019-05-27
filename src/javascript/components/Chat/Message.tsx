@@ -20,11 +20,15 @@ const Message = ({ styles, message, nth, stateTheme, ownerName, addPopup, config
     }
   };
 
+  const getStickerId = (id: String) => {
+    var routes = id.replace(/[:]/gi, '').split('/');
+    var imageRoute = routes[routes.length - 1];
+    return imageRoute;
+  };
+
   // if message is sticker then it is compiled into a url (returns a String)
   const getSticker = (str: String) => {
-    var routes = str.replace(/[:]/gi, '').split('/');
-    var imageRoute = routes[routes.length - 1];
-    var url = 'https://images.prd.dlivecdn.com/emote/' + imageRoute;
+    var url = 'https://images.prd.dlivecdn.com/emote/' + getStickerId(str);
     console.log('Sticker URL:' + url);
     return url;
   };
@@ -34,7 +38,7 @@ const Message = ({ styles, message, nth, stateTheme, ownerName, addPopup, config
   };
 
   const addSticker = () => {
-    addPopup(<AddStickerPopup stickerId={message.content} stickerUrl={getSticker(message.content)} stateTheme={stateTheme} styles={styles} Config={Object.assign({}, config)} text={<span>Stickers</span>} closeCurrentPopup={closeCurrentPopup}/>);
+    addPopup(<AddStickerPopup stickerId={getStickerId(message.content)} stickerDLiveId={message.content} stickerUrl={getSticker(message.content)} stateTheme={stateTheme} styles={styles} Config={Object.assign({}, config)} text={<span>Stickers</span>} closeCurrentPopup={closeCurrentPopup}/>);
   }
 
   return (
