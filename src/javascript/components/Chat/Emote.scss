@@ -2,8 +2,8 @@
 
 .emote_container {
     display: inline-block;
-    width: auto;
-    height: auto;
+    width: 100px;
+    height: 100px;
     margin-right: 10px;
     margin-bottom: 10px;
     box-sizing: content-box;
@@ -17,10 +17,9 @@
     }
 
     .emote {
-        box-sizing: content-box;
-        margin-left: 10px;
-        // max-width: 80px;
-        max-height: 80px;
+        box-sizing: border-box;
+        width: 100px;
+        max-height: 100px;
         user-select: none;
     }
 }
