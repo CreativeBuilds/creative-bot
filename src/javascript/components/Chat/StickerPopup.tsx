@@ -41,6 +41,7 @@ const StickerPopup = ({
     const [helperText, SetHelperText] = useState(text);
     const [error, SetError] = useState(false);
     const [config, setConfig] = useState(Config);
+    const [emotesList, setEmotesList] = useState([]);
     const [savedemotes, setSavedEmotes] = useState(Emotes);
     const [globalemotes, setGlobalEmotes] = useState({});
     const [channelemotes, setChannelEmotes] = useState({});
@@ -48,15 +49,6 @@ const StickerPopup = ({
     const [allemotes, setAllEmotes] = useState({});
     const [index, setIndex] = useState(0);
     const [noStickerErrorMsg, setNoStickerMsg] = useState<Array<String>>(['No Stickers', 'No Favourite Stickers', 'No Channel Stickers', 'No Global Stickers', 'No Saved Stickers'])
-
-    useEffect(() => {
-      let listener = rxEmotes.subscribe((data: any) => {
-        setSavedEmotes(data);
-      });
-      return () => {
-        listener.unsubscribe();
-      };
-    }, []);
 
     let emoteSavedArray = _.orderBy(
       _.sortBy(Object.keys(savedemotes))
@@ -83,14 +75,29 @@ const StickerPopup = ({
         .map(name => allemotes[name])
     );
 
-    const deleteEmote = (name) => {
+    const deleteEmote = (id) => {
         let Emotes = Object.assign({}, savedemotes);
-        delete Emotes[name];
+        delete Emotes[id];
         setRxEmotes(Emotes);
         console.log(Emotes);
-
-        setEmotesList(emoteSavedArray);
+        setEmotesList(_.orderBy(
+          _.sortBy(Object.keys(Emotes))
+            .map(name => Emotes[name])
+        ));
     };
+
+    useEffect(() => {
+      let listener = rxEmotes.subscribe((data: any) => {
+        setSavedEmotes(data);
+        setEmotesList(_.orderBy(
+          _.sortBy(Object.keys(data))
+            .map(name => data[name])
+        ));
+      });
+      return () => {
+        listener.unsubscribe();
+      };
+    }, []);
 
     const segmentControlItems = () => {
         var items : Array<SegmentControlSource> = [
@@ -120,7 +127,6 @@ const StickerPopup = ({
     }
 
     const [page, setPage] = useState<Element>(segmentControlItems()[0].page);
-    const [emotesList, setEmotesList] = useState(emoteSavedArray);
 
     const onClick = (i) => {
       setIndex(i);
