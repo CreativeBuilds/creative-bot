@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Styles from './Message.scss';
-import { MdClose } from 'react-icons/md';
+import { MdClose, MdAdd } from 'react-icons/md';
 import { removeMessage } from '../../helpers/removeMessage';
 import { AddStickerPopup } from './AddStickerPopup';
 
@@ -63,7 +63,10 @@ const Message = ({ styles, message, nth, stateTheme, ownerName, addPopup, config
           {': '}
         </span>
         {isSticker() ? (
-          <div className={styles.sticker_container} onClick={addSticker}>
+          <div className={styles.sticker_container}>
+            <div className={styles.emoteDeleteButton} onClick={addSticker}>
+              <MdAdd />
+            </div>
             <img className={styles.sticker} src={getSticker(message.content)} />
           </div>
         ) : (

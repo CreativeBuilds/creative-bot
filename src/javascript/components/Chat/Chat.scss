@@ -76,6 +76,49 @@
 
   .sticker_container {
     display: table-cell;
+    position: relative;
+
+    .emoteDeleteButton { display: none; }
+
+    &:hover {
+      .emoteDeleteButton {
+        position: absolute;
+        display: block;
+        background: white;
+        width: 25px;
+        height: 25px;
+        border-radius: 16px;
+        float: right;
+        top: 0;
+        right: 0;
+        box-shadow: 1px 1px 30px rgba(21, 21, 21, 0.6);
+
+        &:hover {
+          svg {
+              fill: green !important;
+              stroke: green !important;
+          }
+        }
+
+        svg {
+          vertical-align: middle;
+          text-align: center;
+          height: 16px;
+          width: 16px;
+          margin: 0px;
+          margin-top: 4px;
+          margin-left: 4px;
+          fill: Black !important;
+          stroke: black !important;
+
+          &:hover {
+              fill: green !important;
+              stroke: green !important;
+          }
+        }
+      }
+    }
+
     .sticker {
       margin-left: 10px;
       // max-width: 80px;
@@ -97,14 +140,16 @@
 
 .noStickers {
   vertical-align: middle;
-    position: absolute;
-    top: 30%;
-    width: 100%;
+  position: absolute;
+  top: 30%;
+  width: 100%;
 
-    svg {
-      width: 72px;
-      height: 72px;
-    }
+  user-select: none;
+
+  svg {
+    width: 72px;
+    height: 72px;
+  }
 }
 
 .gridView {
