@@ -50,11 +50,19 @@ const StickerPopup = ({
       };
     }, []);
 
+    const deleteEmote = (name) => {
+        let Emotes = Object.assign({}, emotes);
+        delete Emotes[name];
+        setRxEmotes(Emotes);
+        console.log(Emotes);
+    };
+
+    let emoteSavedArray = _.orderBy(
+      _.sortBy(Object.keys(emotes))
+        .map(name => emotes[name])
+      );
+
     const segmentControlItems = () => {
-        let emoteSavedArray = _.orderBy(
-        _.sortBy(Object.keys(emotes))
-          .map(name => emotes[name])
-        );
         var items : Array<SegmentControlSource> = [
             {
                 id: 0,
@@ -102,7 +110,7 @@ const StickerPopup = ({
                 id: 4,
                 name: "Saved",
                 page: <div className={styles.gridView}>
-                  {emoteSavedArray.length > 0 ? emoteSavedArray.map(i => <Emote stickerDLiveId={i.dliveid} stickerUrl={i.url}/>) : 
+                  {emoteSavedArray.length > 0 ? emoteSavedArray.map((i, index) => <Emote stickerDLiveId={i.dliveid} stickerUrl={i.url} canDelete={true} onDelete={() => deleteEmote(i.id)} />) : 
                   <div className={styles.noStickers}>
                     <MdSentimentDissatisfied />
                     <h3>No Stickers</h3>

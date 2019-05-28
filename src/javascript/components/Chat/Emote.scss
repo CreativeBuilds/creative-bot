@@ -7,9 +7,41 @@
     margin-right: 10px;
     margin-bottom: 10px;
     box-sizing: content-box;
+    position: relative;
     cursor: pointer;
 
+    .emoteDeleteButton { display: none; }
+
     &:hover {
+        .emoteDeleteButton {
+            display: block;
+            position: absolute;
+            background: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 10px;
+            float: right;
+            top: 0;
+            right: 0;
+            box-shadow: 1px 1px 30px rgba(21,21,21,0.6);
+
+            svg {
+                vertical-align: middle;
+                text-align: center;
+                height: 14px;
+                width: 14px;
+                margin: 0px;
+                margin-bottom: 3px;
+                margin-left: 0px;
+                fill: black;
+                stroke: black;
+
+                &:hover {
+                    fill: red !important;
+                    stroke: red !important;
+                }
+            }
+        }
         .emote {
             border: 4px solid $dliveaccent;
             border-radius: 8px;

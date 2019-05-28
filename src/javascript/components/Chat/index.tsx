@@ -6,6 +6,7 @@ import { MdSend, MdPerson, MdMood, MdFace } from 'react-icons/md';
 import { Message } from './Message';
 import { StickerPopup } from './StickerPopup';
 import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
+import { rxEmotes, setRxEmotes } from '../../helpers/rxEmotes';
 import { Action } from 'rxjs/internal/scheduler/Action';
 
 const Window: any = window;
@@ -126,6 +127,7 @@ const Chat = ({ props }) => {
 
   const [viewersToggle, setViewersToggle] = useState<boolean>(true);
   const [config, setConfig]: any = useState({});
+  const [emotes, setEmotes]: any = useState({});
   const [firstRender, setFirstRender] = useState(true);
 
 
@@ -137,10 +139,6 @@ const Chat = ({ props }) => {
   const sendMessage = () => {
     ipcRenderer.send('sendmessage', { from: 'bot', message: text });
     setText('');
-  };
-
-  const openStickerPanel = () => {
-    addPopup(<StickerPopup stateTheme={stateTheme} styles={styles} Config={Object.assign({}, config)} text={<span>Stickers</span>}/>);
   };
 
   const onEnterPress = e => {
@@ -175,10 +173,19 @@ const Chat = ({ props }) => {
       delete data.first;
       setConfig(data);
     });
+    let emoteslistener = rxEmotes.subscribe((data: any) => {
+      delete data.first;
+      setEmotes(data);
+    });
     return () => {
+      emoteslistener.unsubscribe();
       listener.unsubscribe();
     };
   }, []);
+
+  const openStickerPanel = () => {
+    addPopup(<StickerPopup stateTheme={stateTheme} styles={styles} Config={Object.assign({}, config)} text={<span>Stickers</span>} Emotes={emotes} />);
+  };
 
   useEffect(() => {
     if (isScrolledUp) return;
