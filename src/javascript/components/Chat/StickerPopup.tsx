@@ -10,6 +10,7 @@ import { rxEmotes, setRxEmotes } from '../../helpers/rxEmotes';
 import { Action } from 'rxjs/internal/scheduler/Action';
 
 import { SegmentControl, SegmentControlSource } from '../SegmentControl/index';
+import { SegmentControlItem } from '../SegmentControl/SegmentControlItem';
 import { Emote } from './Emote';
 
 const Window: any = window;
@@ -40,6 +41,8 @@ const StickerPopup = ({
     const [error, SetError] = useState(false);
     const [config, setConfig] = useState(Config);
     const [emotes, setEmotes] = useState(Emotes);
+    const [index, setIndex] = useState(0);
+    const [page, setPage] = useState<Element>();
 
     useEffect(() => {
       let listener = rxEmotes.subscribe((data: any) => {
@@ -50,17 +53,22 @@ const StickerPopup = ({
       };
     }, []);
 
+    let emoteSavedArray = _.orderBy(
+      _.sortBy(Object.keys(emotes))
+        .map(name => emotes[name])
+    );
+
     const deleteEmote = (name) => {
         let Emotes = Object.assign({}, emotes);
         delete Emotes[name];
         setRxEmotes(Emotes);
         console.log(Emotes);
-    };
 
-    let emoteSavedArray = _.orderBy(
-      _.sortBy(Object.keys(emotes))
-        .map(name => emotes[name])
-      );
+        emoteSavedArray = _.orderBy(
+          _.sortBy(Object.keys(emotes))
+            .map(name => emotes[name])
+        );
+    };
 
     const segmentControlItems = () => {
         var items : Array<SegmentControlSource> = [
@@ -122,12 +130,24 @@ const StickerPopup = ({
 
         return items;
     }
+
+    const onClick = (i) => {
+      setIndex(i);
+      setPage(segmentControlItems()[i].page);
+    }
   
     return (
-      <div className={styles.popup} style={stateTheme.main}>
+      <div className={segStyles.popup} style={stateTheme.main}>
         <h2>Stickers</h2>
-        <div className={`${styles.stickersPopup}`}>
-            <SegmentControl source={segmentControlItems()} defaultValue="All"/>
+        <div className={`${segStyles.stickersPopup}`}>
+            <div className={segStyles.segmentControl}>
+              <div className={segStyles.segmentHeader} style={stateTheme.segmentControlHeader}>
+                  {segmentControlItems().map(i => <SegmentControlItem id={i.name} title={i.name} defaultValue={"All"} onClick={() => onClick(i.id)}/>)}
+              </div>
+              <div className={segStyles.segmentBody}>
+                  { <div className={segStyles.segmentView}>{page}</div> }  
+              </div>
+            </div>
         </div>
       </div>
     );

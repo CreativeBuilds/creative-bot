@@ -84,6 +84,17 @@
   }
 }
 
+.buttonstack {
+  display: inline-flex;
+  width: 100% !important;
+
+  .submit {
+    &:not(:last-child) {
+      margin-right: 5px;
+    }
+  }
+}
+
 .noStickers {
   vertical-align: middle;
     position: absolute;

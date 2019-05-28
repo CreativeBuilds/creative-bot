@@ -65,6 +65,11 @@ const AddStickerPopup = ({
       setRxEmotes(Emotes);
     };
 
+    const sendMessage = () => {
+      ipcRenderer.send('sendmessage', { from: 'bot', message: stickerDLiveId });
+      closeCurrentPopup();
+    };
+
     const save = () => {
       saveToDB(stickerId);
       closeCurrentPopup();
@@ -84,17 +89,31 @@ const AddStickerPopup = ({
                 </div>
             </div>
         </div>
-        <div
-        className={styles.submit}
-        style={{
-          backgroundColor: stateTheme.menu.backgroundColor,
-          color: stateTheme.menu.color,
-          borderColor: stateTheme.menu.backgroundColor
-        }}
-        onClick={() => { 
-            save();
-          }}>
-        Add Sticker
+        <div className={styles.buttonstack}>
+          <div
+          className={styles.submit}
+          style={{
+            backgroundColor: stateTheme.menu.backgroundColor,
+            color: stateTheme.menu.color,
+            borderColor: stateTheme.menu.backgroundColor
+          }}
+          onClick={() => { 
+              sendMessage();
+            }}>
+          Send Sticker
+          </div>
+          <div
+          className={styles.submit}
+          style={{
+            backgroundColor: stateTheme.menu.backgroundColor,
+            color: stateTheme.menu.color,
+            borderColor: stateTheme.menu.backgroundColor
+          }}
+          onClick={() => { 
+              save();
+            }}>
+          Add Sticker
+          </div>
         </div>
       </div>
     );
