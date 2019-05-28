@@ -21,10 +21,11 @@ interface SegmentControlSource {
 interface SegmentControl {
     defaultValue: String,
     source: Array<SegmentControlSource>,
+    view: Element;
     Config?: {}
 }
 
-const SegmentControl = ({source, defaultValue, Config = {}} : SegmentControl) => {
+const SegmentControl = ({source, view, defaultValue, Config = {}} : SegmentControl) => {
 
     const [index, setIndex] = useState(0);
     const [page, setPage] = useState<any>(source[index].page);
@@ -61,7 +62,7 @@ const SegmentControl = ({source, defaultValue, Config = {}} : SegmentControl) =>
                 {source.map(i => <SegmentControlItem id={i.name} title={i.name} defaultValue={defaultValue} onClick={() => onClick(i.id)}/>)}
             </div>
             <div className={styles.segmentBody}>
-                { <div className={styles.segmentView}>{page}</div> }  
+                { <div className={styles.segmentView}>{view}</div> }  
             </div>
         </div>
     );

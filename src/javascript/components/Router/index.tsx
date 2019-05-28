@@ -164,7 +164,7 @@ class RouterWrapper extends Component<any, any> {
             }}
             Component={TimersPage}
           />
-          {/*<Route
+          {<Route
             url={url}
             path={'/lists'}
             componentProps={{
@@ -173,7 +173,7 @@ class RouterWrapper extends Component<any, any> {
               closeCurrentPopup: this.closeCurrentPopup
             }}
             Component={ListsPage}
-          />*/}
+          />}
           <Route
             url={url}
             path={'/settings'}

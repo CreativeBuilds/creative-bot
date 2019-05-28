@@ -94,6 +94,7 @@
         box-shadow: 1px 1px 30px rgba(21, 21, 21, 0.6);
 
         &:hover {
+          cursor: pointer;
           svg {
               fill: green !important;
               stroke: green !important;

@@ -79,7 +79,6 @@ const StickerPopup = ({
         let Emotes = Object.assign({}, savedemotes);
         delete Emotes[id];
         setRxEmotes(Emotes);
-        console.log(Emotes);
         setEmotesList(_.orderBy(
           _.sortBy(Object.keys(Emotes))
             .map(name => Emotes[name])
@@ -105,7 +104,7 @@ const StickerPopup = ({
                 id: 0,
                 name: "All"
             },
-            {
+            /*{
                 id: 1,
                 name: "Favourites"
             },
@@ -116,9 +115,9 @@ const StickerPopup = ({
             {
                 id: 3,
                 name: "Global"
-            },
+            },*/
             {
-                id: 4,
+                id: 1,
                 name: "Saved"
             },
         ]
@@ -136,7 +135,7 @@ const StickerPopup = ({
         case 0:
             setEmotesList(emoteSavedArray);
             break;
-        case 1:
+        /*case 1:
             setEmotesList(emoteFavouritesArray);
             break;
         case 2:
@@ -144,8 +143,8 @@ const StickerPopup = ({
             break;
         case 3:
             setEmotesList(emoteGlobalArray);
-            break;
-        case 4:
+            break;*/
+        case 1:
             setEmotesList(emoteSavedArray);
             break;     
       }
@@ -162,7 +161,7 @@ const StickerPopup = ({
               <div className={segStyles.segmentBody}>
                   <div className={segStyles.segmentView}>
                     <div className={styles.gridView}>
-                        {emotesList.length > 0 ? emotesList.map(i => <Emote stickerDLiveId={i.dliveid} stickerUrl={i.url} canDelete={index == 4 ? true : false} onDelete={() => deleteEmote(i.id)} />) : 
+                        {emotesList.length > 0 ? emotesList.map(i => <Emote stickerDLiveId={i.dliveid} stickerUrl={i.url} canDelete={index == 1 ? true : false} onDelete={() => deleteEmote(i.id)} />) : 
                         <div className={styles.noStickers}>
                           <MdSentimentDissatisfied />
                           <h3>{noStickerErrorMsg[index]}</h3>
