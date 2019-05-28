@@ -12,6 +12,7 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 import { SegmentControl, SegmentControlSource } from '../SegmentControl/index';
 import { SegmentControlItem } from '../SegmentControl/SegmentControlItem';
 import { Emote } from './Emote';
+import { string } from 'prop-types';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -40,13 +41,17 @@ const StickerPopup = ({
     const [helperText, SetHelperText] = useState(text);
     const [error, SetError] = useState(false);
     const [config, setConfig] = useState(Config);
-    const [emotes, setEmotes] = useState(Emotes);
+    const [savedemotes, setSavedEmotes] = useState(Emotes);
+    const [globalemotes, setGlobalEmotes] = useState({});
+    const [channelemotes, setChannelEmotes] = useState({});
+    const [favouritesemotes, setFavouritesEmotes] = useState({});
+    const [allemotes, setAllEmotes] = useState({});
     const [index, setIndex] = useState(0);
-    const [page, setPage] = useState<Element>();
+    const [noStickerErrorMsg, setNoStickerMsg] = useState<Array<String>>(['No Stickers', 'No Favourite Stickers', 'No Channel Stickers', 'No Global Stickers', 'No Saved Stickers'])
 
     useEffect(() => {
       let listener = rxEmotes.subscribe((data: any) => {
-        setEmotes(data);
+        setSavedEmotes(data);
       });
       return () => {
         listener.unsubscribe();
@@ -54,20 +59,37 @@ const StickerPopup = ({
     }, []);
 
     let emoteSavedArray = _.orderBy(
-      _.sortBy(Object.keys(emotes))
-        .map(name => emotes[name])
+      _.sortBy(Object.keys(savedemotes))
+        .map(name => savedemotes[name])
+    );
+
+    let emoteGlobalArray = _.orderBy(
+      _.sortBy(Object.keys(globalemotes))
+        .map(name => globalemotes[name])
+    );
+
+    let emoteChannelArray = _.orderBy(
+      _.sortBy(Object.keys(channelemotes))
+        .map(name => channelemotes[name])
+    );
+
+    let emoteFavouritesArray = _.orderBy(
+      _.sortBy(Object.keys(favouritesemotes))
+        .map(name => favouritesemotes[name])
+    );
+
+    let emoteAllArray = _.orderBy(
+      _.sortBy(Object.keys(allemotes))
+        .map(name => allemotes[name])
     );
 
     const deleteEmote = (name) => {
-        let Emotes = Object.assign({}, emotes);
+        let Emotes = Object.assign({}, savedemotes);
         delete Emotes[name];
         setRxEmotes(Emotes);
         console.log(Emotes);
 
-        emoteSavedArray = _.orderBy(
-          _.sortBy(Object.keys(emotes))
-            .map(name => emotes[name])
-        );
+        setEmotesList(emoteSavedArray);
     };
 
     const segmentControlItems = () => {
@@ -131,9 +153,30 @@ const StickerPopup = ({
         return items;
     }
 
+    const [page, setPage] = useState<Element>(segmentControlItems()[0].page);
+    const [emotesList, setEmotesList] = useState(emoteSavedArray);
+
     const onClick = (i) => {
       setIndex(i);
       setPage(segmentControlItems()[i].page);
+
+      switch (i) {
+        case 0:
+            setEmotesList(emoteSavedArray);
+            break;
+        case 1:
+            setEmotesList(emoteFavouritesArray);
+            break;
+        case 2:
+            setEmotesList(emoteChannelArray);
+            break;
+        case 3:
+            setEmotesList(emoteGlobalArray);
+            break;
+        case 4:
+            setEmotesList(emoteSavedArray);
+            break;     
+      }
     }
   
     return (
@@ -145,7 +188,16 @@ const StickerPopup = ({
                   {segmentControlItems().map(i => <SegmentControlItem id={i.name} title={i.name} defaultValue={"All"} onClick={() => onClick(i.id)}/>)}
               </div>
               <div className={segStyles.segmentBody}>
-                  { <div className={segStyles.segmentView}>{page}</div> }  
+                  <div className={segStyles.segmentView}>
+                    <div className={styles.gridView}>
+                        {emotesList.length > 0 ? emotesList.map(i => <Emote stickerDLiveId={i.dliveid} stickerUrl={i.url} canDelete={index == 4 ? true : false} onDelete={() => deleteEmote(i.id)} />) : 
+                        <div className={styles.noStickers}>
+                          <MdSentimentDissatisfied />
+                          <h3>{noStickerErrorMsg[index]}</h3>
+                        </div>
+                        }
+                      </div>
+                  </div>
               </div>
             </div>
         </div>
