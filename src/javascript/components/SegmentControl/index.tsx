@@ -15,7 +15,7 @@ const styles: any = require('./SegmentControl.scss');
 interface SegmentControlSource {
     id: Number,
     name: String,
-    page: Function | Element | any;
+    page?: Function | Element | any;
 }
 
 interface SegmentControl {

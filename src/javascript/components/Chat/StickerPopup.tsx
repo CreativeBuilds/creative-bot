@@ -96,57 +96,23 @@ const StickerPopup = ({
         var items : Array<SegmentControlSource> = [
             {
                 id: 0,
-                name: "All",
-                page: <div className={styles.gridView}>
-                  {emoteSavedArray.length > 0 ? emoteSavedArray.map(i => <Emote stickerDLiveId={i.dliveid} stickerUrl={i.url}/>) : 
-                  <div className={styles.noStickers}>
-                    <MdSentimentDissatisfied />
-                    <h3>No Stickers</h3>
-                  </div>
-                  }
-                </div>
+                name: "All"
             },
             {
                 id: 1,
-                name: "Favourites",
-                page: <div className={styles.gridView}>
-                  <div className={styles.noStickers}>
-                    <MdSentimentDissatisfied />
-                    <h3>No Favourites Stickers</h3>
-                  </div>
-                </div>
+                name: "Favourites"
             },
             {
                 id: 2,
-                name: "Channel",
-                page: <div className={styles.gridView}>
-                  <div className={styles.noStickers}>
-                    <MdSentimentDissatisfied />
-                    <h3>No Channel Stickers</h3>
-                  </div>
-                </div>
+                name: "Channel"
             },
             {
                 id: 3,
-                name: "Global",
-                page: <div className={styles.gridView}>
-                  <div className={styles.noStickers}>
-                    <MdSentimentDissatisfied />
-                    <h3>No Global Stickers</h3>
-                  </div>
-                </div>
+                name: "Global"
             },
             {
                 id: 4,
-                name: "Saved",
-                page: <div className={styles.gridView}>
-                  {emoteSavedArray.length > 0 ? emoteSavedArray.map((i, index) => <Emote stickerDLiveId={i.dliveid} stickerUrl={i.url} canDelete={true} onDelete={() => deleteEmote(i.id)} />) : 
-                  <div className={styles.noStickers}>
-                    <MdSentimentDissatisfied />
-                    <h3>No Stickers</h3>
-                  </div>
-                  }
-                </div>
+                name: "Saved"
             },
         ]
 
