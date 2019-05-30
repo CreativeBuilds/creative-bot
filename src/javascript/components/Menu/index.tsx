@@ -74,6 +74,16 @@ const Menu = props => {
           >
             TIMERS
           </Li>
+          <Li
+            style={{}}
+            hoverStyle={stateTheme.menu.title_hover}
+            onClick={() => {
+              setUrl('/quotes');
+              setIsOpen(false);
+            }}
+          >
+            QUOTES
+          </Li>
           { /*<Li
             style={{}}
             hoverStyle={stateTheme.menu.title_hover}

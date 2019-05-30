@@ -16,6 +16,8 @@ import { TimersPage } from '../Timers';
 import { GiveawaysPage } from '../Giveaways';
 import { rxGiveaways } from '../../helpers/rxGiveaways';
 import { rxEmotes } from '../../helpers/rxEmotes';
+import { rxQuotes } from '../../helpers/rxQuotes';
+import { QuotesPage } from '../Quotes';
 import { rxLists } from '../../helpers/rxLists';
 import { ListsPage } from '../Lists';
 
@@ -37,6 +39,7 @@ class RouterWrapper extends Component<any, any> {
     timers: {},
     config: {},
     emotes: {},
+    quotes:{},
     lists: {},
     livestream: { watchingCount: 0 }
   };
@@ -55,6 +58,9 @@ class RouterWrapper extends Component<any, any> {
     });
     rxEmotes.subscribe(Emotes => {
       this.setState({ emotes: Emotes });
+    });
+    rxQuotes.subscribe(Quotes => {
+      this.setState({ quotes: Quotes });
     });
     rxLists.subscribe(Lists => {
       this.setState({ lists: Lists });
@@ -164,7 +170,17 @@ class RouterWrapper extends Component<any, any> {
             }}
             Component={TimersPage}
           />
-          {<Route
+          <Route
+            url={url}
+            path={'/quotes'}
+            componentProps={{
+              quotes: this.state.quotes,
+              addPopup: this.addPopup,
+              closeCurrentPopup: this.closeCurrentPopup
+            }}
+            Component={QuotesPage}
+          />
+          <Route
             url={url}
             path={'/lists'}
             componentProps={{
@@ -173,7 +189,7 @@ class RouterWrapper extends Component<any, any> {
               closeCurrentPopup: this.closeCurrentPopup
             }}
             Component={ListsPage}
-          />}
+          />
           <Route
             url={url}
             path={'/settings'}

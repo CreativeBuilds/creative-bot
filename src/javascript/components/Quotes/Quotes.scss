@@ -1,0 +1,176 @@
+@import '../../../styles/popup.scss';
+
+.Points {
+  width: 100%;
+  height: 100%;
+  min-width: 275px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.header {
+  height: 44px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  flex: 1;
+  overflow-y: auto;
+  width: calc(100% - 10px);
+  padding: 5px;
+}
+
+.remove_text {
+  width: 300px;
+  max-width: 50%;
+  margin-bottom: 20px;
+}
+
+.box {
+  height: 24px;
+  width: 24px;
+  border: 3px solid;
+  padding: 0px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  &:hover {
+    cursor: pointer;
+  }
+  svg {
+    stroke-width: 2px;
+    font-size: 1.2em;
+  }
+}
+
+textarea.usersearch {
+  flex: 1;
+  border: 0;
+  outline-width: 0;
+  resize: none;
+  height: 16px;
+  font-size: 15px;
+  width: 150px;
+  overflow-y: hidden;
+  overflow-x: auto;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.input_wrapper {
+  display: flex;
+  justify-content: center;
+  // align-items: center;
+  flex-direction: column;
+  div {
+    margin-bottom: 5px !important;
+  }
+}
+
+.add_circle {
+  position: absolute;
+  top: 10px;
+  right: 175px;
+  font-size: 25px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.toggle_wrappers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  &.titles {
+    user-select: none;
+    div:hover {
+      cursor: pointer;
+    }
+  }
+  div {
+    padding-right: 5px;
+    padding-left: 5px;
+    text-align: center;
+    text-overflow: ellipsis;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    svg {
+      font-size: 1.2em;
+      min-width: 19px;
+      stroke-width: 2px;
+    }
+    &.spacer {
+      flex: 2;
+    }
+    &.username {
+      width: 110px;
+      text-overflow: ellipsis;
+      text-align: left;
+      overflow: hidden;
+      white-space: nowrap;
+      svg {
+        stroke-width: 0px;
+        padding-left: 5px;
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+    &.points {
+      width: 100px;
+      text-overflow: ellipsis;
+    }
+    &.banned,
+    &.modded {
+      width: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .trash {
+        font-size: 25px;
+      }
+      svg:hover {
+        cursor: pointer;
+      }
+    }
+    &.modded {
+      width: 65px;
+    }
+  }
+}
+
+.user {
+  width: calc(100% - 10px);
+  min-height: 24px;
+  padding: 5px;
+  text-overflow: wrap;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .image_container {
+    padding-right: 5px;
+    img {
+      border-radius: 50%;
+    }
+  }
+  .message_content {
+    flex: 1;
+    text-align: left;
+    span {
+      font-weight: bold;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}
