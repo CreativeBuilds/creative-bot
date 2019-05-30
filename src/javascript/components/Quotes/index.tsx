@@ -19,19 +19,6 @@ const QuotesPage = ({ props }) => {
     const [searchQuoteName, setSearchQuoteName] = useState<string>('');
     const { quotes, addPopup, closeCurrentPopup } = props;
 
-    let quotesArray = _.orderBy(
-        _.sortBy(Object.keys(quotes))
-          .map(name => quotes[name])
-          .filter(quote => {
-            if (searchQuoteName.trim() === '') return true;
-            return quote.quote
-              .toLowerCase()
-              .includes(searchQuoteName.trim().toLowerCase());
-          }),
-        [toggle],
-        [isDesc ? 'desc' : 'asc']
-      );
-
       const addQuotePopup = () => {
         addPopup(
           <AddQuotePopup

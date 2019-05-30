@@ -18,17 +18,14 @@ const AddQuotePopup = ({
 
         if (quote.length === 0) return;
         let Quotes = Object.assign({}, quotes);
-        let quoteArray = _.orderBy(
-            _.sortBy(Object.keys(quotes))
-              .map(name => quotes[name])
-          );
-        Quotes['quote_' + quoteArray.length] = {
-            quoteId: quoteArray.length,
-            quote,
-            quoteBy,
-            event,
-            date
-        };
+
+        Quotes['quotes'].push({
+          quote,
+          quoteBy,
+          event,
+          date
+        }) as Array<Object>;
+
         setRxQuotes(Quotes);
     };
   
