@@ -1,16 +1,18 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
 import { theme, ThemeContext } from '../../helpers';
-import { MdSend, MdPerson, MdMood, MdFace } from 'react-icons/md';
+import { MdSend, MdPerson, MdMood, MdFace, MdLocalMovies } from 'react-icons/md';
 
 import { Message } from './Message';
 import { StickerPopup } from './StickerPopup';
 import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
 import { rxEmotes, setRxEmotes } from '../../helpers/rxEmotes';
 import { Action } from 'rxjs/internal/scheduler/Action';
+import { remote } from 'electron';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
+const { BrowserWindow } = remote;
 
 let authKey = false;
 let streamerDisplayName = false;
@@ -187,6 +189,11 @@ const Chat = ({ props }) => {
     addPopup(<StickerPopup stateTheme={stateTheme} styles={styles} Config={Object.assign({}, config)} text={<span>Stickers</span>} Emotes={emotes} />);
   };
 
+  const openTidyClips = () => {
+    let win = new BrowserWindow({ width: 1024, height: 600 })
+    win.loadURL('https://clips.tidylabs.stream/generate?clippedby=TidyClips+Website&url=CreativeBuilds')
+  };
+
   useEffect(() => {
     if (isScrolledUp) return;
     document.getElementById('bottomOfMessages').scrollIntoView();
@@ -339,6 +346,15 @@ const Chat = ({ props }) => {
             updateText(e);
           }}
         />
+        {/*<div
+          className={styles.send}
+          style={Object.assign({}, stateTheme.chat.input, {
+            borderColor: stateTheme.chat.input.backgroundColor
+          })}
+          onClick={openTidyClips}
+        >
+          <MdLocalMovies />
+        </div>*/}
         <div
           className={styles.send}
           style={Object.assign({}, stateTheme.chat.input, {
