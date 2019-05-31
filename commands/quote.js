@@ -6,7 +6,6 @@ const run = ({ message, args }) => {
     // List all commands by default, if someone does !help commandName then show details on that command
     return new Promise((res, rej) => {
         var id = Number(args[1]);
-        console.log(args[1]);
 
         rxQuotes.pipe(first()).subscribe(quotes => {
 
@@ -14,11 +13,15 @@ const run = ({ message, args }) => {
 
             if (!isNaN(id)) {
                 var quote = quotesArr[id];
-                return res(
-                    `
-                        Quote ${id.toString()}: '${quote.quote}' - @${quote.quoteBy}  [${quote.date}]
-                    `     
-                );
+                if (id <= (quotesArr.length -1)) {
+                    return res(
+                        `
+                            Quote ${id.toString()}: '${quote.quote}' - @${quote.quoteBy}  [${quote.date}]
+                        `     
+                    );
+                } else {
+                    return res(`@${message.sender.dliveUsername}: The Quote you was trying to find does not exist`);
+                }
             } else if (args.length == 1) {
                 var index = quotesArr.length;
                 var ranNumb = Number(Math.floor(Math.random() * (index - 0)));
@@ -32,7 +35,7 @@ const run = ({ message, args }) => {
             }
             else {
                 return res(
-                    `You Have Entered An Invaild Value` 
+                    `@${message.sender.dliveUsername}: You Have Entered An Invaild Value` 
                 );
             }
         });

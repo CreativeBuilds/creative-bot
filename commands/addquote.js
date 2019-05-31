@@ -23,12 +23,19 @@ const run = ({ message, args }) => {
                     var msgString = msg.replace('"', '').replace('"', '');
                     if (message.length === 0) return;
                     let Quotes = Object.assign({}, quotes);
+
+                    var today = new Date();
+                    var dd = String(today.getDate()).padStart(2, '0');
+                    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                    var yyyy = today.getFullYear();
+
+                    today = dd + '/' + mm + '/' + yyyy;
             
                     Quotes['quotes'].push({
                     quote: msgString,
                     quoteBy: quotedBy,
                     event: "Unknown",
-                    date: Date.now()
+                    date: today
                     });
 
                     if (Quotes !== quotes) {
@@ -36,13 +43,13 @@ const run = ({ message, args }) => {
                         storage.set('quotes', Quotes);
                     }
             
-                    return res(`Quote has been Saved to Quotes List`);
+                    return res(`@${message.sender.dliveUsername}: Quote has been Saved to Quotes List`);
                 } else {
-                    return res(`Please put Quotations(") before and After the Quote Message`);
+                    return res(`@${message.sender.dliveUsername}: Please put Quotations(") before and After the Quote Message`);
                 }
             });
         } else {
-            return res(`You do not have permission to use this command`);
+            return res(`@${message.sender.dliveUsername}: You do not have permission to use this command`);
         }
     });
 }
