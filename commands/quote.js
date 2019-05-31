@@ -39,11 +39,11 @@ const run = ({ message, args }) => {
     });
   };
   
-  module.exports = {
+module.exports = {
     name: 'quote',
     run: run,
     description: 'Posts a Random Quote or if a Number is present it will Post a quote that has that id',
     permissions: {
       everyone: true
     }
-  };
+};
