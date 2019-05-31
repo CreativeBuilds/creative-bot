@@ -111,8 +111,8 @@ textarea.usersearch {
     &.spacer {
       flex: 2;
     }
-    &.username {
-      width: 110px;
+    &.id {
+      width: 50px;
       text-overflow: ellipsis;
       text-align: left;
       overflow: hidden;
@@ -125,7 +125,19 @@ textarea.usersearch {
         }
       }
     }
-    &.points {
+    &.quote {
+      width:320px;
+      text-overflow: ellipsis;
+    }
+    &.quoteBy {
+      width: 100px;
+      text-overflow: ellipsis;
+    }
+    &.event {
+      width: 100px;
+      text-overflow: ellipsis;
+    }
+    &.date {
       width: 100px;
       text-overflow: ellipsis;
     }

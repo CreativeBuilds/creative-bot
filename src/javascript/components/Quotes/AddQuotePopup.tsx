@@ -58,7 +58,7 @@ const AddQuotePopup = ({
             />
         </div>
         <div className={styles.input_wrapper}>
-            <div className={styles.input_name}>Event</div>
+            <div className={styles.input_name}>Event (Optional)</div>
             <textarea
             className={styles.input}
             onChange={e => {
@@ -68,7 +68,7 @@ const AddQuotePopup = ({
             />
         </div>
         <div className={styles.input_wrapper}>
-            <div className={styles.input_name}>Date Quoted</div>
+            <div className={styles.input_name}>Date Quoted (Optional)</div>
             <textarea
             className={styles.input}
             onChange={e => {

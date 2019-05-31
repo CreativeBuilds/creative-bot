@@ -4,6 +4,7 @@ import { ThemeContext } from '../../helpers';
 import * as _ from 'lodash';
 import { AddQuotePopup } from './AddQuotePopup';
 import { MdAddCircle } from 'react-icons/md';
+import { Quote } from './Quote';
 
 const { Sorting } = require('./Sorting');
 
@@ -59,6 +60,19 @@ const QuotesPage = ({ props }) => {
                 styles={styles}
                 stateTheme={stateTheme}
                 />
+                {quotes['quotes'].map((quote, nth) => {
+                  return (
+                    <Quote
+                      styles={styles}
+                      quote={quote}
+                      stateTheme={stateTheme}
+                      nth={nth + 1}
+                      addPopup={addPopup}
+                      closeCurrentPopup={closeCurrentPopup}
+                      quotes={quotes}
+                    />
+                  );
+                })}
                
             </div>
         </div>

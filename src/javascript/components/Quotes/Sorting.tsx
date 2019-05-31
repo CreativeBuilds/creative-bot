@@ -33,7 +33,7 @@ const Sorting = ({
     <div className={styles.user} style={stateTheme.chat.message}>
       <div className={`${styles.toggle_wrappers} ${styles.titles}`}>
         <div
-          className={styles.username}
+          className={styles.id}
           onClick={() => {
             swapOrToggle(isDesc, toggle, 'id');
           }}
@@ -41,7 +41,7 @@ const Sorting = ({
           ID <Arrow isDesc={isDesc} toggle={toggle} type={'id'} />
         </div>
         <div
-          className={styles.points}
+          className={styles.quote}
           onClick={() => {
             swapOrToggle(isDesc, toggle, 'quote');
           }}
@@ -49,7 +49,7 @@ const Sorting = ({
           QUOTE <Arrow isDesc={isDesc} toggle={toggle} type={'quote'} />
         </div>
         <div
-          className={styles.points}
+          className={styles.quoteBy}
           onClick={() => {
             swapOrToggle(isDesc, toggle, 'quotedby');
           }}
@@ -57,7 +57,15 @@ const Sorting = ({
           QUOTED BY <Arrow isDesc={isDesc} toggle={toggle} type={'quotedby'} />
         </div>
         <div
-          className={styles.points}
+          className={styles.event}
+          onClick={() => {
+            swapOrToggle(isDesc, toggle, 'event');
+          }}
+        >
+          EVENT <Arrow isDesc={isDesc} toggle={toggle} type={'event'} />
+        </div>
+        <div
+          className={styles.date}
           onClick={() => {
             swapOrToggle(isDesc, toggle, 'date');
           }}
