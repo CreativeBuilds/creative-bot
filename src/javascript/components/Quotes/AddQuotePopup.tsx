@@ -28,7 +28,10 @@ const AddQuotePopup = ({
         if (quote.length === 0) return;
         let Quotes = Object.assign({}, quotes);
 
+        var quoteId =  Quotes['quotes'].length - 1;
+
         Quotes['quotes'].push({
+          quoteId,
           quote,
           quoteBy,
           event,

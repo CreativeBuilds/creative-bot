@@ -15,22 +15,16 @@ const styles: any = require('./Quotes.scss');
 
 const QuotesPage = ({ props }) => {
     const { stateTheme, setStateTheme } = useContext(ThemeContext);
-    const [toggle, setToggle] = useState<string>('quote');
+    const [toggle, setToggle] = useState<string>('');
     const [isDesc, setIsDesc] = useState<boolean>(true);
     const [searchQuoteName, setSearchQuoteName] = useState<string>('');
     const { quotes, addPopup, closeCurrentPopup } = props;
 
-    let quoteArray = quotes['quotes'] /*_.orderBy(
-      _(quotes['quotes'])
-      .filter(quote => {
-          if (searchQuoteName.trim() === '') return true;
-          return quote.quote
-            .toLowerCase()
-            .includes(searchQuoteName.trim().toLowerCase());
-        }),
+    let quoteArray = _.orderBy(
+      _.sortBy(quotes['quotes']),
       [toggle],
       [isDesc ? 'desc' : 'asc']
-    );*/
+    );
 
     const addQuotePopup = () => {
         addPopup(

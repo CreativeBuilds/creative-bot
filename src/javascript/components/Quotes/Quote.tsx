@@ -50,7 +50,7 @@ const Quote = ({
     return (
         <div className={styles.user} style={Object.assign({}, stateTheme.chat.message, nth % 2 ? stateTheme.chat.message.alternate : {} )}>
             <div className={styles.toggle_wrappers}>
-                <div className={styles.id}>{nth - 1}{' '}
+                <div className={styles.id}>{quote.quoteId}{' '}
                 <MdEdit
                   onClick={() => {
                     updateQuotePopup(quote);

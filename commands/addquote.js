@@ -30,12 +30,15 @@ const run = ({ message, args }) => {
                     var yyyy = today.getFullYear();
 
                     today = dd + '/' + mm + '/' + yyyy;
+
+                    var quoteId =  Quotes['quotes'].length - 1;
             
                     Quotes['quotes'].push({
-                    quote: msgString,
-                    quoteBy: quotedBy,
-                    event: "Unknown",
-                    date: today
+                        quoteId: quoteId,
+                        quote: msgString,
+                        quoteBy: quotedBy,
+                        event: "DLive",
+                        date: today
                     });
 
                     if (Quotes !== quotes) {

@@ -35,10 +35,10 @@ const Sorting = ({
         <div
           className={styles.id}
           onClick={() => {
-            swapOrToggle(isDesc, toggle, 'id');
+            swapOrToggle(isDesc, toggle, 'quoteId');
           }}
         >
-          ID <Arrow isDesc={isDesc} toggle={toggle} type={'id'} />
+          ID <Arrow isDesc={isDesc} toggle={toggle} type={'quoteId'} />
         </div>
         <div
           className={styles.quote}
