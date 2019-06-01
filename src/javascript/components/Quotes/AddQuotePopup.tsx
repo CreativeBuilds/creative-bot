@@ -10,9 +10,15 @@ const AddQuotePopup = ({
     quotes = {}
   }) => {
     const [quote, setQuote] = useState<string>('');
+    const [quoteLimit, setQuoteLimit] = useState(113);
     const [quoteBy, setQuoteBy] = useState<string>('');
+    const [quoteByLimit, setQuoteByLimit] = useState(20);
     const [event, setEvent] = useState<string>('');
     const [date, setDate] = useState<string>('');
+    const [hasError, setHasError] = useState<Boolean>(false);
+    const [hasQuoteLimitError, setHasQuoteLimitError] = useState<Boolean>(false);
+    const [hasQuoteByLimitError, setHasQuoteByLimitError] = useState<Boolean>(false);
+    const [errorMsg, setErrorMsg] = useState<string>('');
 
     useEffect(() => {
       var today = new Date();
@@ -31,40 +37,57 @@ const AddQuotePopup = ({
 
         var quoteId =  Quotes['quotes'].length;
 
-        Quotes['quotes'].push({
-          quoteId,
-          quote,
-          quoteBy,
-          event,
-          date
-        }) as Array<Object>;
-
-        setRxQuotes(Quotes);
+        if (quoteLimit >= 0) {
+          if (quoteByLimit >= 0) {
+            Quotes['quotes'].push({
+              quoteId,
+              quote,
+              quoteBy,
+              event,
+              date
+            }) as Array<Object>;
+            setHasError(false);
+            setRxQuotes(Quotes);
+            closeCurrentPopup();
+          } else {
+            setHasError(true);
+            setErrorMsg('QuoteBy 20 Character Limit has been exceeded!');
+          }
+        } else {
+          setHasError(true);
+          setErrorMsg('Quote Message 113 Character Limit has been exceeded!');
+        }
     };
   
     const save = () => {
       saveToDB();
-      closeCurrentPopup();
     };
   
     return (
       <div className={styles.popup} style={stateTheme.main}>
         <h2>Add a Quote</h2>
+        {hasError ? <h4 className={styles.errorMsg}>{errorMsg}</h4> : null }
         <div className={styles.input_wrapper}>
-            <div className={styles.input_name}>Quote</div>
+            <div className={styles.input_name}>Quote (Characters Left: <span className={hasQuoteLimitError ? styles.errorMsg : null}>{quoteLimit}</span> )</div>
             <textarea
             className={styles.input}
             onChange={e => {
+                var limitVal = 113 - e.target.value.length;
+                setQuoteLimit(limitVal);
+                setHasQuoteLimitError(limitVal < 0 ? true : false);
                 setQuote(e.target.value);
             }}
             value={quote}
             />
         </div>
         <div className={styles.input_wrapper}>
-            <div className={styles.input_name}>Quoted By</div>
+            <div className={styles.input_name}>Quoted By (Characters Left: <span className={hasQuoteByLimitError ? styles.errorMsg : null}>{quoteByLimit}</span> )</div>
             <textarea
             className={styles.input}
             onChange={e => {
+                var limitVal = 20 - e.target.value.length;
+                setQuoteByLimit(limitVal);
+                setHasQuoteByLimitError(limitVal < 0 ? true : false);
                 setQuoteBy(e.target.value);
             }}
             value={quoteBy}

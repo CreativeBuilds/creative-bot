@@ -12,52 +12,78 @@ const UpdateQuotePopup = ({
     quotes = {}
   }) => {
     const [quoteMsg, setQuoteMsg] = useState<string>('');
+    const [quoteLimit, setQuoteLimit] = useState(113 - quote.quote.length);
     const [quoteBy, setQuoteBy] = useState<string>('');
+    const [quoteByLimit, setQuoteByLimit] = useState(20 - quote.quoteBy.length);
     const [event, setEvent] = useState<string>('');
     const [date, setDate] = useState<string>('');
+    const [hasError, setHasError] = useState<Boolean>(false);
+    const [hasQuoteLimitError, setHasQuoteLimitError] = useState<Boolean>(false);
+    const [hasQuoteByLimitError, setHasQuoteByLimitError] = useState<Boolean>(false);
+    const [errorMsg, setErrorMsg] = useState<string>('');
 
     useEffect(() => {
         setQuoteMsg(quote.quote);
         setQuoteBy(quote.quoteBy);
         setEvent(quote.event);
         setDate(quote.date);
+        setQuoteLimit(113 - quoteMsg.length);
+        setQuoteByLimit(20 - quoteBy.length);
     }, []);
   
     const saveToDB = () => {
 
-        if (quote.length === 0) return;
-        let Quotes = Object.assign({}, quotes);
-        Quotes['quotes'][nth - 1].quote = quoteMsg;
-        Quotes['quotes'][nth - 1].quoteBy = quoteBy;
-        Quotes['quotes'][nth - 1].event = event;
-        Quotes['quotes'][nth - 1].date = date;
-
-        setRxQuotes(Quotes);
+      if (quoteLimit >= 0) {
+        if (quoteByLimit >= 0) {
+          if (quote.length === 0) return;
+          let Quotes = Object.assign({}, quotes);
+          Quotes['quotes'][nth - 1].quote = quoteMsg;
+          Quotes['quotes'][nth - 1].quoteBy = quoteBy;
+          Quotes['quotes'][nth - 1].event = event;
+          Quotes['quotes'][nth - 1].date = date;
+          setHasError(false);
+          setRxQuotes(Quotes);
+          closeCurrentPopup();
+        } else {
+          setHasError(true);
+          setErrorMsg('QuoteBy 20 Character Limit has been exceeded!');
+        }
+      } 
+      else {
+        setHasError(true);
+        setErrorMsg('Quote Message 113 Character Limit has been exceeded!');
+      }
     };
   
     const save = () => {
       saveToDB();
-      closeCurrentPopup();
     };
   
     return (
       <div className={styles.popup} style={stateTheme.main}>
         <h2>Update Quote</h2>
+        {hasError ? <h4 className={styles.errorMsg}>{errorMsg}</h4> : null }
         <div className={styles.input_wrapper}>
-            <div className={styles.input_name}>Quote</div>
+            <div className={styles.input_name}>Quote (Characters Left: <span className={hasQuoteLimitError ? styles.errorMsg : null}>{quoteLimit}</span> )</div>
             <textarea
             className={styles.input}
             onChange={e => {
+                var limitVal = 113 - e.target.value.length;
+                setQuoteLimit(limitVal);
+                setHasQuoteLimitError(limitVal < 0 ? true : false);
                 setQuoteMsg(e.target.value);
             }}
             value={quoteMsg}
             />
         </div>
         <div className={styles.input_wrapper}>
-            <div className={styles.input_name}>Quoted By</div>
+            <div className={styles.input_name}>Quoted By (Characters Left: <span className={hasQuoteByLimitError ? styles.errorMsg : null}>{quoteByLimit}</span> )</div>
             <textarea
             className={styles.input}
             onChange={e => {
+                var limitVal = 20 - e.target.value.length;
+                setQuoteByLimit(limitVal);
+                setHasQuoteByLimitError(limitVal < 0 ? true : false);
                 setQuoteBy(e.target.value);
             }}
             value={quoteBy}
