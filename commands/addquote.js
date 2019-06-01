@@ -8,49 +8,57 @@ const run = ({ message, args }) => {
     return new Promise((res, rej) => {
 
         if (message.roomRole != 'member') {
-            rxQuotes.pipe(first()).subscribe(quotes => {
-                var data = args;
-                var msg = '';
-                var quotedBy = args[args.length - 1];
-                data.splice(0, 1);
-                data.splice((data.length - 1), 1);
 
-                for(var i = 0; i < data.length; i++) {
-                    msg += data[i] + ' '
-                }
+            var data = args;
+            var msg = '';
+            var quotedBy = args[args.length - 1];
+            data.splice(0, 1);
+            data.splice((data.length - 1), 1);
 
-                if (msg.includes('"')) {
-                    var msgString = msg.replace('"', '').replace('"', '');
-                    if (message.length === 0) return;
-                    let Quotes = Object.assign({}, quotes);
+            for(var i = 0; i < data.length; i++) {
+                msg += data[i] + ' '
+            }
 
-                    var today = new Date();
-                    var dd = String(today.getDate()).padStart(2, '0');
-                    var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-                    var yyyy = today.getFullYear();
 
-                    today = dd + '/' + mm + '/' + yyyy;
+            if (msg.includes('"')) {
+                var msgString = msg.replace('"', '').replace('"', '');
 
-                    var quoteId =  Quotes['quotes'].length - 1;
-            
-                    Quotes['quotes'].push({
-                        quoteId: quoteId,
-                        quote: msgString,
-                        quoteBy: quotedBy,
-                        event: "DLive",
-                        date: today
+                if (msgString.length <= 113) {
+
+                    rxQuotes.pipe(first()).subscribe(quotes => {
+                        if (message.length === 0) return;
+                        let Quotes = Object.assign({}, quotes);
+
+                        var today = new Date();
+                        var dd = String(today.getDate()).padStart(2, '0');
+                        var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                        var yyyy = today.getFullYear();
+
+                        today = dd + '/' + mm + '/' + yyyy;
+
+                        var quoteId =  Quotes['quotes'].length;
+                    
+                        Quotes['quotes'].push({
+                            quoteId: quoteId,
+                            quote: msgString,
+                            quoteBy: quotedBy,
+                            event: "DLive",
+                            date: today
+                        });
+
+                        if (Quotes !== quotes) {
+                            quotes = Quotes;
+                            storage.set('quotes', Quotes);
+                        }
+                    
+                        return res(`@${message.sender.dliveUsername}: Quote has been Saved to Quotes List`);
                     });
-
-                    if (Quotes !== quotes) {
-                        quotes = Quotes;
-                        storage.set('quotes', Quotes);
-                    }
-            
-                    return res(`@${message.sender.dliveUsername}: Quote has been Saved to Quotes List`);
                 } else {
-                    return res(`@${message.sender.dliveUsername}: Please put Quotations(") before and After the Quote Message`);
+                    return res(`@${message.sender.dliveUsername}: Quote Message is Longer Than 113 Characters`);
                 }
-            });
+            } else {
+                return res(`@${message.sender.dliveUsername}: Please put Quotations(") before and After the Quote Message`);
+            }
         } else {
             return res(`@${message.sender.dliveUsername}: You do not have permission to use this command`);
         }

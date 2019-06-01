@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import { AddQuotePopup } from './AddQuotePopup';
 import { MdAddCircle } from 'react-icons/md';
 import { Quote } from './Quote';
+let { setRxQuotes, rxQuotes } = require('../../helpers/rxQuotes');
 
 const { Sorting } = require('./Sorting');
 
@@ -19,9 +20,25 @@ const QuotesPage = ({ props }) => {
     const [isDesc, setIsDesc] = useState<boolean>(true);
     const [searchQuoteName, setSearchQuoteName] = useState<string>('');
     const { quotes, addPopup, closeCurrentPopup } = props;
+    const [ quotesObj, setQuotes] = useState(quotes);
+
+    useEffect(() => {
+      let listener = rxQuotes.subscribe((data: any) => {
+        setQuotes(data);
+      });
+      return () => {
+        listener.unsubscribe();
+      };
+    }, []);
 
     let quoteArray = _.orderBy(
-      _.sortBy(quotes['quotes']),
+      _.sortBy(quotesObj['quotes'])
+      .filter(item => {
+        if (searchQuoteName.trim() === '') return true;
+        return item.quote
+          .toLowerCase()
+          .includes(searchQuoteName.trim().toLowerCase());
+      }),
       [toggle],
       [isDesc ? 'desc' : 'asc']
     );
@@ -32,14 +49,14 @@ const QuotesPage = ({ props }) => {
             styles={styles}
             closeCurrentPopup={closeCurrentPopup}
             stateTheme={stateTheme}
-            quotes={quotes}
+            quotes={quotesObj}
           />
         );
       };
       return (
         <div style={stateTheme.menu} className={styles.Points}>
             <div style={stateTheme.menu.title} className={styles.header}>
-                Quotes
+                QUOTES
                 <textarea
                 className={styles.usersearch}
                 style={stateTheme.chat.message.alternate}
@@ -75,7 +92,7 @@ const QuotesPage = ({ props }) => {
                       nth={nth + 1}
                       addPopup={addPopup}
                       closeCurrentPopup={closeCurrentPopup}
-                      quotes={quotes}
+                      quotes={quotesObj}
                     />
                   );
                 })}

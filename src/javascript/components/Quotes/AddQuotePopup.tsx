@@ -20,6 +20,7 @@ const AddQuotePopup = ({
       var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
       var yyyy = today.getFullYear();
 
+      setEvent('DLive');
       setDate(dd + '/' + mm + '/' + yyyy);
     }, []);
   
@@ -28,7 +29,7 @@ const AddQuotePopup = ({
         if (quote.length === 0) return;
         let Quotes = Object.assign({}, quotes);
 
-        var quoteId =  Quotes['quotes'].length - 1;
+        var quoteId =  Quotes['quotes'].length;
 
         Quotes['quotes'].push({
           quoteId,
