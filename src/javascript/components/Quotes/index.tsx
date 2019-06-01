@@ -15,12 +15,24 @@ const styles: any = require('./Quotes.scss');
 
 const QuotesPage = ({ props }) => {
     const { stateTheme, setStateTheme } = useContext(ThemeContext);
-    const [toggle, setToggle] = useState<string>('name');
+    const [toggle, setToggle] = useState<string>('quote');
     const [isDesc, setIsDesc] = useState<boolean>(true);
     const [searchQuoteName, setSearchQuoteName] = useState<string>('');
     const { quotes, addPopup, closeCurrentPopup } = props;
 
-      const addQuotePopup = () => {
+    let quoteArray = quotes['quotes'] /*_.orderBy(
+      _(quotes['quotes'])
+      .filter(quote => {
+          if (searchQuoteName.trim() === '') return true;
+          return quote.quote
+            .toLowerCase()
+            .includes(searchQuoteName.trim().toLowerCase());
+        }),
+      [toggle],
+      [isDesc ? 'desc' : 'asc']
+    );*/
+
+    const addQuotePopup = () => {
         addPopup(
           <AddQuotePopup
             styles={styles}
@@ -60,7 +72,7 @@ const QuotesPage = ({ props }) => {
                 styles={styles}
                 stateTheme={stateTheme}
                 />
-                {quotes['quotes'].map((quote, nth) => {
+                {quoteArray.map((quote, nth) => {
                   return (
                     <Quote
                       styles={styles}

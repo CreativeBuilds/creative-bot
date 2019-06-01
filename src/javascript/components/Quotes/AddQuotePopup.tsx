@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import * as _ from 'lodash';
 let { setRxQuotes } = require('../../helpers/rxQuotes');
 
@@ -13,6 +13,15 @@ const AddQuotePopup = ({
     const [quoteBy, setQuoteBy] = useState<string>('');
     const [event, setEvent] = useState<string>('');
     const [date, setDate] = useState<string>('');
+
+    useEffect(() => {
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = today.getFullYear();
+
+      setDate(dd + '/' + mm + '/' + yyyy);
+    }, []);
   
     const saveToDB = () => {
 
