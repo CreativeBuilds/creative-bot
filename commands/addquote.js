@@ -7,7 +7,7 @@ const run = ({ message, args }) => {
     // List all commands by default, if someone does !help commandName then show details on that command
     return new Promise((res, rej) => {
 
-        if (message.roomRole != 'member') {
+        if (message.roomRole === 'Owner' || message.roomRole === 'Moderator') {
 
             var data = args;
             var msg = '';
