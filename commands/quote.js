@@ -7,7 +7,7 @@ const run = ({ message, args }) => {
     return new Promise((res, rej) => {
         var id = Number(args[1]);
 
-        rxQuotes.pipe(first()).subscribe(quotes => {
+        rxQuotes.subscribe(quotes => {
 
             var quotesArr = quotes['quotes'];
 
