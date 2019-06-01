@@ -20,6 +20,11 @@ const RemoveQuotePopup = ({
     if (name.length === 0) return;
     let Quotes = Object.assign({}, quotes);
     Quotes['quotes'].splice((nth - 1), 1);;
+
+    for (var i = 0; i < Quotes['quotes'].length; i++) {
+      Quotes['quotes'][i].quoteId = i;
+    }
+
     setRxQuotes(Quotes);
   };
 

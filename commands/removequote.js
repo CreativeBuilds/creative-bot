@@ -15,6 +15,10 @@ const run = ({ message, args }) => {
                 if (id <= (Quotes['quotes'].length - 1)) {
                     Quotes['quotes'].splice(id, 1);
 
+                    for (var i = 0; i < Quotes['quotes'].length; i++) {
+                        Quotes['quotes'][i].quoteId = i;
+                    }
+
                     if (Quotes !== quotes) {
                         quotes = Quotes;
                         storage.set('quotes', Quotes);

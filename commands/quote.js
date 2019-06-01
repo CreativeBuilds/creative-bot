@@ -15,9 +15,7 @@ const run = ({ message, args }) => {
                 var quote = quotesArr[id];
                 if (id <= (quotesArr.length -1)) {
                     return res(
-                        `
-                            Quote ${id.toString()}: '${quote.quote}' - @${quote.quoteBy}  [${quote.date}]
-                        `     
+                        `Quote ${id.toString()}: '${quote.quote}' - @${quote.quoteBy}  [${quote.date}]`     
                     );
                 } else {
                     return res(`@${message.sender.dliveUsername}: The Quote you was trying to find does not exist`);
@@ -27,9 +25,7 @@ const run = ({ message, args }) => {
                 var ranNumb = Number(Math.floor(Math.random() * (index - 0)));
                 var quote = quotesArr[ranNumb];
                 return res(
-                    `
-                        Quote ${ranNumb.toString()}: '${quote.quote}' - @${quote.quoteBy}  [${quote.date}]
-                    `     
+                    `Quote ${ranNumb.toString()}: '${quote.quote}' - @${quote.quoteBy}  [${quote.date}]`     
                 );
                 
             }

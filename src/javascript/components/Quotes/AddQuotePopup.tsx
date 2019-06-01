@@ -10,7 +10,7 @@ const AddQuotePopup = ({
     quotes = {}
   }) => {
     const [quote, setQuote] = useState<string>('');
-    const [quoteLimit, setQuoteLimit] = useState(113);
+    const [quoteLimit, setQuoteLimit] = useState(90);
     const [quoteBy, setQuoteBy] = useState<string>('');
     const [quoteByLimit, setQuoteByLimit] = useState(20);
     const [event, setEvent] = useState<string>('');
@@ -55,7 +55,7 @@ const AddQuotePopup = ({
           }
         } else {
           setHasError(true);
-          setErrorMsg('Quote Message 113 Character Limit has been exceeded!');
+          setErrorMsg('Quote Message 90 Character Limit has been exceeded!');
         }
     };
   
@@ -72,7 +72,7 @@ const AddQuotePopup = ({
             <textarea
             className={styles.input}
             onChange={e => {
-                var limitVal = 113 - e.target.value.length;
+                var limitVal = 90 - e.target.value.length;
                 setQuoteLimit(limitVal);
                 setHasQuoteLimitError(limitVal < 0 ? true : false);
                 setQuote(e.target.value);

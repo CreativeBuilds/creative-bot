@@ -16,14 +16,18 @@ const run = ({ message, args }) => {
             data.splice((data.length - 1), 1);
 
             for(var i = 0; i < data.length; i++) {
-                msg += data[i] + ' '
+                if (i < data.length - 1) {
+                    msg += data[i] + ' '
+                } else {
+                    msg += data[i]
+                }
             }
 
 
             if (msg.includes('"')) {
                 var msgString = msg.replace('"', '').replace('"', '');
 
-                if (msgString.length <= 113) {
+                if (msgString.length <= 90) {
 
                     rxQuotes.pipe(first()).subscribe(quotes => {
                         if (message.length === 0) return;
@@ -54,7 +58,7 @@ const run = ({ message, args }) => {
                         return res(`@${message.sender.dliveUsername}: Quote has been Saved to Quotes List`);
                     });
                 } else {
-                    return res(`@${message.sender.dliveUsername}: Quote Message is Longer Than 113 Characters`);
+                    return res(`@${message.sender.dliveUsername}: Quote Message is Longer Than 90 Characters`);
                 }
             } else {
                 return res(`@${message.sender.dliveUsername}: Please put Quotations(") before and After the Quote Message`);
