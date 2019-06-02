@@ -1,6 +1,6 @@
 {
   "name": "dlive-chat-bot",
-  "version": "1.5.0-experi",
+  "version": "1.5.0-canary",
   "description": "",
   "main": "index.js",
   "scripts": {
