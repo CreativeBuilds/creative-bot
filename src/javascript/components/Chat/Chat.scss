@@ -1,5 +1,6 @@
 @import '../../../styles/popup.scss';
 @import '../../../styles/globals.scss';
+@import '../../../styles/variables.scss';
 
 .Chat {
   width: 100%;
@@ -37,6 +38,51 @@
   border-radius: 5px;
 }
 
+.messageEvent { 
+  background-color: $dliveaccent;
+  color: black !important;
+  width: calc(100% - 35px);
+  padding: 5px;
+  text-overflow: wrap;
+  display: flex;
+  align-items: center;
+  padding-right: 30px;
+  position: relative;
+  margin-bottom: 5px;
+  border-radius: 5px;
+
+
+  .image_container {
+    padding-right: 5px;
+    width: 26px;
+    margin: 0;
+    display: inline-block;
+    img {
+      border-radius: 50%;
+    }
+  }
+  .message_content {
+    flex: 1;
+    text-align: left;
+    display: flex;
+    align-items: center;
+
+    span {
+      font-weight: bold;
+      padding-right: 5px;
+      height: 100%;
+      display: block;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .message {
+      font-weight: normal;
+    }
+  }
+}
+
 .message {
   width: calc(100% - 35px);
   padding: 5px;
@@ -59,6 +105,7 @@
     text-align: left;
     display: flex;
     align-items: center;
+    word-wrap: break-word;
 
     span {
       font-weight: bold;
@@ -197,21 +244,46 @@
   padding: 5px;
 }
 
-.viewers {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.rightContainer {
+  display: inline-block;
   position: absolute;
+  vertical-align: middle;
   right: 5px;
-  transition: all 0.15s ease-in-out;
-  &:hover {
-    color: #ffd300 !important;
-    stroke: #ffd300 !important;
-    fill: #ffd300 !important;
-    cursor: pointer;
+
+  .events, .viewers {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.15s ease-in-out;
+    height: 100%;
+    vertical-align: middle;
+    margin-bottom: 3px;
+
   }
-  span {
-    font-size: 0.8em;
+
+  .events {
+    margin-right: 5px;
+    &:hover {
+      color: #ffd300 !important;
+      stroke: #ffd300 !important;
+      fill: #ffd300 !important;
+      cursor: pointer;
+    }
+    span {
+      font-size: 0.8em;
+    }
+  }
+
+  .viewers {
+    &:hover {
+      color: #ffd300 !important;
+      stroke: #ffd300 !important;
+      fill: #ffd300 !important;
+      cursor: pointer;
+    }
+    span {
+      font-size: 0.8em;
+    }
   }
 }
 

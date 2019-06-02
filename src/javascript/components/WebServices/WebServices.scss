@@ -4,6 +4,7 @@
 .buttonstack {
     display: inline-flex;
     width: 100% !important;
+    margin-top: 10px;
   
     .submit {
       &:not(:last-child) {
@@ -13,5 +14,5 @@
 }
 
 .creativeBotPopup {
-    
+    margin-bottom: 10px;
 }

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
 import { theme, ThemeContext } from '../../helpers';
-import { MdSend, MdPerson, MdMood, MdFace, MdLocalMovies } from 'react-icons/md';
+import { MdSend, MdPerson, MdMood, MdFace, MdLocalMovies, MdEvent, MdFilterList } from 'react-icons/md';
 
 import { Message } from './Message';
 import { StickerPopup } from './StickerPopup';
@@ -10,6 +10,7 @@ import { rxEmotes, setRxEmotes } from '../../helpers/rxEmotes';
 import { Action } from 'rxjs/internal/scheduler/Action';
 import { remote } from 'electron';
 import { CreativeBotPopup } from './../WebServices/CreativeBotPopup';
+import { ChatFiltersPopup } from './ChatFiltersPopup';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -196,6 +197,10 @@ const Chat = ({ props }) => {
     addPopup(<CreativeBotPopup stateTheme={stateTheme} styles={styles} Config={Object.assign({}, config)} closeCurrentPopup={closeCurrentPopup}/>, true);
   };
 
+  const openChatFiltersPanel = () => {
+    addPopup(<ChatFiltersPopup stateTheme={stateTheme} styles={styles} Config={Object.assign({}, config)} closeCurrentPopup={closeCurrentPopup} />);
+  };
+
   useEffect(() => {
     if (isScrolledUp) return;
     document.getElementById('bottomOfMessages').scrollIntoView();
@@ -304,14 +309,25 @@ const Chat = ({ props }) => {
     <div style={stateTheme.menu} className={styles.Chat}>
       <div style={stateTheme.menu.title} className={styles.header}>
         CHAT
-        <div
-          className={styles.viewers}
-          onClick={() => {
-            setViewersToggle(!viewersToggle);
-          }}
-        >
-          <MdPerson />
-          <span> {viewersToggle ? viewers : 'HIDDEN'}</span>
+        <div className={styles.rightContainer}>
+          <div
+            className={styles.events}
+            onClick={() => {
+              openChatFiltersPanel();
+            }}
+          >
+            <MdFilterList />
+            <span> </span>
+          </div>
+          <div
+            className={styles.viewers}
+            onClick={() => {
+              setViewersToggle(!viewersToggle);
+            }}
+          >
+            <MdPerson />
+            <span> {viewersToggle ? viewers : 'HIDDEN'}</span>
+          </div>
         </div>
       </div>
       <div style={{}} className={styles.content} id='messages'>

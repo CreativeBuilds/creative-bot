@@ -6,6 +6,57 @@ import { AddStickerPopup } from './AddStickerPopup';
 
 const Message = ({ styles, message, nth, stateTheme, ownerName, addPopup, config, closeCurrentPopup}) => {
 
+  // Boolean Checks if Message Type is a Event Based Message or Not
+  const isEvent = () => {
+    if (message.type === 'Gift') {
+      return true;
+    } else if (message.type === 'Follow') {
+      return true;
+    } else if (message.type === 'Subscription') {
+      return true;
+    } else if (message.type === 'Message') {
+      return false
+    }
+  }
+
+  const giftEmoteType = () => {
+    if (message.gift === 'LEMON') {
+      return '🍋';
+    } else if (message.gift === 'ICE_CREAM') {
+      return '🍦';
+    } else if (message.gift === 'DIAMOND') {
+      return '💎';
+    } else if (message.gift === 'NINJAGHINI') {
+      return '🐱‍👤🚗';
+    } else if (message.gift === 'NINJET') {
+      return '🐱‍👤✈';
+    }
+  }
+
+  const giftType = () => {
+    if (message.gift === 'LEMON') {
+      return 'LEMON';
+    } else if (message.gift === 'ICE_CREAM') {
+      return 'ICE CREAM';
+    } else if (message.gift === 'DIAMOND') {
+      return 'DIAMOND';
+    } else if (message.gift === 'NINJAGHINI') {
+      return 'NINJAGHINI';
+    } else if (message.gift === 'NINJET') {
+      return 'NINJET';
+    }
+  }
+
+  const eventMessage = () => {
+    if (message.type === 'Gift') {
+      return `just donated ${message.amount} ${giftType()} ${giftEmoteType()}`;
+    } else if (message.type === 'Follow') {
+      return 'Has Just Followed';
+    } else if (message.type === 'Subscription') {
+      return 'Has Just Subscribed';
+    }
+  }
+
   // Boolean Checks if Message is a Sticker or not
   const isSticker = () => {
     var content = message.content;
@@ -42,7 +93,23 @@ const Message = ({ styles, message, nth, stateTheme, ownerName, addPopup, config
   }
 
   return (
-    <div
+    <div>{isEvent() ? 
+      <div className={`${styles.messageEvent}`}> 
+        <div className={styles.image_container}>
+        <img src={message.sender.avatar} width={26} height={26} />
+      </div>
+      <div className={styles.message_content}>
+        <span>
+          {message.sender.dliveUsername}
+          {': '}
+        </span>
+        <div className={styles.message_content}>
+          {eventMessage()}
+        </div>
+        </div>
+      </div>  : 
+
+      <div
       className={`${styles.message} ${
         message.content.toLowerCase().includes(ownerName)
           ? Styles.highlighted
@@ -82,6 +149,8 @@ const Message = ({ styles, message, nth, stateTheme, ownerName, addPopup, config
           />
         </div>
       ) : null}
+    </div>
+    } 
     </div>
   );
 };

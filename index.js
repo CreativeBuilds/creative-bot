@@ -685,7 +685,7 @@ function createWindow() {
         inLino(message.gift, message.amount);
       rxUsers.next(Users);
     }
-    if (message.type === 'Message') {
+    /*if (message.type === 'Message') {
       wss.broadcast(
         JSON.stringify({
           type: 'message',
@@ -702,7 +702,24 @@ function createWindow() {
         'MESSAGE: ',
         content
       );
-    }
+    }*/
+
+    wss.broadcast(
+      JSON.stringify({
+        type: 'message',
+        value: message
+      })
+    );
+    textMessage(message, streamerDisplayName);
+    keepActive(message);
+    win.webContents.send('newmessage', { message });
+    let content = message.content;
+    console.log(
+      'NEW MSG FROM:',
+      message.sender.dliveUsername,
+      'MESSAGE: ',
+      content
+    );
   };
 
   // This wss is for ben
