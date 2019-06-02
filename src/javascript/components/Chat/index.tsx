@@ -9,6 +9,7 @@ import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
 import { rxEmotes, setRxEmotes } from '../../helpers/rxEmotes';
 import { Action } from 'rxjs/internal/scheduler/Action';
 import { remote } from 'electron';
+import { CreativeBotPopup } from './../WebServices/CreativeBotPopup';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -190,8 +191,9 @@ const Chat = ({ props }) => {
   };
 
   const openTidyClips = () => {
-    let win = new BrowserWindow({ width: 1024, height: 600 })
-    win.loadURL('https://clips.tidylabs.stream/generate?clippedby=TidyClips+Website&url=CreativeBuilds')
+    /*let win = new BrowserWindow({ width: 1024, height: 600 })
+    win.loadURL('https://clips.tidylabs.stream/generate?clippedby=TidyClips+Website&url=CreativeBuilds')*/
+    addPopup(<CreativeBotPopup stateTheme={stateTheme} styles={styles} Config={Object.assign({}, config)} closeCurrentPopup={closeCurrentPopup}/>, true);
   };
 
   useEffect(() => {
@@ -346,7 +348,7 @@ const Chat = ({ props }) => {
             updateText(e);
           }}
         />
-        {/*<div
+        {<div
           className={styles.send}
           style={Object.assign({}, stateTheme.chat.input, {
             borderColor: stateTheme.chat.input.backgroundColor
@@ -354,7 +356,7 @@ const Chat = ({ props }) => {
           onClick={openTidyClips}
         >
           <MdLocalMovies />
-        </div>*/}
+        </div>}
         <div
           className={styles.send}
           style={Object.assign({}, stateTheme.chat.input, {

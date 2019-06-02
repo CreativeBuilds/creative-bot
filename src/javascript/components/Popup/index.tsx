@@ -7,7 +7,7 @@ import { theme } from '../../helpers';
 const { ipcRenderer, shell, remote } = require('electron');
 const styles: any = require('./Popup.scss');
 
-const Popup = ({ Component, closePopup }) => {
+const Popup = ({ Component, hasGradiant = false, closePopup }) => {
   const [stateTheme, setStateTheme] = useState(theme.dark);
   const [config, setConfig] = useState<any>(null);
 
@@ -36,7 +36,7 @@ const Popup = ({ Component, closePopup }) => {
 
   return (
     <div className={styles.overlay}>
-      <div className={styles.dialog} style={stateTheme.main}>
+      <div className={`${styles.dialog} ${hasGradiant ? styles.startupBackground : ''}`} style={hasGradiant ? theme.dark : stateTheme.main}>
         <div className={styles.close}>
           <MdClose
             onClick={() => {

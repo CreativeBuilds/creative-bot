@@ -34,6 +34,7 @@ class RouterWrapper extends Component<any, any> {
     users: {},
     messages: [],
     popups: [],
+    hasGradiant: false,
     commands: {},
     giveaways: {},
     timers: {},
@@ -93,10 +94,11 @@ class RouterWrapper extends Component<any, any> {
 
   popups = [];
 
-  addPopup = element => {
+  addPopup = (element, hasGradiant = false) => {
     this.popups = this.popups.concat([element]);
     this.setState({
-      popups: this.popups
+      popups: this.popups,
+      hasGradiant: hasGradiant
     });
   };
 
@@ -108,13 +110,14 @@ class RouterWrapper extends Component<any, any> {
   };
   render() {
     const { url, setUrl } = this.props;
-    const { popups } = this.state;
+    const { popups, hasGradiant } = this.state;
     return (
       <React.Fragment>
         {popups.length > 0 ? (
           <Popup
             Component={popups[popups.length - 1]}
             closePopup={this.closeCurrentPopup}
+            hasGradiant={hasGradiant}
           />
         ) : null}
         <div id='content'>

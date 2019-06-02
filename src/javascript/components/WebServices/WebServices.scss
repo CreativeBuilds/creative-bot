@@ -1,0 +1,17 @@
+@import '../../../styles/popup.scss';
+@import '../../../styles/globals.scss';
+
+.buttonstack {
+    display: inline-flex;
+    width: 100% !important;
+  
+    .submit {
+      &:not(:last-child) {
+        margin-right: 5px;
+      }
+    }
+}
+
+.creativeBotPopup {
+    
+}

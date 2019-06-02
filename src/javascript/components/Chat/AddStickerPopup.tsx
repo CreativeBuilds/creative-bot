@@ -76,7 +76,7 @@ const AddStickerPopup = ({
     };
 
     return (
-      <div className={styles.popup} style={stateTheme.main}>
+      <div className={`${styles.popup}`} style={stateTheme.main}>
         <h2>Add Sticker</h2>
         <div className={`${styles.stickersPopup}`}>
             <div>
