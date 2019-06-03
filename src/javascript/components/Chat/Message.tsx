@@ -10,7 +10,16 @@ import {
 
 import { UserPopup } from './UserPopup';
 
-const Message = ({ styles, message, nth, stateTheme, ownerName, addPopup, config, closeCurrentPopup}) => {
+const Message = ({
+  styles,
+  config,
+  message,
+  nth,
+  stateTheme,
+  ownerName,
+  addPopup,
+  closeCurrentPopup
+}) => {
 
   // Boolean Checks if Message Type is a Event Based Message or Not
   const isEvent = () => {
@@ -62,16 +71,6 @@ const Message = ({ styles, message, nth, stateTheme, ownerName, addPopup, config
       return 'Has Just Subscribed';
     }
   }
-
-const Message = ({
-  styles,
-  message,
-  nth,
-  stateTheme,
-  ownerName,
-  addPopup,
-  closeCurrentPopup
-}) => {
   // Boolean Checks if Message is a Sticker or not
   const isSticker = () => {
     var content = message.content;
