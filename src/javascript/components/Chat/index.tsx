@@ -23,6 +23,7 @@ const styles: any = require('./Chat.scss');
 interface popup {
   styles: any;
   closeCurrentPopup?: any;
+  addPopup: any;
   stateTheme: any;
   configName?: any;
   text?: string | Function | Element | any;
@@ -134,8 +135,6 @@ const Chat = ({ props }) => {
   const [emotes, setEmotes]: any = useState({});
   const [firstRender, setFirstRender] = useState(true);
 
-
-
   const updateText = e => {
     setText(e.target.value);
   };
@@ -152,13 +151,13 @@ const Chat = ({ props }) => {
     }
   };
 
-  const changeTheme = (themeVal : String) => {
+  const changeTheme = (themeVal: String) => {
     if (themeVal == 'dark') {
-      setStateTheme(theme.dark); 
+      setStateTheme(theme.dark);
     } else if (themeVal == 'light') {
       setStateTheme(theme.light);
     }
-  }
+  };
 
   useEffect(() => {
     let element: any = document.getElementById('messages');
@@ -221,6 +220,7 @@ const Chat = ({ props }) => {
       addPopup(
         <AddCommandPopup
           styles={styles}
+          addPopup={addPopup}
           Config={Object.assign({}, config)}
           closeCurrentPopup={(input, setError) => {
             if (input !== '') {
@@ -262,6 +262,7 @@ const Chat = ({ props }) => {
       addPopup(
         <AddCommandPopup
           styles={styles}
+          addPopup={addPopup}
           closeCurrentPopup={(input, setError) => {
             if (input !== '') {
               let Config = Object.assign(
@@ -287,6 +288,7 @@ const Chat = ({ props }) => {
       addPopup(
         <AddCommandPopup
           styles={styles}
+          addPopup={addPopup}
           closeCurrentPopup={() => {
             closeCurrentPopup();
           }}
@@ -338,6 +340,8 @@ const Chat = ({ props }) => {
               config={config}
               styles={styles}
               message={message}
+              addPopup={addPopup}
+              closeCurrentPopup={closeCurrentPopup}
               stateTheme={stateTheme}
               nth={nth}
               closeCurrentPopup={closeCurrentPopup}

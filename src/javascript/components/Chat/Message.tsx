@@ -1,8 +1,14 @@
 import * as React from 'react';
 import Styles from './Message.scss';
 import { MdClose, MdAdd } from 'react-icons/md';
-import { removeMessage } from '../../helpers/removeMessage';
 import { AddStickerPopup } from './AddStickerPopup';
+import {
+  removeMessage,
+  timeoutUser,
+  muteUser
+} from '../../helpers/removeMessage';
+
+import { UserPopup } from './UserPopup';
 
 const Message = ({ styles, message, nth, stateTheme, ownerName, addPopup, config, closeCurrentPopup}) => {
 
@@ -57,6 +63,15 @@ const Message = ({ styles, message, nth, stateTheme, ownerName, addPopup, config
     }
   }
 
+const Message = ({
+  styles,
+  message,
+  nth,
+  stateTheme,
+  ownerName,
+  addPopup,
+  closeCurrentPopup
+}) => {
   // Boolean Checks if Message is a Sticker or not
   const isSticker = () => {
     var content = message.content;
@@ -85,7 +100,37 @@ const Message = ({ styles, message, nth, stateTheme, ownerName, addPopup, config
   };
 
   const canDelete = () => {
-    return message.roomRole === 'Member' && message.role === 'None';
+    return message.roomRole !== 'Owner' && message.role === 'None';
+  };
+
+  const addUserPopup = () => {
+    addPopup(
+      <UserPopup
+        closeCurrentPopup={closeCurrentPopup}
+        user={message.sender}
+        stateTheme={stateTheme}
+        canDelete={canDelete()}
+        muteUser={() => {
+          muteUser(
+            message.sender.blockchainUsername,
+            message.streamerBlockchainUsername
+          );
+        }}
+        timeoutUser={() => {
+          timeoutUser(
+            message.sender.blockchainUsername,
+            message.streamerBlockchainUsername
+          );
+        }}
+        deleteMessage={
+          canDelete()
+            ? () => {
+                removeMessage(message.id, message.streamerBlockchainUsername);
+              }
+            : () => {}
+        }
+      />
+    );
   };
 
   const addSticker = () => {
@@ -125,7 +170,12 @@ const Message = ({ styles, message, nth, stateTheme, ownerName, addPopup, config
         <img src={message.sender.avatar} width={26} height={26} />
       </div>
       <div className={styles.message_content}>
-        <span>
+        <span
+          onClick={e => {
+            console.log(e);
+            addUserPopup();
+          }}
+        >
           {message.sender.dliveUsername}
           {': '}
         </span>
