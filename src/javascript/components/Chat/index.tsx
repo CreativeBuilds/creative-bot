@@ -337,7 +337,7 @@ const Chat = ({ props }) => {
           return (
             <Message
               addPopup={addPopup}
-              config={config}
+              Config={config}
               styles={styles}
               message={message}
               closeCurrentPopup={closeCurrentPopup}

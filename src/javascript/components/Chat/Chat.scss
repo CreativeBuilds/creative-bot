@@ -1,6 +1,7 @@
 @import '../../../styles/popup.scss';
 @import '../../../styles/globals.scss';
 @import '../../../styles/variables.scss';
+@import './Toggle.scss';
 
 .Chat {
   width: 100%;
@@ -36,6 +37,14 @@
 #messages > div {
   margin-bottom: 5px;
   border-radius: 5px;
+}
+
+.chatFilterPopup {
+  margin-bottom: 20px;
+  .toggle:not(:nth-child(1)) {
+    margin-top: 10px;
+    margin-left: 0px;
+  }
 }
 
 .messageEvent { 
