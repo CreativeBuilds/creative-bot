@@ -34,6 +34,8 @@ const rxUsers = require('./helpers/rxUsers');
 const rxCommands = require('./helpers/rxCommands');
 const rxGiveaways = require('./helpers/rxGiveaways');
 const rxLists = require('./helpers/rxLists');
+const rxEmotes = require('./helpers/rxEmotes');
+const rxQuotes = require('./helpers/rxQuotes');
 const getCustomVariables = require('./helpers/getCustomVariables');
 const parseReply = require('./helpers/parseReply');
 rxCommands.subscribe(commands => (Commands = commands));
@@ -92,7 +94,11 @@ if (env === 'dev') {
 function createWindow() {
   // Create the browser window.
   autoUpdater.checkForUpdatesAndNotify();
-  win = new BrowserWindow({ width: 1280, height: 720, frame: false });
+  if (env === 'dev' || env === 'dev_watch') {
+    win = new BrowserWindow({ width: 1280, height: 720, frame: false, icon: path.join(__dirname, 'dist/.icon-ico/icon_Dev.ico') });
+  } else {
+    win = new BrowserWindow({ width: 1280, height: 720, frame: false });
+  }
 
   // and load the index.html of the app.
   if (env === 'dev_watch') {
@@ -288,6 +294,36 @@ function createWindow() {
     if (Lists !== lists) {
       lists = Lists;
       rxLists.next(Lists);
+    }
+  });
+
+  let emotes = {};
+
+  ipcMain.on('getRxEmotes', () => {
+    rxEmotes.subscribe(emotes => {
+      win.webContents.send('rxEmotes', emotes);
+    });
+  });
+
+  ipcMain.on('setRxEmotes', (event, Emotes) => {
+    if (Emotes !== emotes) {
+      emotes = Emotes;
+      rxEmotes.next(Emotes);
+    }
+  });
+
+  let quotes = {};
+
+  ipcMain.on('getRxQuotes', () => {
+    rxQuotes.subscribe(quotes => {
+      win.webContents.send('rxQuotes', quotes);
+    });
+  });
+
+  ipcMain.on('setRxQuotes', (event, Quotes) => {
+    if (Quotes !== quotes) {
+      quotes = Quotes;
+      rxQuotes.next(Quotes);
     }
   });
 
@@ -661,7 +697,7 @@ function createWindow() {
         inLino(message.gift, message.amount);
       rxUsers.next(Users);
     }
-    if (message.type === 'Message') {
+    /*if (message.type === 'Message') {
       wss.broadcast(
         JSON.stringify({
           type: 'message',
@@ -672,6 +708,25 @@ function createWindow() {
       keepActive(message);
       win.webContents.send('newmessage', { message });
       let content = message.content;
+      console.log(
+        'NEW MSG FROM:',
+        message.sender.dliveUsername,
+        'MESSAGE: ',
+        content
+      );
+    }*/
+
+    wss.broadcast(
+      JSON.stringify({
+        type: 'message',
+        value: message
+      })
+    );
+    textMessage(message, streamerDisplayName);
+    keepActive(message);
+    win.webContents.send('newmessage', { message });
+    let content = message.content;
+    if (message.type === 'Message') {
       console.log(
         'NEW MSG FROM:',
         message.sender.dliveUsername,

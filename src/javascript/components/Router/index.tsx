@@ -15,6 +15,9 @@ import { rxTimers } from '../../helpers/rxTimers';
 import { TimersPage } from '../Timers';
 import { GiveawaysPage } from '../Giveaways';
 import { rxGiveaways } from '../../helpers/rxGiveaways';
+import { rxEmotes } from '../../helpers/rxEmotes';
+import { rxQuotes } from '../../helpers/rxQuotes';
+import { QuotesPage } from '../Quotes';
 import { rxLists } from '../../helpers/rxLists';
 import { ListsPage } from '../Lists';
 
@@ -31,10 +34,13 @@ class RouterWrapper extends Component<any, any> {
     users: {},
     messages: [],
     popups: [],
+    hasGradiant: false,
     commands: {},
     giveaways: {},
     timers: {},
     config: {},
+    emotes: {},
+    quotes:{},
     lists: {},
     livestream: { watchingCount: 0 }
   };
@@ -50,6 +56,12 @@ class RouterWrapper extends Component<any, any> {
     });
     rxGiveaways.subscribe(Giveaways => {
       this.setState({ giveaways: Giveaways });
+    });
+    rxEmotes.subscribe(Emotes => {
+      this.setState({ emotes: Emotes });
+    });
+    rxQuotes.subscribe(Quotes => {
+      this.setState({ quotes: Quotes });
     });
     rxLists.subscribe(Lists => {
       this.setState({ lists: Lists });
@@ -82,10 +94,11 @@ class RouterWrapper extends Component<any, any> {
 
   popups = [];
 
-  addPopup = element => {
+  addPopup = (element, hasGradiant = false) => {
     this.popups = this.popups.concat([element]);
     this.setState({
-      popups: this.popups
+      popups: this.popups,
+      hasGradiant: hasGradiant
     });
   };
 
@@ -97,13 +110,14 @@ class RouterWrapper extends Component<any, any> {
   };
   render() {
     const { url, setUrl } = this.props;
-    const { popups } = this.state;
+    const { popups, hasGradiant } = this.state;
     return (
       <React.Fragment>
         {popups.length > 0 ? (
           <Popup
             Component={popups[popups.length - 1]}
             closePopup={this.closeCurrentPopup}
+            hasGradiant={hasGradiant}
           />
         ) : null}
         <div id='content'>
@@ -158,6 +172,16 @@ class RouterWrapper extends Component<any, any> {
               closeCurrentPopup: this.closeCurrentPopup
             }}
             Component={TimersPage}
+          />
+          <Route
+            url={url}
+            path={'/quotes'}
+            componentProps={{
+              quotes: this.state.quotes,
+              addPopup: this.addPopup,
+              closeCurrentPopup: this.closeCurrentPopup
+            }}
+            Component={QuotesPage}
           />
           <Route
             url={url}

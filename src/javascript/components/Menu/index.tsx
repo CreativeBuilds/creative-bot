@@ -74,7 +74,17 @@ const Menu = props => {
           >
             TIMERS
           </Li>
-          {/* <Li
+          <Li
+            style={{}}
+            hoverStyle={stateTheme.menu.title_hover}
+            onClick={() => {
+              setUrl('/quotes');
+              setIsOpen(false);
+            }}
+          >
+            QUOTES
+          </Li>
+          { /*<Li
             style={{}}
             hoverStyle={stateTheme.menu.title_hover}
             onClick={() => {
@@ -83,7 +93,7 @@ const Menu = props => {
             }}
           >
             LISTS
-          </Li> */}
+          </Li>*/}
           <Li
             style={{}}
             hoverStyle={stateTheme.menu.title_hover}

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { MdClose, MdTimer, MdDoNotDisturb, MdCancel } from 'react-icons/md';
 import { removeMessage } from '../../helpers/removeMessage';
 import ReactTooltip from 'react-tooltip';
+import { Toggle, ToggleType } from '../Generics/Toggle';
 
 import { rxUsers, setRxUsers } from '../../helpers/rxUsers';
 
@@ -114,24 +115,7 @@ const UserPopup = ({
                 value={points}
               />
             </div>
-            <div className={Styles.input_is_admin}>
-              <div>Is Admin</div>
-              <div
-                style={stateTheme.menu}
-                onClick={() => {
-                  setIsAdmin(!isAdmin);
-                }}
-              >
-                <div
-                  style={{
-                    background: isAdmin
-                      ? stateTheme.main.highlightColor
-                      : stateTheme.chat.message.alternate.backgroundColor
-                  }}
-                  className={isAdmin ? Styles.isAdmin : ''}
-                />
-              </div>
-            </div>
+            <Toggle header="Is Admin" type={ToggleType.compact} isEnabled={true} isOn={isAdmin} onClick={() => { setIsAdmin(!isAdmin); }} stateTheme={stateTheme}/>
           </div>
           <div
             className={Styles.user_submit}
