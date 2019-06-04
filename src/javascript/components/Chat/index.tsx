@@ -366,7 +366,7 @@ const Chat = ({ props }) => {
             updateText(e);
           }}
         />
-        {<div
+        {/*<div
           className={styles.send}
           style={Object.assign({}, stateTheme.chat.input, {
             borderColor: stateTheme.chat.input.backgroundColor
@@ -374,7 +374,7 @@ const Chat = ({ props }) => {
           onClick={openTidyClips}
         >
           <MdLocalMovies />
-        </div>}
+        </div>*/}
         <div
           className={styles.send}
           style={Object.assign({}, stateTheme.chat.input, {
