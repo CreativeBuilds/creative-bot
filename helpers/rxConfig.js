@@ -11,11 +11,12 @@ storage.get('config', (err, data) => {
   // Set default points to 5, and if it's a string, set it to be a number
   if (!data.points || isNaN(Number(data.points))) data.points = 5;
   // Defaults to 5 minutes
-  if (!data.pointsTimer || isNaN(Number(data.pointsTimer))) data.pointsTimer = 300;
+  if (!data.pointsTimer || isNaN(Number(data.pointsTimer)))
+    data.pointsTimer = 300;
   // Defaults to Dark Theme 'dark'
   if (!data.themeType) data.themeType = 'dark';
-  // Defaults to false
-  if (!data.enableEvents) data.enableEvents = false;
+  // Defaults to true
+  if (!data.enableEvents) data.enableEvents = true;
   // Defaults to true
   if (!data.enableStickers) data.enableStickers = true;
   // Defaults to true
