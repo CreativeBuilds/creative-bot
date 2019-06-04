@@ -30,6 +30,7 @@
     "open": "^6.2.0",
     "queueing-subject": "^0.3.0",
     "react": "^16.8.6",
+    "react-cookie-consent": "^2.3.1",
     "react-icons": "^3.6.1",
     "react-router": "^5.0.0",
     "react-router-dom": "^5.0.0",

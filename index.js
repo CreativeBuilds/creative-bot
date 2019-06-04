@@ -12,7 +12,8 @@ const path = require('path');
 const { distinctUntilChanged, filter, first } = require('rxjs/operators');
 const _ = require('lodash');
 const storage = require('electron-json-storage');
-const DLive = require('dlive-js');
+// const DLive = require('dlive-js');
+const { rxDlive } = require('./helpers/rxDlive');
 let dlive;
 let win;
 var env = process.env.NODE_ENV || 'production';
@@ -690,12 +691,18 @@ function createWindow() {
         first()
       )
       .subscribe(config => {
-        if (!dlive) dlive = new DLive({ authKey: config.authKey });
-        dlive.listenToChat(config.streamerDisplayName).then(messages => {
-          subscriber = messages.subscribe(message => {
-            WS.send(JSON.stringify(message));
+        rxDlive
+          .pipe(
+            filter(x => !!x),
+            first()
+          )
+          .subscribe(dlive => {
+            dlive.listenToChat(config.streamerDisplayName).then(messages => {
+              subscriber = messages.subscribe(message => {
+                WS.send(JSON.stringify(message));
+              });
+            });
           });
-        });
       });
     WS.on('close', function() {
       subscriber.unsubscribe();
@@ -707,7 +714,16 @@ function createWindow() {
     WS.on('message', function incoming(message) {
       let msg = JSON.parse(message);
       if (msg.type === 'send_message') {
-        sendMessage(message.value);
+        rxDlive
+          .pipe(
+            filter(x => !!x),
+            first()
+          )
+          .subscribe(dlive => {
+            rxConfig.pipe(first()).subscribe(config => {
+              dlive.sendMessage(message, config.streamerDisplayName);
+            });
+          });
       } else if (msg.type === 'send_lino') {
         if (!config.privKeyHex)
           return sendError(WS, 'No privKeyHex detected in config.json');
@@ -733,12 +749,20 @@ function createWindow() {
       first()
     )
     .subscribe(config => {
-      dlive = new DLive({ authKey: config.authKey });
-      dlive.listenToChat(config.streamerDisplayName).then(messages => {
-        messages.subscribe(message => {
-          onNewMsg(message, config.streamerDisplayName);
+      console.log('GOT CONFIG');
+      rxDlive
+        .pipe(
+          filter(x => !!x),
+          first()
+        )
+        .subscribe(dlive => {
+          console.log('GOT DLIVE');
+          dlive.listenToChat(config.streamerDisplayName).then(messages => {
+            messages.subscribe(message => {
+              onNewMsg(message, config.streamerDisplayName);
+            });
+          });
         });
-      });
     });
   rxConfig
     .pipe(
@@ -749,15 +773,22 @@ function createWindow() {
       first()
     )
     .subscribe(config => {
-      dlive.getChannel(config.streamerDisplayName).then(channel => {
-        channel.rxLivestream.subscribe(livestream => {
-          if (!livestream) return;
-          if (typeof livestream === 'object') {
-            if (Object.keys(livestream).length === 0) return;
-            win.webContents.send('livestreamObject', livestream);
-          }
+      rxDlive
+        .pipe(
+          filter(x => !!x),
+          first()
+        )
+        .subscribe(dlive => {
+          dlive.getChannel(config.streamerDisplayName).then(channel => {
+            channel.rxLivestream.subscribe(livestream => {
+              if (!livestream) return;
+              if (typeof livestream === 'object') {
+                if (Object.keys(livestream).length === 0) return;
+                win.webContents.send('livestreamObject', livestream);
+              }
+            });
+          });
         });
-      });
     });
 }
 

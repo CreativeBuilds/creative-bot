@@ -8,33 +8,33 @@ import { Router } from './Router';
 import { TitleBar } from './TitleBar';
 import { Banner } from './Banner';
 import { ContextMenu, ContextItem } from './ContextMenu';
+import CookieConsent from 'react-cookie-consent';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
 const styles: any = require('./Main.scss');
 
-// TODO move theme/style function to a different 
+// TODO move theme/style function to a different
 
 interface Main {
-  Config: {}
+  Config: {};
 }
 
-const Main = ({ Config } : Main) => {
-
+const Main = ({ Config }: Main) => {
   const [stateTheme, setStateTheme] = useState(theme.dark);
   const [config, setConfig] = useState(Config);
 
   const style = (obj: {} = {}) => Object.assign(obj, stateTheme);
   // TODO swap theme based on currently selected (probably do this with context from react)
 
-  const changeTheme = (themeVal : String) => {
+  const changeTheme = (themeVal: String) => {
     if (themeVal == 'dark') {
-      setStateTheme(theme.dark); 
+      setStateTheme(theme.dark);
     } else if (themeVal == 'light') {
       setStateTheme(theme.light);
     }
-  }
+  };
 
   useEffect(() => {
     let listener = rxConfig.subscribe((data: any) => {
@@ -49,14 +49,24 @@ const Main = ({ Config } : Main) => {
 
   return (
     <ThemeContext.Provider value={{ stateTheme, setStateTheme }}>
-        <div className={styles.appFrame}>         
-          <TitleBar Config={config}/>
-          <Banner />
-          <div className={styles.main} style={style().main}>
-            <Router />
-          </div>
+      <div className={styles.appFrame}>
+        <TitleBar Config={config} />
+        <Banner />
+        <div className={styles.main} style={style().main}>
+          <Router />
         </div>
-      </ThemeContext.Provider>
+      </div>
+      <CookieConsent
+        location='bottom'
+        buttonText='Sure man!!'
+        style={{ background: '#2B373B' }}
+        buttonStyle={{ color: '#4e503b', fontSize: '13px' }}
+        expires={150}
+      >
+        This app uses cookies for statistics and tracking to provide a better
+        experience, by using it you agree and acknowledge this.
+      </CookieConsent>
+    </ThemeContext.Provider>
   );
 };
 
