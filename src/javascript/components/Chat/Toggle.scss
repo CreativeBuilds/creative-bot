@@ -32,9 +32,17 @@
         }
     }
 
+    &.disabled {
+      color: rgb(127,127,127);
+      & > div:nth-child(2) { 
+        opacity: 0.5;
+      }
+    }
+
     & > div:nth-child(1) {
       // Name
     }
+
     & > div:nth-child(2) {
       // toggle
       transition: all 0.15s ease-in-out;
@@ -49,8 +57,16 @@
         height: 25px;
         border-radius: 50%;
         transition: all 0.15s ease-in-out;
-        &.isOn {
-          margin-left: 50px;
+      }
+    }
+
+    &:not(.disabled) {
+      & > div:nth-child(2) {
+        //Toggle
+        div {
+          &.isOn {
+            margin-left: 50px;
+          }
         }
       }
     }

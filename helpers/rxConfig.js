@@ -18,6 +18,8 @@ storage.get('config', (err, data) => {
   if (!data.enableEvents) data.enableEvents = false;
   // Defaults to true
   if (!data.enableStickers) data.enableStickers = true;
+  // Defaults to true
+  if (!data.enableStickersAsText) data.enableStickersAsText = false;
 
   rxConfig.next(data);
   rxConfig.subscribe(data => {
@@ -26,6 +28,7 @@ storage.get('config', (err, data) => {
     data.themeType = String(data.themeType);
     data.enableEvents = Boolean(data.enableEvents);
     data.enableStickers = Boolean(data.enableStickers);
+    data.enableStickersAsText = Boolean(data.enableStickersAsText);
     storage.set('config', data);
   });
 });

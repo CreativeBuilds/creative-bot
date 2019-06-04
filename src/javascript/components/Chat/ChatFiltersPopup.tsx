@@ -34,6 +34,7 @@ const ChatFiltersPopup = ({
     const [name, setName] = useState<string>('');
     const [hasFilteredEvents, setHasFilteredEvents] = useState(Config.enableEvents);
     const [hasFilteredStickers, setHasFilteredStickers] = useState(Config.enableStickers);
+    const [hasStickersAsText, setHasStickersAsText] = useState(Config.enableStickersAsText);
     const [helperText, SetHelperText] = useState(text);
     const [error, SetError] = useState(false);
     const [config, setConfig] = useState(Config);
@@ -44,6 +45,7 @@ const ChatFiltersPopup = ({
         setConfig(data);
         setHasFilteredEvents(data.enableEvents);
         setHasFilteredStickers(data.enableStickers);
+        setHasStickersAsText(data.enableStickersAsText);
       });
       return () => {
         listener.unsubscribe();
@@ -59,6 +61,9 @@ const ChatFiltersPopup = ({
       } else if (id === 'enableStickers') {
         tConfig[id] = !hasFilteredStickers;
         setHasFilteredStickers(!hasFilteredStickers);
+      } else if (id === 'enableStickersAsText') {
+        tConfig[id] = !hasStickersAsText;
+        setHasStickersAsText(!hasStickersAsText);
       }
       setRxConfig(tConfig);
     };
@@ -104,6 +109,24 @@ const ChatFiltersPopup = ({
                 />
               </div>
             </div>
+            <div className={`${styles.toggle} ${styles.stretched} ${!hasFilteredStickers ? styles.disabled : null} `}>
+              <div className={styles.header}>Display Stickers as Text</div>
+              <div
+                style={stateTheme.menu}
+                onClick={() => {
+                  saveToDB('enableStickersAsText');
+                }}
+              >
+                <div
+                  style={{
+                    background: hasStickersAsText
+                      ? stateTheme.main.highlightColor
+                      : stateTheme.chat.message.alternate.backgroundColor
+                  }}
+                  className={hasStickersAsText ? styles.isOn : ''}
+                />
+              </div>
+            </div>
         </div>
         <div
           className={styles.submit}
@@ -113,6 +136,7 @@ const ChatFiltersPopup = ({
             borderColor: stateTheme.menu.backgroundColor
           }}
           onClick={() => { 
+            closeCurrentPopup();
             }}>
           Close
           </div>

@@ -25,6 +25,7 @@ const Message = ({
 
   const [hasFilteredEvents, setHasFilteredEvents] = useState(Config.enableEvents);
   const [hasFilteredStickers, setHasFilteredStickers] = useState(Config.enableStickers);
+  const [hasStickersAsText, setHasStickersAsText] = useState(Config.enableStickersAsText);
   const [config, setConfig] = useState(Config);
 
   useEffect(() => {
@@ -33,6 +34,7 @@ const Message = ({
       setConfig(data);
       setHasFilteredEvents(data.enableEvents);
       setHasFilteredStickers(data.enableStickers);
+      setHasStickersAsText(data.enableStickersAsText);
     });
     return () => {
       listener.unsubscribe();
@@ -196,12 +198,15 @@ const Message = ({
           {message.sender.dliveUsername}
           {': '}
         </span>
+        {!hasStickersAsText ? 
         <div className={styles.sticker_container}>
             <div className={styles.emoteDeleteButton} onClick={addSticker}>
               <MdAdd />
             </div>
             <img className={styles.sticker} src={getSticker(message.content)} />
-          </div>
+        </div> :
+        <div className={styles.message_content}>{message.content}</div>  
+        }
       </div>
       {canDelete() ? (
         <div className={styles.message_remove}>
