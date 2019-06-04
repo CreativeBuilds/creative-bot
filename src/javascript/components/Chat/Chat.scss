@@ -47,6 +47,22 @@
   }
 }
 
+.messageHeader {
+  margin-right: 10px;
+  .image_container, .username_container {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .username_container {
+    cursor: pointer;
+  }
+
+  .image_container {
+    img { vertical-align: middle; }
+  }
+}
+
 .messageEvent { 
   background-color: $dliveaccent;
   color: black !important;
@@ -75,6 +91,8 @@
     text-align: left;
     display: flex;
     align-items: center;
+    vertical-align: middle;
+    margin-bottom: 1px;
 
     span {
       font-weight: bold;

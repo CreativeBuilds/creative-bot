@@ -12,6 +12,71 @@ import {
 
 import { UserPopup } from './UserPopup';
 
+enum MessageHeaderType {
+  normal,
+  event
+}
+
+enum MessageContentType {
+  normal,
+  event,
+  sticker,
+  stickerAsText
+}
+
+const MessageHeader = ({styles, message, onClick, headerType}) => {
+
+  return (
+    <div className={headerType == MessageHeaderType.normal ? styles.messageHeader : `${styles.messageHeader}`}>
+      <div className={styles.image_container}>
+          <img src={message.sender.avatar} width={26} height={26} />
+      </div>
+      <span className={styles.username_container} onClick={onClick}>
+            {message.sender.dliveUsername}{': '}
+      </span>
+    </div>
+  );
+};
+
+const MessageContent = ({styles, message = null, evntMsg = null, src = null, onClick = null, contentType}) => {
+
+  return (
+    <div className={styles.message_content}>
+      {contentType == MessageContentType.normal ?
+      <div className={styles.message_content}>{message.content}</div> 
+      :
+      contentType == MessageContentType.sticker ? 
+        <div className={styles.sticker_container}>
+          <div className={styles.emoteDeleteButton} onClick={onClick}>
+            <MdAdd />
+          </div>
+          <img className={styles.sticker} src={src} />
+        </div>
+          : 
+        contentType == MessageContentType.stickerAsText ?
+        <div className={styles.sticker_container}>
+          <div className={styles.emoteDeleteButton} onClick={onClick}>
+              <MdAdd />
+          </div>
+          <div className={styles.message_content}>{message.content}</div>
+        </div> :
+        <div className={styles.message_content}><div className={styles.message_content}>{evntMsg}</div></div>
+      }
+    </div>
+  );
+}
+
+const DeleteButton = ({styles, onDelete}) => {
+
+  return (
+    <div className={styles.message_remove}>
+        <MdClose
+          onClick={onDelete}
+        />
+    </div>
+  );
+}
+
 const Message = ({
   styles,
   Config,
@@ -158,19 +223,9 @@ const Message = ({
 
   return (
     <div>{isEvent() ? hasFilteredEvents ?
-      <div className={`${styles.messageEvent}`}> 
-        <div className={styles.image_container}>
-        <img src={message.sender.avatar} width={26} height={26} />
-      </div>
-      <div className={styles.message_content}>
-        <span>
-          {message.sender.dliveUsername}
-          {': '}
-        </span>
-        <div className={styles.message_content}>
-          {eventMessage()}
-        </div>
-        </div>
+      <div className={styles.messageEvent}>
+        <MessageHeader styles={styles} message={message} headerType={MessageHeaderType.event} onClick={e => { console.log(e); addUserPopup(); }} />
+        <MessageContent styles={styles} evntMsg={eventMessage()} contentType={MessageContentType.event}/>
       </div> : null : 
       isSticker() ? hasFilteredStickers ? (
       <div
@@ -185,38 +240,15 @@ const Message = ({
         nth % 2 ? stateTheme.chat.message.alternate : {}
       )}
     >
-      <div className={styles.image_container}>
-        <img src={message.sender.avatar} width={26} height={26} />
-      </div>
-      <div className={styles.message_content}>
-        <span
-          onClick={e => {
+      <MessageHeader styles={styles} headerType={MessageHeaderType.normal} message={message} onClick={e => {
             console.log(e);
             addUserPopup();
-          }}
-        >
-          {message.sender.dliveUsername}
-          {': '}
-        </span>
-        {!hasStickersAsText ? 
-        <div className={styles.sticker_container}>
-            <div className={styles.emoteDeleteButton} onClick={addSticker}>
-              <MdAdd />
-            </div>
-            <img className={styles.sticker} src={getSticker(message.content)} />
-        </div> :
-        <div className={styles.message_content}>{message.content}</div>  
-        }
-      </div>
-      {canDelete() ? (
-        <div className={styles.message_remove}>
-          <MdClose
-            onClick={() => {
-              removeMessage(message.id, message.streamerBlockchainUsername);
-            }}
-          />
-        </div>
-      ) : null}
+          }} />
+      {!hasStickersAsText ?
+      <MessageContent styles={styles} message={message} src={getSticker(message.content)} onClick={addSticker} contentType={MessageContentType.sticker}/> : 
+      <MessageContent styles={styles} message={message} onClick={addSticker} contentType={MessageContentType.stickerAsText}/>
+      }
+      {canDelete() ? ( <DeleteButton styles={styles} onDelete={() => { removeMessage(message.id, message.streamerBlockchainUsername); }}/> ) : null}
       </div> ) : null : 
     <div
     className={`${styles.message} ${
@@ -230,30 +262,12 @@ const Message = ({
       nth % 2 ? stateTheme.chat.message.alternate : {}
     )}
   >
-    <div className={styles.image_container}>
-      <img src={message.sender.avatar} width={26} height={26} />
-    </div>
-    <div className={styles.message_content}>
-      <span
-        onClick={e => {
-          console.log(e);
-          addUserPopup();
-        }}
-      >
-        {message.sender.dliveUsername}
-        {': '}
-      </span>
-      <div className={styles.message_content}>{message.content}</div>
-    </div>
-    {canDelete() ? (
-      <div className={styles.message_remove}>
-        <MdClose
-          onClick={() => {
-            removeMessage(message.id, message.streamerBlockchainUsername);
-          }}
-        />
-      </div>
-    ) : null}
+    <MessageHeader styles={styles} message={message} headerType={MessageHeaderType.normal} onClick={e => {
+            console.log(e);
+            addUserPopup();
+          }} />
+    <MessageContent styles={styles} message={message} contentType={MessageContentType.normal}/>
+    {canDelete() ? ( <DeleteButton styles={styles} onDelete={() => { removeMessage(message.id, message.streamerBlockchainUsername); }}/> ) : null}
     </div>
   }
 
