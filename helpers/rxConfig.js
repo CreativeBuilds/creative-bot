@@ -14,12 +14,21 @@ storage.get('config', (err, data) => {
   if (!data.pointsTimer || isNaN(Number(data.pointsTimer))) data.pointsTimer = 300;
   // Defaults to Dark Theme 'dark'
   if (!data.themeType) data.themeType = 'dark';
+  // Defaults to false
+  if (!data.enableEvents) data.enableEvents = false;
+  // Defaults to true
+  if (!data.enableStickers) data.enableStickers = true;
+  // Defaults to true
+  if (!data.enableStickersAsText) data.enableStickersAsText = false;
 
   rxConfig.next(data);
   rxConfig.subscribe(data => {
     data.points = Number(data.points);
     data.pointsTimer = Number(data.pointsTimer);
     data.themeType = String(data.themeType);
+    data.enableEvents = Boolean(data.enableEvents);
+    data.enableStickers = Boolean(data.enableStickers);
+    data.enableStickersAsText = Boolean(data.enableStickersAsText);
     storage.set('config', data);
   });
 });

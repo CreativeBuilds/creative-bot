@@ -1,4 +1,3 @@
-const https = require('https');
 let config = {};
 let rxConfig = require('./rxConfig');
 rxConfig.subscribe(data => (config = data));
@@ -9,7 +8,6 @@ let loop;
 
 // Check the msgs array every 2.1 seconds to send the next message (2.1 seconds to avoid debouncing of dlive);
 const checkMessages = () => {
-  console.log(msgs.length, 'msgs length');
   if (msgs.length <= 0) {
     clearInterval(loop);
     loop = null;
@@ -17,7 +15,6 @@ const checkMessages = () => {
   }
   let msg = msgs[0];
   msgs = msgs.splice(1);
-  console.log(msgs.length, 'new length');
   sendRequestToDlive({
     operationName: 'SendStreamChatMessage',
     query: `mutation SendStreamChatMessage($input: SendStreamchatMessageInput!) {

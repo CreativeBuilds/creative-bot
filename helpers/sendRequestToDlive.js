@@ -5,7 +5,7 @@ let rxConfig = require('../helpers/rxConfig');
 let { first, filter } = require('rxjs/operators');
 const https = require('https');
 
-module.exports = ({ operationName, query, variables }) => {
+module.exports = obj => {
   return new Promise((RES, rej) => {
     rxConfig
       .pipe(
@@ -13,11 +13,7 @@ module.exports = ({ operationName, query, variables }) => {
         first()
       )
       .subscribe(config => {
-        const postData = JSON.stringify({
-          operationName,
-          query,
-          variables
-        });
+        const postData = JSON.stringify(obj);
 
         const options = {
           hostname: 'graphigo.prd.dlive.tv',

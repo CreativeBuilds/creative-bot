@@ -64,7 +64,7 @@ const run = ({ message, args }) => {
                     return res(`@${message.sender.dliveUsername}: Please put Quotations(") before and After the Quote Message`);
                 }
             } else {
-                return res(`@${message.sender.dliveUsername}: !aq [quoteMessage <= 96 Characters] [user <= 20 Characters] - user without the '@'`);
+                return res(`@${message.sender.dliveUsername}: !aq [quoteMessage <= 90 Characters] [user <= 20 Characters] - user without the '@'`);
             }
         } else {
             return res(`@${message.sender.dliveUsername}: You do not have permission to use this command`);

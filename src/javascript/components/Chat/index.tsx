@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
 import { theme, ThemeContext } from '../../helpers';
-import { MdSend, MdPerson, MdMood, MdFace, MdLocalMovies } from 'react-icons/md';
+import { MdSend, MdPerson, MdMood, MdFace, MdLocalMovies, MdEvent, MdFilterList } from 'react-icons/md';
 
 import { Message } from './Message';
 import { StickerPopup } from './StickerPopup';
@@ -9,6 +9,8 @@ import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
 import { rxEmotes, setRxEmotes } from '../../helpers/rxEmotes';
 import { Action } from 'rxjs/internal/scheduler/Action';
 import { remote } from 'electron';
+import { CreativeBotPopup } from './../WebServices/CreativeBotPopup';
+import { ChatFiltersPopup } from './ChatFiltersPopup';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -21,6 +23,7 @@ const styles: any = require('./Chat.scss');
 interface popup {
   styles: any;
   closeCurrentPopup?: any;
+  addPopup: any;
   stateTheme: any;
   configName?: any;
   text?: string | Function | Element | any;
@@ -132,8 +135,6 @@ const Chat = ({ props }) => {
   const [emotes, setEmotes]: any = useState({});
   const [firstRender, setFirstRender] = useState(true);
 
-
-
   const updateText = e => {
     setText(e.target.value);
   };
@@ -150,13 +151,13 @@ const Chat = ({ props }) => {
     }
   };
 
-  const changeTheme = (themeVal : String) => {
+  const changeTheme = (themeVal: String) => {
     if (themeVal == 'dark') {
-      setStateTheme(theme.dark); 
+      setStateTheme(theme.dark);
     } else if (themeVal == 'light') {
       setStateTheme(theme.light);
     }
-  }
+  };
 
   useEffect(() => {
     let element: any = document.getElementById('messages');
@@ -190,8 +191,13 @@ const Chat = ({ props }) => {
   };
 
   const openTidyClips = () => {
-    let win = new BrowserWindow({ width: 1024, height: 600 })
-    win.loadURL('https://clips.tidylabs.stream/generate?clippedby=TidyClips+Website&url=CreativeBuilds')
+    /*let win = new BrowserWindow({ width: 1024, height: 600 })
+    win.loadURL('https://clips.tidylabs.stream/generate?clippedby=TidyClips+Website&url=CreativeBuilds')*/
+    addPopup(<CreativeBotPopup stateTheme={stateTheme} styles={styles} Config={Object.assign({}, config)} closeCurrentPopup={closeCurrentPopup}/>, true);
+  };
+
+  const openChatFiltersPanel = () => {
+    addPopup(<ChatFiltersPopup stateTheme={stateTheme} styles={styles} Config={Object.assign({}, config)} closeCurrentPopup={closeCurrentPopup} />);
   };
 
   useEffect(() => {
@@ -214,6 +220,7 @@ const Chat = ({ props }) => {
       addPopup(
         <AddCommandPopup
           styles={styles}
+          addPopup={addPopup}
           Config={Object.assign({}, config)}
           closeCurrentPopup={(input, setError) => {
             if (input !== '') {
@@ -255,6 +262,7 @@ const Chat = ({ props }) => {
       addPopup(
         <AddCommandPopup
           styles={styles}
+          addPopup={addPopup}
           closeCurrentPopup={(input, setError) => {
             if (input !== '') {
               let Config = Object.assign(
@@ -280,6 +288,7 @@ const Chat = ({ props }) => {
       addPopup(
         <AddCommandPopup
           styles={styles}
+          addPopup={addPopup}
           closeCurrentPopup={() => {
             closeCurrentPopup();
           }}
@@ -302,14 +311,25 @@ const Chat = ({ props }) => {
     <div style={stateTheme.menu} className={styles.Chat}>
       <div style={stateTheme.menu.title} className={styles.header}>
         CHAT
-        <div
-          className={styles.viewers}
-          onClick={() => {
-            setViewersToggle(!viewersToggle);
-          }}
-        >
-          <MdPerson />
-          <span> {viewersToggle ? viewers : 'HIDDEN'}</span>
+        <div className={styles.rightContainer}>
+          <div
+            className={styles.events}
+            onClick={() => {
+              openChatFiltersPanel();
+            }}
+          >
+            <MdFilterList />
+            <span> </span>
+          </div>
+          <div
+            className={styles.viewers}
+            onClick={() => {
+              setViewersToggle(!viewersToggle);
+            }}
+          >
+            <MdPerson />
+            <span> {viewersToggle ? viewers : 'HIDDEN'}</span>
+          </div>
         </div>
       </div>
       <div style={{}} className={styles.content} id='messages'>
@@ -317,12 +337,12 @@ const Chat = ({ props }) => {
           return (
             <Message
               addPopup={addPopup}
-              config={config}
+              Config={config}
               styles={styles}
               message={message}
+              closeCurrentPopup={closeCurrentPopup}
               stateTheme={stateTheme}
               nth={nth}
-              closeCurrentPopup={closeCurrentPopup}
               ownerName={(config.streamerDisplayName
                 ? config.streamerDisplayName
                 : ''
@@ -346,7 +366,7 @@ const Chat = ({ props }) => {
             updateText(e);
           }}
         />
-        {/*<div
+        {<div
           className={styles.send}
           style={Object.assign({}, stateTheme.chat.input, {
             borderColor: stateTheme.chat.input.backgroundColor
@@ -354,7 +374,7 @@ const Chat = ({ props }) => {
           onClick={openTidyClips}
         >
           <MdLocalMovies />
-        </div>*/}
+        </div>}
         <div
           className={styles.send}
           style={Object.assign({}, stateTheme.chat.input, {

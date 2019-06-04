@@ -44,7 +44,11 @@ let { makeNewCommand, getBlockchainUsername } = require('./helpers');
 const { autoUpdater } = require('electron-updater');
 require('./helpers/startTimers').run();
 
-const { removeMessage } = require('./helpers/removeMessage');
+const {
+  removeMessage,
+  timeoutUser,
+  muteUser
+} = require('./helpers/removeMessage');
 
 rxConfig
   .pipe(
@@ -98,7 +102,7 @@ function createWindow() {
 
   // and load the index.html of the app.
   if (env === 'dev_watch') {
-    win.loadURL("http://localhost:8080/webpack-dev-server/");
+    win.loadURL('http://localhost:8080/webpack-dev-server/');
   } else {
     win.loadURL(`file://${__dirname}/dist/index.html`);
   }
@@ -236,7 +240,7 @@ function createWindow() {
     event.sender.send('show-bannermessage', [bannerMessage]);
   });
 
-  ipcMain.on('closeBannerMessage', (event) => {
+  ipcMain.on('closeBannerMessage', event => {
     event.sender.send('hide-bannermessage');
   });
 
@@ -249,6 +253,14 @@ function createWindow() {
     removeMessage(id, streamer).then(() => {
       win.webContents.send('removedMessage', { id, streamer });
     });
+  });
+
+  ipcMain.on('timeoutUser', (event, { id, streamer }) => {
+    timeoutUser(id, streamer);
+  });
+
+  ipcMain.on('muteUser', (event, { id, streamer }) => {
+    muteUser(id, streamer);
   });
 
   ipcMain.on('createCommand', (event, { commandName, commandReply }) => {
@@ -685,7 +697,7 @@ function createWindow() {
         inLino(message.gift, message.amount);
       rxUsers.next(Users);
     }
-    if (message.type === 'Message') {
+    /*if (message.type === 'Message') {
       wss.broadcast(
         JSON.stringify({
           type: 'message',
@@ -702,7 +714,24 @@ function createWindow() {
         'MESSAGE: ',
         content
       );
-    }
+    }*/
+
+    wss.broadcast(
+      JSON.stringify({
+        type: 'message',
+        value: message
+      })
+    );
+    textMessage(message, streamerDisplayName);
+    keepActive(message);
+    win.webContents.send('newmessage', { message });
+    let content = message.content;
+    console.log(
+      'NEW MSG FROM:',
+      message.sender.dliveUsername,
+      'MESSAGE: ',
+      content
+    );
   };
 
   // This wss is for ben
@@ -788,9 +817,7 @@ function createWindow() {
 ipcMain.on('sendmessage', (event, { from, message }) => {
   if (config.authKey != null || config.username != null) {
     sendMessage(message);
-
   } else {
-
     var bannerMessage = {
       needsBanner: true,
       message:
