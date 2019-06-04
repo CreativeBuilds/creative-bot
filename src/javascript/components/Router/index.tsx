@@ -90,10 +90,6 @@ class RouterWrapper extends Component<any, any> {
     rxConfig.subscribe(Config => {
       this.setState({ config: Config });
     });
-    ipcRenderer.on('newdonation', (event, { message, inLino }) => {
-      //let newArr = [...this.state.messages, message];
-      //this.setState({ messages: newArr });
-    });
   }
 
   popups = [];

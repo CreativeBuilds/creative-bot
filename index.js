@@ -726,12 +726,14 @@ function createWindow() {
     keepActive(message);
     win.webContents.send('newmessage', { message });
     let content = message.content;
-    console.log(
-      'NEW MSG FROM:',
-      message.sender.dliveUsername,
-      'MESSAGE: ',
-      content
-    );
+    if (message.type === 'Message') {
+      console.log(
+        'NEW MSG FROM:',
+        message.sender.dliveUsername,
+        'MESSAGE: ',
+        content
+      );
+    }
   };
 
   // This wss is for ben
