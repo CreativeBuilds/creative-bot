@@ -9,6 +9,7 @@ import { rxEmotes, setRxEmotes } from '../../helpers/rxEmotes';
 import { Action } from 'rxjs/internal/scheduler/Action';
 
 import { SegmentControl, SegmentControlSource } from '../SegmentControl/index';
+import { Toggle, ToggleType } from '../Generics/Toggle';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -73,60 +74,9 @@ const ChatFiltersPopup = ({
       <div className={`${styles.popup}`} style={stateTheme.main}>
         <h2>Chat Filters</h2>
         <div className={`${styles.chatFilterPopup}`}>
-        <div className={`${styles.toggle} ${styles.stretched}`}>
-              <div className={styles.header}>Show Event Messages</div>
-              <div
-                style={stateTheme.menu}
-                onClick={() => {
-                  saveToDB('enableEvents');
-                }}
-              >
-                <div
-                  style={{
-                    background: hasFilteredEvents
-                      ? stateTheme.main.highlightColor
-                      : stateTheme.chat.message.alternate.backgroundColor
-                  }}
-                  className={hasFilteredEvents ? styles.isOn : ''}
-                />
-              </div>
-            </div>
-            <div className={`${styles.toggle} ${styles.stretched}`}>
-              <div className={styles.header}>Show Stickers</div>
-              <div
-                style={stateTheme.menu}
-                onClick={() => {
-                  saveToDB('enableStickers');
-                }}
-              >
-                <div
-                  style={{
-                    background: hasFilteredStickers
-                      ? stateTheme.main.highlightColor
-                      : stateTheme.chat.message.alternate.backgroundColor
-                  }}
-                  className={hasFilteredStickers ? styles.isOn : ''}
-                />
-              </div>
-            </div>
-            <div className={`${styles.toggle} ${styles.stretched} ${!hasFilteredStickers ? styles.disabled : null} `}>
-              <div className={styles.header}>Display Stickers as Text</div>
-              <div
-                style={stateTheme.menu}
-                onClick={() => {
-                  saveToDB('enableStickersAsText');
-                }}
-              >
-                <div
-                  style={{
-                    background: hasStickersAsText
-                      ? stateTheme.main.highlightColor
-                      : stateTheme.chat.message.alternate.backgroundColor
-                  }}
-                  className={hasStickersAsText ? styles.isOn : ''}
-                />
-              </div>
-            </div>
+          <Toggle header="Show Event Messages" type={ToggleType.stretched} isEnabled={true} isOn={hasFilteredEvents} onClick={() => { saveToDB('enableEvents'); }} stateTheme={stateTheme}/>
+          <Toggle header="Show Stickers" type={ToggleType.stretched} isEnabled={true} isOn={hasFilteredStickers} onClick={() => { saveToDB('enableStickers'); }} stateTheme={stateTheme}/>
+          <Toggle header="Display Stickers as Text" type={ToggleType.stretched} isEnabled={hasFilteredStickers} isOn={hasStickersAsText} onClick={() => { saveToDB('enableStickersAsText'); }} stateTheme={stateTheme}/>
         </div>
         <div
           className={styles.submit}
