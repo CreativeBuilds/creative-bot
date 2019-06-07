@@ -8,7 +8,6 @@ import { Router } from './Router';
 import { TitleBar } from './TitleBar';
 import { Banner } from './Banner';
 import { ContextMenu, ContextItem } from './ContextMenu';
-import CookieConsent from 'react-cookie-consent';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -56,16 +55,6 @@ const Main = ({ Config }: Main) => {
           <Router />
         </div>
       </div>
-      <CookieConsent
-        location='bottom'
-        buttonText='Sure man!!'
-        style={{ background: '#2B373B' }}
-        buttonStyle={{ color: '#4e503b', fontSize: '13px' }}
-        expires={150}
-      >
-        This app uses cookies for statistics and tracking to provide a better
-        experience, by using it you agree and acknowledge this.
-      </CookieConsent>
     </ThemeContext.Provider>
   );
 };
