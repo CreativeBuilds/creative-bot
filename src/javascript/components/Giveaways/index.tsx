@@ -179,7 +179,6 @@ const GiveawaysPage = ({ props }) => {
         />
       </div>
       <div style={{}} className={styles.content}>
-        {/* TODO ADD PAGINATION */}
         <Sorting
           toggle={toggle}
           setToggle={setToggle}

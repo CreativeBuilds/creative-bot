@@ -53,10 +53,11 @@ const Sorting = ({
           onClick={() => {
             swapOrToggle(isDesc, toggle, 'reward');
           }}
-          className={styles.spacer}
+          className={styles.points}
         >
           REWARD <Arrow isDesc={isDesc} toggle={toggle} type={'reward'} />
         </div>
+        <div className={styles.spacer}>LAST WINNER</div>
         <div className={styles.modded}>
           PICK {/*<Arrow isDesc={isDesc} toggle={toggle} type={'mod'}/>*/}
         </div>
