@@ -19,7 +19,7 @@
   "dependencies": {
     "axios": "^0.18.0",
     "compass-mixins": "^0.12.10",
-    "dlive-js": "^1.0.12",
+    "dlive-js": "^1.0.27",
     "electron-json-storage": "^4.1.6",
     "electron-log": "^3.0.5",
     "electron-reload": "^1.4.0",

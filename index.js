@@ -96,7 +96,12 @@ function createWindow() {
   // Create the browser window.
   autoUpdater.checkForUpdatesAndNotify();
   if (env === 'dev' || env === 'dev_watch') {
-    win = new BrowserWindow({ width: 1280, height: 720, frame: false, icon: path.join(__dirname, 'dist/.icon-ico/icon_Dev.ico') });
+    win = new BrowserWindow({
+      width: 1280,
+      height: 720,
+      frame: false,
+      icon: path.join(__dirname, 'dist/.icon-ico/icon_Dev.ico')
+    });
   } else {
     win = new BrowserWindow({ width: 1280, height: 720, frame: false });
   }
@@ -776,7 +781,7 @@ function createWindow() {
           )
           .subscribe(dlive => {
             rxConfig.pipe(first()).subscribe(config => {
-              dlive.sendMessage(message, config.streamerDisplayName);
+              dlive.sendMessage(msg.value, config.streamerDisplayName);
             });
           });
       } else if (msg.type === 'send_lino') {
