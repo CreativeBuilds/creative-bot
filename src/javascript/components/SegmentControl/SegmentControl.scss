@@ -1,0 +1,62 @@
+@import './../../../styles/variables.scss';
+
+.segmentControl {
+    .segmentHeader {
+        display: table;
+        width: 100%;
+        margin: 1em 0;
+        padding: 0;
+        border-radius: 25px;
+        user-select: none;
+
+        .segmentControlItem {
+            display: table-cell;
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+
+            .segmentInput, .segmentLabel {
+                min-width: 72px;
+                padding: 10px;
+            }
+
+            .segmentInput {
+                position: absolute;
+                visibility: hidden;
+            }
+
+            .segmentLabel {
+                display: block;
+                margin: 0 -1px -1px 0; /* -1px margin removes double-thickness borders between items */
+                padding: 1em .25em;
+            
+                font: 14px/1.5 sans-serif; 
+                text-align: center;  
+                font-weight: bold;
+            
+                cursor: pointer;
+            }
+
+            .segmentInput:checked + .segmentLabel {
+                background:  $dliveaccent;
+                border-radius: 25px;
+                color: black; 
+                box-shadow: 1px 1px 30px rgba(21,21,21,0.6);
+            }
+        }
+    }
+
+    .segmentBody {
+        position: relative;
+        height: 340px;
+        display: flex;
+        width: 100%;
+    }
+}
+
+.segmentView {
+    position: absolute;
+    width: 100% !important;
+    overflow: auto;
+    height: 100%;
+}

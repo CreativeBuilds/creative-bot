@@ -22,6 +22,13 @@ const theme = {
         backgroundColor: '#0e0f10'
       }
     },
+    segmentControlHeader: {
+      backgroundColor: '#000000',
+      Color: '#ffffff'
+    },
+    segmentControlItem: {
+      Color: '#ffffff'
+    },
     titleBar: {
       backgroundColor: '#202225',
       color: '#CCCCCC',
@@ -79,6 +86,13 @@ const theme = {
       title_hover: {
         backgroundColor: '#dddddd'
       }
+    },
+    segmentControlHeader: {
+      backgroundColor: '#cccccc',
+      Color: '#000000'
+    },
+    segmentControlItem: {
+      Color: '#212121'
     },
     titleBar: {
       backgroundColor: '#cccccc',

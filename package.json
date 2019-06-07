@@ -1,6 +1,6 @@
 {
   "name": "dlive-chat-bot",
-  "version": "1.5.0-beta",
+  "version": "1.5.1-beta",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -18,6 +18,7 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.18.0",
+    "compass-mixins": "^0.12.10",
     "dlive-js": "^1.0.12",
     "electron-json-storage": "^4.1.6",
     "electron-log": "^3.0.5",
@@ -51,6 +52,7 @@
     "awesome-typescript-loader": "^5.2.1",
     "babel-loader": "^8.0.5",
     "babel-plugin-add-module-exports": "^1.0.2",
+    "braces": "^2.3.1",
     "copy-webpack-plugin": "^5.0.3",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.1",

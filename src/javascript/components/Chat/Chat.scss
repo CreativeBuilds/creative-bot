@@ -1,4 +1,6 @@
 @import '../../../styles/popup.scss';
+@import '../../../styles/globals.scss';
+@import '../../../styles/variables.scss';
 
 .Chat {
   width: 100%;
@@ -17,6 +19,13 @@
   align-items: center;
 }
 
+.stickersPopup {
+  width: 100% !important;
+  .content {
+    width: 100%;
+  }
+}
+
 .link {
   font-weight: bold;
   &:hover {
@@ -27,6 +36,76 @@
 #messages > div {
   margin-bottom: 5px;
   border-radius: 5px;
+}
+
+.chatFilterPopup {
+  margin-bottom: 20px;
+  .toggle:not(:nth-child(1)) {
+    margin-top: 10px;
+    margin-left: 0px;
+  }
+}
+
+.messageHeader {
+  margin-right: 10px;
+  .image_container, .username_container {
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .username_container {
+    cursor: pointer;
+  }
+
+  .image_container {
+    img { vertical-align: middle; }
+  }
+}
+
+.messageEvent { 
+  background-color: $dliveaccent;
+  color: black !important;
+  width: calc(100% - 35px);
+  padding: 5px;
+  text-overflow: wrap;
+  display: flex;
+  align-items: center;
+  padding-right: 30px;
+  position: relative;
+  margin-bottom: 5px;
+  border-radius: 5px;
+
+
+  .image_container {
+    padding-right: 5px;
+    width: 26px;
+    margin: 0;
+    display: inline-block;
+    img {
+      border-radius: 50%;
+    }
+  }
+  .message_content {
+    flex: 1;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+
+    span {
+      font-weight: bold;
+      padding-right: 5px;
+      height: 100%;
+      display: block;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .message {
+      font-weight: normal;
+    }
+  }
 }
 
 .input_points {
@@ -186,6 +265,7 @@
     text-align: left;
     display: flex;
     align-items: center;
+    word-wrap: break-word;
 
     span {
       font-weight: bold;
@@ -204,11 +284,116 @@
 
   .sticker_container {
     display: table-cell;
+    position: relative;
+
+    .emoteDeleteButton { display: none; }
+
+    &:hover {
+      .emoteDeleteButton {
+        position: absolute;
+        display: block;
+        background: white;
+        width: 25px;
+        height: 25px;
+        border-radius: 16px;
+        float: right;
+        top: 0;
+        right: 0;
+        box-shadow: 1px 1px 30px rgba(21, 21, 21, 0.6);
+
+        &:hover {
+          cursor: pointer;
+          svg {
+              fill: green !important;
+              stroke: green !important;
+          }
+        }
+
+        svg {
+          vertical-align: middle;
+          text-align: center;
+          height: 16px;
+          width: 16px;
+          margin: 0px;
+          margin-top: 4px;
+          margin-left: 4px;
+          fill: Black !important;
+          stroke: black !important;
+
+          &:hover {
+              fill: green !important;
+              stroke: green !important;
+          }
+        }
+      }
+    }
+
     .sticker {
       margin-left: 10px;
       // max-width: 80px;
       max-height: 80px;
     }
+  }
+}
+
+.buttonstack {
+  display: inline-flex;
+  width: 100% !important;
+
+  .submit {
+    &:not(:last-child) {
+      margin-right: 5px;
+    }
+  }
+}
+
+.noStickers {
+  vertical-align: middle;
+  position: absolute;
+  top: 30%;
+  width: 100%;
+
+  user-select: none;
+
+  svg {
+    width: 72px;
+    height: 72px;
+  }
+}
+
+.gridView {
+  display: block;
+  text-align: center;
+  position: relative;
+  height: 100%;
+}
+
+.previewSticker {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  width: 150px;
+  border-radius: 16px;
+  user-select: none;
+  box-shadow: 1px 1px 30px rgba(21,21,21,0.6);
+}
+
+.stickerIdContainer {
+  margin-top: 10px;
+  margin-bottom: 10px;
+
+  .idTitle {
+    width: 100%;
+    display: block;
+    text-align: center;
+    user-select: none;
+  }
+
+  .idInfo {
+    width: 100%;
+    display: block;
+    text-align: center;
+    color: #727272;
   }
 }
 
@@ -219,21 +404,46 @@
   padding: 5px;
 }
 
-.viewers {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.rightContainer {
+  display: inline-block;
   position: absolute;
+  vertical-align: middle;
   right: 5px;
-  transition: all 0.15s ease-in-out;
-  &:hover {
-    color: #ffd300 !important;
-    stroke: #ffd300 !important;
-    fill: #ffd300 !important;
-    cursor: pointer;
+
+  .events, .viewers {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.15s ease-in-out;
+    height: 100%;
+    vertical-align: middle;
+    margin-bottom: 3px;
+
   }
-  span {
-    font-size: 0.8em;
+
+  .events {
+    margin-right: 5px;
+    &:hover {
+      color: #ffd300 !important;
+      stroke: #ffd300 !important;
+      fill: #ffd300 !important;
+      cursor: pointer;
+    }
+    span {
+      font-size: 0.8em;
+    }
+  }
+
+  .viewers {
+    &:hover {
+      color: #ffd300 !important;
+      stroke: #ffd300 !important;
+      fill: #ffd300 !important;
+      cursor: pointer;
+    }
+    span {
+      font-size: 0.8em;
+    }
   }
 }
 
