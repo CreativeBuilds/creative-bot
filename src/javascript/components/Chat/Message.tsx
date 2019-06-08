@@ -11,6 +11,7 @@ import {
 } from '../../helpers/removeMessage';
 
 import { UserPopup } from './UserPopup';
+import { theme } from '../../helpers';
 
 enum MessageHeaderType {
   normal,
@@ -24,10 +25,18 @@ enum MessageContentType {
   stickerAsText
 }
 
-const MessageHeader = ({styles, message, onClick, headerType}) => {
+const MessageHeader = ({stateTheme, styles, message, onClick, headerType}) => {
+
+  const getTime = () => {
+    var date = new Date();
+    return String(date.getHours()).padStart(2, '0') + ':' + String(date.getMinutes()).padStart(2, '0') + ':' + String(date.getSeconds()).padStart(2, '0');
+  }
 
   return (
     <div className={headerType == MessageHeaderType.normal ? styles.messageHeader : `${styles.messageHeader}`}>
+      <div className={styles.timestampContainer}>
+        <span style={stateTheme.base.quinaryForeground}>{getTime()}</span>
+      </div>
       <div className={styles.image_container}>
           <img src={message.sender.avatar} width={26} height={26} />
       </div>
@@ -224,7 +233,7 @@ const Message = ({
   return (
     <div>{isEvent() ? hasFilteredEvents ?
       <div className={styles.messageEvent}>
-        <MessageHeader styles={styles} message={message} headerType={MessageHeaderType.event} onClick={e => { console.log(e); addUserPopup(); }} />
+        <MessageHeader stateTheme={stateTheme} styles={styles} message={message} headerType={MessageHeaderType.event} onClick={e => { console.log(e); addUserPopup(); }} />
         <MessageContent styles={styles} evntMsg={eventMessage()} contentType={MessageContentType.event}/>
       </div> : null : 
       isSticker() ? hasFilteredStickers ? (
@@ -240,7 +249,7 @@ const Message = ({
         nth % 2 ? stateTheme.chat.message.alternate : {}
       )}
     >
-      <MessageHeader styles={styles} headerType={MessageHeaderType.normal} message={message} onClick={e => {
+      <MessageHeader stateTheme={stateTheme} styles={styles} headerType={MessageHeaderType.normal} message={message} onClick={e => {
             console.log(e);
             addUserPopup();
           }} />
@@ -262,7 +271,7 @@ const Message = ({
       nth % 2 ? stateTheme.chat.message.alternate : {}
     )}
   >
-    <MessageHeader styles={styles} message={message} headerType={MessageHeaderType.normal} onClick={e => {
+    <MessageHeader stateTheme={stateTheme} styles={styles} message={message} headerType={MessageHeaderType.normal} onClick={e => {
             console.log(e);
             addUserPopup();
           }} />

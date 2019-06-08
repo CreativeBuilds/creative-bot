@@ -1,7 +1,74 @@
 import * as React from 'react';
 
 const theme = {
+  globals: {
+    accentBackground: {
+      backgroundColor: "#ffd300",
+      color: "#202225"
+    },
+    accentHighlight: {
+      highlightColor: "#ffd300",
+      color: "#202225"
+    }, 
+    accentForeground: {
+      color: "#ffd300"
+    },
+    eventAccent: {
+        backgroundColor: "#ffd300",
+        color: "#202225"
+    },
+    transparent: {
+        backgroundColor: "transparent"
+    }
+  },
   dark: {
+    base: {
+      background: {
+          backgroundColor: "#0e0f10",
+          color: "#F1F1F1"
+      },
+      secondaryBackground: {
+          backgroundColor: "#141517",
+          color: "#DFDDDA"
+      },
+      tertiaryBackground: {
+          backgroundColor: "#1f1f1f",
+          color: "#E0E0E0"
+      },
+      quaternaryBackground: {
+          backgroundColor: "#202225",
+          color: "#CCCCCC"
+      },
+      quinaryBackground: {
+          backgroundColor: "#424242",
+          color: "#BDBDBD"
+      },
+      foreground: {
+          color: "#F1F1F1",
+          fill: "#F1F1F1",
+          stroke: "#F1F1F1"
+      },
+      secondaryForeground: {
+          color: "#DFDDDA",
+          fill: "#DFDDDA",
+          stroke: "#DFDDDA"
+      },
+      tertiaryForeground: {
+          color: "#E0E0E0",
+          fill: "#E0E0E0",
+          stroke: "#E0E0E0"
+      },
+      quaternaryForeground: {
+          color: "#CCCCCC",
+          fill: "#CCCCCC",
+          stroke: "#CCCCCC"
+      },
+      quinaryForeground: {
+          color: "#BDBDBD",
+          fill: "#BDBDBD",
+          stroke: "#BDBDBD"
+      }
+    },
     transparent: {
       backgroundColor: 'transparent'
     },
@@ -67,6 +134,53 @@ const theme = {
     }
   },
   light: {
+    base: {
+      background: {
+          backgroundColor: "#F1F1F1",
+          color: "#0e0e10"
+      },
+      secondaryBackground: {
+          backgroundColor: "#DFDDDA",
+          color: "#202225"
+      },
+      tertiaryBackground: {
+          backgroundColor: "#E0E0E0",
+          color: "#1f1f1f"
+      },
+      quaternaryBackground: {
+          backgroundColor: "#CCCCCC",
+          color: "#333333"
+      },
+      quinaryBackground: {
+        backgroundColor: "#BDBDBD",
+        color: "#424242"
+      },
+      foreground: {
+          color: "#0e0e10",
+          fill: "#0e0e10",
+          stroke: "#0e0e10"
+      },
+      secondaryForeground: {
+          color: "#202225",
+          fill: "#202225",
+          stroke: "#202225"
+      },
+      tertiaryForeground: {
+          color: "#1f1f1f",
+          fill: "#1f1f1f",
+          stroke: "#1f1f1f"
+      },
+      quaternaryForeground: {
+          color: "#333333",
+          fill: "#333333",
+          stroke: "#333333"
+      },
+      quinaryForeground: {
+        color: "#424242",
+        fill: "#424242",
+        stroke: "#424242"
+      }
+    },
     transparent: {
       backgroundColor: 'transparent'
     },

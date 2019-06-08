@@ -156,7 +156,7 @@ const StickerPopup = ({
         <div className={`${styles.stickersPopup}`}>
             <div className={segStyles.segmentControl}>
               <div className={segStyles.segmentHeader} style={stateTheme.segmentControlHeader}>
-                  {segmentControlItems().map(i => <SegmentControlItem id={i.name} title={i.name} defaultValue={"All"} onClick={() => onClick(i.id)}/>)}
+                  {segmentControlItems().map(i => <SegmentControlItem id={i.name} title={i.name as string} defaultValue={"All"} onClick={() => onClick(i.id)}/>)}
               </div>
               <div className={segStyles.segmentBody}>
                   <div className={segStyles.segmentView}>

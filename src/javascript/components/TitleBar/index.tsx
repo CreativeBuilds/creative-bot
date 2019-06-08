@@ -22,7 +22,7 @@ interface TitleBar {
 
 const TitleBar = ({ Config = null } : TitleBar) => {
 
-    const [stateTheme, setStateTheme] = useState(ThemeContext);
+    const [stateTheme, setStateTheme] = useState(theme.dark);
     const [isDarkMode, setDarkMode] = useState<Boolean>(true);
     const [menuItems, setMenuItems] = useState<Array<MenuItem>>(MenuItems('dark'));
     const [config, setConfig] = useState<any>(Config);
@@ -99,7 +99,7 @@ const TitleBar = ({ Config = null } : TitleBar) => {
     const [isMaximize, setMaximized] = useState(isMaximized());
 
     return (
-        <div className={styles.titleBar} style={stateTheme.titleBar}>
+        <div className={styles.titleBar} style={stateTheme.base.quaternaryBackground}>
             <div className={styles.dragRegion}>
             </div>
             <div className={styles.iconContainer} >

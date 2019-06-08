@@ -308,7 +308,7 @@ const Chat = ({ props }) => {
   }, [config]);
 
   return (
-    <div style={stateTheme.menu} className={styles.Chat}>
+    <div style={stateTheme.base.secondaryBackground} className={styles.Chat}>
       <div style={stateTheme.menu.title} className={styles.header}>
         CHAT
         <div className={styles.rightContainer}>
@@ -353,10 +353,10 @@ const Chat = ({ props }) => {
         <div id={'bottomOfMessages'} />
         {/* This is for the actual chat messages */}
       </div>
-      <div style={stateTheme.menu['title_hover']} className={styles.input}>
+      <div style={stateTheme.base.background} className={styles.input}>
         {/* TODO change maxLength to be limitless and then send messages once every 2 seconds to get around chat slowmode */}
         <textarea
-          style={Object.assign({}, stateTheme.chat.input, {
+          style={Object.assign({}, stateTheme.base.quaternaryBackground, {
             borderColor: stateTheme.chat.input.backgroundColor
           })}
           value={text}
@@ -368,7 +368,7 @@ const Chat = ({ props }) => {
         />
         {<div
           className={styles.send}
-          style={Object.assign({}, stateTheme.chat.input, {
+          style={Object.assign({}, stateTheme.base.quaternaryBackground, {
             borderColor: stateTheme.chat.input.backgroundColor
           })}
           onClick={openTidyClips}
@@ -377,7 +377,7 @@ const Chat = ({ props }) => {
         </div>}
         <div
           className={styles.send}
-          style={Object.assign({}, stateTheme.chat.input, {
+          style={Object.assign({}, stateTheme.base.quaternaryBackground, {
             borderColor: stateTheme.chat.input.backgroundColor
           })}
           onClick={openStickerPanel}
@@ -386,7 +386,7 @@ const Chat = ({ props }) => {
         </div>
         <div
           className={styles.send}
-          style={Object.assign({}, stateTheme.chat.input, {
+          style={Object.assign({}, stateTheme.base.quaternaryBackground, {
             borderColor: stateTheme.chat.input.backgroundColor
           })}
           onClick={sendMessage}

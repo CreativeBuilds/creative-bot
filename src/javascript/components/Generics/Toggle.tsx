@@ -27,7 +27,7 @@ const Toggle = ({header, type, isOn, isEnabled, onClick, onChange = null, stateT
                 <div
                   style={{
                     background: ison
-                      ? stateTheme.main.highlightColor
+                      ? theme.globals.accentBackground.backgroundColor
                       : stateTheme.chat.message.alternate.backgroundColor
                   }}
                   className={ison ? styles.isOn : ''}

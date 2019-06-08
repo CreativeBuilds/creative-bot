@@ -29,7 +29,7 @@ interface ContextMenu {
 
 const ContextMenu = ({contextItems, isOpen = false, onClickedOutside, isSubMenu = false} : ContextMenu) => {
 
-    const [stateTheme, setStateTheme] = useState(ThemeContext);
+    const [stateTheme, setStateTheme] = useState(theme.dark);
     const [opened, setOpened] = useState<Boolean>(isOpen);
     const [show, showMenu] = useState<Boolean>(false);
     const [config, setConfig] = useState<any>(null);
@@ -61,7 +61,7 @@ const ContextMenu = ({contextItems, isOpen = false, onClickedOutside, isSubMenu 
 
     return (
         <div className={`${styles.contextMenu} ${isSubMenu ? styles.subMenu : null }`} onClick={() => onClickedOutside() } >
-            <ul className={`${styles.contextMenuContent}`}  style={stateTheme.contextMenu}>
+            <ul className={`${styles.contextMenuContent}`}  style={stateTheme.base.tertiaryBackground}>
                 {contextItems.map(i => (
                     <ContextMenuItem contextItem={i} />
                 ))}
