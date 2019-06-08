@@ -153,11 +153,11 @@ const Command = ({
       className={styles.user}
       style={Object.assign(
         {},
-        stateTheme.chat.message,
-        nth % 2 ? stateTheme.chat.message.alternate : {}
+        stateTheme.cell.normal,
+        nth % 2 ? stateTheme.cell.alternate : { }
       )}
     >
-      <div className={styles.toggle_wrappers}>
+      <div className={styles.toggle_wrappers} style={stateTheme.base.quaternaryForeground}>
         <div className={styles.username}>
           {command.name}{' '}
           <MdEdit

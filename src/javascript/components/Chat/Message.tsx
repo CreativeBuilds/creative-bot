@@ -267,8 +267,8 @@ const Message = ({
     }`}
     style={Object.assign(
       {},
-      stateTheme.chat.message,
-      nth % 2 ? stateTheme.chat.message.alternate : {}
+      stateTheme.cell.normal,
+      nth % 2 ? stateTheme.cell.alternate : { }
     )}
   >
     <MessageHeader stateTheme={stateTheme} styles={styles} message={message} headerType={MessageHeaderType.normal} onClick={e => {

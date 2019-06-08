@@ -14,7 +14,7 @@ const Menu = props => {
   return (
     <React.Fragment>
       <div
-        style={stateTheme.menu}
+        style={Object.assign({}, stateTheme.base.secondaryBackground, stateTheme.base.quaternaryForeground)}
         className={`${styles.menu_popout} ${isOpen ? styles.menu_toggled : ''}`}
       >
         <MdClose
@@ -23,7 +23,7 @@ const Menu = props => {
           }}
         />
         <ul>
-          <Li style={stateTheme.menu.title}>MENU</Li>
+          <Li style={Object.assign({}, stateTheme.toolBar, stateTheme.base.quaternaryForeground)}>MENU</Li>
           <Li
             style={{}}
             hoverStyle={stateTheme.menu.title_hover}

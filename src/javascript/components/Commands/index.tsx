@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useContext, useState, useEffect } from 'react';
-import { ThemeContext } from '../../helpers';
+import { theme, ThemeContext } from '../../helpers';
 import * as _ from 'lodash';
 import { MdAddCircle } from 'react-icons/md';
 const { Command } = require('./Command');
@@ -133,12 +133,12 @@ const CommandsPage = ({ props }) => {
   };
 
   return (
-    <div style={stateTheme.menu} className={styles.Points}>
-      <div style={stateTheme.menu.title} className={styles.header}>
+    <div style={stateTheme.base.secondaryBackground} className={styles.Points}>
+      <div style={Object.assign({},stateTheme.toolBar, stateTheme.base.quaternaryForeground)} className={styles.header}>
         COMMANDS
         <textarea
           className={styles.usersearch}
-          style={stateTheme.chat.message.alternate}
+          style={stateTheme.base.background}
           placeholder={'Search...'}
           value={searchCommandName}
           onChange={e => {

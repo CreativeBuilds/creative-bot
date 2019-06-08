@@ -172,8 +172,8 @@ const ViewListPopup = props => {
                 className={styles.popup_list_item}
                 style={Object.assign(
                   {},
-                  stateTheme.chat.message.secondAlternate,
-                  nth % 2 ? stateTheme.chat.message.alternate : {}
+                  stateTheme.cell.normal,
+                  nth % 2 ? stateTheme.cell.alternate : { }
                 )}
               >
                 {value.value || 'Test string'}

@@ -69,14 +69,22 @@ const theme = {
           stroke: "#BDBDBD"
       }
     },
-    transparent: {
-      backgroundColor: 'transparent'
+    seperator: {
+
     },
-    main: {
-      backgroundColor: '#202225',
-      color: '#f0f0f0',
-      fill: '#f0f0f0',
-      highlightColor: '#ffd300'
+    cell: {
+      normal: {
+        backgroundColor: "#202225",
+        color: "#CCCCCC"
+      },
+      alternate: {
+        backgroundColor: "#0e0f10",
+        color: "#F1F1F1"
+      }
+    },
+    toolBar: {
+      'border-bottom': '4px solid #202225',
+      'font-size': '30px'
     },
     menu: {
       backgroundColor: '#141517',
@@ -181,13 +189,22 @@ const theme = {
         stroke: "#424242"
       }
     },
-    transparent: {
-      backgroundColor: 'transparent'
+    seperator: {
+
     },
-    main: {
-      backgroundColor: '#ffffff',
-      color: `#202225`,
-      highlightColor: '#ffd300'
+    cell: {
+      normal: {
+        backgroundColor: '#ffffff',
+        color: '#202225',
+      },
+      alternate: {
+        backgroundColor: '#eeeeee',
+        color: '#202225'
+      }
+    },
+    toolBar: {
+      'border-bottom': '4px solid #cccccc',
+      'font-size': '30px'
     },
     menu: {
       backgroundColor: `#eeeeee`,

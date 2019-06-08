@@ -32,12 +32,12 @@ const UsersPage = ({ props }) => {
   );
 
   return (
-    <div style={stateTheme.menu} className={styles.Points}>
-      <div style={stateTheme.menu.title} className={styles.header}>
+    <div style={stateTheme.base.secondaryBackground} className={styles.Points}>
+      <div style={Object.assign({}, stateTheme.toolBar, stateTheme.base.quaternaryForeground)} className={styles.header}>
         USERS
         <textarea
           className={styles.usersearch}
-          style={Object.assign({}, stateTheme.chat.message.alternate, {
+          style={Object.assign({}, stateTheme.base.background, {
             borderColor: stateTheme.menu.backgroundColor
           })}
           placeholder={'Search...'}
