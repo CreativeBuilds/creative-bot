@@ -35,7 +35,6 @@ const UserPopup = ({
         let User = users[user.blockchainUsername];
         setUser(User);
         setPoints(User.points);
-        console.log(User);
         setIsAdmin(!!User.isAdmin);
       }
       setUsers(users);
@@ -115,7 +114,16 @@ const UserPopup = ({
                 value={points}
               />
             </div>
-            <Toggle header="Is Admin" type={ToggleType.compact} isEnabled={true} isOn={isAdmin} onClick={() => { setIsAdmin(!isAdmin); }} stateTheme={stateTheme}/>
+            <Toggle
+              header='Is Admin'
+              type={ToggleType.compact}
+              isEnabled={true}
+              isOn={isAdmin}
+              onClick={() => {
+                setIsAdmin(!isAdmin);
+              }}
+              stateTheme={stateTheme}
+            />
           </div>
           <div
             className={Styles.user_submit}
