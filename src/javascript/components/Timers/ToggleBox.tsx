@@ -7,7 +7,7 @@ const ToggleBox = ({ styles, timer, stateTheme, ipcRenderer, editTimer }) => {
   return (
     <div
       className={styles.box}
-      style={Object.assign({}, stateTheme.base.quaternaryForeground)}
+      style={Object.assign({}, stateTheme.base.quinaryForeground)}
       onClick={() => {
         editTimer(timer.name, !timer.enabled);
       }}

@@ -47,11 +47,7 @@ const AddListPopup = ({
       <div
         className={styles.submit}
         onClick={save}
-        style={{
-          backgroundColor: stateTheme.menu.backgroundColor,
-          color: stateTheme.menu.color,
-          borderColor: stateTheme.menu.backgroundColor
-        }}
+        style={stateTheme.submitButton}
       >
         CREATE
       </div>

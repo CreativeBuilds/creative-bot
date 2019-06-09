@@ -43,7 +43,7 @@ const AddCommandPopup = ({
   };
 
   return (
-    <div className={styles.popup} style={stateTheme.main}>
+    <div className={styles.popup}>
       <div className={styles.input_wrapper}>
         <div className={styles.input_name}>Name</div>
         <textarea
@@ -72,7 +72,7 @@ const AddCommandPopup = ({
           <span
             className={styles.hover}
             style={{
-              color: stateTheme.main.highlightColor,
+              color: stateTheme.base.quaternaryForeground,
               fontWeight: 'bold'
             }}
             onClick={e => {
@@ -89,11 +89,7 @@ const AddCommandPopup = ({
       <div
         className={styles.submit}
         onClick={save}
-        style={{
-          backgroundColor: stateTheme.menu.backgroundColor,
-          color: stateTheme.menu.color,
-          borderColor: stateTheme.menu.backgroundColor
-        }}
+        style={stateTheme.submitButton}
       >
         CREATE
       </div>
@@ -133,8 +129,8 @@ const CommandsPage = ({ props }) => {
   };
 
   return (
-    <div style={stateTheme.base.secondaryBackground} className={styles.Points}>
-      <div style={Object.assign({},stateTheme.toolBar, stateTheme.base.quaternaryForeground)} className={styles.header}>
+    <div style={stateTheme.base.tertiaryBackground} className={styles.Points}>
+      <div style={Object.assign({},stateTheme.toolBar, stateTheme.base.quinaryForeground)} className={styles.header}>
         COMMANDS
         <textarea
           className={styles.usersearch}

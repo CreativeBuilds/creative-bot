@@ -38,7 +38,7 @@
             }
 
             .segmentInput:checked + .segmentLabel {
-                background:  $dliveaccent;
+                background:  $dliveaccent !important;
                 border-radius: 25px;
                 color: black; 
                 box-shadow: 1px 1px 30px rgba(21,21,21,0.6);

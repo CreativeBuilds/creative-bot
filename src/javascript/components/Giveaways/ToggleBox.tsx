@@ -7,7 +7,7 @@ const ToggleBox = ({ styles, giveaway, stateTheme, ipcRenderer }) => {
   return (
     <div
       className={styles.box}
-      style={Object.assign({}, stateTheme.base.quaternaryForeground)}
+      style={Object.assign({}, stateTheme.base.quinaryForeground)}
       onClick={() => {
         ipcRenderer.send('togglegiveaway', {
           name: giveaway.name,

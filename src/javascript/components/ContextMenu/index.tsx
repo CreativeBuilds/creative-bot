@@ -61,7 +61,7 @@ const ContextMenu = ({contextItems, isOpen = false, onClickedOutside, isSubMenu 
 
     return (
         <div className={`${styles.contextMenu} ${isSubMenu ? styles.subMenu : null }`} onClick={() => onClickedOutside() } >
-            <ul className={`${styles.contextMenuContent}`}  style={stateTheme.base.tertiaryBackground}>
+            <ul className={`${styles.contextMenuContent}`}  style={stateTheme.base.quatrnaryBackground}>
                 {contextItems.map(i => (
                     <ContextMenuItem contextItem={i} />
                 ))}

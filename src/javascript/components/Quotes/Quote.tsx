@@ -48,7 +48,7 @@ const Quote = ({
       };
 
     return (
-        <div className={styles.user}  style={Object.assign(
+        <div className={styles.user} style={Object.assign(
           {},
           stateTheme.cell.normal,
           nth % 2 ? stateTheme.cell.alternate : { }

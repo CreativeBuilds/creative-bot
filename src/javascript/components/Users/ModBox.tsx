@@ -10,7 +10,7 @@ const ModBox = ({ styles, user, stateTheme }) => {
     setIsOn(!isOn);
   };
   return (
-    <div className={styles.box} style={Object.assign({}, stateTheme.base.quaternaryForeground)}>
+    <div className={styles.box} style={Object.assign({}, stateTheme.base.quinaryForeground)}>
       {isOn ? <MdCheck /> : null}
     </div>
   );

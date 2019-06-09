@@ -112,7 +112,7 @@ const ViewListPopup = props => {
   return (
     <div
       className={styles.popup}
-      style={Object.assign({}, stateTheme.main, { position: 'relative' })}
+      style={Object.assign({}, stateTheme.base.quinaryForeground, { position: 'relative' })}
     >
       <div className={styles.popup_add_item}>
         <MdAddCircle

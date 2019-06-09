@@ -140,11 +140,12 @@ const Giveaway = ({
               Object.keys(giveaway.entries).length > 0 ? styles.no_hover : ''
             }`}
             style={{
-              color: stateTheme.main.backgroundColor,
-              backgroundColor:
+              color: stateTheme.base.quaternaryForeground.color,
+              backgroundColor: stateTheme.base.quaternaryBackground.backgroundColor,
+              opacity:
                 Object.keys(giveaway.entries).length > 0
-                  ? stateTheme.main.color
-                  : '#333'
+                  ? 1.0
+                  : 0.25
             }}
             onClick={() => {
               pickWinner(giveaway);

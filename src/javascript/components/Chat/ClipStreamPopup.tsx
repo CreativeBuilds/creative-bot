@@ -41,7 +41,7 @@ const ClipStreamPopup = ({
 
 
     return (
-      <div className={styles.popup} style={stateTheme.main}>
+      <div className={styles.popup}>
         <h2>Clip Stream</h2>
         <div className={`${styles.stickersPopup}`}>
             
@@ -49,11 +49,7 @@ const ClipStreamPopup = ({
         <div className={styles.buttonstack}>
           <div
           className={styles.submit}
-          style={{
-            backgroundColor: stateTheme.menu.backgroundColor,
-            color: stateTheme.menu.color,
-            borderColor: stateTheme.menu.backgroundColor
-          }}
+          style={stateTheme.submitButton}
           onClick={() => { 
               
             }}>

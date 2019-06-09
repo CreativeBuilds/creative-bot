@@ -99,7 +99,7 @@ const TitleBar = ({ Config = null } : TitleBar) => {
     const [isMaximize, setMaximized] = useState(isMaximized());
 
     return (
-        <div className={styles.titleBar} style={stateTheme.base.quaternaryBackground}>
+        <div className={styles.titleBar} style={stateTheme.base.quinaryBackground}>
             <div className={styles.dragRegion}>
             </div>
             <div className={styles.iconContainer} >

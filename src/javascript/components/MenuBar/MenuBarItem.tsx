@@ -74,8 +74,8 @@ const MenuBarItem = ({ menuItem, hidden = true, action }: MenuBar) => {
       style={
         isComponentVisible
           ? isHovering
-            ? stateTheme.base.tertiaryBackground
-            : stateTheme.base.tertiaryBackground
+            ? stateTheme.base.quaternaryBackground
+            : stateTheme.base.quaternaryBackground
           : isHovering
           ? stateTheme.titleBarHover
           : null

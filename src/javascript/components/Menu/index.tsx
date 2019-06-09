@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState, useContext } from 'react';
 import { MdMenu, MdClose, MdEventBusy } from 'react-icons/md';
-import { ThemeContext } from '../../helpers';
+import { ThemeContext, theme } from '../../helpers';
 
 import { Li } from './li';
 
@@ -14,7 +14,7 @@ const Menu = props => {
   return (
     <React.Fragment>
       <div
-        style={Object.assign({}, stateTheme.base.secondaryBackground, stateTheme.base.quaternaryForeground)}
+        style={Object.assign({}, stateTheme.base.tertiaryBackground, stateTheme.base.quinaryForeground)}
         className={`${styles.menu_popout} ${isOpen ? styles.menu_toggled : ''}`}
       >
         <MdClose
@@ -26,7 +26,7 @@ const Menu = props => {
           <Li style={Object.assign({}, stateTheme.toolBar, stateTheme.base.quaternaryForeground)}>MENU</Li>
           <Li
             style={{}}
-            hoverStyle={stateTheme.menu.title_hover}
+            hoverStyle={Object.assign({}, stateTheme.base.secondaryBackground, theme.globals.accentForeground)}
             onClick={() => {
               setUrl('/');
               setIsOpen(false);
@@ -36,7 +36,7 @@ const Menu = props => {
           </Li>
           <Li
             style={{}}
-            hoverStyle={stateTheme.menu.title_hover}
+            hoverStyle={Object.assign({}, stateTheme.base.secondaryBackground, theme.globals.accentForeground)}
             onClick={() => {
               setUrl('/users');
               setIsOpen(false);
@@ -46,7 +46,7 @@ const Menu = props => {
           </Li>
           <Li
             style={{}}
-            hoverStyle={stateTheme.menu.title_hover}
+            hoverStyle={Object.assign({}, stateTheme.base.secondaryBackground, theme.globals.accentForeground)}
             onClick={() => {
               setUrl('/giveaways');
               setIsOpen(false);
@@ -56,7 +56,7 @@ const Menu = props => {
           </Li>
           <Li
             style={{}}
-            hoverStyle={stateTheme.menu.title_hover}
+            hoverStyle={Object.assign({}, stateTheme.base.secondaryBackground, theme.globals.accentForeground)}
             onClick={() => {
               setUrl('/commands');
               setIsOpen(false);
@@ -66,7 +66,7 @@ const Menu = props => {
           </Li>
           <Li
             style={{}}
-            hoverStyle={stateTheme.menu.title_hover}
+            hoverStyle={Object.assign({}, stateTheme.base.secondaryBackground, theme.globals.accentForeground)}
             onClick={() => {
               setUrl('/timers');
               setIsOpen(false);
@@ -76,7 +76,7 @@ const Menu = props => {
           </Li>
           <Li
             style={{}}
-            hoverStyle={stateTheme.menu.title_hover}
+            hoverStyle={Object.assign({}, stateTheme.base.secondaryBackground, theme.globals.accentForeground)}
             onClick={() => {
               setUrl('/quotes');
               setIsOpen(false);
@@ -86,7 +86,7 @@ const Menu = props => {
           </Li>
           { <Li
             style={{}}
-            hoverStyle={stateTheme.menu.title_hover}
+            hoverStyle={Object.assign({}, stateTheme.base.secondaryBackground, theme.globals.accentForeground)}
             onClick={() => {
               setUrl('/lists');
               setIsOpen(false);
@@ -96,7 +96,7 @@ const Menu = props => {
           </Li>}
           <Li
             style={{}}
-            hoverStyle={stateTheme.menu.title_hover}
+            hoverStyle={Object.assign({}, stateTheme.base.secondaryBackground, theme.globals.accentForeground)}
             onClick={() => {
               setUrl('/settings');
               setIsOpen(false);
@@ -108,6 +108,7 @@ const Menu = props => {
       </div>
       <div
         className={styles.hamburger}
+        style={stateTheme.base.quinaryForeground}
         onClick={() => {
           setIsOpen(true);
         }}

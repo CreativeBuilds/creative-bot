@@ -45,8 +45,8 @@ const ListsPage = ({ props }) => {
   };
 
   return (
-    <div style={stateTheme.base.secondaryBackground} className={styles.Points}>
-      <div style={Object.assign({}, stateTheme.toolBar, stateTheme.base.quaternaryForeground)} className={styles.header}>
+    <div style={stateTheme.base.tertiaryBackground} className={styles.Points}>
+      <div style={Object.assign({}, stateTheme.toolBar, stateTheme.base.quinaryForeground)} className={styles.header}>
         LISTS
         <textarea
           className={styles.usersearch}

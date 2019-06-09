@@ -52,7 +52,7 @@ const Main = ({ Config } : Main) => {
         <div className={styles.appFrame}>         
           <TitleBar Config={config}/>
           <Banner />
-          <div className={styles.main} style={style().base.secondaryBackground}>
+          <div className={styles.main} style={style().base.tertiaryBackground}>
             <Router />
           </div>
         </div>

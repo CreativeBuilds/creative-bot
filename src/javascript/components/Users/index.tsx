@@ -32,8 +32,8 @@ const UsersPage = ({ props }) => {
   );
 
   return (
-    <div style={stateTheme.base.secondaryBackground} className={styles.Points}>
-      <div style={Object.assign({}, stateTheme.toolBar, stateTheme.base.quaternaryForeground)} className={styles.header}>
+    <div style={stateTheme.base.tertiaryBackground} className={styles.Points}>
+      <div style={Object.assign({}, stateTheme.toolBar, stateTheme.base.quinaryForeground)} className={styles.header}>
         USERS
         <textarea
           className={styles.usersearch}

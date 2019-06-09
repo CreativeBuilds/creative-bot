@@ -20,7 +20,7 @@ const Popup = ({ user, styles, closeCurrentPopup, stateTheme }) => {
   };
 
   return (
-    <div className={styles.popup} style={stateTheme.main}>
+    <div className={styles.popup}>
       {/* <h1>
         Edit {user.dliveUsername}
         {user.dliveUsername[user.dliveUsername.length - 1].toLowerCase() === 's'
@@ -48,11 +48,7 @@ const Popup = ({ user, styles, closeCurrentPopup, stateTheme }) => {
       </div>
       <div
         className={styles.submit}
-        style={{
-          backgroundColor: stateTheme.menu.backgroundColor,
-          color: stateTheme.menu.color,
-          borderColor: stateTheme.menu.backgroundColor
-        }}
+        style={stateTheme.submitButton}
         onClick={() => {
           if (isNaN(Number(points))) return;
           saveToDB(Number(points));

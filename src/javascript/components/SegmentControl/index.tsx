@@ -58,7 +58,7 @@ const SegmentControl = ({source, view, defaultValue, Config = {}} : SegmentContr
 
     return (
         <div className={styles.segmentControl}>
-            <div className={styles.segmentHeader} style={stateTheme.segmentControlHeader}>
+            <div className={styles.segmentHeader} style={stateTheme.base.background}>
                 {source.map(i => <SegmentControlItem id={i.name} title={i.name as string} defaultValue={defaultValue} onClick={() => onClick(i.id)}/>)}
             </div>
             <div className={styles.segmentBody}>

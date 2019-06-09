@@ -34,49 +34,49 @@ const theme = {
   dark: {
     base: {
       background: {
+          backgroundColor: "#070708",
+          color: "#F8F8F7"
+      },
+      secondaryBackground: {
           backgroundColor: "#0e0f10",
           color: "#F1F1F1"
       },
-      secondaryBackground: {
+      tertiaryBackground: {
           backgroundColor: "#141517",
           color: "#DFDDDA"
       },
-      tertiaryBackground: {
+      quaternaryBackground: {
           backgroundColor: "#1f1f1f",
           color: "#E0E0E0"
       },
-      quaternaryBackground: {
+      quinaryBackground: {
           backgroundColor: "#202225",
           color: "#CCCCCC"
       },
-      quinaryBackground: {
-          backgroundColor: "#424242",
-          color: "#BDBDBD"
-      },
       foreground: {
+          color: "#F8F8F7",
+          fill: "#F8F8F7",
+          stroke: "#F8F8F7"
+      },
+      secondaryForeground: {
           color: "#F1F1F1",
           fill: "#F1F1F1",
           stroke: "#F1F1F1"
       },
-      secondaryForeground: {
+      tertiaryForeground: {
           color: "#DFDDDA",
           fill: "#DFDDDA",
           stroke: "#DFDDDA"
       },
-      tertiaryForeground: {
+      quaternaryForeground: {
           color: "#E0E0E0",
           fill: "#E0E0E0",
           stroke: "#E0E0E0"
       },
-      quaternaryForeground: {
+      quinaryForeground: {
           color: "#CCCCCC",
           fill: "#CCCCCC",
           stroke: "#CCCCCC"
-      },
-      quinaryForeground: {
-          color: "#BDBDBD",
-          fill: "#BDBDBD",
-          stroke: "#BDBDBD"
       }
     },
     seperator: {
@@ -109,107 +109,53 @@ const theme = {
       color: '#f0f0f0',
       borderColor: '#0e0f10'
     },
-    menu: {
-      backgroundColor: '#141517',
-      color: '#f0f0f0',
-      title: {
-        'border-bottom': '4px solid #202225',
-        'font-size': '30px'
-      },
-      title_hover: {
-        backgroundColor: '#0e0f10'
-      }
-    },
-    segmentControlHeader: {
-      backgroundColor: '#000000',
-      Color: '#ffffff'
-    },
-    segmentControlItem: {
-      Color: '#ffffff'
-    },
-    titleBar: {
-      backgroundColor: '#202225',
-      color: '#CCCCCC',
-    },
-    titleBarActionIcon: {
-      '-webkit-filter': 'invert(80%)'
-    },
-    titleBarHover: {
-      backgroundColor: 'hsla(0,0%,100%,.1)'
-    },
-    menuItemSelected: {
-      backgroundColor: '#1f1f1f',
-    },
-    contextMenu: {
-      backgroundColor: '#1f1f1f',
-      color: '#b4b4b4'
-
-    },
-    chat: {
-      input: {
-        backgroundColor: '#202225',
-        color: '#f0f0f0'
-      },
-      message: {
-        backgroundColor: '#202225',
-        color: '#f0f0f0',
-        secondAlternate: {
-          backgroundColor: 'rgb(24, 25, 26)',
-          color: '#f0f0f0'
-        },
-        alternate: {
-          backgroundColor: 'rgb(14, 15, 16)',
-          color: '#f0f0f0'
-        }
-      }
-    }
   },
   light: {
     base: {
       background: {
+          backgroundColor: "#F8F8F7",
+          color: "#070708"
+      },
+      secondaryBackground: {
           backgroundColor: "#F1F1F1",
           color: "#0e0e10"
       },
-      secondaryBackground: {
+      tertiaryBackground: {
           backgroundColor: "#DFDDDA",
           color: "#202225"
       },
-      tertiaryBackground: {
+      quaternaryBackground: {
           backgroundColor: "#E0E0E0",
           color: "#1f1f1f"
       },
-      quaternaryBackground: {
+      quinaryBackground: {
           backgroundColor: "#CCCCCC",
           color: "#333333"
       },
-      quinaryBackground: {
-        backgroundColor: "#BDBDBD",
-        color: "#424242"
-      },
       foreground: {
+          color: "#070708",
+          fill: "#070708",
+          stroke: "#070708"
+      },
+      secondaryForeground: {
           color: "#0e0e10",
           fill: "#0e0e10",
           stroke: "#0e0e10"
       },
-      secondaryForeground: {
+      tertiaryForeground: {
           color: "#202225",
           fill: "#202225",
           stroke: "#202225"
       },
-      tertiaryForeground: {
+      quaternaryForeground: {
           color: "#1f1f1f",
           fill: "#1f1f1f",
           stroke: "#1f1f1f"
       },
-      quaternaryForeground: {
+      quinaryForeground: {
           color: "#333333",
           fill: "#333333",
           stroke: "#333333"
-      },
-      quinaryForeground: {
-        color: "#424242",
-        fill: "#424242",
-        stroke: "#424242"
       }
     },
     seperator: {
@@ -242,61 +188,6 @@ const theme = {
       color: '#202225',
       borderColor: `#F1F1F1`
     },
-    menu: {
-      backgroundColor: `#eeeeee`,
-      color: '#202225',
-      highlightColor: '#ffd3000',
-      title: {
-        'border-bottom': '4px solid #cccccc',
-        'font-size': '30px'
-      },
-      title_hover: {
-        backgroundColor: '#dddddd'
-      }
-    },
-    segmentControlHeader: {
-      backgroundColor: '#cccccc',
-      Color: '#000000'
-    },
-    segmentControlItem: {
-      Color: '#212121'
-    },
-    titleBar: {
-      backgroundColor: '#cccccc',
-      color: '#333333'
-    },
-    titleBarActionIcon: {
-      '-webkit-filter': 'invert(30%)'
-    },
-    titleBarHover: {
-      backgroundColor: 'rgba(0, 0, 0, 0.1)'
-    },
-    menuItemSelected: {
-      backgroundColor: '#e3e3e3',
-    },
-    contextMenu: {
-      backgroundColor: '#e3e3e3',
-      color: '#1f1f1f'
-
-    },
-    chat: {
-      input: {
-        backgroundColor: '#ffffff',
-        color: '#202225'
-      },
-      message: {
-        backgroundColor: '#ffffff',
-        color: '#202225',
-        secondAlternate: {
-          backgroundColor: '#dddddd',
-          color: '#202225'
-        },
-        alternate: {
-          backgroundColor: '#eeeeee',
-          color: '#202225'
-        }
-      }
-    }
   }
 };
 
