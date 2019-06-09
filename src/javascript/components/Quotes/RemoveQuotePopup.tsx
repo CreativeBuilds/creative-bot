@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { filter, first } from 'rxjs/operators';
+import { theme } from '../../helpers';
 let { setRxQuotes, rxQuotes } = require('../../helpers/rxQuotes');
 
 const Window: any = window;
@@ -29,12 +30,13 @@ const RemoveQuotePopup = ({
   };
 
   return (
-    <div className={styles.popup} style={stateTheme.main}>
+    <div className={styles.popup}>
       <div className={styles.remove_text}>
         You're about to delete this quote! Are you sure you want to do that?
       </div>
       <div
         className={styles.submit}
+        style={theme.globals.destructiveButton}
         onClick={() => {
           saveToDB();
           closeCurrentPopup();

@@ -18,7 +18,7 @@ interface MenuBar {
 }
 
 const MenuBarItem = ({ menuItem, hidden = true, action }: MenuBar) => {
-  const [stateTheme, setStateTheme] = useState(ThemeContext);
+  const [stateTheme, setStateTheme] = useState(theme.dark);
   const [show, showMenu] = useState<Boolean>(false);
   const [isHovering, setHovering] = useState<Boolean>(false);
   const [config, setConfig] = useState<any>(null);
@@ -74,8 +74,8 @@ const MenuBarItem = ({ menuItem, hidden = true, action }: MenuBar) => {
       style={
         isComponentVisible
           ? isHovering
-            ? stateTheme.menuItemSelected
-            : stateTheme.menuItemSelected
+            ? stateTheme.base.quaternaryBackground
+            : stateTheme.base.quaternaryBackground
           : isHovering
           ? stateTheme.titleBarHover
           : null
@@ -98,9 +98,5 @@ const MenuBarItem = ({ menuItem, hidden = true, action }: MenuBar) => {
     </li>
   );
 };
-
-/*<ClickOutside onClickedOutside={() => {showMenu(false);}}>
-                    {show === true && <ContextMenu contextItems={menuItem.contextMenu} />}
-</ClickOutside>*/
 
 export { MenuBarItem };

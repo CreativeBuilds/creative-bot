@@ -23,7 +23,7 @@ const NewListElement = ({ closeCurrentPopup, stateTheme, list }) => {
   };
 
   return (
-    <div className={styles.popup} style={stateTheme.main}>
+    <div className={styles.popup}>
       <h1>NEW ITEM</h1>
       <div
         className={listStyle.input_wrapper}
@@ -39,11 +39,7 @@ const NewListElement = ({ closeCurrentPopup, stateTheme, list }) => {
         />
         <div
           className={styles.button}
-          style={{
-            backgroundColor: stateTheme.menu.backgroundColor,
-            color: stateTheme.menu.color,
-            borderColor: stateTheme.menu.backgroundColor
-          }}
+          style={stateTheme.submitButton}
           onClick={() => {
             submit();
           }}
@@ -116,7 +112,7 @@ const ViewListPopup = props => {
   return (
     <div
       className={styles.popup}
-      style={Object.assign({}, stateTheme.main, { position: 'relative' })}
+      style={Object.assign({}, stateTheme.base.quinaryForeground, { position: 'relative' })}
     >
       <div className={styles.popup_add_item}>
         <MdAddCircle
@@ -144,11 +140,7 @@ const ViewListPopup = props => {
           onChange={e => {
             setSearch(e.target.value);
           }}
-          style={{
-            backgroundColor: stateTheme.menu.backgroundColor,
-            color: stateTheme.menu.color,
-            borderColor: stateTheme.menu.backgroundColor
-          }}
+          style={stateTheme.searchInput}
         />
       </div>
       <div className={styles.popup_list_header}>
@@ -172,8 +164,8 @@ const ViewListPopup = props => {
                 className={styles.popup_list_item}
                 style={Object.assign(
                   {},
-                  stateTheme.chat.message.secondAlternate,
-                  nth % 2 ? stateTheme.chat.message.alternate : {}
+                  stateTheme.cell.normal,
+                  nth % 2 ? stateTheme.cell.alternate : { }
                 )}
               >
                 {value.value || 'Test string'}

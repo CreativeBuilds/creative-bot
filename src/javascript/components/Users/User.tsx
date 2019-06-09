@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ModBox } from './ModBox';
 
 import { MdModeEdit } from 'react-icons/md';
+import { theme } from '../../helpers';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -19,7 +20,7 @@ const Popup = ({ user, styles, closeCurrentPopup, stateTheme }) => {
   };
 
   return (
-    <div className={styles.popup} style={stateTheme.main}>
+    <div className={styles.popup}>
       {/* <h1>
         Edit {user.dliveUsername}
         {user.dliveUsername[user.dliveUsername.length - 1].toLowerCase() === 's'
@@ -47,11 +48,7 @@ const Popup = ({ user, styles, closeCurrentPopup, stateTheme }) => {
       </div>
       <div
         className={styles.submit}
-        style={{
-          backgroundColor: stateTheme.menu.backgroundColor,
-          color: stateTheme.menu.color,
-          borderColor: stateTheme.menu.backgroundColor
-        }}
+        style={stateTheme.submitButton}
         onClick={() => {
           if (isNaN(Number(points))) return;
           saveToDB(Number(points));
@@ -88,8 +85,8 @@ const User = ({
       className={styles.user}
       style={Object.assign(
         {},
-        stateTheme.chat.message,
-        nth % 2 ? stateTheme.chat.message.alternate : {}
+        stateTheme.cell.normal,
+        nth % 2 ? stateTheme.cell.alternate : { }
       )}
     >
       <div className={styles.image_container}>
