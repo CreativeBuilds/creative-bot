@@ -175,9 +175,6 @@ const theme = {
       'border-bottom': '4px solid #cccccc',
       'font-size': '30px'
     },
-    button: {
-
-    },
     submitButton: {
       backgroundColor: `#eeeeee`,
       color: '#202225',
