@@ -20,7 +20,7 @@ const Popup = ({
   const [value, setValue] = useState<string>(configOption.value.toString());
 
   return (
-    <div className={styles.popup} style={stateTheme.main}>
+    <div className={styles.popup}>
       <h1>{configOption.name}</h1>
       <textarea
         className={styles.input}
@@ -31,11 +31,7 @@ const Popup = ({
       />
       <div
         className={styles.submit}
-        style={{
-          backgroundColor: stateTheme.menu.backgroundColor,
-          color: stateTheme.menu.color,
-          borderColor: stateTheme.menu.backgroundColor
-        }}
+        style={stateTheme.submitButton}
         onClick={() => {
           let Config = Object.assign({}, config);
           switch (configOption.type) {

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { ToggleBox } from './ToggleBox';
 
 import { MdModeEdit, MdEdit, MdDelete } from 'react-icons/md';
+import { theme } from '../../helpers';
 let { setRxGiveaways } = require('../../helpers/rxGiveaways');
 
 const Window: any = window;
@@ -25,12 +26,13 @@ const RemoveGiveawayPopup = ({
   };
 
   return (
-    <div className={styles.popup} style={stateTheme.main}>
+    <div className={styles.popup}>
       <div className={styles.remove_text}>
         You're about to delete this giveaway! Are you sure you want to do that?
       </div>
       <div
         className={styles.submit}
+        style={theme.globals.destructiveButton}
         onClick={() => {
           saveToDB();
           closeCurrentPopup();

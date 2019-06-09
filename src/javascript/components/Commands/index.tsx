@@ -138,7 +138,7 @@ const CommandsPage = ({ props }) => {
         COMMANDS
         <textarea
           className={styles.usersearch}
-          style={stateTheme.base.background}
+          style={stateTheme.searchInput}
           placeholder={'Search...'}
           value={searchCommandName}
           onChange={e => {

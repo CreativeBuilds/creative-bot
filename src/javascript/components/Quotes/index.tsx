@@ -59,7 +59,7 @@ const QuotesPage = ({ props }) => {
                 QUOTES
                 <textarea
                 className={styles.usersearch}
-                style={stateTheme.base.background}
+                style={stateTheme.searchInput}
                 placeholder={'Search...'}
                 value={searchQuoteName}
                 onChange={e => {

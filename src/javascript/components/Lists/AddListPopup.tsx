@@ -29,7 +29,7 @@ const AddListPopup = ({
   };
 
   return (
-    <div className={styles.popup} style={stateTheme.main}>
+    <div className={styles.popup}>
       <div className={styles.input_wrapper}>
         <div className={styles.input_name}>Name</div>
         <textarea

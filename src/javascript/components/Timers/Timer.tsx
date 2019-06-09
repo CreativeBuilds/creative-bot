@@ -3,6 +3,8 @@ import { useState } from 'react';
 
 import { ToggleBox } from './ToggleBox';
 
+import { theme } from '../../helpers';
+
 import { MdModeEdit, MdEdit, MdDelete } from 'react-icons/md';
 let { setRxTimers, rxTimers } = require('../../helpers/rxTimers');
 import { first } from 'rxjs/operators';
@@ -129,6 +131,7 @@ const RemoveTimerPopup = ({ timer, styles, closeCurrentPopup, stateTheme }) => {
       </div>
       <div
         className={styles.submit}
+        style={theme.globals.destructiveButton}
         onClick={() => {
           saveToDB();
           closeCurrentPopup();

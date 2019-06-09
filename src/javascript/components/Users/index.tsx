@@ -37,9 +37,7 @@ const UsersPage = ({ props }) => {
         USERS
         <textarea
           className={styles.usersearch}
-          style={Object.assign({}, stateTheme.base.background, {
-            borderColor: stateTheme.menu.backgroundColor
-          })}
+          style={stateTheme.searchInput}
           placeholder={'Search...'}
           value={searchUsername}
           onChange={e => {

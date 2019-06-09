@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ModBox } from './ModBox';
 
 import { MdModeEdit } from 'react-icons/md';
+import { theme } from '../../helpers';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');

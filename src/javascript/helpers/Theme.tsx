@@ -17,6 +17,16 @@ const theme = {
         backgroundColor: "#ffd300",
         color: "#202225"
     },
+    destructiveButton: {
+      backgroundColor: '#dc143c',
+      color: '#f0f0f0',
+      borderColor: '#dc143c'
+    },
+    actionButton: {
+      backgroundColor: '#1e90ff',
+      color: '#f0f0f0',
+      borderColor: '#1e90ff'
+    },
     transparent: {
         backgroundColor: "transparent"
     }
@@ -85,6 +95,19 @@ const theme = {
     toolBar: {
       'border-bottom': '4px solid #202225',
       'font-size': '30px'
+    },
+    button: {
+
+    },
+    submitButton: {
+      backgroundColor: '#141517',
+      color: '#f0f0f0',
+      borderColor: '#141517'
+    },
+    searchInput: {
+      backgroundColor: '#0e0f10',
+      color: '#f0f0f0',
+      borderColor: '#0e0f10'
     },
     menu: {
       backgroundColor: '#141517',
@@ -205,6 +228,19 @@ const theme = {
     toolBar: {
       'border-bottom': '4px solid #cccccc',
       'font-size': '30px'
+    },
+    button: {
+
+    },
+    submitButton: {
+      backgroundColor: `#eeeeee`,
+      color: '#202225',
+      borderColor: `#eeeeee`
+    },
+    searchInput: {
+      backgroundColor: `#F1F1F1`,
+      color: '#202225',
+      borderColor: `#F1F1F1`
     },
     menu: {
       backgroundColor: `#eeeeee`,

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ToggleBox } from './ToggleBox';
 
 import { MdModeEdit, MdEdit, MdDelete } from 'react-icons/md';
+import { theme } from '../../helpers';
 let { setRxCommands } = require('../../helpers/rxCommands');
 
 const Window: any = window;
@@ -105,6 +106,7 @@ const RemoveCommandPopup = ({
       </div>
       <div
         className={styles.submit}
+        style={theme.globals.destructiveButton}
         onClick={() => {
           saveToDB();
           closeCurrentPopup();

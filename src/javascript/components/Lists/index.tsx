@@ -50,7 +50,7 @@ const ListsPage = ({ props }) => {
         LISTS
         <textarea
           className={styles.usersearch}
-          style={stateTheme.base.background}
+          style={stateTheme.searchInput}
           placeholder={'Search...'}
           value={searchListName}
           onChange={e => {

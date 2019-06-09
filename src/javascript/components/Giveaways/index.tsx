@@ -164,7 +164,7 @@ const GiveawaysPage = ({ props }) => {
         GIVEAWAYS
         <textarea
           className={styles.usersearch}
-          style={stateTheme.base.background}
+          style={stateTheme.searchInput}
           placeholder={'Search...'}
           value={searchGiveawayName}
           onChange={e => {

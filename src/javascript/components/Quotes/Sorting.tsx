@@ -30,7 +30,7 @@ const Sorting = ({
   };
 
   return (
-    <div className={styles.user} style={stateTheme.chat.message}>
+    <div className={styles.user} style={stateTheme.base.quaternaryBackground}>
       <div className={`${styles.toggle_wrappers} ${styles.titles}`}>
         <div
           className={styles.id}
