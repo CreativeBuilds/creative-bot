@@ -109,6 +109,9 @@ const theme = {
       color: '#f0f0f0',
       borderColor: '#0e0f10'
     },
+    timeStamp: {
+      color: "#AAAAAA"
+    }
   },
   light: {
     base: {
@@ -185,6 +188,9 @@ const theme = {
       color: '#202225',
       borderColor: `#F1F1F1`
     },
+    timeStamp: {
+      color: '#555555'
+    }
   }
 };
 

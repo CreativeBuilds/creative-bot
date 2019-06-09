@@ -35,7 +35,7 @@ const MessageHeader = ({stateTheme, styles, message, onClick, headerType}) => {
   return (
     <div className={headerType == MessageHeaderType.normal ? styles.messageHeader : `${styles.messageHeader}`}>
       <div className={styles.timestampContainer}>
-        <span style={stateTheme.base.quinaryForeground}>{getTime()}</span>
+        <span style={stateTheme.timeStamp}>{message.Msg_timestamp}</span>
       </div>
       <div className={styles.image_container}>
           <img src={message.sender.avatar} width={26} height={26} />
@@ -245,8 +245,8 @@ const Message = ({
       }`}
       style={Object.assign(
         {},
-        stateTheme.chat.message,
-        nth % 2 ? stateTheme.chat.message.alternate : {}
+        stateTheme.cell.normal,
+        nth % 2 ? stateTheme.cell.alternate : { }
       )}
     >
       <MessageHeader stateTheme={stateTheme} styles={styles} headerType={MessageHeaderType.normal} message={message} onClick={e => {
