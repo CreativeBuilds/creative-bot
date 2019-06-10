@@ -12,5 +12,6 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 
 const perf = firebase.performance();
+console.log('GOT PERF', perf);
 
 export { firebase, perf };
