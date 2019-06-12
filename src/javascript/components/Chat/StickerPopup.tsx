@@ -151,12 +151,12 @@ const StickerPopup = ({
     }
   
     return (
-      <div className={styles.popup} style={stateTheme.main}>
+      <div className={styles.popup}>
         <h2>Stickers</h2>
         <div className={`${styles.stickersPopup}`}>
             <div className={segStyles.segmentControl}>
-              <div className={segStyles.segmentHeader} style={stateTheme.segmentControlHeader}>
-                  {segmentControlItems().map(i => <SegmentControlItem id={i.name} title={i.name} defaultValue={"All"} onClick={() => onClick(i.id)}/>)}
+              <div className={segStyles.segmentHeader} style={stateTheme.base.background}>
+                  {segmentControlItems().map(i => <SegmentControlItem id={i.name} title={i.name as string} defaultValue={"All"} onClick={() => onClick(i.id)}/>)}
               </div>
               <div className={segStyles.segmentBody}>
                   <div className={segStyles.segmentView}>

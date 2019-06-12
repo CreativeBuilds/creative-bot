@@ -54,12 +54,12 @@ const QuotesPage = ({ props }) => {
         );
       };
       return (
-        <div style={stateTheme.menu} className={styles.Points}>
-            <div style={stateTheme.menu.title} className={styles.header}>
+        <div style={stateTheme.base.tertiaryBackground} className={styles.Points}>
+            <div style={Object.assign({}, stateTheme.toolBar, stateTheme.base.quinaryForeground)} className={styles.header}>
                 QUOTES
                 <textarea
                 className={styles.usersearch}
-                style={stateTheme.chat.message.alternate}
+                style={stateTheme.searchInput}
                 placeholder={'Search...'}
                 value={searchQuoteName}
                 onChange={e => {
