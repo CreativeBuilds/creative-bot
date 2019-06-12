@@ -3,6 +3,7 @@ node_modules
 storage/*
 build/*
 extras
+dist/*
 
 electron-builder.json
 yarn-error.log
