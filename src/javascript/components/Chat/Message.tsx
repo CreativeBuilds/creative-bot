@@ -321,8 +321,10 @@ const Message = ({
       ) : (
         <div
           className={`${styles.message} ${
-            message.content.toLowerCase().includes(ownerName)
-              ? Styles.highlighted
+            message.content
+              ? message.content.toLowerCase().includes(ownerName)
+                ? Styles.highlighted
+                : ''
               : ''
           }`}
           style={Object.assign(

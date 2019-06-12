@@ -23,7 +23,7 @@ let newDlive = config => {
 
 let firstRun = true;
 
-rxConfig.pipe(filter(x => Object.keys(x).length > 0)).subscribe(config => {
+rxConfig.pipe(filter(x => !!x.authKey)).subscribe(config => {
   if (firstRun) {
     firstRun = false;
     return newDlive(config);

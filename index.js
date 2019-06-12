@@ -62,6 +62,7 @@ rxConfig
       ) {
         getBlockchainUsername(Config.streamerDisplayName).then(username => {
           console.log(
+            'REEEEEEEEEEEEEE',
             Config.streamerOldDisplayName,
             config.streamerDisplayName
           );
@@ -748,65 +749,65 @@ function createWindow() {
   };
 
   // This wss is for ben
-  wss.on('connection', function connection(WS) {
-    let subscriber;
-    rxConfig
-      .pipe(
-        filter(x => !!x.authKey),
-        first()
-      )
-      .subscribe(config => {
-        rxDlive
-          .pipe(
-            filter(x => !!x),
-            first()
-          )
-          .subscribe(dlive => {
-            dlive.listenToChat(config.streamerDisplayName).then(messages => {
-              subscriber = messages.subscribe(message => {
-                WS.send(JSON.stringify(message));
-              });
-            });
-          });
-      });
-    WS.on('close', function() {
-      subscriber.unsubscribe();
-      WS.terminate();
-    });
-    WS.on('pong', function() {
-      WS.isAlive = true;
-    });
-    WS.on('message', function incoming(message) {
-      let msg = JSON.parse(message);
-      if (msg.type === 'send_message') {
-        rxDlive
-          .pipe(
-            filter(x => !!x),
-            first()
-          )
-          .subscribe(dlive => {
-            rxConfig.pipe(first()).subscribe(config => {
-              dlive.sendMessage(msg.value, config.streamerDisplayName);
-            });
-          });
-      } else if (msg.type === 'send_lino') {
-        if (!config.privKeyHex)
-          return sendError(WS, 'No privKeyHex detected in config.json');
-        sendLino(message.value).catch(err => {
-          console.error(err);
-          sendError(
-            WS,
-            'Error when sending lino, message.value object most likely invalid! Check bot console for more details.'
-          );
-        });
-      } else if (msg.type === 'key_received') {
-        Config = Object.assign({}, { authKey: msg.value.key }, config);
-        SaveToJson('config', Config);
-      }
-    });
-    if (!config.authKey || config.authKey === '')
-      return WS.send(JSON.stringify({ type: 'key_init' }));
-  });
+  // wss.on('connection', function connection(WS) {
+  //   let subscriber;
+  //   rxConfig
+  //     .pipe(
+  //       filter(x => !!x.authKey),
+  //       first()
+  //     )
+  //     .subscribe(config => {
+  //       rxDlive
+  //         .pipe(
+  //           filter(x => !!x),
+  //           first()
+  //         )
+  //         .subscribe(dlive => {
+  //           dlive.listenToChat(config.streamerDisplayName).then(messages => {
+  //             subscriber = messages.subscribe(message => {
+  //               WS.send(JSON.stringify(message));
+  //             });
+  //           });
+  //         });
+  //     });
+  //   WS.on('close', function() {
+  //     subscriber.unsubscribe();
+  //     WS.terminate();
+  //   });
+  //   WS.on('pong', function() {
+  //     WS.isAlive = true;
+  //   });
+  //   WS.on('message', function incoming(message) {
+  //     let msg = JSON.parse(message);
+  //     if (msg.type === 'send_message') {
+  //       rxDlive
+  //         .pipe(
+  //           filter(x => !!x),
+  //           first()
+  //         )
+  //         .subscribe(dlive => {
+  //           rxConfig.pipe(first()).subscribe(config => {
+  //             dlive.sendMessage(msg.value, config.streamerDisplayName);
+  //           });
+  //         });
+  //     } else if (msg.type === 'send_lino') {
+  //       if (!config.privKeyHex)
+  //         return sendError(WS, 'No privKeyHex detected in config.json');
+  //       sendLino(message.value).catch(err => {
+  //         console.error(err);
+  //         sendError(
+  //           WS,
+  //           'Error when sending lino, message.value object most likely invalid! Check bot console for more details.'
+  //         );
+  //       });
+  //     } else if (msg.type === 'key_received') {
+  //       Config = Object.assign({}, { authKey: msg.value.key }, config);
+  //       SaveToJson('config', Config);
+  //     }
+  //   });
+  //   if (!config.authKey || config.authKey === '')
+  //     return WS.send(JSON.stringify({ type: 'key_init' }));
+  // });
   // This is for the app
   rxConfig
     .pipe(
@@ -827,24 +828,8 @@ function createWindow() {
               onNewMsg(message, config.streamerDisplayName);
             });
           });
-        });
-    });
-  rxConfig
-    .pipe(
-      filter(x => !!x.authKey),
-      filter(x => {
-        return typeof x.streamerDisplayName === 'string';
-      }),
-      first()
-    )
-    .subscribe(config => {
-      rxDlive
-        .pipe(
-          filter(x => !!x),
-          first()
-        )
-        .subscribe(dlive => {
           dlive.getChannel(config.streamerDisplayName).then(channel => {
+            console.log('SUBSCRIBING TO RXLIVESTREAM HERE');
             channel.rxLivestream.subscribe(livestream => {
               if (!livestream) return;
               if (typeof livestream === 'object') {
