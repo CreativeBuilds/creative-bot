@@ -43,7 +43,11 @@ rxConfig.pipe(filter(x => x.points && x.pointsTimer)).subscribe(config => {
   }, 1000 * config.pointsTimer);
 });
 const keepActive = message => {
-  activeUsers[message.sender.blockchainUsername] = message;
+  if (!message.sender) {
+    console.error(message);
+  } else {
+    activeUsers[message.sender.blockchainUsername] = message;
+  }
 };
 
 module.exports = keepActive;

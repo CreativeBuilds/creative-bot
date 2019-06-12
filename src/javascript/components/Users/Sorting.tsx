@@ -9,9 +9,7 @@ const Arrow = ({ isDesc, toggle, type }) => {
     ) : (
       <MdKeyboardArrowDown />
     )
-  ) : (
-    null
-  );
+  ) : null;
 };
 
 const Sorting = ({
@@ -49,7 +47,8 @@ const Sorting = ({
             swapOrToggle(isDesc, toggle, 'displayname');
           }}
         >
-          USERNAME <Arrow isDesc={isDesc} toggle={toggle} type={'displayname'} />
+          USERNAME{' '}
+          <Arrow isDesc={isDesc} toggle={toggle} type={'displayname'} />
         </div>
         <div
           className={styles.points}
@@ -68,9 +67,8 @@ const Sorting = ({
           LINO <Arrow isDesc={isDesc} toggle={toggle} type={'lino'} />
         </div>
         <div className={styles.spacer} />
-        <div className={styles.modded}>
-          MOD {/*<Arrow isDesc={isDesc} toggle={toggle} type={'mod'}/>*/}
-        </div>
+        {/* <div className={styles.modded}>
+        </div> */}
       </div>
     </div>
   );

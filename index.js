@@ -145,6 +145,7 @@ function createWindow() {
       if (newGiveaways.length > 0) {
         newGiveaways.forEach(key => {
           let giveaway = giveaways[key];
+          if (giveaway.winners) return;
           sendMessage(
             `A new giveaway has started for '${
               giveaway.reward
@@ -187,8 +188,11 @@ function createWindow() {
       }
       if (giveaway.winners) {
         if (giveaway.winners.length > 0) {
+          console.log('giveaway winners', giveaway.winners);
           let winner = giveaway.winners[giveaway.winners.length - 1];
-          sendMessage(`${winner.name} has won the giveaway! Speak up in chat!`);
+          sendMessage(
+            `${winner.username} has won the giveaway! Speak up in chat!`
+          );
         }
       }
     });
@@ -461,7 +465,8 @@ function createWindow() {
 
   const textMessage = (message, streamerDisplayName, data) => {
     let { content } = message;
-    if (content[0] == config.commandPrefix) {
+    if (!content) return;
+    if (content.length > 0 && content[0] == config.commandPrefix) {
       content = content.substring(1);
       let args = content.split(' ');
       commandName = args[0];

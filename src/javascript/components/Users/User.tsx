@@ -118,9 +118,9 @@ const User = ({
         {/* <div className={styles.banned}>
           <BannedBox styles={styles} user={User} stateTheme={stateTheme} />
         </div> */}
-        <div className={styles.modded}>
+        {/* <div className={styles.modded}>
           <ModBox styles={styles} user={User} stateTheme={stateTheme} />
-        </div>
+        </div> */}
       </div>
     </div>
   );

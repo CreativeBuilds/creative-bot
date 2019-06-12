@@ -133,11 +133,29 @@ const Giveaway = ({
           {Object.keys(giveaway.entries).length}
         </div>
         <div className={styles.points}>{getTimeLeft(giveaway)}</div>
-        <div className={styles.spacer}>{giveaway.reward}</div>
+        <div className={styles.points}>
+          <div
+            style={{
+              textOverflow: 'ellipsis',
+              overflow: 'hidden',
+              whiteSpace: 'nowrap',
+              display: 'block'
+            }}
+          >
+            {giveaway.reward}
+          </div>
+        </div>
+        <div className={styles.spacer}>
+          {giveaway.winners
+            ? giveaway.winners[0]
+              ? giveaway.winners[0].username
+              : 'N/A'
+            : 'N/A'}
+        </div>
         <div className={styles.modded}>
           <div
             className={`${styles.pick} ${
-              Object.keys(giveaway.entries).length > 0 ? styles.no_hover : ''
+              Object.keys(giveaway.entries).length > 0 ? '' : styles.no_hover
             }`}
             style={{
               color: stateTheme.base.quaternaryForeground.color,

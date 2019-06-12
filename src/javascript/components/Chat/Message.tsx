@@ -25,66 +25,88 @@ enum MessageContentType {
   stickerAsText
 }
 
-const MessageHeader = ({stateTheme, styles, message, onClick, headerType}) => {
-
+const MessageHeader = ({
+  stateTheme,
+  styles,
+  message,
+  onClick,
+  headerType
+}) => {
   const getTime = () => {
     var date = new Date();
-    return String(date.getHours()).padStart(2, '0') + ':' + String(date.getMinutes()).padStart(2, '0') + ':' + String(date.getSeconds()).padStart(2, '0');
-  }
+    return (
+      String(date.getHours()).padStart(2, '0') +
+      ':' +
+      String(date.getMinutes()).padStart(2, '0') +
+      ':' +
+      String(date.getSeconds()).padStart(2, '0')
+    );
+  };
 
   return (
-    <div className={headerType == MessageHeaderType.normal ? styles.messageHeader : `${styles.messageHeader}`}>
+    <div
+      className={
+        headerType == MessageHeaderType.normal
+          ? styles.messageHeader
+          : `${styles.messageHeader}`
+      }
+    >
       <div className={styles.timestampContainer}>
         <span style={stateTheme.timeStamp}>{message.Msg_timestamp}</span>
       </div>
       <div className={styles.image_container}>
-          <img src={message.sender.avatar} width={26} height={26} />
+        <img src={message.sender.avatar} width={26} height={26} />
       </div>
       <span className={styles.username_container} onClick={onClick}>
-            {message.sender.dliveUsername}{': '}
+        {message.sender.dliveUsername}
+        {': '}
       </span>
     </div>
   );
 };
 
-const MessageContent = ({styles, message = null, evntMsg = null, src = null, onClick = null, contentType}) => {
-
+const MessageContent = ({
+  styles,
+  message = null,
+  evntMsg = null,
+  src = null,
+  onClick = null,
+  contentType
+}) => {
   return (
     <div className={styles.message_content}>
-      {contentType == MessageContentType.normal ?
-      <div className={styles.message_content}>{message.content}</div> 
-      :
-      contentType == MessageContentType.sticker ? 
+      {contentType == MessageContentType.normal ? (
+        <div className={styles.message_content}>{message.content}</div>
+      ) : contentType == MessageContentType.sticker ? (
         <div className={styles.sticker_container}>
           <div className={styles.emoteDeleteButton} onClick={onClick}>
             <MdAdd />
           </div>
           <img className={styles.sticker} src={src} />
         </div>
-          : 
-        contentType == MessageContentType.stickerAsText ?
+      ) : contentType == MessageContentType.stickerAsText ? (
         <div className={styles.sticker_container}>
           <div className={styles.emoteDeleteButton} onClick={onClick}>
-              <MdAdd />
+            <MdAdd />
           </div>
           <div className={styles.message_content}>{message.content}</div>
-        </div> :
-        <div className={styles.message_content}><div className={styles.message_content}>{evntMsg}</div></div>
-      }
+        </div>
+      ) : (
+        <div className={styles.message_content}>
+          <div className={styles.message_content}>{evntMsg}</div>
+        </div>
+      )}
     </div>
   );
-}
+};
 
-const DeleteButton = ({styles, onDelete}) => {
-
+const DeleteButton = ({ styles, onDelete }) => {
   return (
     <div className={styles.message_remove}>
-        <MdClose
-          onClick={onDelete}
-        />
+      <MdClose onClick={onDelete} />
     </div>
   );
-}
+};
 
 const Message = ({
   styles,
@@ -96,10 +118,15 @@ const Message = ({
   addPopup,
   closeCurrentPopup
 }) => {
-
-  const [hasFilteredEvents, setHasFilteredEvents] = useState(Config.enableEvents);
-  const [hasFilteredStickers, setHasFilteredStickers] = useState(Config.enableStickers);
-  const [hasStickersAsText, setHasStickersAsText] = useState(Config.enableStickersAsText);
+  const [hasFilteredEvents, setHasFilteredEvents] = useState(
+    Config.enableEvents
+  );
+  const [hasFilteredStickers, setHasFilteredStickers] = useState(
+    Config.enableStickers
+  );
+  const [hasStickersAsText, setHasStickersAsText] = useState(
+    Config.enableStickersAsText
+  );
   const [config, setConfig] = useState(Config);
 
   useEffect(() => {
@@ -124,9 +151,9 @@ const Message = ({
     } else if (message.type === 'Subscription') {
       return true;
     } else if (message.type === 'Message') {
-      return false
+      return false;
     }
-  }
+  };
 
   const giftEmoteType = () => {
     if (message.gift === 'LEMON') {
@@ -140,7 +167,7 @@ const Message = ({
     } else if (message.gift === 'NINJET') {
       return '🐱‍👤✈';
     }
-  }
+  };
 
   const giftType = () => {
     if (message.gift === 'LEMON') {
@@ -154,7 +181,7 @@ const Message = ({
     } else if (message.gift === 'NINJET') {
       return 'NINJET';
     }
-  }
+  };
 
   const eventMessage = () => {
     if (message.type === 'Gift') {
@@ -164,10 +191,11 @@ const Message = ({
     } else if (message.type === 'Subscription') {
       return 'Has Just Subscribed';
     }
-  }
+  };
   // Boolean Checks if Message is a Sticker or not
   const isSticker = () => {
     var content = message.content;
+    if (!content || typeof content === 'undefined') return false;
     if (content.search(/[:]/gi) > -1) {
       if (content.search(/emote/gi) > -1) {
         return true;
@@ -227,59 +255,130 @@ const Message = ({
   };
 
   const addSticker = () => {
-    addPopup(<AddStickerPopup stickerId={getStickerId(message.content)} stickerDLiveId={message.content} stickerUrl={getSticker(message.content)} stateTheme={stateTheme} styles={styles} Config={Object.assign({}, config)} text={<span>Stickers</span>} closeCurrentPopup={closeCurrentPopup}/>);
-  }
+    addPopup(
+      <AddStickerPopup
+        stickerId={getStickerId(message.content)}
+        stickerDLiveId={message.content}
+        stickerUrl={getSticker(message.content)}
+        stateTheme={stateTheme}
+        styles={styles}
+        Config={Object.assign({}, config)}
+        text={<span>Stickers</span>}
+        closeCurrentPopup={closeCurrentPopup}
+      />
+    );
+  };
 
   return (
-    <div>{isEvent() ? hasFilteredEvents ?
-      <div className={styles.messageEvent}>
-        <MessageHeader stateTheme={stateTheme} styles={styles} message={message} headerType={MessageHeaderType.event} onClick={e => { console.log(e); addUserPopup(); }} />
-        <MessageContent styles={styles} evntMsg={eventMessage()} contentType={MessageContentType.event}/>
-      </div> : null : 
-      isSticker() ? hasFilteredStickers ? (
-      <div
-      className={`${styles.message} ${
-        message.content.toLowerCase().includes(ownerName)
-          ? Styles.highlighted
-          : ''
-      }`}
-      style={Object.assign(
-        {},
-        stateTheme.cell.normal,
-        nth % 2 ? stateTheme.cell.alternate : { }
+    <div>
+      {isEvent() ? (
+        hasFilteredEvents ? (
+          <div className={styles.messageEvent}>
+            <MessageHeader
+              stateTheme={stateTheme}
+              styles={styles}
+              message={message}
+              headerType={MessageHeaderType.event}
+              onClick={e => {
+                console.log(e);
+                addUserPopup();
+              }}
+            />
+            <MessageContent
+              styles={styles}
+              evntMsg={eventMessage()}
+              contentType={MessageContentType.event}
+            />
+          </div>
+        ) : null
+      ) : isSticker() ? (
+        hasFilteredStickers ? (
+          <div
+            className={`${styles.message} ${
+              message.content.toLowerCase().includes(ownerName)
+                ? Styles.highlighted
+                : ''
+            }`}
+            style={Object.assign(
+              {},
+              stateTheme.cell.normal,
+              nth % 2 ? stateTheme.cell.alternate : {}
+            )}
+          >
+            <MessageHeader
+              stateTheme={stateTheme}
+              styles={styles}
+              headerType={MessageHeaderType.normal}
+              message={message}
+              onClick={e => {
+                console.log(e);
+                addUserPopup();
+              }}
+            />
+            {!hasStickersAsText ? (
+              <MessageContent
+                styles={styles}
+                message={message}
+                src={getSticker(message.content)}
+                onClick={addSticker}
+                contentType={MessageContentType.sticker}
+              />
+            ) : (
+              <MessageContent
+                styles={styles}
+                message={message}
+                onClick={addSticker}
+                contentType={MessageContentType.stickerAsText}
+              />
+            )}
+            {canDelete() ? (
+              <DeleteButton
+                styles={styles}
+                onDelete={() => {
+                  removeMessage(message.id, message.streamerBlockchainUsername);
+                }}
+              />
+            ) : null}
+          </div>
+        ) : null
+      ) : (
+        <div
+          className={`${styles.message} ${
+            message.content.toLowerCase().includes(ownerName)
+              ? Styles.highlighted
+              : ''
+          }`}
+          style={Object.assign(
+            {},
+            stateTheme.cell.normal,
+            nth % 2 ? stateTheme.cell.alternate : {}
+          )}
+        >
+          <MessageHeader
+            stateTheme={stateTheme}
+            styles={styles}
+            message={message}
+            headerType={MessageHeaderType.normal}
+            onClick={e => {
+              console.log(e);
+              addUserPopup();
+            }}
+          />
+          <MessageContent
+            styles={styles}
+            message={message}
+            contentType={MessageContentType.normal}
+          />
+          {canDelete() ? (
+            <DeleteButton
+              styles={styles}
+              onDelete={() => {
+                removeMessage(message.id, message.streamerBlockchainUsername);
+              }}
+            />
+          ) : null}
+        </div>
       )}
-    >
-      <MessageHeader stateTheme={stateTheme} styles={styles} headerType={MessageHeaderType.normal} message={message} onClick={e => {
-            console.log(e);
-            addUserPopup();
-          }} />
-      {!hasStickersAsText ?
-      <MessageContent styles={styles} message={message} src={getSticker(message.content)} onClick={addSticker} contentType={MessageContentType.sticker}/> : 
-      <MessageContent styles={styles} message={message} onClick={addSticker} contentType={MessageContentType.stickerAsText}/>
-      }
-      {canDelete() ? ( <DeleteButton styles={styles} onDelete={() => { removeMessage(message.id, message.streamerBlockchainUsername); }}/> ) : null}
-      </div> ) : null : 
-    <div
-    className={`${styles.message} ${
-      message.content.toLowerCase().includes(ownerName)
-        ? Styles.highlighted
-        : ''
-    }`}
-    style={Object.assign(
-      {},
-      stateTheme.cell.normal,
-      nth % 2 ? stateTheme.cell.alternate : { }
-    )}
-  >
-    <MessageHeader stateTheme={stateTheme} styles={styles} message={message} headerType={MessageHeaderType.normal} onClick={e => {
-            console.log(e);
-            addUserPopup();
-          }} />
-    <MessageContent styles={styles} message={message} contentType={MessageContentType.normal}/>
-    {canDelete() ? ( <DeleteButton styles={styles} onDelete={() => { removeMessage(message.id, message.streamerBlockchainUsername); }}/> ) : null}
-    </div>
-  }
-
     </div>
   );
 };

@@ -106,7 +106,6 @@ const ViewListPopup = props => {
       lists[list.name] = Object.assign({}, list, { values: Values });
       setRxLists(lists);
     });
-    console.log('new list', Values, 'oldList', list.values, list);
   };
 
   return (
@@ -119,7 +118,6 @@ const ViewListPopup = props => {
           className={styles.add_circle}
           style={{ top: 0, left: 0 }}
           onClick={() => {
-            console.log('Wowza');
             // addListPopup();
             addPopup(
               <NewListElement

@@ -24,7 +24,7 @@ import { ListsPage } from '../Lists';
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
-const RouteContext = React.createContext({ currentUrl: '/' });
+const RouteContext: any = React.createContext({ currentUrl: '/' });
 
 class RouterWrapper extends Component<any, any> {
   constructor(props) {
@@ -40,7 +40,7 @@ class RouterWrapper extends Component<any, any> {
     timers: {},
     config: {},
     emotes: {},
-    quotes:{},
+    quotes: {},
     lists: {},
     livestream: { watchingCount: 0 }
   };
