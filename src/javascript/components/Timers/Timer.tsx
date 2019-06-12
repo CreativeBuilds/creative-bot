@@ -3,6 +3,8 @@ import { useState } from 'react';
 
 import { ToggleBox } from './ToggleBox';
 
+import { theme } from '../../helpers';
+
 import { MdModeEdit, MdEdit, MdDelete } from 'react-icons/md';
 let { setRxTimers, rxTimers } = require('../../helpers/rxTimers');
 import { first } from 'rxjs/operators';
@@ -93,11 +95,7 @@ const Popup = ({ command, styles, closeCurrentPopup, stateTheme }) => {
       </div>
       <div
         className={styles.submit}
-        style={{
-          backgroundColor: stateTheme.menu.backgroundColor,
-          color: stateTheme.menu.color,
-          borderColor: stateTheme.menu.backgroundColor
-        }}
+        style={stateTheme.submitButton}
         onClick={() => {
           if (isNaN(Number(messages)) || isNaN(Number(seconds))) return;
           saveToDB();
@@ -123,12 +121,13 @@ const RemoveTimerPopup = ({ timer, styles, closeCurrentPopup, stateTheme }) => {
   };
 
   return (
-    <div className={styles.popup} style={stateTheme.main}>
+    <div className={styles.popup}>
       <div className={styles.remove_text}>
         You're about to delete this command! Are you sure you want to do that?
       </div>
       <div
         className={styles.submit}
+        style={theme.globals.destructiveButton}
         onClick={() => {
           saveToDB();
           closeCurrentPopup();
@@ -186,8 +185,8 @@ const Timer = ({
       className={styles.user}
       style={Object.assign(
         {},
-        stateTheme.chat.message,
-        nth % 2 ? stateTheme.chat.message.alternate : {}
+        stateTheme.cell.normal,
+        nth % 2 ? stateTheme.cell.alternate : { }
       )}
     >
       <div className={styles.toggle_wrappers}>

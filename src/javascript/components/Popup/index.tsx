@@ -36,7 +36,7 @@ const Popup = ({ Component, hasGradiant = false, closePopup }) => {
 
   return (
     <div className={`${styles.overlay}  ${styles.animated}`}>
-      <div className={`${styles.dialog} ${hasGradiant ? styles.startupBackground : ''}`} style={hasGradiant ? theme.dark : stateTheme.main}>
+      <div className={`${styles.dialog} ${hasGradiant ? styles.startupBackground : ''}`} style={hasGradiant ? theme.dark : stateTheme.base.quinaryBackground}>
         <div className={styles.close}>
           <MdClose
             onClick={() => {

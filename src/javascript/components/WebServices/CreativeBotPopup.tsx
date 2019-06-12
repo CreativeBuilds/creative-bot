@@ -46,11 +46,7 @@ const CreativeBotPopup = ({
         <div className={styles.buttonstack}>
           <div
           className={styles.submit}
-          style={{
-            backgroundColor: stateTheme.menu.backgroundColor,
-            color: stateTheme.menu.color,
-            borderColor: stateTheme.menu.backgroundColor
-          }}
+          style={stateTheme.submitButton}
           onClick={() => { 
               
             }}>
@@ -58,11 +54,7 @@ const CreativeBotPopup = ({
           </div>
           <div
           className={styles.submit}
-          style={{
-            backgroundColor: stateTheme.menu.backgroundColor,
-            color: stateTheme.menu.color,
-            borderColor: stateTheme.menu.backgroundColor
-          }}
+          style={stateTheme.submitButton}
           onClick={() => { 
               
             }}>

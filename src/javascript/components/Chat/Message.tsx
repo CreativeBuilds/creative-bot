@@ -11,6 +11,7 @@ import {
 } from '../../helpers/removeMessage';
 
 import { UserPopup } from './UserPopup';
+import { theme } from '../../helpers';
 
 enum MessageHeaderType {
   normal,
@@ -24,7 +25,24 @@ enum MessageContentType {
   stickerAsText
 }
 
-const MessageHeader = ({ styles, message, onClick, headerType }) => {
+const MessageHeader = ({
+  stateTheme,
+  styles,
+  message,
+  onClick,
+  headerType
+}) => {
+  const getTime = () => {
+    var date = new Date();
+    return (
+      String(date.getHours()).padStart(2, '0') +
+      ':' +
+      String(date.getMinutes()).padStart(2, '0') +
+      ':' +
+      String(date.getSeconds()).padStart(2, '0')
+    );
+  };
+
   return (
     <div
       className={
@@ -33,6 +51,9 @@ const MessageHeader = ({ styles, message, onClick, headerType }) => {
           : `${styles.messageHeader}`
       }
     >
+      <div className={styles.timestampContainer}>
+        <span style={stateTheme.timeStamp}>{message.Msg_timestamp}</span>
+      </div>
       <div className={styles.image_container}>
         <img src={message.sender.avatar} width={26} height={26} />
       </div>
@@ -254,10 +275,12 @@ const Message = ({
         hasFilteredEvents ? (
           <div className={styles.messageEvent}>
             <MessageHeader
+              stateTheme={stateTheme}
               styles={styles}
               message={message}
               headerType={MessageHeaderType.event}
               onClick={e => {
+                console.log(e);
                 addUserPopup();
               }}
             />
@@ -272,23 +295,23 @@ const Message = ({
         hasFilteredStickers ? (
           <div
             className={`${styles.message} ${
-              message.content
-                ? message.content.toLowerCase().includes(ownerName)
-                  ? Styles.highlighted
-                  : ''
+              message.content.toLowerCase().includes(ownerName)
+                ? Styles.highlighted
                 : ''
             }`}
             style={Object.assign(
               {},
-              stateTheme.chat.message,
-              nth % 2 ? stateTheme.chat.message.alternate : {}
+              stateTheme.cell.normal,
+              nth % 2 ? stateTheme.cell.alternate : {}
             )}
           >
             <MessageHeader
+              stateTheme={stateTheme}
               styles={styles}
               headerType={MessageHeaderType.normal}
               message={message}
               onClick={e => {
+                console.log(e);
                 addUserPopup();
               }}
             />
@@ -329,15 +352,17 @@ const Message = ({
           }`}
           style={Object.assign(
             {},
-            stateTheme.chat.message,
-            nth % 2 ? stateTheme.chat.message.alternate : {}
+            stateTheme.cell.normal,
+            nth % 2 ? stateTheme.cell.alternate : {}
           )}
         >
           <MessageHeader
+            stateTheme={stateTheme}
             styles={styles}
             message={message}
             headerType={MessageHeaderType.normal}
             onClick={e => {
+              console.log(e);
               addUserPopup();
             }}
           />

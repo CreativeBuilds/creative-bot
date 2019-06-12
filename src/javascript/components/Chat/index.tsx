@@ -83,7 +83,7 @@ const AddCommandPopup = ({
   };
 
   return (
-    <div className={styles.popup} style={stateTheme.main}>
+    <div className={styles.popup}>
       <div className={styles.input_wrapper}>
         {noInput ? null : (
           <React.Fragment>
@@ -108,11 +108,7 @@ const AddCommandPopup = ({
       </div>
       <div
         className={styles.submit}
-        style={{
-          backgroundColor: stateTheme.menu.backgroundColor,
-          color: stateTheme.menu.color,
-          borderColor: stateTheme.menu.backgroundColor
-        }}
+        style={stateTheme.submitButton}
         onClick={() => {
           closeCurrentPopup(name, setError);
         }}
@@ -308,8 +304,8 @@ const Chat = ({ props }) => {
   }, [config]);
 
   return (
-    <div style={stateTheme.menu} className={styles.Chat}>
-      <div style={stateTheme.menu.title} className={styles.header}>
+    <div style={stateTheme.base.tertiaryBackground} className={styles.Chat}>
+      <div style={Object.assign({},stateTheme.toolBar, stateTheme.base.quinaryForeground)} className={styles.header}>
         CHAT
         <div className={styles.rightContainer}>
           <div
@@ -353,11 +349,11 @@ const Chat = ({ props }) => {
         <div id={'bottomOfMessages'} />
         {/* This is for the actual chat messages */}
       </div>
-      <div style={stateTheme.menu['title_hover']} className={styles.input}>
+      <div style={stateTheme.base.secondaryBackground} className={styles.input}>
         {/* TODO change maxLength to be limitless and then send messages once every 2 seconds to get around chat slowmode */}
         <textarea
-          style={Object.assign({}, stateTheme.chat.input, {
-            borderColor: stateTheme.chat.input.backgroundColor
+          style={Object.assign({}, stateTheme.base.quinaryBackground, {
+            borderColor: stateTheme.base.quinaryBackground.backgroundColor
           })}
           value={text}
           maxLength={140}
@@ -368,8 +364,8 @@ const Chat = ({ props }) => {
         />
         {/*<div
           className={styles.send}
-          style={Object.assign({}, stateTheme.chat.input, {
-            borderColor: stateTheme.chat.input.backgroundColor
+          style={Object.assign({}, stateTheme.base.quinaryBackground, {
+            borderColor: stateTheme.base.quinaryBackground.backgroundColor
           })}
           onClick={openTidyClips}
         >
@@ -377,8 +373,8 @@ const Chat = ({ props }) => {
         </div>*/}
         <div
           className={styles.send}
-          style={Object.assign({}, stateTheme.chat.input, {
-            borderColor: stateTheme.chat.input.backgroundColor
+          style={Object.assign({}, stateTheme.base.quinaryBackground, {
+            borderColor: stateTheme.base.quinaryBackground.backgroundColor
           })}
           onClick={openStickerPanel}
         >
@@ -386,8 +382,8 @@ const Chat = ({ props }) => {
         </div>
         <div
           className={styles.send}
-          style={Object.assign({}, stateTheme.chat.input, {
-            borderColor: stateTheme.chat.input.backgroundColor
+          style={Object.assign({}, stateTheme.base.quinaryBackground, {
+            borderColor: stateTheme.base.quinaryBackground.backgroundColor
           })}
           onClick={sendMessage}
         >

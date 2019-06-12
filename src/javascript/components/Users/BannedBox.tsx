@@ -6,7 +6,7 @@ const BannedBox = ({ styles, user, stateTheme }) => {
   const [isOn, setIsOn] = useState<boolean>(
     user.role === 'Owner' || user.role === 'Moderator' ? true : false
   );
-  return <div className={styles.box} style={Object.assign({}, stateTheme.main)} onClick={() => {
+  return <div className={styles.box} style={Object.assign({}, stateTheme.base.quinaryForeground)} onClick={() => {
       setIsOn(!isOn);
   }}>
     {isOn? <MdCheck/> : null}

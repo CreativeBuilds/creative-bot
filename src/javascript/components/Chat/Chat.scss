@@ -48,9 +48,14 @@
 
 .messageHeader {
   margin-right: 10px;
-  .image_container, .username_container {
+  .image_container, .username_container, .timestampContainer {
     display: inline-block;
     vertical-align: middle;
+  }
+
+  .timestampContainer {
+    margin-right: 5px;
+    span { user-select: none; }
   }
 
   .username_container {

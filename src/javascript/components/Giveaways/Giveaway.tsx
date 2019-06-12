@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { ToggleBox } from './ToggleBox';
 
 import { MdModeEdit, MdEdit, MdDelete } from 'react-icons/md';
+import { theme } from '../../helpers';
 let { setRxGiveaways } = require('../../helpers/rxGiveaways');
 
 const Window: any = window;
@@ -25,12 +26,13 @@ const RemoveGiveawayPopup = ({
   };
 
   return (
-    <div className={styles.popup} style={stateTheme.main}>
+    <div className={styles.popup}>
       <div className={styles.remove_text}>
         You're about to delete this giveaway! Are you sure you want to do that?
       </div>
       <div
         className={styles.submit}
+        style={theme.globals.destructiveButton}
         onClick={() => {
           saveToDB();
           closeCurrentPopup();
@@ -121,8 +123,8 @@ const Giveaway = ({
       className={styles.user}
       style={Object.assign(
         {},
-        stateTheme.chat.message,
-        nth % 2 ? stateTheme.chat.message.alternate : {}
+        stateTheme.cell.normal,
+        nth % 2 ? stateTheme.cell.alternate : { }
       )}
     >
       <div className={styles.toggle_wrappers}>
@@ -156,11 +158,12 @@ const Giveaway = ({
               Object.keys(giveaway.entries).length > 0 ? '' : styles.no_hover
             }`}
             style={{
-              color: stateTheme.main.backgroundColor,
-              backgroundColor:
+              color: stateTheme.base.quaternaryForeground.color,
+              backgroundColor: stateTheme.base.quaternaryBackground.backgroundColor,
+              opacity:
                 Object.keys(giveaway.entries).length > 0
-                  ? stateTheme.main.color
-                  : '#333'
+                  ? 1.0
+                  : 0.25
             }}
             onClick={() => {
               pickWinner(giveaway);
