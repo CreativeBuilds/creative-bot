@@ -33,6 +33,7 @@ const UserPopup = ({
       if (first) {
         first = false;
         let User = users[user.blockchainUsername];
+        if (!User) return (first = true);
         setUser(User);
         setPoints(User.points);
         setIsAdmin(!!User.isAdmin);
@@ -51,6 +52,8 @@ const UserPopup = ({
       Users[user.blockchainUsername],
       { isAdmin, points: Number(points) }
     );
+    if (Object.keys(Users[user.blockchainUsername]).length <= 2)
+      return setSubmitText('ERROR USER NOT IN DB');
     setRxUsers(Users);
     setSubmitText('SAVED');
     setTimeout(() => {

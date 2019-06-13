@@ -1,7 +1,15 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
 import { theme, ThemeContext } from '../../helpers';
-import { MdSend, MdPerson, MdMood, MdFace, MdLocalMovies, MdEvent, MdFilterList } from 'react-icons/md';
+import {
+  MdSend,
+  MdPerson,
+  MdMood,
+  MdFace,
+  MdLocalMovies,
+  MdEvent,
+  MdFilterList
+} from 'react-icons/md';
 
 import { Message } from './Message';
 import { StickerPopup } from './StickerPopup';
@@ -183,17 +191,40 @@ const Chat = ({ props }) => {
   }, []);
 
   const openStickerPanel = () => {
-    addPopup(<StickerPopup stateTheme={stateTheme} styles={styles} Config={Object.assign({}, config)} text={<span>Stickers</span>} Emotes={emotes} />);
+    addPopup(
+      <StickerPopup
+        stateTheme={stateTheme}
+        styles={styles}
+        Config={Object.assign({}, config)}
+        text={<span>Stickers</span>}
+        Emotes={emotes}
+      />
+    );
   };
 
   const openTidyClips = () => {
     /*let win = new BrowserWindow({ width: 1024, height: 600 })
     win.loadURL('https://clips.tidylabs.stream/generate?clippedby=TidyClips+Website&url=CreativeBuilds')*/
-    addPopup(<CreativeBotPopup stateTheme={stateTheme} styles={styles} Config={Object.assign({}, config)} closeCurrentPopup={closeCurrentPopup}/>, true);
+    addPopup(
+      <CreativeBotPopup
+        stateTheme={stateTheme}
+        styles={styles}
+        Config={Object.assign({}, config)}
+        closeCurrentPopup={closeCurrentPopup}
+      />,
+      true
+    );
   };
 
   const openChatFiltersPanel = () => {
-    addPopup(<ChatFiltersPopup stateTheme={stateTheme} styles={styles} Config={Object.assign({}, config)} closeCurrentPopup={closeCurrentPopup} />);
+    addPopup(
+      <ChatFiltersPopup
+        stateTheme={stateTheme}
+        styles={styles}
+        Config={Object.assign({}, config)}
+        closeCurrentPopup={closeCurrentPopup}
+      />
+    );
   };
 
   useEffect(() => {
@@ -235,7 +266,7 @@ const Chat = ({ props }) => {
               Check the instructions on how to get your Auth Key from DLive{' '}
               <span
                 className={styles.link}
-                style={{ color: stateTheme.main.highlightColor }}
+                style={{ color: theme.globals.accentHighlight.highlightColor }}
                 onClick={e => {
                   e.preventDefault();
                   shell.openExternal(
@@ -305,7 +336,14 @@ const Chat = ({ props }) => {
 
   return (
     <div style={stateTheme.base.tertiaryBackground} className={styles.Chat}>
-      <div style={Object.assign({},stateTheme.toolBar, stateTheme.base.quinaryForeground)} className={styles.header}>
+      <div
+        style={Object.assign(
+          {},
+          stateTheme.toolBar,
+          stateTheme.base.quinaryForeground
+        )}
+        className={styles.header}
+      >
         CHAT
         <div className={styles.rightContainer}>
           <div
