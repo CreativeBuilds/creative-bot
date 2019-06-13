@@ -1,7 +1,7 @@
 const run = () => {
   // List all commands by default, if someone does !help commandName then show details on that command
   return Promise.resolve(
-    `Chat bot created by CreativeBuilds, check the source code out here! https://github.com/creativebuilds/dlive-chat-bot`
+    `Chat bot created by CreativeBuilds, check the source code out here! https://github.com/creativebuilds/creative-bot`
   );
 };
 

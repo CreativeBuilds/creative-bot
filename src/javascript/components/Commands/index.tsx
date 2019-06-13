@@ -78,7 +78,7 @@ const AddCommandPopup = ({
             onClick={e => {
               e.preventDefault();
               shell.openExternal(
-                'https://github.com/CreativeBuilds/dlive-chat-bot/wiki/Custom-Commands'
+                'https://github.com/CreativeBuilds/creative-bot/wiki/Custom-Commands'
               );
             }}
           >

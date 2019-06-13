@@ -48,7 +48,8 @@
 
 .messageHeader {
   margin-right: 10px;
-  .image_container, .username_container {
+  .image_container,
+  .username_container {
     display: inline-block;
     vertical-align: middle;
   }
@@ -58,11 +59,13 @@
   }
 
   .image_container {
-    img { vertical-align: middle; }
+    img {
+      vertical-align: middle;
+    }
   }
 }
 
-.messageEvent { 
+.messageEvent {
   background-color: $dliveaccent;
   color: black !important;
   width: calc(100% - 35px);
@@ -74,7 +77,6 @@
   position: relative;
   margin-bottom: 5px;
   border-radius: 5px;
-
 
   .image_container {
     padding-right: 5px;
@@ -126,6 +128,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  & > div {
+    flex: 1;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    width: 100%;
+    text-align: center;
+  }
 }
 .input_is_admin {
   width: 85px;
@@ -286,7 +296,9 @@
     display: table-cell;
     position: relative;
 
-    .emoteDeleteButton { display: none; }
+    .emoteDeleteButton {
+      display: none;
+    }
 
     &:hover {
       .emoteDeleteButton {
@@ -304,8 +316,8 @@
         &:hover {
           cursor: pointer;
           svg {
-              fill: green !important;
-              stroke: green !important;
+            fill: green !important;
+            stroke: green !important;
           }
         }
 
@@ -321,8 +333,8 @@
           stroke: black !important;
 
           &:hover {
-              fill: green !important;
-              stroke: green !important;
+            fill: green !important;
+            stroke: green !important;
           }
         }
       }
@@ -375,7 +387,7 @@
   width: 150px;
   border-radius: 16px;
   user-select: none;
-  box-shadow: 1px 1px 30px rgba(21,21,21,0.6);
+  box-shadow: 1px 1px 30px rgba(21, 21, 21, 0.6);
 }
 
 .stickerIdContainer {
@@ -410,7 +422,8 @@
   vertical-align: middle;
   right: 5px;
 
-  .events, .viewers {
+  .events,
+  .viewers {
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -418,7 +431,6 @@
     height: 100%;
     vertical-align: middle;
     margin-bottom: 3px;
-
   }
 
   .events {

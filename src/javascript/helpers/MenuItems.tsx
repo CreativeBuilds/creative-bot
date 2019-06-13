@@ -249,7 +249,7 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                         icon: 'GoMarkGithub',
                         enabled: true,
                         action() { 
-                            shell.openExternal("https://github.com/CreativeBuilds/dlive-chat-bot");
+                            shell.openExternal("https://github.com/CreativeBuilds/creative-bot");
                         }
                     },
                     {

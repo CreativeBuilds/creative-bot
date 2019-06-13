@@ -13,7 +13,7 @@ const getBlockchainUsername = require('./getBlockchainUsername');
 module.exports = (
   username,
   amount,
-  memo = 'github.com/CreativeBuilds/dlive-chat-bot'
+  memo = 'github.com/CreativeBuilds/creative-bot'
 ) => {
   return lino.query.getAccountBank(config.senderUsername).then(v => {
     console.log(
