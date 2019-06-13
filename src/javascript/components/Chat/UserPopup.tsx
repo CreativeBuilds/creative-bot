@@ -33,6 +33,7 @@ const UserPopup = ({
       if (first) {
         first = false;
         let User = users[user.blockchainUsername];
+        if (!User) return (first = true);
         setUser(User);
         setPoints(User.points);
         setIsAdmin(!!User.isAdmin);
@@ -51,6 +52,8 @@ const UserPopup = ({
       Users[user.blockchainUsername],
       { isAdmin, points: Number(points) }
     );
+    if (Object.keys(Users[user.blockchainUsername]).length <= 2)
+      return setSubmitText('ERROR USER NOT IN DB');
     setRxUsers(Users);
     setSubmitText('SAVED');
     setTimeout(() => {
@@ -62,7 +65,7 @@ const UserPopup = ({
     <div className={Styles.UserPopup}>
       <div className={Styles.UserPopup_header}>
         <div className={Styles.UserPopup_header_up}>
-          <div style={stateTheme.chat.message.alternate}>
+          <div style={stateTheme.cell.alternate}>
             <div className={Styles.username}>
               <div>{user.dliveUsername}</div>
             </div>
@@ -110,7 +113,7 @@ const UserPopup = ({
                   if (!isNaN(Number(e.target.value)) || e.target.value === '')
                     setPoints(e.target.value);
                 }}
-                style={stateTheme.menu}
+                style={stateTheme.base.secondaryBackground}
                 value={points}
               />
             </div>
@@ -127,7 +130,7 @@ const UserPopup = ({
           </div>
           <div
             className={Styles.user_submit}
-            style={stateTheme.menu}
+            style={stateTheme.base.secondaryBackground}
             onClick={() => {
               SaveUser();
             }}

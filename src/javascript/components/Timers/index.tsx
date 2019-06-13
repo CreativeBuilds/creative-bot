@@ -82,11 +82,7 @@ const AddCommandPopup = ({
       </div>
       <div
         className={styles.submit}
-        style={{
-          backgroundColor: stateTheme.menu.backgroundColor,
-          color: stateTheme.menu.color,
-          borderColor: stateTheme.menu.backgroundColor
-        }}
+        style={stateTheme.submitButton}
         onClick={() => {
           if (isNaN(Number(messages)) || isNaN(Number(seconds))) return;
           saveToDB();
@@ -131,12 +127,12 @@ const TimersPage = ({ props }) => {
   };
 
   return (
-    <div style={stateTheme.menu} className={styles.Points}>
-      <div style={stateTheme.menu.title} className={styles.header}>
+    <div style={stateTheme.base.tertiaryBackground} className={styles.Points}>
+      <div style={Object.assign({}, stateTheme.toolBar, stateTheme.base.quinaryForeground)} className={styles.header}>
         TIMERS
         <textarea
           className={styles.usersearch}
-          style={stateTheme.chat.message.alternate}
+          style={stateTheme.searchInput}
           placeholder={'Search...'}
           value={searchCommandName}
           onChange={e => {

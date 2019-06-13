@@ -12,15 +12,17 @@ const styles: any = require('./SegmentControl.scss');
 
 interface SegmentControlItem {
     id: any,
-    title: String,
+    title: string,
     defaultValue?: String,
     onClick?: () => void,
-    Config?: {}
+    Config?: {},
+    onChange?: (e) => void
 }
 
-const SegmentControlItem = ({ id, title, defaultValue = null, onClick, Config = {} } : SegmentControlItem) => {
+const SegmentControlItem = ({ id, title, defaultValue = null, onClick, Config = {}, onChange = null } : SegmentControlItem) => {
 
     const [stateTheme, setStateTheme] = useState(theme.dark);
+    const [ischecked, setIsChecked] = useState(title === defaultValue);
     const [config, setConfig] = useState(Config);
   
     const changeTheme = (themeVal : String) => {
@@ -45,7 +47,9 @@ const SegmentControlItem = ({ id, title, defaultValue = null, onClick, Config = 
     return (
         <div className={styles.segmentControlItem} style={stateTheme.segmentControlItem}>
             <input className={styles.segmentInput} style={stateTheme.segmentControlItem} type="radio" name="sc-1-1" id={id} defaultChecked={title === defaultValue}></input>
-            <label className={styles.segmentLabel} style={stateTheme.segmentControlItem} htmlFor={id} data-value={title} onClick={() => onClick()}>{title}</label>
+            <label className={styles.segmentLabel} style={stateTheme.segmentControlItem} htmlFor={id} data-value={title} onClick={() => { 
+              onClick();
+            }}>{title}</label>
         </div>
     );
 }

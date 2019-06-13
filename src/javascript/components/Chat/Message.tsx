@@ -11,6 +11,7 @@ import {
 } from '../../helpers/removeMessage';
 
 import { UserPopup } from './UserPopup';
+import { theme } from '../../helpers';
 
 enum MessageHeaderType {
   normal,
@@ -24,7 +25,24 @@ enum MessageContentType {
   stickerAsText
 }
 
-const MessageHeader = ({ styles, message, onClick, headerType }) => {
+const MessageHeader = ({
+  stateTheme,
+  styles,
+  message,
+  onClick,
+  headerType
+}) => {
+  const getTime = () => {
+    var date = new Date();
+    return (
+      String(date.getHours()).padStart(2, '0') +
+      ':' +
+      String(date.getMinutes()).padStart(2, '0') +
+      ':' +
+      String(date.getSeconds()).padStart(2, '0')
+    );
+  };
+
   return (
     <div
       className={
@@ -33,6 +51,9 @@ const MessageHeader = ({ styles, message, onClick, headerType }) => {
           : `${styles.messageHeader}`
       }
     >
+      <div className={styles.timestampContainer}>
+        <span style={stateTheme.timeStamp}>{message.Msg_timestamp}</span>
+      </div>
       <div className={styles.image_container}>
         <img src={message.sender.avatar} width={26} height={26} />
       </div>
@@ -255,6 +276,7 @@ const Message = ({
           <div className={styles.messageEvent}>
             {message.sender ? (
               <MessageHeader
+                stateTheme={stateTheme}
                 styles={styles}
                 message={message}
                 headerType={MessageHeaderType.event}
@@ -276,42 +298,45 @@ const Message = ({
         hasFilteredStickers ? (
           <div
             className={`${styles.message} ${
-              message.content
-                ? message.content.toLowerCase().includes(ownerName)
-                  ? Styles.highlighted
-                  : ''
+              message.content.toLowerCase().includes(ownerName)
+                ? Styles.highlighted
                 : ''
             }`}
             style={Object.assign(
               {},
-              stateTheme.chat.message,
-              nth % 2 ? stateTheme.chat.message.alternate : {}
+              stateTheme.cell.normal,
+              nth % 2 ? stateTheme.cell.alternate : {}
             )}
           >
-            <MessageHeader
-              styles={styles}
-              headerType={MessageHeaderType.normal}
-              message={message}
-              onClick={e => {
-                addUserPopup();
-              }}
-            />
-            {!hasStickersAsText ? (
-              <MessageContent
+            {message.sender ? (
+              <MessageHeader
+                stateTheme={stateTheme}
                 styles={styles}
                 message={message}
-                src={getSticker(message.content)}
-                onClick={addSticker}
-                contentType={MessageContentType.sticker}
+                headerType={MessageHeaderType.normal}
+                onClick={e => {
+                  addUserPopup();
+                }}
               />
-            ) : (
+            ) : null}
+            {!hasStickersAsText ? (
+              message.content ? (
+                <MessageContent
+                  styles={styles}
+                  message={message}
+                  src={getSticker(message.content)}
+                  onClick={addSticker}
+                  contentType={MessageContentType.sticker}
+                />
+              ) : null
+            ) : message.content ? (
               <MessageContent
                 styles={styles}
                 message={message}
                 onClick={addSticker}
                 contentType={MessageContentType.stickerAsText}
               />
-            )}
+            ) : null}
             {canDelete() ? (
               <DeleteButton
                 styles={styles}
@@ -333,23 +358,29 @@ const Message = ({
           }`}
           style={Object.assign(
             {},
-            stateTheme.chat.message,
-            nth % 2 ? stateTheme.chat.message.alternate : {}
+            stateTheme.cell.normal,
+            nth % 2 ? stateTheme.cell.alternate : {}
           )}
         >
-          <MessageHeader
-            styles={styles}
-            message={message}
-            headerType={MessageHeaderType.normal}
-            onClick={e => {
-              addUserPopup();
-            }}
-          />
-          <MessageContent
-            styles={styles}
-            message={message}
-            contentType={MessageContentType.normal}
-          />
+          {message.sender ? (
+            <MessageHeader
+              stateTheme={stateTheme}
+              styles={styles}
+              message={message}
+              headerType={MessageHeaderType.normal}
+              onClick={e => {
+                addUserPopup();
+              }}
+            />
+          ) : null}
+          {message.content ? (
+            <MessageContent
+              styles={styles}
+              message={message}
+              contentType={MessageContentType.normal}
+            />
+          ) : null}
+
           {canDelete() ? (
             <DeleteButton
               styles={styles}

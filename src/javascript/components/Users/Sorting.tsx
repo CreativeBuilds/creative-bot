@@ -30,7 +30,7 @@ const Sorting = ({
   };
 
   return (
-    <div className={styles.user} style={stateTheme.chat.message}>
+    <div className={styles.user} style={stateTheme.base.quinaryBackground}>
       <div className={styles.image_container}>
         <img
           src={

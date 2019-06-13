@@ -48,13 +48,13 @@ const Main = ({ Config }: Main) => {
 
   return (
     <ThemeContext.Provider value={{ stateTheme, setStateTheme }}>
-      <div className={styles.appFrame}>
-        <TitleBar Config={config} />
-        <Banner />
-        <div className={styles.main} style={style().main}>
-          <Router />
+        <div className={styles.appFrame}>         
+          <TitleBar Config={config}/>
+          <Banner />
+          <div className={styles.main} style={style().base.tertiaryBackground}>
+            <Router />
+          </div>
         </div>
-      </div>
     </ThemeContext.Provider>
   );
 };

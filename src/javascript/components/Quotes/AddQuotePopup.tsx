@@ -64,7 +64,7 @@ const AddQuotePopup = ({
     };
   
     return (
-      <div className={styles.popup} style={stateTheme.main}>
+      <div className={styles.popup}>
         <h2>Add a Quote</h2>
         {hasError ? <h4 className={styles.errorMsg}>{errorMsg}</h4> : null }
         <div className={styles.input_wrapper}>
@@ -116,11 +116,7 @@ const AddQuotePopup = ({
         <div
           className={styles.submit}
           onClick={save}
-          style={{
-            backgroundColor: stateTheme.menu.backgroundColor,
-            color: stateTheme.menu.color,
-            borderColor: stateTheme.menu.backgroundColor
-          }}
+          style={stateTheme.submitButton}
         >
           CREATE
         </div>

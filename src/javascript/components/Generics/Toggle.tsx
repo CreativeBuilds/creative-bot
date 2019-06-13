@@ -18,7 +18,7 @@ const Toggle = ({header, type, isOn, isEnabled, onClick, onChange = null, stateT
     return (
         <div className={`${styles.toggle} ${type == ToggleType.stretched ? styles.stretched : styles.compact} ${!isenabled ? styles.disabled : null} `}>
               <div className={styles.header}>{header}</div>
-              <div style={stateTheme.menu} onClick={(e) => {
+              <div style={stateTheme.base.background} onClick={(e) => {
                   setIsOn(!ison);
                   if (isenabled) {
                     onClick();
@@ -27,8 +27,8 @@ const Toggle = ({header, type, isOn, isEnabled, onClick, onChange = null, stateT
                 <div
                   style={{
                     background: ison
-                      ? stateTheme.main.highlightColor
-                      : stateTheme.chat.message.alternate.backgroundColor
+                      ? theme.globals.accentBackground.backgroundColor
+                      : stateTheme.base.secondaryBackground.backgroundColor
                   }}
                   className={ison ? styles.isOn : ''}
                 />
