@@ -253,19 +253,23 @@ const Message = ({
       {isEvent() ? (
         hasFilteredEvents ? (
           <div className={styles.messageEvent}>
-            <MessageHeader
-              styles={styles}
-              message={message}
-              headerType={MessageHeaderType.event}
-              onClick={e => {
-                addUserPopup();
-              }}
-            />
-            <MessageContent
-              styles={styles}
-              evntMsg={eventMessage()}
-              contentType={MessageContentType.event}
-            />
+            {message.sender ? (
+              <MessageHeader
+                styles={styles}
+                message={message}
+                headerType={MessageHeaderType.event}
+                onClick={e => {
+                  addUserPopup();
+                }}
+              />
+            ) : null}
+            {message.content ? (
+              <MessageContent
+                styles={styles}
+                evntMsg={eventMessage()}
+                contentType={MessageContentType.event}
+              />
+            ) : null}
           </div>
         ) : null
       ) : isSticker() ? (
