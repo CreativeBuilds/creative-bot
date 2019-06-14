@@ -95,6 +95,7 @@ class RouterWrapper extends Component<any, any> {
     ipcRenderer.on('livestreamObject', (event, livestream) => {
       this.setState({ livestream });
     });
+
     rxConfig.subscribe(Config => {
       this.setState({ config: Config });
     });

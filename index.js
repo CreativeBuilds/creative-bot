@@ -51,33 +51,39 @@ const {
   muteUser
 } = require('./helpers/removeMessage');
 
+let verifyStreamerDisplayName = config => {
+  return getBlockchainUsername(config.streamerDisplayName).then(username => {
+    if (username.length === 0) return false;
+    return username;
+  });
+};
+
 rxConfig
   .pipe(
-    filter(x => {
-      let Config = Object.assign({}, x);
+    distinctUntilChanged((prev, curr) => {
+      let Config = Object.assign({}, curr);
+      let Prev = Object.assign({}, prev);
       if (
         Config.streamerDisplayName &&
         Config.authKey &&
-        Config.streamerOldDisplayName !== Config.streamerDisplayName
+        Config.streamerDisplayName !== Prev.streamerDisplayName
       ) {
-        getBlockchainUsername(Config.streamerDisplayName).then(username => {
-          console.log(
-            'REEEEEEEEEEEEEE',
-            Config.streamerOldDisplayName,
-            config.streamerDisplayName
-          );
-          if (username.length === 0) return;
-          Config.streamer = username;
-          Config.streamerOldDisplayName = Config.streamerDisplayName;
-          rxConfig.next(Config);
-        });
         return false;
       }
-      return !!x.streamer;
+      return true;
     })
   )
-  .subscribe(config => {
-    console.log('set config streamer name');
+  .subscribe(Config => {
+    if (!Config.authKey || !Config.streamerDisplayName) return;
+    verifyStreamerDisplayName(Config).then(username => {
+      if (username) {
+        let config = Object.assign({}, Config, { streamer: username });
+        rxConfig.next(config);
+        console.log('set config streamer name');
+      } else {
+        return;
+      }
+    });
   });
 
 const sendError = (WS, error) => {
@@ -358,7 +364,21 @@ function createWindow() {
   ipcMain.on('setRxConfig', (event, Config) => {
     if (Config !== config) {
       config = Config;
-      rxConfig.next(Config);
+      if (!Config.authKey || !Config.streamerDisplayName)
+        return rxConfig.next(Config);
+      verifyStreamerDisplayName(Config).then(bool => {
+        if (bool) {
+          rxConfig.next(Config);
+          win.webContents.send('passedConfig');
+        } else {
+          win.webContents.send(
+            'failedConfig',
+            `Error Updating... Streamer: ${
+              Config.streamerDisplayName
+            } is not found!`
+          );
+        }
+      });
     }
   });
   ipcMain.on('getRxCommands', () => {
@@ -800,23 +820,31 @@ function createWindow() {
             'Error when sending lino, message.value object most likely invalid! Check bot console for more details.'
           );
         });
-      } else if (msg.type === 'key_received') {
-        Config = Object.assign({}, { authKey: msg.value.key }, config);
-        SaveToJson('config', Config);
       }
     });
     if (!config.authKey || config.authKey === '')
       return WS.send(JSON.stringify({ type: 'key_init' }));
   });
+
+  let oldListeners = [];
+  let oldDlive = null;
   // This is for the app
   rxConfig
     .pipe(
-      filter(x => !!x.authKey),
-      first()
+      filter(x => !!x.authKey && !!x.streamerDisplayName),
+      distinctUntilChanged((prev, curr) => {
+        return (
+          prev.authKey === curr.authKey ||
+          prev.streamerDisplayName === curr.streamerDisplayName
+        );
+      })
     )
     .subscribe(config => {
       console.log('GOT CONFIG');
-      rxDlive
+      if (oldDlive) {
+        oldListeners.forEach(listener => listener.unsubscribe());
+      }
+      let dliveListen = rxDlive
         .pipe(
           filter(x => !!x),
           first()
@@ -839,6 +867,8 @@ function createWindow() {
             });
           });
         });
+      oldListeners.push(dliveListen);
+      oldDlive = dliveListen;
     });
 }
 

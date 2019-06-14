@@ -9,6 +9,7 @@ import { MdModeEdit } from 'react-icons/md';
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 import { setRxConfig } from '../../helpers/rxConfig';
+import { ipcMain } from 'electron';
 
 const Popup = ({
   configOption,
@@ -18,6 +19,7 @@ const Popup = ({
   config
 }) => {
   const [value, setValue] = useState<string>(configOption.value.toString());
+  const [error, setError] = useState<string>('');
 
   return (
     <div className={styles.popup}>
@@ -29,6 +31,13 @@ const Popup = ({
         }}
         value={value}
       />
+      {error.length ? (
+        <div
+          style={{ width: '100%', textAlign: 'center', marginBottom: '5px' }}
+        >
+          {error}
+        </div>
+      ) : null}
       <div
         className={styles.submit}
         style={stateTheme.submitButton}
@@ -42,8 +51,17 @@ const Popup = ({
             default:
               Config[configOption.key] = value;
           }
+          let passedConfig = () => {
+            closeCurrentPopup();
+            ipcRenderer.removeListener('failedConfig', failedConfig);
+          };
+          let failedConfig = (obj, err) => {
+            setError(err);
+            ipcRenderer.removeListener('passedConfig', passedConfig);
+          };
+          ipcRenderer.once('passedConfig', passedConfig);
+          ipcRenderer.once('failedConfig', failedConfig);
           setRxConfig(Config);
-          closeCurrentPopup();
         }}
       >
         SAVE
@@ -88,7 +106,7 @@ const Config = ({
       style={Object.assign(
         {},
         stateTheme.cell.normal,
-        nth % 2 ? stateTheme.cell.alternate : { }
+        nth % 2 ? stateTheme.cell.alternate : {}
       )}
     >
       <div className={styles.toggle_wrappers}>

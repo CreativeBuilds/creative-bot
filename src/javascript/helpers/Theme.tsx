@@ -3,19 +3,19 @@ import * as React from 'react';
 const theme = {
   globals: {
     accentBackground: {
-      backgroundColor: "#ffd300",
-      color: "#202225"
+      backgroundColor: '#ffd300',
+      color: '#202225'
     },
     accentHighlight: {
-      highlightColor: "#ffd300",
-      color: "#202225"
-    }, 
+      highlightColor: '#ffd300',
+      color: '#202225'
+    },
     accentForeground: {
-      color: "#ffd300"
+      color: '#ffd300'
     },
     eventAccent: {
-        backgroundColor: "#ffd300",
-        color: "#202225"
+      backgroundColor: '#ffd300',
+      color: '#202225'
     },
     destructiveButton: {
       backgroundColor: '#dc143c',
@@ -28,81 +28,82 @@ const theme = {
       borderColor: '#1e90ff'
     },
     transparent: {
-        backgroundColor: "transparent"
+      backgroundColor: 'transparent'
     }
   },
   dark: {
     base: {
       background: {
-          backgroundColor: "#070708",
-          color: "#F8F8F7"
+        backgroundColor: '#070708',
+        color: '#F8F8F7'
       },
       secondaryBackground: {
-          backgroundColor: "#0e0f10",
-          color: "#F1F1F1"
+        backgroundColor: '#0e0f10',
+        color: '#F1F1F1'
       },
       tertiaryBackground: {
-          backgroundColor: "#141517",
-          color: "#DFDDDA"
+        backgroundColor: '#141517',
+        color: '#DFDDDA'
       },
       quaternaryBackground: {
-          backgroundColor: "#1f1f1f",
-          color: "#E0E0E0"
+        backgroundColor: '#1f1f1f',
+        color: '#E0E0E0'
       },
       quinaryBackground: {
-          backgroundColor: "#202225",
-          color: "#CCCCCC"
+        backgroundColor: '#202225',
+        color: '#CCCCCC'
       },
       foreground: {
-          color: "#F8F8F7",
-          fill: "#F8F8F7",
-          stroke: "#F8F8F7"
+        color: '#F8F8F7',
+        fill: '#F8F8F7',
+        stroke: '#F8F8F7'
       },
       secondaryForeground: {
-          color: "#F1F1F1",
-          fill: "#F1F1F1",
-          stroke: "#F1F1F1"
+        color: '#F1F1F1',
+        fill: '#F1F1F1',
+        stroke: '#F1F1F1'
       },
       tertiaryForeground: {
-          color: "#DFDDDA",
-          fill: "#DFDDDA",
-          stroke: "#DFDDDA"
+        color: '#DFDDDA',
+        fill: '#DFDDDA',
+        stroke: '#DFDDDA'
       },
       quaternaryForeground: {
-          color: "#E0E0E0",
-          fill: "#E0E0E0",
-          stroke: "#E0E0E0"
+        color: '#E0E0E0',
+        fill: '#E0E0E0',
+        stroke: '#E0E0E0'
       },
       quinaryForeground: {
-          color: "#CCCCCC",
-          fill: "#CCCCCC",
-          stroke: "#CCCCCC"
+        color: '#CCCCCC',
+        fill: '#CCCCCC',
+        stroke: '#CCCCCC'
       }
     },
-    seperator: {
-
-    },
+    seperator: {},
     cell: {
       normal: {
-        backgroundColor: "#202225",
-        color: "#CCCCCC"
+        backgroundColor: '#202225',
+        color: '#CCCCCC'
       },
       alternate: {
-        backgroundColor: "#0e0f10",
-        color: "#F1F1F1"
+        backgroundColor: '#0e0f10',
+        color: '#F1F1F1'
       }
     },
     toolBar: {
       'border-bottom': '4px solid #202225',
       'font-size': '30px'
     },
-    button: {
-
-    },
+    button: {},
     submitButton: {
       backgroundColor: '#141517',
       color: '#f0f0f0',
       borderColor: '#141517'
+    },
+    disabledSubmitButton: {
+      backgroundColor: '#191a1c',
+      color: '#d0d0d0',
+      borderColor: '#191a1c'
     },
     searchInput: {
       backgroundColor: '#0e0f10',
@@ -110,64 +111,62 @@ const theme = {
       borderColor: '#0e0f10'
     },
     timeStamp: {
-      color: "#AAAAAA"
+      color: '#AAAAAA'
     }
   },
   light: {
     base: {
       background: {
-          backgroundColor: "#F8F8F7",
-          color: "#070708"
+        backgroundColor: '#F8F8F7',
+        color: '#070708'
       },
       secondaryBackground: {
-          backgroundColor: "#F1F1F1",
-          color: "#0e0e10"
+        backgroundColor: '#F1F1F1',
+        color: '#0e0e10'
       },
       tertiaryBackground: {
-          backgroundColor: "#DFDDDA",
-          color: "#202225"
+        backgroundColor: '#DFDDDA',
+        color: '#202225'
       },
       quaternaryBackground: {
-          backgroundColor: "#E0E0E0",
-          color: "#1f1f1f"
+        backgroundColor: '#E0E0E0',
+        color: '#1f1f1f'
       },
       quinaryBackground: {
-          backgroundColor: "#CCCCCC",
-          color: "#333333"
+        backgroundColor: '#CCCCCC',
+        color: '#333333'
       },
       foreground: {
-          color: "#070708",
-          fill: "#070708",
-          stroke: "#070708"
+        color: '#070708',
+        fill: '#070708',
+        stroke: '#070708'
       },
       secondaryForeground: {
-          color: "#0e0e10",
-          fill: "#0e0e10",
-          stroke: "#0e0e10"
+        color: '#0e0e10',
+        fill: '#0e0e10',
+        stroke: '#0e0e10'
       },
       tertiaryForeground: {
-          color: "#202225",
-          fill: "#202225",
-          stroke: "#202225"
+        color: '#202225',
+        fill: '#202225',
+        stroke: '#202225'
       },
       quaternaryForeground: {
-          color: "#1f1f1f",
-          fill: "#1f1f1f",
-          stroke: "#1f1f1f"
+        color: '#1f1f1f',
+        fill: '#1f1f1f',
+        stroke: '#1f1f1f'
       },
       quinaryForeground: {
-          color: "#333333",
-          fill: "#333333",
-          stroke: "#333333"
+        color: '#333333',
+        fill: '#333333',
+        stroke: '#333333'
       }
     },
-    seperator: {
-
-    },
+    seperator: {},
     cell: {
       normal: {
         backgroundColor: '#ffffff',
-        color: '#202225',
+        color: '#202225'
       },
       alternate: {
         backgroundColor: '#eeeeee',
@@ -182,6 +181,11 @@ const theme = {
       backgroundColor: `#eeeeee`,
       color: '#202225',
       borderColor: `#eeeeee`
+    },
+    disabledSubmitButton: {
+      backgroundColor: '#dddddd',
+      color: '#202225',
+      borderColor: '#dddddd'
     },
     searchInput: {
       backgroundColor: `#F1F1F1`,

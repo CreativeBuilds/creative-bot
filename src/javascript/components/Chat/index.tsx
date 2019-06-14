@@ -57,9 +57,10 @@ const AddCommandPopup = ({
   const [error, SetError] = useState(false);
   const [config, setConfig] = useState(Config);
 
-  const setError = error => {
+  const setError = (error, disableTimeout = false) => {
     SetError(true);
     SetHelperText(error);
+    if (disableTimeout) return;
     setTimeout(() => {
       SetError(false);
       SetHelperText(text);
@@ -86,8 +87,21 @@ const AddCommandPopup = ({
 
   let keyDown = e => {
     if (e.key === 'Enter') {
-      closeCurrentPopup(name, setError);
+      verifySave();
     }
+  };
+
+  let verifyInput = val => {
+    if (configName === 'Auth Key' && val.split('.').length !== 3) {
+      setError(true, true);
+      SetHelperText('That doesnt look like a valid auth key!');
+    }
+    setName(val);
+  };
+
+  let verifySave = () => {
+    if (error) return;
+    closeCurrentPopup(name, setError);
   };
 
   return (
@@ -101,7 +115,7 @@ const AddCommandPopup = ({
               onKeyDown={keyDown}
               type={type}
               onChange={e => {
-                setName(e.target.value);
+                verifyInput(e.target.value);
               }}
               value={name}
             />
@@ -115,10 +129,14 @@ const AddCommandPopup = ({
         {helperText}
       </div>
       <div
-        className={styles.submit}
-        style={stateTheme.submitButton}
+        className={`${styles.submit} ${
+          error ? styles.disabled : styles.enabled
+        }`}
+        style={
+          error ? stateTheme.disabledSubmitButton : stateTheme.submitButton
+        }
         onClick={() => {
-          closeCurrentPopup(name, setError);
+          verifySave();
         }}
       >
         {buttonText}
@@ -238,10 +256,52 @@ const Chat = ({ props }) => {
 
     if (!config.init) return;
     if (
+      !config.streamerDisplayName &&
+      config.init &&
+      !streamerDisplayName &&
+      config.acceptedToS
+    ) {
+      streamerDisplayName = true;
+      addPopup(
+        <AddCommandPopup
+          styles={styles}
+          addPopup={addPopup}
+          closeCurrentPopup={(input, setError) => {
+            if (input !== '') {
+              let Config = Object.assign(
+                {},
+                { streamerDisplayName: input },
+                config
+              );
+              setRxConfig(Config);
+              let passedConfig = () => {
+                closeCurrentPopup();
+                ipcRenderer.removeListener('failedConfig', failedConfig);
+              };
+              let failedConfig = (obj, err) => {
+                window.location.reload();
+                ipcRenderer.removeListener('passedConfig', passedConfig);
+              };
+              ipcRenderer.once('passedConfig', passedConfig);
+              ipcRenderer.once('failedConfig', failedConfig);
+            } else {
+              setError('Input field must not be empty!');
+            }
+          }}
+          stateTheme={stateTheme}
+          configName={'Streamer Username'}
+          text={
+            'Note if, you input the incorrect name, you can change later in the options file.'
+          }
+        />
+      );
+    }
+    if (
       !config.authKey &&
       config.init &&
       !authKey &&
-      config.streamerDisplayName
+      !config.streamerDisplayName &&
+      config.acceptedToS
     ) {
       authKey = true;
       addPopup(
@@ -284,39 +344,15 @@ const Chat = ({ props }) => {
         />
       );
     }
-    if (!config.streamerDisplayName && config.init && !streamerDisplayName) {
-      streamerDisplayName = true;
-      addPopup(
-        <AddCommandPopup
-          styles={styles}
-          addPopup={addPopup}
-          closeCurrentPopup={(input, setError) => {
-            if (input !== '') {
-              let Config = Object.assign(
-                {},
-                { streamerDisplayName: input },
-                config
-              );
-              setRxConfig(Config);
-              closeCurrentPopup();
-            } else {
-              setError('Input field must not be empty!');
-            }
-          }}
-          stateTheme={stateTheme}
-          configName={'Streamer Username'}
-          text={
-            'Note if, you input the incorrect name, you can change later in the options file.'
-          }
-        />
-      );
-    }
-    if (Object.keys(config).length === 1) {
+    console.log('CONFIG LENGTH', Object.keys(config).length);
+    if (!config.acceptedToS) {
       addPopup(
         <AddCommandPopup
           styles={styles}
           addPopup={addPopup}
           closeCurrentPopup={() => {
+            let Config = Object.assign({}, { acceptedToS: true }, config);
+            setRxConfig(Config);
             closeCurrentPopup();
           }}
           stateTheme={stateTheme}
@@ -326,6 +362,13 @@ const Chat = ({ props }) => {
               Welcome to Creative's Chat Bot!
               <br /> Before we can do cool things, you're going to have to fill
               in some config options...
+              <br />
+              <br />
+              <i>
+                Please note, by continuing you agree that non-identifying
+                information may be collected for statistical use to help further
+                development of the bot *
+              </i>
             </span>
           }
           noInput={true}
