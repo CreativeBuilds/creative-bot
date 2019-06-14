@@ -11,6 +11,28 @@
   flex-direction: column;
 }
 
+.dragDropContentBox {
+  padding: 15px;
+  position: relative;
+  .iconContainer {
+    position: relative;
+    height: 64px;
+  }
+  
+  svg { 
+    height: 64px; 
+    width: 64px; 
+    left: 0;
+    right: 0;
+    position: absolute;
+  }
+
+  svg, p, .dragDropMessage {  
+    text-align: center;
+    margin: auto;
+  }
+}
+
 .header {
   height: 44px;
   width: 100%;

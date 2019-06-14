@@ -10,6 +10,7 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 
 import { SegmentControl, SegmentControlSource } from '../SegmentControl/index';
 import { Toggle, ToggleType } from '../Generics/Toggle';
+import { Panel } from '../Generics/Panel';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -77,6 +78,12 @@ const ChatFiltersPopup = ({
           <Toggle header="Show Event Messages" type={ToggleType.stretched} isEnabled={true} isOn={hasFilteredEvents} onClick={() => { saveToDB('enableEvents'); }} stateTheme={stateTheme}/>
           <Toggle header="Show Stickers" type={ToggleType.stretched} isEnabled={true} isOn={hasFilteredStickers} onClick={() => { saveToDB('enableStickers'); }} stateTheme={stateTheme}/>
           <Toggle header="Display Stickers as Text" type={ToggleType.stretched} isEnabled={hasFilteredStickers} isOn={hasStickersAsText} onClick={() => { saveToDB('enableStickersAsText'); }} stateTheme={stateTheme}/>
+          <Panel header="Timestamp Filters" hasHeader={true} style={stateTheme.base.tertiaryBackground} content={
+            <div>
+              <Toggle header="Show Timestamp" type={ToggleType.stretched} isEnabled={true} isOn={hasFilteredEvents} onClick={() => {  }} stateTheme={stateTheme}/>
+              <Toggle header="Display Timestamp as Digital" type={ToggleType.stretched} isEnabled={true} isOn={hasFilteredStickers} onClick={() => {  }} stateTheme={stateTheme}/>
+            </div>
+          } />
         </div>
         <div
           className={styles.submit}

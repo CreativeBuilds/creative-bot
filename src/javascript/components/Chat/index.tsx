@@ -19,6 +19,8 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 import { remote } from 'electron';
 import { CreativeBotPopup } from './../WebServices/CreativeBotPopup';
 import { ChatFiltersPopup } from './ChatFiltersPopup';
+import { SetupOptionsPopup } from './SetupOptionsPopup';
+import { SetupAsExistingUserPopup } from './SetupAsExistingUserPopup';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -134,6 +136,9 @@ const Chat = ({ props }) => {
   const { Messages, addPopup, closeCurrentPopup } = props;
   const viewers = props.viewers;
 
+  const [isStartUp, setIsStartUp] = useState(!streamerDisplayName);
+  const [isImportingBot, setIsImportingBot] = useState(false);
+
   const [viewersToggle, setViewersToggle] = useState<boolean>(true);
   const [config, setConfig]: any = useState({});
   const [emotes, setEmotes]: any = useState({});
@@ -241,7 +246,8 @@ const Chat = ({ props }) => {
       !config.authKey &&
       config.init &&
       !authKey &&
-      config.streamerDisplayName
+      config.streamerDisplayName &&
+      !isStartUp
     ) {
       authKey = true;
       addPopup(
@@ -284,6 +290,7 @@ const Chat = ({ props }) => {
         />
       );
     }
+
     if (!config.streamerDisplayName && config.init && !streamerDisplayName) {
       streamerDisplayName = true;
       addPopup(
@@ -311,6 +318,44 @@ const Chat = ({ props }) => {
         />
       );
     }
+
+    if (isImportingBot == true && config.init) {
+      setIsImportingBot(false);
+      addPopup(
+        <SetupAsExistingUserPopup
+          styles={styles} 
+          closeCurrentPopup={closeCurrentPopup}
+          addPopup={addPopup} 
+          stateTheme={stateTheme} 
+          />)
+
+    }
+
+    if (isStartUp && config.init) {
+      setIsStartUp(false);
+      /*addPopup(
+      <SetupOptionsPopup 
+        styles={styles} 
+        closeCurrentPopup={closeCurrentPopup}
+        addPopup={addPopup} 
+        stateTheme={stateTheme} 
+        setupAsNewUser={(e) => { 
+          setIsImportingBot(false);
+        }} 
+        setupAsExistingUser={(e) => { 
+          setIsImportingBot(true);
+        }} 
+      />)*/
+      addPopup(
+      <SetupAsExistingUserPopup
+          styles={styles} 
+          closeCurrentPopup={closeCurrentPopup}
+          addPopup={addPopup} 
+          stateTheme={stateTheme} 
+          />)
+
+    }
+
     if (Object.keys(config).length === 1) {
       addPopup(
         <AddCommandPopup

@@ -12,6 +12,7 @@ const path = require('path');
 const { distinctUntilChanged, filter, first } = require('rxjs/operators');
 const _ = require('lodash');
 const storage = require('electron-json-storage');
+var archiver = require('archiver');
 // const DLive = require('dlive-js');
 const { rxDlive } = require('./helpers/rxDlive');
 let dlive;
@@ -41,6 +42,7 @@ const getCustomVariables = require('./helpers/getCustomVariables');
 const parseReply = require('./helpers/parseReply');
 rxCommands.subscribe(commands => (Commands = commands));
 const rxTimers = require('./helpers/rxTimers');
+const backupData = require('./helpers/backupData');
 let { makeNewCommand, getBlockchainUsername } = require('./helpers');
 const { autoUpdater } = require('electron-updater');
 require('./helpers/startTimers').run();
@@ -245,6 +247,19 @@ function createWindow() {
     );
     CommandsCopy[name] = command;
     rxCommands.next(CommandsCopy);
+  });
+
+  ipcMain.on('backup-data', (event, dir) => {
+    var dateObj = new Date();
+    var date = String(dateObj.getDay()).padStart(2, '0') + '_' + String(dateObj.getMonth()).padStart(2, '0') + '_' + String(dateObj.getFullYear())
+    var time =
+      String(dateObj.getHours()).padStart(2, '0') +
+      '_' +
+      String(dateObj.getMinutes()).padStart(2, '0') +
+      '_' +
+      String(dateObj.getSeconds()).padStart(2, '0');
+    var source = storage.getDefaultDataPath();
+    backupData(source, dir, "creativebot_" + date +'_' + time);
   });
 
   ipcMain.on('triggerBannerMessage', (event, bannerMessage) => {

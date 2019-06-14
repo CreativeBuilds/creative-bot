@@ -6,6 +6,8 @@ import { setConfig } from 'react-hot-loader';
 
 const { ipcRenderer, shell, remote, webFrame } = require('electron');
 const {dialog, BrowserWindow, app} = remote;
+var path = require('path');
+
 
 var win = remote.getCurrentWindow();
 
@@ -131,6 +133,23 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                         enabled: true,
                         action() { 
                             remote.getCurrentWindow().webContents.toggleDevTools()
+                        }
+                    },
+                    {
+                        role: 'seperator',
+                    },
+                    {
+                        role: 'normal',
+                        title: 'Back-Up Bot Data',
+                        icon: 'MdCardTravel',
+                        enabled: true,
+                        action() { 
+                            var toLocalPath = path.resolve(app.getPath("documents"))
+                            dialog.showOpenDialog({ title: 'Back-up Bot Data to...', properties: ['openDirectory'] , defaultPath: toLocalPath }, (e) => {
+                                var dir = e[0]
+                                ipcRenderer.send('backup-data', dir);
+                            });
+                        
                         }
                     },
                     {
