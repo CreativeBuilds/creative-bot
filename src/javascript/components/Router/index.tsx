@@ -42,7 +42,8 @@ class RouterWrapper extends Component<any, any> {
     emotes: {},
     quotes: {},
     lists: {},
-    livestream: { watchingCount: 0 }
+    livestream: { watchingCount: 0 },
+    noX: false
   };
   componentDidMount() {
     rxUsers.subscribe(Users => {
@@ -103,11 +104,12 @@ class RouterWrapper extends Component<any, any> {
 
   popups = [];
 
-  addPopup = (element, hasGradiant = false) => {
+  addPopup = (element, hasGradiant = false, noX = false) => {
     this.popups = this.popups.concat([element]);
     this.setState({
       popups: this.popups,
-      hasGradiant: hasGradiant
+      hasGradiant: hasGradiant,
+      noX
     });
   };
 
@@ -127,6 +129,7 @@ class RouterWrapper extends Component<any, any> {
             Component={popups[popups.length - 1]}
             closePopup={this.closeCurrentPopup}
             hasGradiant={hasGradiant}
+            noX={this.state.noX}
           />
         ) : null}
         <div id='content'>

@@ -7,7 +7,7 @@ import { theme } from '../../helpers';
 const { ipcRenderer, shell, remote } = require('electron');
 const styles: any = require('./Popup.scss');
 
-const Popup = ({ Component, hasGradiant = false, closePopup }) => {
+const Popup = ({ Component, hasGradiant = false, closePopup, noX = false }) => {
   const [stateTheme, setStateTheme] = useState(theme.dark);
   const [config, setConfig] = useState<any>(null);
 
@@ -38,13 +38,15 @@ const Popup = ({ Component, hasGradiant = false, closePopup }) => {
         } animated fadeInUp`}
         style={hasGradiant ? theme.dark : stateTheme.base.quinaryBackground}
       >
-        <div className={styles.close}>
-          <MdClose
-            onClick={() => {
-              closePopup();
-            }}
-          />
-        </div>
+        {noX ? null : (
+          <div className={styles.close}>
+            <MdClose
+              onClick={() => {
+                closePopup();
+              }}
+            />
+          </div>
+        )}
         {Component}
       </div>
     </div>

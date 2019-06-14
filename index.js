@@ -362,10 +362,13 @@ function createWindow() {
   });
 
   ipcMain.on('setRxConfig', (event, Config) => {
+    console.log('TRYING TO SET RXCONFIG');
     if (Config !== config) {
       config = Config;
-      if (!Config.authKey || !Config.streamerDisplayName)
+      if (!Config.authKey || !Config.streamerDisplayName) {
+        console.log('INSIDE THE SECOND IF');
         return rxConfig.next(Config);
+      }
       verifyStreamerDisplayName(Config).then(bool => {
         if (bool) {
           rxConfig.next(Config);
@@ -840,7 +843,6 @@ function createWindow() {
       })
     )
     .subscribe(config => {
-      console.log('GOT CONFIG');
       if (oldDlive) {
         oldListeners.forEach(listener => listener.unsubscribe());
       }

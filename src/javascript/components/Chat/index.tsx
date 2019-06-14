@@ -19,6 +19,16 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 import { remote } from 'electron';
 import { CreativeBotPopup } from './../WebServices/CreativeBotPopup';
 import { ChatFiltersPopup } from './ChatFiltersPopup';
+import { AdvancedDiv } from '../AdvancedDiv';
+
+import { isEmpty } from 'lodash';
+
+import {
+  initLogin,
+  signUp as SignUp,
+  rxFirebaseuser
+} from '../../helpers/firebase';
+import { filter } from 'rxjs/operators';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -41,6 +51,250 @@ interface popup {
   type?: string;
 }
 
+function validateStringForEmail(email) {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+}
+
+const AddAcceptFirebasePopup = ({
+  styles,
+  closeCurrentPopup,
+  stateTheme,
+  configName,
+  Config = {}
+}: popup) => {
+  let [signUp, setSignUp] = useState(false);
+  let [email, setEmail] = useState('');
+  let [emailErr, setEmailErr] = useState('');
+  let [password, setPassword] = useState('');
+  let [passwordErr, setPasswordErr] = useState('');
+  let [confirmationPassword, setConfirmationPassword] = useState('');
+  let [confErr, setConfErr] = useState('');
+
+  let validateEmail = val => {
+    if (!validateStringForEmail(val) && signUp) {
+      setEmailErr('Invalid email address!');
+    } else {
+      setEmailErr('');
+    }
+    setEmail(val);
+  };
+
+  let validateConfirmationPassword = val => {
+    if (val !== password) {
+      setConfErr('Passwords do not match!');
+    } else {
+      setConfErr('');
+    }
+    setConfirmationPassword(val);
+    // runAllValidate();
+  };
+  let validatePassword = val => {
+    if (val.length < 8 && signUp) {
+      setPasswordErr('Password must be 8 character long!');
+    } else {
+      setPasswordErr('');
+    }
+    setPassword(val);
+    setConfirmationPassword(confirmationPassword);
+  };
+
+  return (
+    <div className={styles.popup}>
+      <h1>CreativeBot Sign-in</h1>
+      <p
+        style={{
+          width: '70%',
+          margin: 'auto',
+          paddingTop: '10px',
+          paddingBottom: '10px',
+          textAlign: 'center',
+          fontSize: '0.8em'
+        }}
+      >
+        Sign in to the cloud to save all commands/timers/etc plus some more
+        awesome features!
+      </p>
+      <React.Fragment>
+        <div className={styles.input_name}>Email</div>
+        <input
+          className={styles.input}
+          type={'email'}
+          onChange={e => {
+            validateEmail(e.target.value);
+          }}
+          value={email}
+          style={{ width: 'calc(70% - 10px)', minWidth: 'unset' }}
+        />
+        {emailErr ? (
+          <div
+            style={{
+              paddingBottom: '10px',
+              color: theme.globals.destructiveButton.backgroundColor
+            }}
+          >
+            {emailErr}
+          </div>
+        ) : null}
+      </React.Fragment>
+      <React.Fragment>
+        <div className={styles.input_name}>Password</div>
+        <input
+          className={styles.input}
+          onKeyDown={e => {}}
+          type={'password'}
+          onChange={e => {
+            validatePassword(e.target.value);
+          }}
+          style={{ width: 'calc(70% - 10px)', minWidth: 'unset' }}
+          value={password}
+        />
+        {passwordErr ? (
+          <div
+            style={{
+              paddingBottom: '10px',
+              color: theme.globals.destructiveButton.backgroundColor
+            }}
+          >
+            {passwordErr}
+          </div>
+        ) : null}
+      </React.Fragment>
+      {signUp ? (
+        <React.Fragment>
+          <div className={styles.input_name}>Confirm Password</div>
+          <input
+            className={styles.input}
+            onKeyDown={e => {}}
+            type={'password'}
+            style={{ width: 'calc(70% - 10px)', minWidth: 'unset' }}
+            onChange={e => {
+              validateConfirmationPassword(e.target.value);
+            }}
+            value={confirmationPassword}
+          />
+          {confErr ? (
+            <div
+              style={{
+                paddingBottom: '10px',
+                color: theme.globals.destructiveButton.backgroundColor
+              }}
+            >
+              {confErr}
+            </div>
+          ) : null}
+        </React.Fragment>
+      ) : null}
+      {signUp ? (
+        <div
+          className={`${styles.submit} ${
+            confErr.length === 0 &&
+            passwordErr.length === 0 &&
+            emailErr.length === 0
+              ? styles.enabled
+              : styles.disabled
+          }`}
+          onClick={() => {
+            SignUp(email, password).then(boop => {
+              closeCurrentPopup({
+                uid: boop.user.uid,
+                refreshToken: boop.user.refreshToken
+              });
+            });
+          }}
+        >
+          Create Account
+        </div>
+      ) : (
+        <div
+          className={`${styles.submit} ${styles.enabled}`}
+          onClick={() => {
+            initLogin(email, password).then(boop => {
+              console.log('HERE GOT BOOP');
+              closeCurrentPopup({
+                uid: boop.user.uid,
+                refreshToken: boop.user.refreshToken
+              });
+            });
+          }}
+        >
+          Login
+        </div>
+      )}
+      <div style={{ display: 'flex', marginTop: '10px' }}>
+        {signUp ? (
+          <AdvancedDiv
+            aStyle={{
+              flex: 1,
+              paddingRight: '5px',
+              textAlign: 'center',
+              maxWidth: '100%'
+            }}
+            hoverStyle={Object.assign(
+              {},
+              { cursor: 'pointer' },
+              { color: theme.globals.accentHighlight.highlightColor }
+            )}
+          >
+            <div
+              onClick={() => {
+                setSignUp(true);
+              }}
+            >
+              Sign in
+            </div>
+          </AdvancedDiv>
+        ) : (
+          <React.Fragment>
+            <AdvancedDiv
+              aStyle={{
+                flex: 1,
+                paddingRight: '5px',
+                textAlign: 'center',
+                maxWidth: '50%'
+              }}
+              hoverStyle={Object.assign(
+                {},
+                { cursor: 'pointer' },
+                { color: theme.globals.accentHighlight.highlightColor }
+              )}
+            >
+              <div
+                onClick={() => {
+                  setSignUp(true);
+                }}
+              >
+                Sign up
+              </div>
+            </AdvancedDiv>
+            <AdvancedDiv
+              aStyle={{
+                flex: 1,
+                paddingLeft: '5px',
+                textAlign: 'center',
+                maxWidth: '50%'
+              }}
+              hoverStyle={Object.assign(
+                {},
+                { cursor: 'pointer' },
+                { color: theme.globals.accentHighlight.highlightColor }
+              )}
+            >
+              <div
+                onClick={e => {
+                  closeCurrentPopup(false);
+                }}
+              >
+                No thanks, I don't like awesome content
+              </div>
+            </AdvancedDiv>
+          </React.Fragment>
+        )}
+      </div>
+    </div>
+  );
+};
+
 const AddCommandPopup = ({
   styles,
   closeCurrentPopup,
@@ -57,7 +311,12 @@ const AddCommandPopup = ({
   const [error, SetError] = useState(false);
   const [config, setConfig] = useState(Config);
 
-  const setError = (error, disableTimeout = false) => {
+  const setError = (error, disableTimeout = false, skipTimeout = false) => {
+    if (skipTimeout) {
+      SetError(false);
+      SetHelperText(text);
+      return;
+    }
     SetError(true);
     SetHelperText(error);
     if (disableTimeout) return;
@@ -95,6 +354,8 @@ const AddCommandPopup = ({
     if (configName === 'Auth Key' && val.split('.').length !== 3) {
       setError(true, true);
       SetHelperText('That doesnt look like a valid auth key!');
+    } else if (configName === 'Auth Key' && error) {
+      setError('', false, true);
     }
     setName(val);
   };
@@ -256,10 +517,12 @@ const Chat = ({ props }) => {
 
     if (!config.init) return;
     if (
+      config.authKey &&
       !config.streamerDisplayName &&
       config.init &&
       !streamerDisplayName &&
-      config.acceptedToS
+      config.acceptedToS &&
+      typeof config.isFirebaseUser !== 'undefined'
     ) {
       streamerDisplayName = true;
       addPopup(
@@ -293,7 +556,9 @@ const Chat = ({ props }) => {
           text={
             'Note if, you input the incorrect name, you can change later in the options file.'
           }
-        />
+        />,
+        false,
+        true
       );
     }
     if (
@@ -301,7 +566,8 @@ const Chat = ({ props }) => {
       config.init &&
       !authKey &&
       !config.streamerDisplayName &&
-      config.acceptedToS
+      config.acceptedToS &&
+      typeof config.isFirebaseUser !== 'undefined'
     ) {
       authKey = true;
       addPopup(
@@ -341,10 +607,35 @@ const Chat = ({ props }) => {
               to use that auth key!
             </div>
           }
-        />
+        />,
+        false,
+        true
       );
     }
-    console.log('CONFIG LENGTH', Object.keys(config).length);
+
+    if (config.acceptedToS && typeof config.isFirebaseUser === 'undefined') {
+      addPopup(
+        <AddAcceptFirebasePopup
+          styles={styles}
+          addPopup={addPopup}
+          closeCurrentPopup={obj => {
+            let Config = Object.assign(
+              {},
+              !!obj
+                ? { refreshToken: obj.refreshToken, isFirebaseUser: obj.uid }
+                : { isFirebaseUser: false },
+              config
+            );
+            setRxConfig(Config);
+            closeCurrentPopup();
+          }}
+          stateTheme={stateTheme}
+        />,
+        false,
+        true
+      );
+    }
+
     if (!config.acceptedToS) {
       addPopup(
         <AddCommandPopup
@@ -372,7 +663,9 @@ const Chat = ({ props }) => {
             </span>
           }
           noInput={true}
-        />
+        />,
+        false,
+        true
       );
     }
   }, [config]);
