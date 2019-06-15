@@ -57,7 +57,7 @@ const SetupAsExistingUserPopup = ({
     }
 
     const importBackupFile = () => {
-        ipcRenderer.send('backup-data', path);
+        ipcRenderer.send('import-backup-data', path as string);
     }
 
     return (
@@ -103,9 +103,13 @@ const SetupAsExistingUserPopup = ({
             style={stateTheme.submitButton}
             onClick={() => { 
                 importBackupFile();
-                closeCurrentPopup();
+
+                setTimeout(function(){
+                    remote.app.relaunch();
+                    remote.app.exit();
+                },1000);
                 }}>
-            Continue
+            Relaunch & Continue
             </div>
         </div>
   );
