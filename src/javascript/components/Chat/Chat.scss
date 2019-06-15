@@ -64,10 +64,21 @@
 }
 
 .chatFilterPopup {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   .toggle:not(:nth-child(1)) {
     margin-top: 10px;
     margin-left: 0px;
+  }
+
+  p { 
+    text-align: center;
+    margin-top: 0px; 
+  }
+
+  .requiredText {
+    margin: 0;
+    margin-top: 10px;
+    text-align: center;
   }
 }
 

@@ -97,6 +97,7 @@ const SetupAsExistingUserPopup = ({
                         }
                     </DragDrop>
                 } />
+                <p className={styles.requiredText}>*Relaunch of the Bot is Required</p>
             </div>
             <div
             className={styles.submit}
