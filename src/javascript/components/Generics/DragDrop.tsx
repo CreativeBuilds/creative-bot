@@ -42,8 +42,26 @@ class DragDrop extends Component<any,any> {
         e.preventDefault()
         e.stopPropagation()
         this.setState({drag: false})
+
+        var regexPatt = /\.[0-9a-z]+$/i;
+
         if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-            this.props.handleDrop(e.dataTransfer.files)
+            
+            for (var file in e.dataTransfer.files) {
+                var extension = e.dataTransfer.files[file].path.match(regexPatt)[0].replace('.', '');
+                console.log(
+                    extension
+                ) 
+    
+                if (this.props.fileTypes.indexOf(extension) > -1) {
+                    this.props.handleDrop(e.dataTransfer.files, true)
+                    console.log("File(s) is compatible with this action and can now do what you want with it :)");
+                } else {
+                    this.props.handleDrop(e.dataTransfer.files, false);
+                    console.log("File(s) is incompatible with this action");
+                }
+            }
+
             e.dataTransfer.clearData()
             this.dragCounter = 0    
         }
@@ -61,7 +79,9 @@ class DragDrop extends Component<any,any> {
             :
                 null
             }
-            {this.props.children}
+            <div className={this.state.drag ? styles.content : null}>
+                {this.props.children}
+            </div>
         </div>
         )
     }

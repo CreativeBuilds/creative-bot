@@ -9,7 +9,11 @@ import { DragDrop } from '../Generics/DragDrop';
 import { rxUsers, setRxUsers } from '../../helpers/rxUsers';
 
 import Styles from './Chat.scss';
-import { first } from 'rxjs/operators';
+import { first } from 'rxjs/operators'
+
+
+const { ipcRenderer, shell, remote, webFrame } = require('electron');
+const {dialog, BrowserWindow, app} = remote;;
 
 interface popup {
     styles: any;
@@ -28,20 +32,32 @@ const SetupAsExistingUserPopup = ({
   }: popup)  => {
     const [isCompatibleFile, setIsCompatibleFile] = useState<Boolean>(false);
     const [hasFile, setHasFile] = useState<Boolean>(false);
+    const [filename, setFilename] = useState<String>('');
+    const [path, setPath] = useState<String>('');
 
-    const onDropHandler = (e) => {
+    const onDropHandler = (e, isCompatible) => {
         console.log('File dropped');
         console.log(e);
-        var filename = e[0].name;
-        var path = e[0].path;
 
-        if (e != null || e[0] != null || e[0] != "" || e.length != 0) {
+        if (e.length != 0 && isCompatible == true) {
             setIsCompatibleFile(true);
             setHasFile(true);
+            setFilename(e[0].name);
+            setPath(e[0].path);
+
+        } else if (e.length != 0 && isCompatible === false) {
+            setIsCompatibleFile(false);
+            setHasFile(true);
+            setFilename(e[0].name);
+            setPath(e[0].path);
         } else {
             setIsCompatibleFile(false);
             setHasFile(false);
         }
+    }
+
+    const importBackupFile = () => {
+        ipcRenderer.send('backup-data', path);
     }
 
     return (
@@ -50,7 +66,7 @@ const SetupAsExistingUserPopup = ({
             <div className={`${styles.chatFilterPopup}`}>
                 <p>To Import your Backed up Bot Data please drag & drop the .zip file below</p>
                 <Panel hasHeader={false} style={Object.assign({}, stateTheme.dashedBorder, stateTheme.base.tertiaryBackground)} content={
-                    <DragDrop className={styles.dragDropContentBox} fileType={['zip']} draggedTitle="Drop Here" handleDrop={onDropHandler}>
+                    <DragDrop className={styles.dragDropContentBox} fileTypes={['zip']} draggedTitle="Drop Here" handleDrop={onDropHandler}>
                         {hasFile ? 
                             <div> 
                                 {isCompatibleFile ? 
@@ -59,13 +75,15 @@ const SetupAsExistingUserPopup = ({
                                         <MdCheckCircle />
                                     </div>
                                     <div className={styles.dragDropMessage}>Success</div>
+                                    <div className={styles.dragDropMessage}>{filename}</div>
                                 </div>
                                 :
                                 <div> 
                                     <div className={styles.iconContainer}>
                                         <MdCancel />
                                     </div>
-                                    <div className={styles.dragDropMessage}>You have Dragged an Incompatible File</div>
+                                    <div className={styles.dragDropMessage}>You have Dragged an Incompatible File, Please Try Again</div>
+                                    <div className={styles.dragDropMessage}>{filename}</div>
                                 </div>
                                 }
                             </div>  
@@ -84,6 +102,7 @@ const SetupAsExistingUserPopup = ({
             className={styles.submit}
             style={stateTheme.submitButton}
             onClick={() => { 
+                importBackupFile();
                 closeCurrentPopup();
                 }}>
             Continue

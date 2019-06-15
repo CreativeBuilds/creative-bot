@@ -251,7 +251,7 @@ function createWindow() {
 
   ipcMain.on('backup-data', (event, dir) => {
     var dateObj = new Date();
-    var date = String(dateObj.getDay()).padStart(2, '0') + '_' + String(dateObj.getMonth()).padStart(2, '0') + '_' + String(dateObj.getFullYear())
+    var date = String(dateObj.getDay()) + '_' + String(dateObj.getMonth())+ '_' + String(dateObj.getFullYear())
     var time =
       String(dateObj.getHours()).padStart(2, '0') +
       '_' +
@@ -259,12 +259,12 @@ function createWindow() {
       '_' +
       String(dateObj.getSeconds()).padStart(2, '0');
     var source = storage.getDefaultDataPath();
-    exportBackupData(source, dir, "creativebot_" + date +'_' + time);
+    exportBackupData(source, dir, "creativebot_backup_" + date +'_' + time);
   });
 
   ipcMain.on('import-backup-data', (event, source) => {
     var dir = storage.getDefaultDataPath();
-    importBackupData(source, dir);
+    importBackupData(path.resolve(source), path.resolve(dir));
   });
 
   ipcMain.on('triggerBannerMessage', (event, bannerMessage) => {

@@ -319,7 +319,7 @@ const Chat = ({ props }) => {
       );
     }
 
-    if (isImportingBot == true && config.init) {
+    if (isImportingBot && config.init) {
       setIsImportingBot(false);
       addPopup(
         <SetupAsExistingUserPopup

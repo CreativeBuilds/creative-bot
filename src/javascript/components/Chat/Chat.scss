@@ -31,6 +31,9 @@
     text-align: center;
     margin: auto;
   }
+  p, .dragDropMessage { 
+    word-wrap: break-word;
+  }
 }
 
 .header {

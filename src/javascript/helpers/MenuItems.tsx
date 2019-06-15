@@ -140,8 +140,8 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                     },
                     {
                         role: 'normal',
-                        title: 'Back-Up Bot Data',
-                        icon: 'MdCardTravel',
+                        title: 'Export Bot Data',
+                        icon: 'MdCloudUpload',
                         enabled: true,
                         action() { 
                             var toLocalPath = path.resolve(app.getPath("documents"))
@@ -150,6 +150,15 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                                 ipcRenderer.send('backup-data', dir);
                             });
                         
+                        }
+                    },
+                    {
+                        role: 'normal',
+                        title: 'Import Bot Data',
+                        icon: 'MdCloudDownload',
+                        enabled: true,
+                        action() { 
+                            
                         }
                     },
                     {
