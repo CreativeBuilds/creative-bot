@@ -7,6 +7,7 @@ import { Panel } from '../Generics/Panel';
 import { DragDrop } from '../Generics/DragDrop';
 
 import { rxUsers, setRxUsers } from '../../helpers/rxUsers';
+import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
 
 import Styles from './Chat.scss';
 import { first } from 'rxjs/operators'
@@ -30,10 +31,21 @@ const SetupAsExistingUserPopup = ({
     Config = {},
     closeCurrentPopup
   }: popup)  => {
+    const [config, setConfig]: any = useState(Config);
     const [isCompatibleFile, setIsCompatibleFile] = useState<Boolean>(false);
     const [hasFile, setHasFile] = useState<Boolean>(false);
     const [filename, setFilename] = useState<String>('');
     const [path, setPath] = useState<String>('');
+
+    useEffect(() => {
+        let listener = rxConfig.subscribe((data: any) => {
+          delete data.first;
+          setConfig(data);
+        });
+        return () => {
+          listener.unsubscribe();
+        };
+      }, []);
 
     const onDropHandler = (e, isCompatible) => {
         console.log('File dropped');

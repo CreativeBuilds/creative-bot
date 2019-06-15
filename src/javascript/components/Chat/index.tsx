@@ -136,13 +136,12 @@ const Chat = ({ props }) => {
   const { Messages, addPopup, closeCurrentPopup } = props;
   const viewers = props.viewers;
 
-  const [isStartUp, setIsStartUp] = useState(!streamerDisplayName);
-  const [isImportingBot, setIsImportingBot] = useState(false);
-
   const [viewersToggle, setViewersToggle] = useState<boolean>(true);
   const [config, setConfig]: any = useState({});
   const [emotes, setEmotes]: any = useState({});
   const [firstRender, setFirstRender] = useState(true);
+
+  const [isStartUp, setIsStartUp] = useState<Boolean>(config.streamerDisplayName == null);
 
   const updateText = e => {
     setText(e.target.value);
@@ -184,6 +183,7 @@ const Chat = ({ props }) => {
     let listener = rxConfig.subscribe((data: any) => {
       delete data.first;
       setConfig(data);
+      setIsStartUp(data.streamerDisplayName == null);
     });
     let emoteslistener = rxEmotes.subscribe((data: any) => {
       delete data.first;
@@ -241,13 +241,14 @@ const Chat = ({ props }) => {
     // Test to see if the config includes the right variables
     // if's at the top of this will be rendered last
 
+    let showExistingUserPopup = false;
+
     if (!config.init) return;
     if (
       !config.authKey &&
       config.init &&
       !authKey &&
-      config.streamerDisplayName &&
-      !isStartUp
+      config.streamerDisplayName
     ) {
       authKey = true;
       addPopup(
@@ -319,40 +320,28 @@ const Chat = ({ props }) => {
       );
     }
 
-    if (isImportingBot && config.init) {
-      setIsImportingBot(false);
+    if (!config.streamerDisplayName && isStartUp && config.init) {
       addPopup(
-        <SetupAsExistingUserPopup
-          styles={styles} 
-          closeCurrentPopup={closeCurrentPopup}
-          addPopup={addPopup} 
-          stateTheme={stateTheme} 
-          />)
-
-    }
-
-    if (isStartUp && config.init) {
-      setIsStartUp(false);
-      /*addPopup(
       <SetupOptionsPopup 
         styles={styles} 
         closeCurrentPopup={closeCurrentPopup}
         addPopup={addPopup} 
         stateTheme={stateTheme} 
         setupAsNewUser={(e) => { 
-          setIsImportingBot(false);
+
         }} 
         setupAsExistingUser={(e) => { 
-          setIsImportingBot(true);
+          setTimeout(function(){
+            addPopup(
+              <SetupAsExistingUserPopup
+                styles={styles} 
+                closeCurrentPopup={closeCurrentPopup}
+                addPopup={addPopup} 
+                stateTheme={stateTheme} 
+                />)
+          },8);
         }} 
-      />)*/
-      addPopup(
-      <SetupAsExistingUserPopup
-          styles={styles} 
-          closeCurrentPopup={closeCurrentPopup}
-          addPopup={addPopup} 
-          stateTheme={stateTheme} 
-          />)
+      />)
 
     }
 

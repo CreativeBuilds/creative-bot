@@ -21,6 +21,8 @@ storage.get('config', (err, data) => {
   if (!data.enableStickers) data.enableStickers = true;
   // Defaults to true
   if (!data.enableStickersAsText) data.enableStickersAsText = false;
+  // Defaults to true
+  if (!data.isFirstStartUp) data.isFirstStartUp = true;
 
   rxConfig.next(data);
   rxConfig.subscribe(data => {
@@ -30,6 +32,7 @@ storage.get('config', (err, data) => {
     data.enableEvents = Boolean(data.enableEvents);
     data.enableStickers = Boolean(data.enableStickers);
     data.enableStickersAsText = Boolean(data.enableStickersAsText);
+    data.isFirstStartUp = Boolean(data.isFirstStartUp);
     storage.set('config', data);
   });
 });
