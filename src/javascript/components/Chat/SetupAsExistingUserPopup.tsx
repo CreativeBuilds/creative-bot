@@ -4,6 +4,7 @@ import { MdClose, MdTimer, MdDoNotDisturb, MdCancel, MdCloudDownload } from 'rea
 import { removeMessage } from '../../helpers/removeMessage';
 import ReactTooltip from 'react-tooltip';
 import { Panel } from '../Generics/Panel';
+import { DragDrop } from '../Generics/DragDrop';
 
 import { rxUsers, setRxUsers } from '../../helpers/rxUsers';
 
@@ -26,31 +27,34 @@ const SetupAsExistingUserPopup = ({
     closeCurrentPopup
   }: popup)  => {
 
-  return (
-    <div className={`${styles.popup}`}>
-        <h2>Import from Backup File</h2>
-        <div className={`${styles.chatFilterPopup}`}>
-            <p>To Import your Backed up Bot Data please drag & drop the .zip file below</p>
-            <form className={styles.dragDropFormBox}>
-                <Panel hasHeader={false} style={Object.assign({}, stateTheme.dashedBorder ,stateTheme.base.tertiaryBackground)} content={
-                    <div className={styles.dragDropContentBox}>
+    const onDropHandler = (e) => {
+        console.log('File dropped');
+        console.log(e);
+    }
+
+    return (
+        <div className={`${styles.popup}`}>
+            <h2>Import from Backup File</h2>
+            <div className={`${styles.chatFilterPopup}`}>
+                <p>To Import your Backed up Bot Data please drag & drop the .zip file below</p>
+                <Panel hasHeader={false} style={Object.assign({}, stateTheme.dashedBorder, stateTheme.base.tertiaryBackground)} content={
+                    <DragDrop className={styles.dragDropContentBox} handleDrop={onDropHandler}>
                         <div className={styles.iconContainer}>
                             <MdCloudDownload />
                         </div>
                         <div className={styles.dragDropMessage}>Drag & Drop .Zip file here</div>
-                    </div>
+                    </DragDrop>
                 } />
-            </form>
+            </div>
+            <div
+            className={styles.submit}
+            style={stateTheme.submitButton}
+            onClick={() => { 
+                closeCurrentPopup();
+                }}>
+            Continue
+            </div>
         </div>
-        <div
-          className={styles.submit}
-          style={stateTheme.submitButton}
-          onClick={() => { 
-              closeCurrentPopup();
-            }}>
-          Continue
-          </div>
-    </div>
   );
 };
 
