@@ -55,7 +55,7 @@ class DragDrop extends Component<any,any> {
             {this.state.drag == true? 
                 <div className={styles.draggedBackground}>
                     <div className={styles.draggedTitle}>
-                        Drop Here
+                        {this.props.draggedTitle}
                     </div>
                 </div>
             :

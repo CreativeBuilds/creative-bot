@@ -12,7 +12,6 @@ const path = require('path');
 const { distinctUntilChanged, filter, first } = require('rxjs/operators');
 const _ = require('lodash');
 const storage = require('electron-json-storage');
-var archiver = require('archiver');
 // const DLive = require('dlive-js');
 const { rxDlive } = require('./helpers/rxDlive');
 let dlive;
@@ -42,7 +41,8 @@ const getCustomVariables = require('./helpers/getCustomVariables');
 const parseReply = require('./helpers/parseReply');
 rxCommands.subscribe(commands => (Commands = commands));
 const rxTimers = require('./helpers/rxTimers');
-const backupData = require('./helpers/backupData');
+const exportBackupData = require('./helpers/exportBackupData');
+const importBackupData = require('./helpers/importBackupData');
 let { makeNewCommand, getBlockchainUsername } = require('./helpers');
 const { autoUpdater } = require('electron-updater');
 require('./helpers/startTimers').run();
@@ -259,7 +259,12 @@ function createWindow() {
       '_' +
       String(dateObj.getSeconds()).padStart(2, '0');
     var source = storage.getDefaultDataPath();
-    backupData(source, dir, "creativebot_" + date +'_' + time);
+    exportBackupData(source, dir, "creativebot_" + date +'_' + time);
+  });
+
+  ipcMain.on('import-backup-data', (event, source) => {
+    var dir = storage.getDefaultDataPath();
+    importBackupData(source, dir);
   });
 
   ipcMain.on('triggerBannerMessage', (event, bannerMessage) => {
