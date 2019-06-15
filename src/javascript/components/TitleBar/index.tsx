@@ -17,15 +17,18 @@ const { app } = remote;
 const styles: any = require('./TitleBar.scss');
 
 interface TitleBar {
-    Config?: {}
+    Config?: {},
+    addPopup,
+    closeCurrentPopup
+
 }
 
-const TitleBar = ({ Config = null } : TitleBar) => {
+const TitleBar = ({ Config = null, addPopup, closeCurrentPopup } : TitleBar) => {
 
     const [stateTheme, setStateTheme] = useState(theme.dark);
     const [isDarkMode, setDarkMode] = useState<Boolean>(true);
-    const [menuItems, setMenuItems] = useState<Array<MenuItem>>(MenuItems('dark'));
     const [config, setConfig] = useState<any>(Config);
+    const [menuItems, setMenuItems] = useState<Array<MenuItem>>(MenuItems('dark', config, 'windows', addPopup, styles, stateTheme, closeCurrentPopup));
 
     const changeTheme = (themeVal : String) => {
         setStateTheme(themeVal == 'dark' ? theme.dark : theme.light);  

@@ -26,7 +26,7 @@ const { ipcRenderer } = Window.require('electron');
 
 const RouteContext: any = React.createContext({ currentUrl: '/' });
 
-class RouterWrapper extends Component<any, any> {
+class RouterWrapper extends Component<any,any>{
   constructor(props) {
     super(props);
   }
@@ -116,9 +116,11 @@ class RouterWrapper extends Component<any, any> {
     this.popups = arr;
     this.setState({ popups: arr });
   };
+
   render() {
-    const { url, setUrl } = this.props;
+    const { url, setUrl} = this.props;
     const { popups, hasGradiant } = this.state;
+
     return (
       <React.Fragment>
         {popups.length > 0 ? (
@@ -217,12 +219,12 @@ class RouterWrapper extends Component<any, any> {
   }
 }
 
-const Router = props => {
+const Router = (props, getFuncs) => {
   const [url, setUrl] = useState('/');
   return (
     <RouteContext.Provider value={{ currentUrl: url, setUrl }}>
       <Menu setUrl={setUrl} />
-      <RouterWrapper url={url} setUrl={setUrl} />
+      <RouterWrapper url={url} setUrl={setUrl}/>
     </RouteContext.Provider>
   );
 };

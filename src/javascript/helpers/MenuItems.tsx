@@ -1,8 +1,11 @@
+import * as React from 'react';
+
 import { MenuItem } from '../components/MenuBar';
 import {ContextItem} from '../components/ContextMenu';
 
 import { rxConfig, setRxConfig } from './rxConfig';
-import { setConfig } from 'react-hot-loader';
+
+import { SetupAsExistingUserPopup } from '../components/Chat/SetupAsExistingUserPopup';
 
 const { ipcRenderer, shell, remote, webFrame } = require('electron');
 const {dialog, BrowserWindow, app} = remote;
@@ -11,7 +14,7 @@ var path = require('path');
 
 var win = remote.getCurrentWindow();
 
-const MenuItems = (themeType, config = null, platform = "windows") => {
+const MenuItems = (themeType, config = null, platform = "windows", addPopup, styles, stateTheme, closeCurrentPopup) => {
 
     const isDark = () : Boolean => {
         
@@ -152,15 +155,21 @@ const MenuItems = (themeType, config = null, platform = "windows") => {
                         
                         }
                     },
-                    {
+                    /*{
                         role: 'normal',
                         title: 'Import Bot Data',
                         icon: 'MdCloudDownload',
                         enabled: true,
                         action() { 
-                            
+                            addPopup(
+                                <SetupAsExistingUserPopup
+                                  styles={styles} 
+                                  closeCurrentPopup={closeCurrentPopup}
+                                  addPopup={addPopup} 
+                                  stateTheme={stateTheme} 
+                                  />)
                         }
-                    },
+                    },*/
                     {
                         role: 'seperator',
                     },
