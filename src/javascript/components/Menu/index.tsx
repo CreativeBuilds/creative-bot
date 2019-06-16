@@ -84,7 +84,7 @@ const Menu = props => {
           >
             QUOTES
           </Li>
-          { <Li
+          {/*<Li
             style={{}}
             hoverStyle={Object.assign({}, stateTheme.base.secondaryBackground, theme.globals.accentForeground)}
             onClick={() => {
@@ -93,7 +93,7 @@ const Menu = props => {
             }}
           >
             LISTS
-          </Li>}
+          </Li>*/}
           <Li
             style={{}}
             hoverStyle={Object.assign({}, stateTheme.base.secondaryBackground, theme.globals.accentForeground)}
