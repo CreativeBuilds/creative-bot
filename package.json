@@ -1,6 +1,6 @@
 {
   "name": "creative-bot",
-  "version": "1.5.1",
+  "version": "1.5.2-firebase",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -36,6 +36,7 @@
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
     "react-tooltip": "^3.10.0",
+    "rxfire": "^3.6.0",
     "rxjs": "^6.5.2",
     "rxjs-websockets": "^7.0.0",
     "tar": "^2.2.2",

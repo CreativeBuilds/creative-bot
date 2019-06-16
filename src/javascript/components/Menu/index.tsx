@@ -1,16 +1,28 @@
 import * as React from 'react';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { MdMenu, MdClose, MdEventBusy } from 'react-icons/md';
 import { ThemeContext, theme } from '../../helpers';
 
+import { firebase } from '../../helpers/firebase';
+
 import { Li } from './li';
+import { rxConfig } from '../../helpers/rxConfig';
 
 const styles: any = require('./Menu.scss');
 
 const Menu = props => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [config, setConfig] = useState<any>({});
+
   const { stateTheme, setStateTheme } = useContext(ThemeContext);
   const { setUrl } = props;
+
+  useEffect(() => {
+    let listener = rxConfig.subscribe(setConfig);
+    return () => {
+      listener.unsubscribe();
+    };
+  }, []);
   return (
     <React.Fragment>
       <div
@@ -144,6 +156,22 @@ const Menu = props => {
           >
             SETTINGS
           </Li>
+          {typeof config.isFirebaseUser !== 'undefined' ? (
+            <Li
+              style={{}}
+              hoverStyle={Object.assign(
+                {},
+                stateTheme.base.secondaryBackground,
+                theme.globals.accentForeground
+              )}
+              onClick={() => {
+                firebase.auth().signOut();
+                setIsOpen(false);
+              }}
+            >
+              LOGOUT
+            </Li>
+          ) : null}
         </ul>
       </div>
       <div

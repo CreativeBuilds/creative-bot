@@ -424,7 +424,7 @@ function createWindow() {
     });
   });
   ipcMain.on('getRxUsers', () => {
-    rxUsers.pipe(filter(x => !_.isEmpty(x))).subscribe(Users => {
+    rxUsers.pipe(filter(x => !!x)).subscribe(Users => {
       let obj = {};
       let change = false;
       Object.keys(Users).forEach(blockchainUsername => {
@@ -451,6 +451,7 @@ function createWindow() {
 
   ipcMain.on('setRxUsers', (event, Users) => {
     if (users !== Users) {
+      console.log('SETTING RXUSER');
       users = Users;
       rxUsers.next(Users);
     }

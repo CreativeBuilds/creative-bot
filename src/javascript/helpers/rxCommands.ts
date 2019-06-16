@@ -8,6 +8,10 @@ const rxCommands = new BehaviorSubject({});
 ipcRenderer.send('getRxCommands');
 ipcRenderer.on('rxCommands', (event, commands) => {
   rxCommands.next(commands);
+  // rxFirebaseuser.pipe(first()).subscribe(user => {
+  //   if (!!user) {
+  //   }
+  // });
 });
 
 const setRxCommands = commands => {
