@@ -104,6 +104,11 @@ const theme = {
       color: '#f0f0f0',
       borderColor: '#141517'
     },
+    disabledSubmitButton: {
+      backgroundColor: '#191a1c',
+      color: '#d0d0d0',
+      borderColor: '#191a1c'
+    },
     searchInput: {
       backgroundColor: '#0e0f10',
       color: '#0f0f0f',
@@ -186,6 +191,11 @@ const theme = {
       backgroundColor: `#eeeeee`,
       color: '#202225',
       borderColor: `#eeeeee`
+    },
+    disabledSubmitButton: {
+      backgroundColor: '#dddddd',
+      color: '#202225',
+      borderColor: '#dddddd'
     },
     searchInput: {
       backgroundColor: `#F1F1F1`,

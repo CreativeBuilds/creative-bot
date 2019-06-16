@@ -74,7 +74,7 @@ const SetupAsExistingUserPopup = ({
 
     return (
         <div className={`${styles.popup}`}>
-            <h2>Import from Backup File</h2>
+            <h2>Import from Backup File (Beta)</h2>
             <div className={`${styles.chatFilterPopup}`}>
                 <p>To Import your Backed up Bot Data please drag & drop the .zip file below</p>
                 <Panel hasHeader={false} style={Object.assign({}, stateTheme.dashedBorder, stateTheme.base.tertiaryBackground)} content={
@@ -113,14 +113,17 @@ const SetupAsExistingUserPopup = ({
             </div>
             <div
             className={styles.submit}
-            style={stateTheme.submitButton}
+            style={Object.assign({}, !hasFile ? stateTheme.disabledSubmitButton : null, stateTheme.submitButton)}
             onClick={() => { 
-                importBackupFile();
 
-                setTimeout(function(){
-                    remote.app.relaunch();
-                    remote.app.exit();
-                },1000);
+                if (hasFile) {
+                    importBackupFile();
+
+                    setTimeout(function(){
+                        remote.app.relaunch();
+                        remote.app.exit();
+                    },1000);
+                } 
                 }}>
             Relaunch & Continue
             </div>

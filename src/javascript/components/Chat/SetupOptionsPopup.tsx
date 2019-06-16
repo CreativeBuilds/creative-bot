@@ -40,7 +40,7 @@ const SetupOptionsPopup = ({
                 Please choose one of the following to proceed foward in setting up your bot for the first time.
             </p>
             <p style={stateTheme.timeStamp}>
-                *Existing user will need to provide a zip file that you have Exported using >1.6.0.
+                *Existing user will need to provide a zip file that you have Exported using >1.6.0 and is a Beta Feature
             </p>
         </div>
         <div className={styles.buttonstack}>
