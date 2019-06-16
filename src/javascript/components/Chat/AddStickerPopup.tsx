@@ -59,7 +59,7 @@ const AddStickerPopup = ({
       let Emotes = Object.assign({}, emotes);
       Emotes[id] = {
         id: stickerId,
-        dliveid: stickerDLiveId,
+        dliveid: cleanId(),
         url: stickerUrl
       };
       setRxEmotes(Emotes);
@@ -75,6 +75,22 @@ const AddStickerPopup = ({
       closeCurrentPopup();
     };
 
+    const isVaildId = () => {
+      if (stickerDLiveId.substring(0, 7) == ':emote/' && stickerDLiveId.substring(stickerDLiveId.length - 1) == ':') {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    const cleanId = () => {
+      if (stickerDLiveId.indexOf(':') > 0) {
+        return stickerDLiveId.replace(stickerDLiveId.substring(0, stickerDLiveId.indexOf(':')), '')
+      } else {
+        return stickerDLiveId;
+      }
+    }
+
     return (
       <div className={`${styles.popup}`}>
         <h2>Add Sticker</h2>
@@ -85,7 +101,7 @@ const AddStickerPopup = ({
                 </div>
                 <div className={styles.stickerIdContainer}>
                     <span className={styles.idTitle}>Sticker DLive Id:</span>
-                    <span className={styles.idInfo}>{stickerDLiveId}</span>
+                    <span className={styles.idInfo}>{cleanId()}</span>
                 </div>
             </div>
         </div>

@@ -255,7 +255,7 @@ const Message = ({
     addPopup(
       <AddStickerPopup
         stickerId={getStickerId(message.content)}
-        stickerDLiveId={message.content}
+        stickerDLiveId={message.content.replace('channel', 'mine')}
         stickerUrl={getSticker(message.content)}
         stateTheme={stateTheme}
         styles={styles}
