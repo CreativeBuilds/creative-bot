@@ -22,7 +22,9 @@ storage.get('config', (err, data) => {
   // Defaults to true
   if (!data.enableStickersAsText) data.enableStickersAsText = false;
   // Defaults to true
-  if (!data.isFirstStartUp) data.isFirstStartUp = true;
+  if (!data.enableTimestamps) data.enableTimestamps = true;
+  // Defaults to true
+  if (!data.enableTimestampsAsDigital) data.enableTimestampsAsDigital = true;
 
   rxConfig.next(data);
   rxConfig.subscribe(data => {
@@ -32,7 +34,8 @@ storage.get('config', (err, data) => {
     data.enableEvents = Boolean(data.enableEvents);
     data.enableStickers = Boolean(data.enableStickers);
     data.enableStickersAsText = Boolean(data.enableStickersAsText);
-    data.isFirstStartUp = Boolean(data.isFirstStartUp);
+    data.enableTimestamps = Boolean(data.enableTimestamps);
+    data.enableTimestampsAsDigital = Boolean(data.enableTimestampsAsDigital);
     storage.set('config', data);
   });
 });

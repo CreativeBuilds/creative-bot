@@ -37,6 +37,8 @@ const ChatFiltersPopup = ({
     const [hasFilteredEvents, setHasFilteredEvents] = useState(Config.enableEvents);
     const [hasFilteredStickers, setHasFilteredStickers] = useState(Config.enableStickers);
     const [hasStickersAsText, setHasStickersAsText] = useState(Config.enableStickersAsText);
+    const [hasFilteredTimestamps, setHasFilteredTimestamps] = useState(Config.enableTimestamps);
+    const [hasTimestampsAsDigital, setHasTimestampsAsDigital] = useState(Config.enableTimestampsAsDigital);
     const [helperText, SetHelperText] = useState(text);
     const [error, SetError] = useState(false);
     const [config, setConfig] = useState(Config);
@@ -48,6 +50,8 @@ const ChatFiltersPopup = ({
         setHasFilteredEvents(data.enableEvents);
         setHasFilteredStickers(data.enableStickers);
         setHasStickersAsText(data.enableStickersAsText);
+        setHasFilteredTimestamps(data.enableTimestamps);
+        setHasTimestampsAsDigital(data.enableTimestampsAsDigital);
       });
       return () => {
         listener.unsubscribe();
@@ -66,6 +70,12 @@ const ChatFiltersPopup = ({
       } else if (id === 'enableStickersAsText') {
         tConfig[id] = !hasStickersAsText;
         setHasStickersAsText(!hasStickersAsText);
+      } else if (id === 'enableTimestamps') {
+        tConfig[id] = !hasFilteredTimestamps;
+        setHasFilteredTimestamps(!hasFilteredTimestamps);
+      } else if (id === 'enableTimestampsAsDigital') {
+        tConfig[id] = !hasTimestampsAsDigital
+        setHasTimestampsAsDigital(!hasTimestampsAsDigital);
       }
       setRxConfig(tConfig);
     };
@@ -80,8 +90,8 @@ const ChatFiltersPopup = ({
           <Toggle header="Display Stickers as Text" type={ToggleType.stretched} isEnabled={hasFilteredStickers} isOn={hasStickersAsText} onClick={() => { saveToDB('enableStickersAsText'); }} stateTheme={stateTheme}/>
           <Panel header="Timestamp Filters" hasHeader={true} style={stateTheme.base.tertiaryBackground} content={
             <div>
-              <Toggle header="Show Timestamp" type={ToggleType.stretched} isEnabled={true} isOn={hasFilteredEvents} onClick={() => {  }} stateTheme={stateTheme}/>
-              <Toggle header="Display Timestamp as Digital" type={ToggleType.stretched} isEnabled={true} isOn={hasFilteredStickers} onClick={() => {  }} stateTheme={stateTheme}/>
+              <Toggle header="Show Timestamp" type={ToggleType.stretched} isEnabled={true} isOn={hasFilteredTimestamps} onClick={() => { saveToDB('enableTimestamps'); }} stateTheme={stateTheme}/>
+              <Toggle header="Display Timestamp as Digital" type={ToggleType.stretched} isEnabled={true} isOn={hasTimestampsAsDigital} onClick={() => { saveToDB('enableTimestampsAsDigital'); }} stateTheme={stateTheme}/>
             </div>
           } />
         </div>

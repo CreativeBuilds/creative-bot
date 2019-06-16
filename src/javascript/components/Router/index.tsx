@@ -82,13 +82,28 @@ class RouterWrapper extends Component<any,any>{
     });
     ipcRenderer.on('newmessage', (event, { message }) => {
       var date = new Date();
-      var time =
+      var hourMilitary = '';
+
+      if (date.getHours() > 12) {
+        hourMilitary = String(date.getHours() - 12);
+      } else {
+        hourMilitary = String(date.getHours());
+      }
+
+      var timeDigital =
         String(date.getHours()).padStart(2, '0') +
         ':' +
         String(date.getMinutes()).padStart(2, '0') +
         ':' +
         String(date.getSeconds()).padStart(2, '0');
-      message['Msg_timestamp'] = time;
+        
+      var timeMilitary = 
+      hourMilitary.padStart(2, '0') +
+      ':' +
+      String(date.getMinutes()).padStart(2, '0');
+
+      message['Msg_timestamp_digital'] = timeDigital;
+      message['Msg_timestamp'] = timeMilitary;
       let newArr = [...this.state.messages, message];
       this.setState({ messages: newArr });
     });
