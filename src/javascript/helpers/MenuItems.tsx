@@ -55,6 +55,38 @@ const MenuItems = (themeType, config = null, platform = "windows", addPopup, sty
                 contextMenu: [
                     {
                         role: 'normal',
+                        title: 'Export Bot Data',
+                        icon: 'MdCloudUpload',
+                        enabled: true,
+                        action() { 
+                            var toLocalPath = path.resolve(app.getPath("documents"))
+                            dialog.showOpenDialog({ title: 'Back-up Bot Data to...', properties: ['openDirectory'] , defaultPath: toLocalPath }, (e) => {
+                                var dir = e[0]
+                                ipcRenderer.send('backup-data', dir);
+                            });
+                        
+                        }
+                    },
+                    /*{
+                        role: 'normal',
+                        title: 'Import Bot Data',
+                        icon: 'MdCloudDownload',
+                        enabled: true,
+                        action() { 
+                            addPopup(
+                                <SetupAsExistingUserPopup
+                                  styles={styles} 
+                                  closeCurrentPopup={closeCurrentPopup}
+                                  addPopup={addPopup} 
+                                  stateTheme={stateTheme} 
+                                  />)
+                        }
+                    },*/
+                    {
+                        role: 'seperator',
+                    },
+                    {
+                        role: 'normal',
                         title: 'Cut',
                         shortcut: 'Ctrl+X',
                         icon: 'MdContentCut',
@@ -138,38 +170,6 @@ const MenuItems = (themeType, config = null, platform = "windows", addPopup, sty
                             remote.getCurrentWindow().webContents.toggleDevTools()
                         }
                     },
-                    {
-                        role: 'seperator',
-                    },
-                    {
-                        role: 'normal',
-                        title: 'Export Bot Data',
-                        icon: 'MdCloudUpload',
-                        enabled: true,
-                        action() { 
-                            var toLocalPath = path.resolve(app.getPath("documents"))
-                            dialog.showOpenDialog({ title: 'Back-up Bot Data to...', properties: ['openDirectory'] , defaultPath: toLocalPath }, (e) => {
-                                var dir = e[0]
-                                ipcRenderer.send('backup-data', dir);
-                            });
-                        
-                        }
-                    },
-                    /*{
-                        role: 'normal',
-                        title: 'Import Bot Data',
-                        icon: 'MdCloudDownload',
-                        enabled: true,
-                        action() { 
-                            addPopup(
-                                <SetupAsExistingUserPopup
-                                  styles={styles} 
-                                  closeCurrentPopup={closeCurrentPopup}
-                                  addPopup={addPopup} 
-                                  stateTheme={stateTheme} 
-                                  />)
-                        }
-                    },*/
                     {
                         role: 'seperator',
                     },
