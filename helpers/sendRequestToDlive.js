@@ -10,6 +10,7 @@ module.exports = obj => {
     rxConfig
       .pipe(
         filter(x => !!Object.keys(x).length),
+        filter(x => !!x.authKey),
         first()
       )
       .subscribe(config => {
