@@ -55,7 +55,7 @@ const MenuItems = (themeType, config = null, platform = "windows", addPopup, sty
                 contextMenu: [
                     {
                         role: 'normal',
-                        title: 'Export Bot Data',
+                        title: 'Export Bot Data (Beta)',
                         icon: 'MdCloudUpload',
                         enabled: true,
                         action() { 
