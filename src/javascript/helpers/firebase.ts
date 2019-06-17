@@ -92,20 +92,27 @@ firebase.auth().onAuthStateChanged(user => {
     );
 
     configListener = docData(configRef).subscribe((data: any) => {
+      console.log('inside configListener', data);
+      delete data.loadedFirebaseConfig;
       if (Object.keys(data).length !== 0) {
+        console.log('first if');
         delete data.id;
         rxConfig.pipe(first()).subscribe(config => {
-          if (isEqual(config, data)) return;
-          setRxConfig(data);
+          if (isEqual(config, data))
+            return console.log('theyre equal', config, data);
+          setRxConfig(Object.assign({}, { loadedFirebaseConfig: true }, data));
         });
       } else {
+        console.log('second if');
         // get rxConfig and see what data is set
         rxConfig.pipe(first()).subscribe(config => {
           if (typeof config === 'undefined') return;
           let Config: any = Object.assign({}, config);
           if (typeof Config.isFirebaseUser === 'undefined') {
             Config.isFirebaseUser = user.uid;
-            setRxConfig(Config);
+            setRxConfig(
+              Object.assign({}, { loadedFirebaseConfig: true }, Config)
+            );
           }
           configRef.set(Config, { merge: true });
         });

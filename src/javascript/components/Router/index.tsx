@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { useState, Component } from 'react';
 
+import { theme, ThemeContext } from '../../helpers';
+
 import { Route } from './Route';
 import { Chat } from '../Chat';
 import { UsersPage } from '../Users';
@@ -26,7 +28,9 @@ const { ipcRenderer } = Window.require('electron');
 
 const RouteContext: any = React.createContext({ currentUrl: '/' });
 
-class RouterWrapper extends Component<any, any> {
+const styles : any = require('./Route.scss');
+
+class RouterWrapper extends Component<any,any>{
   constructor(props) {
     super(props);
   }
@@ -83,13 +87,28 @@ class RouterWrapper extends Component<any, any> {
     });
     ipcRenderer.on('newmessage', (event, { message }) => {
       var date = new Date();
-      var time =
+      var hourMilitary = '';
+
+      if (date.getHours() > 12) {
+        hourMilitary = String(date.getHours() - 12);
+      } else {
+        hourMilitary = String(date.getHours());
+      }
+
+      var timeDigital =
         String(date.getHours()).padStart(2, '0') +
         ':' +
         String(date.getMinutes()).padStart(2, '0') +
         ':' +
         String(date.getSeconds()).padStart(2, '0');
-      message['Msg_timestamp'] = time;
+        
+      var timeMilitary = 
+      hourMilitary.padStart(2, '0') +
+      ':' +
+      String(date.getMinutes()).padStart(2, '0');
+
+      message['Msg_timestamp_digital'] = timeDigital;
+      message['Msg_timestamp'] = timeMilitary;
       let newArr = [...this.state.messages, message];
       this.setState({ messages: newArr });
     });
@@ -119,9 +138,11 @@ class RouterWrapper extends Component<any, any> {
     this.popups = arr;
     this.setState({ popups: arr });
   };
+
   render() {
-    const { url, setUrl } = this.props;
+    const { url, setUrl} = this.props;
     const { popups, hasGradiant } = this.state;
+
     return (
       <React.Fragment>
         {popups.length > 0 ? (
@@ -132,7 +153,7 @@ class RouterWrapper extends Component<any, any> {
             noX={this.state.noX}
           />
         ) : null}
-        <div id='content'>
+        <div id='content' style={Object.assign({}, this.state.popups == null || this.state.popups.length == 0 ? null : theme.globals.blurred, {})}>
           <Route
             url={url}
             path={'/'}
@@ -221,12 +242,12 @@ class RouterWrapper extends Component<any, any> {
   }
 }
 
-const Router = props => {
+const Router = (props, getFuncs) => {
   const [url, setUrl] = useState('/');
   return (
     <RouteContext.Provider value={{ currentUrl: url, setUrl }}>
       <Menu setUrl={setUrl} />
-      <RouterWrapper url={url} setUrl={setUrl} />
+      <RouterWrapper url={url} setUrl={setUrl}/>
     </RouteContext.Provider>
   );
 };

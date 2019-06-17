@@ -22,14 +22,16 @@ import { ChatFiltersPopup } from './ChatFiltersPopup';
 import { AdvancedDiv } from '../AdvancedDiv';
 import { firebase } from '../../helpers/firebase';
 
-import { isEmpty } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 
 import {
   initLogin,
   signUp as SignUp,
   rxFirebaseuser
 } from '../../helpers/firebase';
-import { filter } from 'rxjs/operators';
+import { filter, distinctUntilChanged, tap } from 'rxjs/operators';
+import { SetupOptionsPopup } from './SetupOptionsPopup';
+import { SetupAsExistingUserPopup } from './SetupAsExistingUserPopup';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -473,6 +475,10 @@ const Chat = ({ props }) => {
   const [emotes, setEmotes]: any = useState({});
   const [firstRender, setFirstRender] = useState(true);
 
+  const [isStartUp, setIsStartUp] = useState<Boolean>(
+    config.streamerDisplayName == null
+  );
+
   const updateText = e => {
     setText(e.target.value);
   };
@@ -510,10 +516,13 @@ const Chat = ({ props }) => {
         setIsScrolledUp(true);
       }
     });
-    let listener = rxConfig.subscribe((data: any) => {
-      delete data.first;
-      setConfig(data);
-    });
+    let listener = rxConfig
+      .pipe(distinctUntilChanged((prev, curr) => isEqual(prev, curr)))
+      .subscribe((data: any) => {
+        delete data.first;
+        setConfig(data);
+        setIsStartUp(data.streamerDisplayName == null);
+      });
     let emoteslistener = rxEmotes.subscribe((data: any) => {
       delete data.first;
       setEmotes(data);
@@ -570,6 +579,8 @@ const Chat = ({ props }) => {
     // Test to see if the config includes the right variables
     // if's at the top of this will be rendered last
 
+    let showExistingUserPopup = false;
+
     if (!config.init) return;
     if (
       config.authKey &&
@@ -577,7 +588,8 @@ const Chat = ({ props }) => {
       config.init &&
       !streamerDisplayName &&
       config.acceptedToS &&
-      typeof config.isFirebaseUser !== 'undefined'
+      typeof config.isFirebaseUser !== 'undefined' &&
+      (config.isFirebaseUser ? config.loadedFirebaseConfig : true)
     ) {
       streamerDisplayName = true;
       addPopup(
@@ -622,7 +634,8 @@ const Chat = ({ props }) => {
       !authKey &&
       !config.streamerDisplayName &&
       config.acceptedToS &&
-      typeof config.isFirebaseUser !== 'undefined'
+      typeof config.isFirebaseUser !== 'undefined' &&
+      (config.isFirebaseUser ? config.loadedFirebaseConfig : true)
     ) {
       authKey = true;
       addPopup(
@@ -688,6 +701,68 @@ const Chat = ({ props }) => {
         />,
         false,
         true
+      );
+    }
+    if (
+      !config.streamerDisplayName &&
+      !streamerDisplayName &&
+      config.acceptedToS &&
+      typeof config.isFirebaseUser !== 'undefined' &&
+      (config.isFirebaseUser ? config.loadedFirebaseConfig : true)
+    ) {
+      streamerDisplayName = true;
+      addPopup(
+        <AddCommandPopup
+          styles={styles}
+          addPopup={addPopup}
+          closeCurrentPopup={(input, setError) => {
+            if (input !== '') {
+              let Config = Object.assign(
+                {},
+                { streamerDisplayName: input },
+                config
+              );
+              setRxConfig(Config);
+              closeCurrentPopup();
+            } else {
+              setError('Input field must not be empty!');
+            }
+          }}
+          stateTheme={stateTheme}
+          configName={'Streamer Username'}
+          text={
+            'Note if, you input the incorrect name, you can change later in the options file.'
+          }
+        />
+      );
+    }
+
+    if (
+      !config.streamerDisplayName &&
+      isStartUp &&
+      config.acceptedToS &&
+      config.isFirebaseUser === false
+    ) {
+      addPopup(
+        <SetupOptionsPopup
+          styles={styles}
+          closeCurrentPopup={closeCurrentPopup}
+          addPopup={addPopup}
+          stateTheme={stateTheme}
+          setupAsNewUser={e => {}}
+          setupAsExistingUser={e => {
+            setTimeout(function() {
+              addPopup(
+                <SetupAsExistingUserPopup
+                  styles={styles}
+                  closeCurrentPopup={closeCurrentPopup}
+                  addPopup={addPopup}
+                  stateTheme={stateTheme}
+                />
+              );
+            }, 8);
+          }}
+        />
       );
     }
 

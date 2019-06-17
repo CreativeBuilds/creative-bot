@@ -27,6 +27,9 @@ const theme = {
       color: '#f0f0f0',
       borderColor: '#1e90ff'
     },
+    blurred: {
+      '-webkit-filter': 'blur(0px)'
+    },
     transparent: {
       backgroundColor: 'transparent'
     }
@@ -107,11 +110,15 @@ const theme = {
     },
     searchInput: {
       backgroundColor: '#0e0f10',
-      color: '#f0f0f0',
+      color: '#0f0f0f',
       borderColor: '#0e0f10'
     },
     timeStamp: {
       color: '#AAAAAA'
+    },
+    dashedBorder: {
+      border: '3px dashed #f0f0f0',
+      'box-sizing': 'border-box'
     }
   },
   light: {
@@ -194,6 +201,10 @@ const theme = {
     },
     timeStamp: {
       color: '#555555'
+    },
+    dashedBorder: {
+      border: '3px dashed #202225',
+      'box-sizing': 'border-box'
     }
   }
 };

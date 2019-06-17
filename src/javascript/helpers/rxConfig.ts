@@ -14,6 +14,7 @@ ipcRenderer.on('rxConfig', (event, config) => {
   rxFirebaseuser.pipe(first()).subscribe((user: any) => {
     if (!isEmpty(user)) {
       // User is signed in, update the config
+      delete config.loadedFirebaseConfig;
       firestore
         .collection('configs')
         .doc(user.uid)
