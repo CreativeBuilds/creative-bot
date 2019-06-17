@@ -14,7 +14,11 @@ const Menu = props => {
   return (
     <React.Fragment>
       <div
-        style={Object.assign({}, stateTheme.base.tertiaryBackground, stateTheme.base.quinaryForeground)}
+        style={Object.assign(
+          {},
+          stateTheme.base.tertiaryBackground,
+          stateTheme.base.quinaryForeground
+        )}
         className={`${styles.menu_popout} ${isOpen ? styles.menu_toggled : ''}`}
       >
         <MdClose
@@ -23,10 +27,22 @@ const Menu = props => {
           }}
         />
         <ul>
-          <Li style={Object.assign({}, stateTheme.toolBar, stateTheme.base.quaternaryForeground)}>MENU</Li>
+          <Li
+            style={Object.assign(
+              {},
+              stateTheme.toolBar,
+              stateTheme.base.quaternaryForeground
+            )}
+          >
+            MENU
+          </Li>
           <Li
             style={{}}
-            hoverStyle={Object.assign({}, stateTheme.base.secondaryBackground, theme.globals.accentForeground)}
+            hoverStyle={Object.assign(
+              {},
+              stateTheme.base.secondaryBackground,
+              theme.globals.accentForeground
+            )}
             onClick={() => {
               setUrl('/');
               setIsOpen(false);
@@ -36,7 +52,11 @@ const Menu = props => {
           </Li>
           <Li
             style={{}}
-            hoverStyle={Object.assign({}, stateTheme.base.secondaryBackground, theme.globals.accentForeground)}
+            hoverStyle={Object.assign(
+              {},
+              stateTheme.base.secondaryBackground,
+              theme.globals.accentForeground
+            )}
             onClick={() => {
               setUrl('/users');
               setIsOpen(false);
@@ -46,7 +66,11 @@ const Menu = props => {
           </Li>
           <Li
             style={{}}
-            hoverStyle={Object.assign({}, stateTheme.base.secondaryBackground, theme.globals.accentForeground)}
+            hoverStyle={Object.assign(
+              {},
+              stateTheme.base.secondaryBackground,
+              theme.globals.accentForeground
+            )}
             onClick={() => {
               setUrl('/giveaways');
               setIsOpen(false);
@@ -56,7 +80,11 @@ const Menu = props => {
           </Li>
           <Li
             style={{}}
-            hoverStyle={Object.assign({}, stateTheme.base.secondaryBackground, theme.globals.accentForeground)}
+            hoverStyle={Object.assign(
+              {},
+              stateTheme.base.secondaryBackground,
+              theme.globals.accentForeground
+            )}
             onClick={() => {
               setUrl('/commands');
               setIsOpen(false);
@@ -66,7 +94,11 @@ const Menu = props => {
           </Li>
           <Li
             style={{}}
-            hoverStyle={Object.assign({}, stateTheme.base.secondaryBackground, theme.globals.accentForeground)}
+            hoverStyle={Object.assign(
+              {},
+              stateTheme.base.secondaryBackground,
+              theme.globals.accentForeground
+            )}
             onClick={() => {
               setUrl('/timers');
               setIsOpen(false);
@@ -76,7 +108,11 @@ const Menu = props => {
           </Li>
           <Li
             style={{}}
-            hoverStyle={Object.assign({}, stateTheme.base.secondaryBackground, theme.globals.accentForeground)}
+            hoverStyle={Object.assign(
+              {},
+              stateTheme.base.secondaryBackground,
+              theme.globals.accentForeground
+            )}
             onClick={() => {
               setUrl('/quotes');
               setIsOpen(false);
@@ -84,7 +120,7 @@ const Menu = props => {
           >
             QUOTES
           </Li>
-          {/*<Li
+          {/* { <Li
             style={{}}
             hoverStyle={Object.assign({}, stateTheme.base.secondaryBackground, theme.globals.accentForeground)}
             onClick={() => {
@@ -93,10 +129,14 @@ const Menu = props => {
             }}
           >
             LISTS
-          </Li>*/}
+          </Li>} */}
           <Li
             style={{}}
-            hoverStyle={Object.assign({}, stateTheme.base.secondaryBackground, theme.globals.accentForeground)}
+            hoverStyle={Object.assign(
+              {},
+              stateTheme.base.secondaryBackground,
+              theme.globals.accentForeground
+            )}
             onClick={() => {
               setUrl('/settings');
               setIsOpen(false);

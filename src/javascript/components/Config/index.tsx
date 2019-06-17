@@ -13,7 +13,7 @@ const styles: any = require('./Config.scss');
 
 const whitelist = {
   authKey: {
-    name: 'Auth Key',
+    name: "Your Bot's Auth Key",
     hidden: true
   },
   points: {
@@ -57,7 +57,14 @@ const ConfigPage = ({ props }) => {
   );
   return (
     <div style={stateTheme.base.tertiaryBackground} className={styles.Points}>
-      <div style={Object.assign({}, stateTheme.toolBar, stateTheme.base.quinaryForeground)} className={styles.header}>
+      <div
+        style={Object.assign(
+          {},
+          stateTheme.toolBar,
+          stateTheme.base.quinaryForeground
+        )}
+        className={styles.header}
+      >
         CONFIG
         <textarea
           className={styles.usersearch}

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext, Component, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
 import { MdClose } from 'react-icons/md';
 import { theme } from '../../helpers';
@@ -11,32 +11,33 @@ const Popup = ({ Component, hasGradiant = false, closePopup }) => {
   const [stateTheme, setStateTheme] = useState(theme.dark);
   const [config, setConfig] = useState<any>(null);
 
-  const changeTheme = (themeVal : String) => {
+  const changeTheme = (themeVal: String) => {
     if (themeVal == 'dark') {
-      setStateTheme(theme.dark); 
+      setStateTheme(theme.dark);
     } else if (themeVal == 'light') {
       setStateTheme(theme.light);
     }
-  }
+  };
 
   useEffect(() => {
-
-    rxConfig.subscribe((data: any) => {
+    let listener = rxConfig.subscribe((data: any) => {
       delete data.first;
       setConfig(data);
       changeTheme(data.themeType);
     });
-    
+    return () => {
+      listener.unsubscribe();
+    };
   }, []);
 
-  ipcRenderer.once('change-theme', function(event, args) { 
-    var value = args as string
-    changeTheme(value);
-  });
-
   return (
-    <div className={`${styles.overlay}  ${styles.animated}`}>
-      <div className={`${styles.dialog} ${hasGradiant ? styles.startupBackground : ''}`} style={hasGradiant ? theme.dark : stateTheme.base.quinaryBackground}>
+    <div className={`${styles.overlay}  ${styles.animated} animated fadeIn`}>
+      <div
+        className={`${styles.dialog} ${
+          hasGradiant ? styles.startupBackground : ''
+        } animated fadeInUp`}
+        style={hasGradiant ? theme.dark : stateTheme.base.quinaryBackground}
+      >
         <div className={styles.close}>
           <MdClose
             onClick={() => {

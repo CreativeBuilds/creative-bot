@@ -1,6 +1,6 @@
 {
   "name": "creative-bot",
-  "version": "1.6.0-canary",
+  "version": "1.6.0-beta",
   "description": "",
   "main": "index.js",
   "scripts": {
