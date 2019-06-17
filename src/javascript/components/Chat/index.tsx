@@ -20,6 +20,7 @@ import { remote } from 'electron';
 import { CreativeBotPopup } from './../WebServices/CreativeBotPopup';
 import { ChatFiltersPopup } from './ChatFiltersPopup';
 import { AdvancedDiv } from '../AdvancedDiv';
+import { firebase } from '../../helpers/firebase';
 
 import { isEmpty } from 'lodash';
 
@@ -138,7 +139,46 @@ const AddAcceptFirebasePopup = ({
         ) : null}
       </React.Fragment>
       <React.Fragment>
-        <div className={styles.input_name}>Password</div>
+        <div className={styles.input_name}>
+          Password{' '}
+          {!signUp && emailErr.length === 0 ? (
+            <AdvancedDiv
+              style={{
+                fontSize: '0.7em',
+                color: theme.globals.accentHighlight.highlightColor
+              }}
+              hoverStyle={{ cursor: 'pointer' }}
+            >
+              <span
+                onClick={() => {
+                  if (emailErr) {
+                    setEmailErr(
+                      'Cannot send password request to email with no user!'
+                    );
+                  } else if (!validateStringForEmail(email)) {
+                    setEmailErr(
+                      'Cannot send password request to email with no user!'
+                    );
+                  } else {
+                    firebase
+                      .auth()
+                      .sendPasswordResetEmail(email)
+                      .then(() => {
+                        setEmailErr('Check email for password reset link!');
+                      })
+                      .catch(e => {
+                        if (e.message) {
+                          setEmailErr(e.message);
+                        }
+                      });
+                  }
+                }}
+              >
+                Forgot Password?
+              </span>
+            </AdvancedDiv>
+          ) : null}
+        </div>
         <input
           className={styles.input}
           onKeyDown={e => {}}
@@ -195,12 +235,18 @@ const AddAcceptFirebasePopup = ({
               : styles.disabled
           }`}
           onClick={() => {
-            SignUp(email, password).then(boop => {
-              closeCurrentPopup({
-                uid: boop.user.uid,
-                refreshToken: boop.user.refreshToken
+            SignUp(email, password)
+              .then(boop => {
+                closeCurrentPopup({
+                  uid: boop.user.uid,
+                  refreshToken: boop.user.refreshToken
+                });
+              })
+              .catch(e => {
+                if (e.message) {
+                  setEmailErr(e.message);
+                }
               });
-            });
           }}
         >
           Create Account
@@ -209,13 +255,22 @@ const AddAcceptFirebasePopup = ({
         <div
           className={`${styles.submit} ${styles.enabled}`}
           onClick={() => {
-            initLogin(email, password).then(boop => {
-              console.log('HERE GOT BOOP');
-              closeCurrentPopup({
-                uid: boop.user.uid,
-                refreshToken: boop.user.refreshToken
+            initLogin(email, password)
+              .then(boop => {
+                closeCurrentPopup({
+                  uid: boop.user.uid,
+                  refreshToken: boop.user.refreshToken
+                });
+              })
+              .catch(e => {
+                if (e.code.includes('wrong-password')) {
+                  if (e.message) {
+                    setPasswordErr(`Invalid password.`);
+                  }
+                } else if (e.code.includes('user-not-found')) {
+                  setEmailErr(`User not found.`);
+                }
               });
-            });
           }}
         >
           Login
@@ -238,7 +293,7 @@ const AddAcceptFirebasePopup = ({
           >
             <div
               onClick={() => {
-                setSignUp(true);
+                setSignUp(false);
               }}
             >
               Sign in

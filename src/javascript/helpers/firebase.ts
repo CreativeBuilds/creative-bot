@@ -13,6 +13,7 @@ import { rxConfig, setRxConfig } from './rxConfig';
 import { docData, collectionData } from 'rxfire/firestore';
 import { rxCommands, setRxCommands } from './rxCommands';
 import { rxTimers, setRxTimers } from './rxTimers';
+import { rxGiveaways, setRxGiveaways } from './rxGiveaways';
 import { rxUsers, setRxUsers } from './rxUsers';
 
 const Window: any = window;
@@ -75,7 +76,7 @@ firebase.auth().onAuthStateChanged(user => {
                 collectionRef.doc(commandName).set(commandObj);
               });
             });
-            rxTimers.pipe(first()).subscribe(timers => {
+            rxGiveaways.pipe(first()).subscribe(timers => {
               let collectionRef = firestore
                 .collection('users')
                 .doc(user.uid)
@@ -152,6 +153,24 @@ const firebaseTimers$ = rxFirebaseuser.pipe(
     );
   })
 );
+const firebaseGiveaways$ = rxFirebaseuser.pipe(
+  filter(x => !isEmpty(x)),
+  mergeMap((user: any) => {
+    return collectionData(
+      firestore
+        .collection('users')
+        .doc(user.uid)
+        .collection('giveaways')
+    ).pipe(
+      map(arr =>
+        arr.reduce((acc, timer: any) => {
+          acc[timer.name] = timer;
+          return acc;
+        }, {})
+      )
+    );
+  })
+);
 const firebaseUsers$ = rxFirebaseuser.pipe(
   filter(x => !isEmpty(x)),
   mergeMap((user: any) => {
@@ -218,7 +237,7 @@ combineLatest(
             return acc;
           }, {})
         );
-        setRxUsers(setUsers);
+        setRxTimers(setUsers);
       } else {
         /* ITS NOT THE FIRST RUN, USER WANTS THESE USERS DELETED */
         let batch = firestore.batch();
@@ -258,7 +277,7 @@ combineLatest(
         onlyExistOnLocal.forEach(key => {
           delete newTimers[key];
         });
-        setRxUsers(newTimers);
+        setRxTimers(newTimers);
       }
     } else if (!firstRunFirebaseTimers) {
       /* All user object are even between local and firestore now check to see if they've updated their value */
@@ -290,7 +309,7 @@ combineLatest(
               if (!isEqual(newTimers[key], firebaseTimers[key]))
                 newTimers[key] = firebaseTimers[key];
             });
-            setRxUsers(newTimers);
+            setRxTimers(newTimers);
           } else if (dif2.length > 0) {
             let batch = firestore.batch();
             let update = false;
@@ -317,6 +336,155 @@ combineLatest(
     oldFirebaseTimers$.next(newFirebaseTimers);
     oldTimers$.next(newTimers);
     firstRunFirebaseTimers = false;
+  }
+).subscribe(e => {});
+
+/* On Boot get all firestore data and load local data, wait for both to load */
+const oldGiveaways$ = new BehaviorSubject(null);
+const oldFirebaseGiveaways$ = new BehaviorSubject(null);
+let firstRunFirebaseGiveaways = true;
+
+combineLatest(
+  firebaseGiveaways$,
+  rxGiveaways,
+  rxFirebaseuser.pipe(
+    filter(x => !isEmpty(x)),
+    first()
+  ),
+  (firebaseGiveaways: any, giveaways: any, rxUser: any) => {
+    let newGiveaways = cloneDeep(giveaways);
+    let newFirebaseGiveaways = cloneDeep(firebaseGiveaways);
+    /* Once both data slots load as empty objects compare what needs to be updated */
+    /* First check with deepEqual for firebaseTimers and timers to see which needs to update */
+    let findDifference = (firebaseGiveaways, giveaways) => {
+      let onlyExistOnLocal = difference(
+        Object.keys(giveaways),
+        Object.keys(firebaseGiveaways)
+      );
+      let onlyExistOnDB = difference(
+        Object.keys(firebaseGiveaways),
+        Object.keys(giveaways)
+      );
+      return { onlyExistOnDB, onlyExistOnLocal };
+    };
+    let { onlyExistOnDB, onlyExistOnLocal } = findDifference(
+      firebaseGiveaways,
+      giveaways
+    );
+    // This is the first run through so there is no old data to compare against
+    /* When the user starts up they may have out dated on either firestore or their client
+       ASSUME firestore has latest data
+       DONT assume firestore has latest data if its not latest run, default to client having latest information
+     */
+    if (onlyExistOnDB.length > 0) {
+      /* These users only exist on the database, write them to the app IF its the first run, else remove them */
+      if (firstRunFirebaseGiveaways) {
+        let setUsers = Object.assign(
+          {},
+          onlyExistOnDB.reduce((acc, curr) => {
+            acc[curr] = firebaseGiveaways[curr];
+            return acc;
+          }, {})
+        );
+        setRxGiveaways(setUsers);
+      } else {
+        /* ITS NOT THE FIRST RUN, USER WANTS THESE USERS DELETED */
+        let batch = firestore.batch();
+        onlyExistOnDB.forEach(key => {
+          let Giveaway = firebaseGiveaways[key];
+          if (!Giveaway.name) return;
+          delete newFirebaseGiveaways[key];
+          let ref = firestore
+            .collection('users')
+            .doc(rxUser.uid)
+            .collection('giveaways')
+            .doc(Giveaway.name);
+          batch.delete(ref);
+        });
+        batch.commit();
+      }
+    } else if (onlyExistOnLocal.length > 0) {
+      /* These commands only exist  */
+      // IF THESE USERS ONLY EXIST LOCALLY AND ITS NOT THE FIRST RUN REMOVE THEM
+      if (firstRunFirebaseGiveaways) {
+        /* ITS THE FIRST RUN SEND THEM TO THE DATABASE FOR BACKUP */
+        let batch = firestore.batch();
+        onlyExistOnLocal.forEach(key => {
+          let Giveaway = giveaways[key];
+          if (!Giveaway.name) return;
+          let ref = firestore
+            .collection('users')
+            .doc(rxUser.uid)
+            .collection('giveaways')
+            .doc(Giveaway.name);
+          batch.set(ref, Giveaway);
+        });
+        batch.commit();
+      } else {
+        /* ITS NOT THE FIRST RUN, DELETE THE USERS LOCALLY AND THEN RERUN FUNCTION */
+
+        onlyExistOnLocal.forEach(key => {
+          delete newGiveaways[key];
+        });
+        setRxGiveaways(newGiveaways);
+      }
+    } else if (!firstRunFirebaseGiveaways) {
+      /* All user object are even between local and firestore now check to see if they've updated their value */
+      // Trust that the client has the latest info and set it to firestore
+      combineLatest(
+        oldFirebaseGiveaways$.pipe(first()),
+        oldGiveaways$.pipe(first()),
+        (oldFirebaseTimers, oldTimers) => {
+          if (!oldFirebaseTimers || !oldTimers) return;
+          /* COMPARE THE OLD WITH THE NEW OBJECTS TO SEE WHICH ONE HAD CHANGED VALUES */
+          // dif1 should only have length IF firebase has changed
+          let dif1 = differenceWith(
+            Object.keys(firebaseGiveaways),
+            Object.keys(oldFirebaseTimers),
+            (val1: string, val2: string) => {
+              return isEqual(firebaseGiveaways[val1], oldFirebaseTimers[val2]);
+            }
+          );
+          // dif2 should only have length IF local has changed
+          let dif2 = differenceWith(
+            Object.keys(giveaways),
+            Object.keys(oldTimers),
+            (val1: string, val2: string) =>
+              isEqual(giveaways[val1], oldTimers[val2])
+          );
+          if (dif1.length > 0) {
+            dif1.forEach(key => {
+              // Check to see if user data already exists locally
+              if (!isEqual(newGiveaways[key], firebaseGiveaways[key]))
+                newGiveaways[key] = firebaseGiveaways[key];
+            });
+            setRxGiveaways(newGiveaways);
+          } else if (dif2.length > 0) {
+            let batch = firestore.batch();
+            let update = false;
+            dif2.forEach(key => {
+              // check to see if key doesnt already exist in firestore
+              if (!isEqual(firebaseGiveaways[key], newGiveaways[key])) {
+                let ref = firestore
+                  .collection('users')
+                  .doc(rxUser.uid)
+                  .collection('giveaways')
+                  .doc(key);
+                batch.set(ref, newGiveaways[key]);
+                update = true;
+              }
+            });
+            if (update) batch.commit();
+          }
+        }
+      )
+        .pipe(first())
+        .subscribe();
+    }
+
+    oldFirebaseGiveaways$.next(newFirebaseGiveaways);
+    oldGiveaways$.next(newGiveaways);
+    firstRunFirebaseGiveaways = false;
   }
 ).subscribe(e => {});
 
@@ -367,7 +535,7 @@ combineLatest(
             return acc;
           }, {})
         );
-        setRxUsers(setUsers);
+        setRxCommands(setUsers);
       } else {
         /* ITS NOT THE FIRST RUN, USER WANTS THESE USERS DELETED */
         let batch = firestore.batch();
@@ -407,7 +575,7 @@ combineLatest(
         onlyExistOnLocal.forEach(key => {
           delete newCommands[key];
         });
-        setRxUsers(newCommands);
+        setRxCommands(newCommands);
       }
     } else if (!firstRunFirebaseCommands) {
       /* All user object are even between local and firestore now check to see if they've updated their value */
@@ -439,7 +607,7 @@ combineLatest(
               if (!isEqual(newCommands[key], firebaseCommands[key]))
                 newCommands[key] = firebaseCommands[key];
             });
-            setRxUsers(newCommands);
+            setRxCommands(newCommands);
           } else if (dif2.length > 0) {
             let batch = firestore.batch();
             let update = false;

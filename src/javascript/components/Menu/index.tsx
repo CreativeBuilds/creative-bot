@@ -167,6 +167,7 @@ const Menu = props => {
               onClick={() => {
                 firebase.auth().signOut();
                 setIsOpen(false);
+                window.location.reload();
               }}
             >
               LOGOUT
