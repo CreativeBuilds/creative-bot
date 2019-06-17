@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { useState, Component } from 'react';
 
+import { theme, ThemeContext } from '../../helpers';
+
 import { Route } from './Route';
 import { Chat } from '../Chat';
 import { UsersPage } from '../Users';
@@ -25,6 +27,8 @@ const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
 const RouteContext: any = React.createContext({ currentUrl: '/' });
+
+const styles : any = require('./Route.scss');
 
 class RouterWrapper extends Component<any,any>{
   constructor(props) {
@@ -145,7 +149,7 @@ class RouterWrapper extends Component<any,any>{
             hasGradiant={hasGradiant}
           />
         ) : null}
-        <div id='content'>
+        <div id='content' style={Object.assign({}, this.state.popups == null || this.state.popups.length == 0 ? null : theme.globals.blurred, {})}>
           <Route
             url={url}
             path={'/'}

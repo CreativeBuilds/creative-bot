@@ -27,6 +27,9 @@ const theme = {
       color: '#f0f0f0',
       borderColor: '#1e90ff'
     },
+    blurred: {
+      '-webkit-filter': 'blur(0px)'
+    },
     transparent: {
         backgroundColor: "transparent"
     }
