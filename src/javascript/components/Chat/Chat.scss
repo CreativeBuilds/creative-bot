@@ -11,6 +11,31 @@
   flex-direction: column;
 }
 
+.dragDropContentBox {
+  padding: 15px;
+  position: relative;
+  .iconContainer {
+    position: relative;
+    height: 64px;
+  }
+  
+  svg { 
+    height: 64px; 
+    width: 64px; 
+    left: 0;
+    right: 0;
+    position: absolute;
+  }
+
+  svg, p, .dragDropMessage {  
+    text-align: center;
+    margin: auto;
+  }
+  p, .dragDropMessage { 
+    word-wrap: break-word;
+  }
+}
+
 .header {
   height: 44px;
   width: 100%;
@@ -39,10 +64,21 @@
 }
 
 .chatFilterPopup {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   .toggle:not(:nth-child(1)) {
     margin-top: 10px;
     margin-left: 0px;
+  }
+
+  p { 
+    text-align: center;
+    margin-top: 0px; 
+  }
+
+  .requiredText {
+    margin: 0;
+    margin-top: 10px;
+    text-align: center;
   }
 }
 

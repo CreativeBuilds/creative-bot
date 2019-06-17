@@ -30,18 +30,10 @@ const MessageHeader = ({
   styles,
   message,
   onClick,
-  headerType
+  headerType,
+  hasTimestamp = true,
+  hasTimestampAsDigital = true
 }) => {
-  const getTime = () => {
-    var date = new Date();
-    return (
-      String(date.getHours()).padStart(2, '0') +
-      ':' +
-      String(date.getMinutes()).padStart(2, '0') +
-      ':' +
-      String(date.getSeconds()).padStart(2, '0')
-    );
-  };
 
   return (
     <div
@@ -51,9 +43,10 @@ const MessageHeader = ({
           : `${styles.messageHeader}`
       }
     >
+      {hasTimestamp ?
       <div className={styles.timestampContainer}>
-        <span style={stateTheme.timeStamp}>{message.Msg_timestamp}</span>
-      </div>
+        <span style={stateTheme.timeStamp}>{hasTimestampAsDigital ? message.Msg_timestamp_digital : message.Msg_timestamp}</span>
+      </div> : null }
       <div className={styles.image_container}>
         <img src={message.sender.avatar} width={26} height={26} />
       </div>
@@ -127,6 +120,8 @@ const Message = ({
   const [hasStickersAsText, setHasStickersAsText] = useState(
     Config.enableStickersAsText
   );
+  const [hasFilteredTimestamps, setHasFilteredTimestamps] = useState(Config.enableTimestamps);
+  const [hasTimestampsAsDigital, setHasTimestampsAsDigital] = useState(Config.enableTimestampsAsDigital);
   const [config, setConfig] = useState(Config);
 
   useEffect(() => {
@@ -136,6 +131,8 @@ const Message = ({
       setHasFilteredEvents(data.enableEvents);
       setHasFilteredStickers(data.enableStickers);
       setHasStickersAsText(data.enableStickersAsText);
+      setHasFilteredTimestamps(data.enableTimestamps);
+      setHasTimestampsAsDigital(data.enableTimestampsAsDigital);
     });
     return () => {
       listener.unsubscribe();
@@ -258,7 +255,7 @@ const Message = ({
     addPopup(
       <AddStickerPopup
         stickerId={getStickerId(message.content)}
-        stickerDLiveId={message.content}
+        stickerDLiveId={message.content.replace('channel', 'mine')}
         stickerUrl={getSticker(message.content)}
         stateTheme={stateTheme}
         styles={styles}
@@ -280,6 +277,8 @@ const Message = ({
                 styles={styles}
                 message={message}
                 headerType={MessageHeaderType.event}
+                hasTimestamp={hasFilteredTimestamps}
+                hasTimestampAsDigital={hasTimestampsAsDigital}
                 onClick={e => {
                   addUserPopup();
                 }}
@@ -314,6 +313,8 @@ const Message = ({
                 styles={styles}
                 message={message}
                 headerType={MessageHeaderType.normal}
+                hasTimestamp={hasFilteredTimestamps}
+                hasTimestampAsDigital={hasTimestampsAsDigital}
                 onClick={e => {
                   addUserPopup();
                 }}
@@ -368,6 +369,8 @@ const Message = ({
               styles={styles}
               message={message}
               headerType={MessageHeaderType.normal}
+              hasTimestamp={hasFilteredTimestamps}
+              hasTimestampAsDigital={hasTimestampsAsDigital}
               onClick={e => {
                 addUserPopup();
               }}

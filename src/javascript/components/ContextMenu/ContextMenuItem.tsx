@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
-import { MdHelpOutline, MdKeyboardArrowRight, MdDone, MdExitToApp, MdContentCut, MdContentCopy, MdContentPaste, MdDelete, MdSelectAll, MdRefresh, MdReplay, MdExtension, MdZoomOutMap, MdZoomIn, MdZoomOut, MdBrightnessLow, MdBrightness3, MdFullscreen, MdClose  } from 'react-icons/md';
+import { MdHelpOutline, MdKeyboardArrowRight, MdDone, MdExitToApp, MdCardTravel, MdCloudDownload, MdCloudUpload,MdContentCut, MdContentCopy, MdContentPaste, MdDelete, MdSelectAll, MdRefresh, MdReplay, MdExtension, MdZoomOutMap, MdZoomIn, MdZoomOut, MdBrightnessLow, MdBrightness3, MdFullscreen, MdClose  } from 'react-icons/md';
 import { GoMarkGithub, GoLink } from 'react-icons/go';
 import { theme, useComponentVisible, ThemeContext } from '../../helpers';
 import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
@@ -57,6 +57,9 @@ const ContextMenuItem = ({ contextItem } : ContextMenuItem) => {
             'GoMarkGithub': <GoMarkGithub />,
             'GoLink': <GoLink />,
             'MdHelpOutline': <MdHelpOutline />,
+            'MdCardTravel': <MdCardTravel />,
+            'MdCloudDownload': <MdCloudDownload />,
+            'MdCloudUpload': <MdCloudUpload />
     
     
           }

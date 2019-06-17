@@ -19,6 +19,8 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 import { remote } from 'electron';
 import { CreativeBotPopup } from './../WebServices/CreativeBotPopup';
 import { ChatFiltersPopup } from './ChatFiltersPopup';
+import { SetupOptionsPopup } from './SetupOptionsPopup';
+import { SetupAsExistingUserPopup } from './SetupAsExistingUserPopup';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -157,6 +159,10 @@ const Chat = ({ props }) => {
   const [emotes, setEmotes]: any = useState({});
   const [firstRender, setFirstRender] = useState(true);
 
+  const [isStartUp, setIsStartUp] = useState<Boolean>(
+    config.streamerDisplayName == null
+  );
+
   const updateText = e => {
     setText(e.target.value);
   };
@@ -197,6 +203,7 @@ const Chat = ({ props }) => {
     let listener = rxConfig.subscribe((data: any) => {
       delete data.first;
       setConfig(data);
+      setIsStartUp(data.streamerDisplayName == null);
     });
     let emoteslistener = rxEmotes.subscribe((data: any) => {
       delete data.first;
@@ -253,6 +260,8 @@ const Chat = ({ props }) => {
   useEffect(() => {
     // Test to see if the config includes the right variables
     // if's at the top of this will be rendered last
+
+    let showExistingUserPopup = false;
 
     if (!config.init) return;
     if (
@@ -344,7 +353,59 @@ const Chat = ({ props }) => {
         />
       );
     }
-    console.log('CONFIG LENGTH', Object.keys(config).length);
+
+    if (!config.streamerDisplayName && config.init && !streamerDisplayName) {
+      streamerDisplayName = true;
+      addPopup(
+        <AddCommandPopup
+          styles={styles}
+          addPopup={addPopup}
+          closeCurrentPopup={(input, setError) => {
+            if (input !== '') {
+              let Config = Object.assign(
+                {},
+                { streamerDisplayName: input },
+                config
+              );
+              setRxConfig(Config);
+              closeCurrentPopup();
+            } else {
+              setError('Input field must not be empty!');
+            }
+          }}
+          stateTheme={stateTheme}
+          configName={'Streamer Username'}
+          text={
+            'Note if, you input the incorrect name, you can change later in the options file.'
+          }
+        />
+      );
+    }
+
+    if (!config.streamerDisplayName && isStartUp && config.init) {
+      addPopup(
+        <SetupOptionsPopup
+          styles={styles}
+          closeCurrentPopup={closeCurrentPopup}
+          addPopup={addPopup}
+          stateTheme={stateTheme}
+          setupAsNewUser={e => {}}
+          setupAsExistingUser={e => {
+            setTimeout(function() {
+              addPopup(
+                <SetupAsExistingUserPopup
+                  styles={styles}
+                  closeCurrentPopup={closeCurrentPopup}
+                  addPopup={addPopup}
+                  stateTheme={stateTheme}
+                />
+              );
+            }, 8);
+          }}
+        />
+      );
+    }
+
     if (!config.acceptedToS) {
       addPopup(
         <AddCommandPopup

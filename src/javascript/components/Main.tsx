@@ -23,6 +23,8 @@ interface Main {
 const Main = ({ Config }: Main) => {
   const [stateTheme, setStateTheme] = useState(theme.dark);
   const [config, setConfig] = useState(Config);
+  const [addPopup, setAddPopup] = useState<Function>();
+  const [closeCurrentPopup, setCloseCurrentPopup] = useState<Function>();
 
   const style = (obj: {} = {}) => Object.assign(obj, stateTheme);
   // TODO swap theme based on currently selected (probably do this with context from react)
@@ -34,6 +36,11 @@ const Main = ({ Config }: Main) => {
       setStateTheme(theme.light);
     }
   };
+
+  const getFuncs = (addPop, closecurrentPopup) => {
+    setAddPopup(addPop);
+    setCloseCurrentPopup(closecurrentPopup);
+  }
 
   useEffect(() => {
     let listener = rxConfig.subscribe((data: any) => {
@@ -49,10 +56,10 @@ const Main = ({ Config }: Main) => {
   return (
     <ThemeContext.Provider value={{ stateTheme, setStateTheme }}>
         <div className={styles.appFrame}>         
-          <TitleBar Config={config}/>
+          <TitleBar Config={config} addPopup={addPopup} closeCurrentPopup={closeCurrentPopup}/>
           <Banner />
           <div className={styles.main} style={style().base.tertiaryBackground}>
-            <Router />
+            <Router getFuncs={getFuncs} />
           </div>
         </div>
     </ThemeContext.Provider>
