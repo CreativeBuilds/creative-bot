@@ -7,7 +7,8 @@ import { Route } from './Route';
 import { Chat } from '../Chat';
 import { UsersPage } from '../Users';
 import { Menu } from '../Menu';
-import { Popup } from '../Popup';
+//import { Popup } from '../Popup';
+import { Popup } from '../Generics/Popup';
 import { CommandsPage } from '../Commands';
 import { rxUsers } from '../../helpers/rxUsers';
 import { rxCommands } from '../../helpers/rxCommands';
@@ -146,12 +147,15 @@ class RouterWrapper extends Component<any,any>{
     return (
       <React.Fragment>
         {popups.length > 0 ? (
-          <Popup
+          /*<Popup
             Component={popups[popups.length - 1]}
             closePopup={this.closeCurrentPopup}
             hasGradiant={hasGradiant}
             noX={this.state.noX}
-          />
+          />*/
+          <Popup hasGradiant={hasGradiant} noX={this.state.noX} closePopup={this.closeCurrentPopup}>
+            {popups[popups.length - 1]}
+          </Popup>
         ) : null}
         <div id='content' style={Object.assign({}, this.state.popups == null || this.state.popups.length == 0 ? null : theme.globals.blurred, {})}>
           <Route

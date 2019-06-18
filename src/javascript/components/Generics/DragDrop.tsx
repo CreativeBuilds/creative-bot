@@ -7,7 +7,7 @@ class DragDrop extends Component<any,any> {
     
     constructor(props) {
         super(props);
-      }
+    }
 
     dragCounter = 0;
 

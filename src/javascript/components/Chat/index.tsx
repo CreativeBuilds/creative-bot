@@ -8,7 +8,8 @@ import {
   MdFace,
   MdLocalMovies,
   MdEvent,
-  MdFilterList
+  MdFilterList,
+  MdSettingsVoice
 } from 'react-icons/md';
 
 import { Message } from './Message';
@@ -19,6 +20,7 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 import { remote } from 'electron';
 import { CreativeBotPopup } from './../WebServices/CreativeBotPopup';
 import { ChatFiltersPopup } from './ChatFiltersPopup';
+import { ChatTextToSpeechPopup} from './ChatTextToSpeechPopup';
 import { AdvancedDiv } from '../AdvancedDiv';
 import { firebase } from '../../helpers/firebase';
 
@@ -812,6 +814,22 @@ const Chat = ({ props }) => {
       >
         CHAT
         <div className={styles.rightContainer}>
+          <div
+            className={styles.events}
+            onClick={() => {
+              addPopup(
+                <ChatTextToSpeechPopup
+                  stateTheme={stateTheme}
+                  styles={styles}
+                  Config={Object.assign({}, config)}
+                  closeCurrentPopup={closeCurrentPopup}
+                />
+              );
+            }}
+          >
+            <MdSettingsVoice />
+            <span> </span>
+          </div>
           <div
             className={styles.events}
             onClick={() => {
