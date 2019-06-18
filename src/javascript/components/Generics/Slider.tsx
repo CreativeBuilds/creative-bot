@@ -5,12 +5,17 @@ import { number } from 'prop-types';
 
 const styles: any = require('./Slider.scss');
 
-const Slider = ({header = "", hasHeader, minValue = 0, maxValue = 10, val = 5, onChange = null, style}) => {
+const Slider = ({header = "", hasHeader, minValue = 0, maxValue = 10, val = 5, valType = "", onChange = null, style}) => {
     const [value, setValue] = useState<number>(val);
     return (
         <div className={styles.slider} style={style}>
-            { hasHeader ? <div className={styles.header}>{header}</div>: null}
-            <input className={styles.sliderInput} type="range" min={minValue} max={maxValue} value={value} onChange={(e) => {
+            { hasHeader ? 
+            <div className={styles.headerContainer}>
+                <div className={styles.header}>{header}</div>
+                <div className={styles.value}>{value}{valType}</div>
+            </div>
+            : null}
+            <input id="myRange" className={styles.sliderInput} type="range" min={minValue} max={maxValue} value={value} onChange={(e) => {
                 console.log(e.target.value);
                 setValue(Number(e.target.value));
                 onChange(e, Number(e.target.value));

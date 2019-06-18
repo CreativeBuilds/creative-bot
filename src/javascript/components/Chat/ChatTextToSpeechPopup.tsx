@@ -77,7 +77,10 @@ const ChatTextToSpeechPopup = ({
         <h2>Chat Filters</h2>
         <div className={`${styles.chatFilterPopup}`}>
           <Toggle header="Enable Text To Speech (TTS)" type={ToggleType.stretched} isEnabled={true} isOn={hasFilteredEvents} onClick={() => { saveToDB('enableEvents'); }} stateTheme={stateTheme}/>
-          <Slider header="Amplitude" hasHeader={true} onChange={(e) => {}} style={styles}/>
+          <Slider header="Amplitude" val={100} maxValue={200} hasHeader={true} onChange={(e, value) => {}} style={styles}/>
+          <Slider header="Pitch" val={50} maxValue={100} hasHeader={true} onChange={(e, value) => {}} style={styles}/>
+          <Slider header="Speed" val={175} maxValue={300} hasHeader={true} onChange={(e, value) => {}} style={styles}/>
+          <Slider header="Word Gap" val={0} valType={"ms"} maxValue={100} hasHeader={true} onChange={(e, value) => {}} style={styles}/>
         </div>
         <div
           className={styles.submit}
