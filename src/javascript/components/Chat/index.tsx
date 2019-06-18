@@ -583,7 +583,7 @@ const Chat = ({ props }) => {
 
     if (!config.init) return;
     if (
-      config.authKey &&
+      !!config.authKey &&
       !config.streamerDisplayName &&
       config.init &&
       !streamerDisplayName &&
@@ -591,6 +591,7 @@ const Chat = ({ props }) => {
       typeof config.isFirebaseUser !== 'undefined' &&
       (config.isFirebaseUser ? config.loadedFirebaseConfig : true)
     ) {
+      console.log('GOT CONFIG', config);
       streamerDisplayName = true;
       addPopup(
         <AddCommandPopup
@@ -703,40 +704,6 @@ const Chat = ({ props }) => {
         true
       );
     }
-    if (
-      !config.streamerDisplayName &&
-      !streamerDisplayName &&
-      config.acceptedToS &&
-      typeof config.isFirebaseUser !== 'undefined' &&
-      (config.isFirebaseUser ? config.loadedFirebaseConfig : true)
-    ) {
-      streamerDisplayName = true;
-      addPopup(
-        <AddCommandPopup
-          styles={styles}
-          addPopup={addPopup}
-          closeCurrentPopup={(input, setError) => {
-            if (input !== '') {
-              let Config = Object.assign(
-                {},
-                { streamerDisplayName: input },
-                config
-              );
-              setRxConfig(Config);
-              closeCurrentPopup();
-            } else {
-              setError('Input field must not be empty!');
-            }
-          }}
-          stateTheme={stateTheme}
-          configName={'Streamer Username'}
-          text={
-            'Note if, you input the incorrect name, you can change later in the options file.'
-          }
-        />
-      );
-    }
-
     if (
       !config.streamerDisplayName &&
       isStartUp &&
