@@ -29,7 +29,7 @@ import {
   signUp as SignUp,
   rxFirebaseuser
 } from '../../helpers/firebase';
-import { filter, distinctUntilChanged, tap } from 'rxjs/operators';
+import { filter, distinctUntilChanged } from 'rxjs/operators';
 import { SetupOptionsPopup } from './SetupOptionsPopup';
 import { SetupAsExistingUserPopup } from './SetupAsExistingUserPopup';
 

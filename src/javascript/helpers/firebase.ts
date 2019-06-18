@@ -1,6 +1,6 @@
 import * as firebase from 'firebase';
 import { BehaviorSubject, config, combineLatest } from 'rxjs';
-import { filter, first, mergeMap, switchMap, map, tap } from 'rxjs/operators';
+import { filter, first, mergeMap, switchMap, map } from 'rxjs/operators';
 import {
   isEmpty,
   isEqual,
