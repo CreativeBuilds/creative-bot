@@ -7,6 +7,7 @@ const {
 } = require('./helpers');
 const log = require('electron-log');
 const { app, BrowserWindow, ipcMain } = require('electron');
+app.commandLine.appendSwitch('enable-speech-dispatcher');
 const fs = require('fs');
 const path = require('path');
 const { distinctUntilChanged, filter, first } = require('rxjs/operators');

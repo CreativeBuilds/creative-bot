@@ -182,6 +182,7 @@ const Message = ({
 
   const eventMessage = () => {
     if (message.type === 'Gift') {
+      
       return `just donated ${message.amount} ${giftType()} ${giftEmoteType()}`;
     } else if (message.type === 'Follow') {
       return 'Has Just Followed';

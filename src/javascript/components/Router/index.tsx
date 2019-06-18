@@ -22,15 +22,16 @@ import { rxQuotes } from '../../helpers/rxQuotes';
 import { QuotesPage } from '../Quotes';
 import { rxLists } from '../../helpers/rxLists';
 import { ListsPage } from '../Lists';
+import { first } from 'rxjs/operators';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
 const RouteContext: any = React.createContext({ currentUrl: '/' });
 
-const styles : any = require('./Route.scss');
+const styles: any = require('./Route.scss');
 
-class RouterWrapper extends Component<any,any>{
+class RouterWrapper extends Component<any, any> {
   constructor(props) {
     super(props);
   }
@@ -85,10 +86,56 @@ class RouterWrapper extends Component<any,any>{
         messages: newArr
       });
     });
+    let soundIsRunning = false;
+    let newSound = message => {
+      if (soundIsRunning) {
+        setTimeout(() => {
+          newSound(message);
+        }, 1000);
+      } else if (
+        message.donationMessage ? message.donationMessage.length : false
+      ) {
+        const giftType = () => {
+          if (message.gift === 'LEMON') {
+            return 'lemon';
+          } else if (message.gift === 'ICE_CREAM') {
+            return 'ice cream';
+          } else if (message.gift === 'DIAMOND') {
+            return 'diamond!';
+          } else if (message.gift === 'NINJAGHINI') {
+            return 'ninjaghini!';
+          } else if (message.gift === 'NINJET') {
+            return 'ninjet!';
+          }
+        };
+        soundIsRunning = true;
+        var utter = new SpeechSynthesisUtterance();
+        utter.text = `${message.sender.dliveUsername} just donated ${
+          message.amount
+        } ${giftType()} ${
+          message.donationMessage ? message.donationMessage : ''
+        }`;
+        utter.volume = 0.4;
+        utter.onend = () => {
+          soundIsRunning = false;
+        };
+        speechSynthesis.speak(utter);
+      }
+    };
+
+    ipcRenderer.on('newdonation', (event, { message }) => {
+      rxConfig.pipe(first()).subscribe((config: any) => {
+        if (config.enableTTSDonations) {
+          newSound(message);
+        }
+      });
+    });
+
     ipcRenderer.on('newmessage', (event, { message }) => {
       var date = new Date();
       var hourMilitary = '';
-
+      if (!!message.gift) {
+      }
       if (date.getHours() > 12) {
         hourMilitary = String(date.getHours() - 12);
       } else {
@@ -101,11 +148,11 @@ class RouterWrapper extends Component<any,any>{
         String(date.getMinutes()).padStart(2, '0') +
         ':' +
         String(date.getSeconds()).padStart(2, '0');
-        
-      var timeMilitary = 
-      hourMilitary.padStart(2, '0') +
-      ':' +
-      String(date.getMinutes()).padStart(2, '0');
+
+      var timeMilitary =
+        hourMilitary.padStart(2, '0') +
+        ':' +
+        String(date.getMinutes()).padStart(2, '0');
 
       message['Msg_timestamp_digital'] = timeDigital;
       message['Msg_timestamp'] = timeMilitary;
@@ -140,7 +187,7 @@ class RouterWrapper extends Component<any,any>{
   };
 
   render() {
-    const { url, setUrl} = this.props;
+    const { url, setUrl } = this.props;
     const { popups, hasGradiant } = this.state;
 
     return (
@@ -153,7 +200,16 @@ class RouterWrapper extends Component<any,any>{
             noX={this.state.noX}
           />
         ) : null}
-        <div id='content' style={Object.assign({}, this.state.popups == null || this.state.popups.length == 0 ? null : theme.globals.blurred, {})}>
+        <div
+          id='content'
+          style={Object.assign(
+            {},
+            this.state.popups == null || this.state.popups.length == 0
+              ? null
+              : theme.globals.blurred,
+            {}
+          )}
+        >
           <Route
             url={url}
             path={'/'}
@@ -247,7 +303,7 @@ const Router = (props, getFuncs) => {
   return (
     <RouteContext.Provider value={{ currentUrl: url, setUrl }}>
       <Menu setUrl={setUrl} />
-      <RouterWrapper url={url} setUrl={setUrl}/>
+      <RouterWrapper url={url} setUrl={setUrl} />
     </RouteContext.Provider>
   );
 };

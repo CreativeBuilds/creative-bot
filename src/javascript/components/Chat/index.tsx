@@ -834,6 +834,12 @@ const Chat = ({ props }) => {
       </div>
       <div style={{}} className={styles.content} id='messages'>
         {Messages.map((message, nth) => {
+          if (
+            !message.content || message.content
+              ? message.content.length === 0
+              : true
+          )
+            return null;
           return (
             <Message
               addPopup={addPopup}
