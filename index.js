@@ -260,6 +260,17 @@ function createWindow() {
     rxCommands.next(CommandsCopy);
   });
 
+  ipcMain.on('logout', () => {
+    rxConfig.next({});
+    setTimeout(() => {
+      process.exit();
+    }, 1000);
+  });
+
+  ipcMain.on('shutdown', () => {
+    process.exit();
+  });
+
   ipcMain.on('backup-data', (event, dir) => {
     var dateObj = new Date();
     var date =
@@ -541,7 +552,7 @@ function createWindow() {
         // TODO Check permissions
         let obj = {};
         obj[commandName] = Object.assign({}, command);
-        obj[commandName].uses += 1;
+        // obj[commandName].uses += 1;
         Commands = Object.assign({}, Commands, obj);
         if (!command.enabled) return;
         if (!dlive) {

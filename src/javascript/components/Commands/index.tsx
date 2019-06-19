@@ -19,7 +19,7 @@ const AddCommandPopup = ({
 }) => {
   const [name, setName] = useState<string>('');
   const [reply, setReply] = useState<string>('');
-  const [uses, setUses] = useState<number>(0);
+  // const [uses, setUses] = useState<number>(0);
   const [permissions, setPermissions] = useState({});
 
   const saveToDB = () => {
@@ -28,7 +28,7 @@ const AddCommandPopup = ({
     Commands[name] = {
       reply,
       name,
-      uses,
+      uses: 0,
       permissions,
       enabled: true
     };
@@ -36,8 +36,8 @@ const AddCommandPopup = ({
   };
 
   const save = () => {
-    if (isNaN(Number(uses))) return;
-    setUses(Number(uses));
+    // if (isNaN(Number(uses))) return;
+    // setUses(Number(uses));
     saveToDB();
     closeCurrentPopup();
   };
@@ -130,7 +130,14 @@ const CommandsPage = ({ props }) => {
 
   return (
     <div style={stateTheme.base.tertiaryBackground} className={styles.Points}>
-      <div style={Object.assign({},stateTheme.toolBar, stateTheme.base.quinaryForeground)} className={styles.header}>
+      <div
+        style={Object.assign(
+          {},
+          stateTheme.toolBar,
+          stateTheme.base.quinaryForeground
+        )}
+        className={styles.header}
+      >
         COMMANDS
         <textarea
           className={styles.usersearch}
