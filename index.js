@@ -260,6 +260,10 @@ function createWindow() {
     rxCommands.next(CommandsCopy);
   });
 
+  ipcMain.on('shutdown', () => {
+    process.exit();
+  });
+
   ipcMain.on('backup-data', (event, dir) => {
     var dateObj = new Date();
     var date =

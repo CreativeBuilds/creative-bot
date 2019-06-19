@@ -9,6 +9,8 @@ import { Li } from './li';
 import { rxConfig } from '../../helpers/rxConfig';
 
 const styles: any = require('./Menu.scss');
+const Window: any = window;
+const { ipcRenderer, shell } = Window.require('electron');
 
 const Menu = props => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -165,9 +167,12 @@ const Menu = props => {
                 theme.globals.accentForeground
               )}
               onClick={() => {
-                firebase.auth().signOut();
-                setIsOpen(false);
-                window.location.reload();
+                firebase
+                  .auth()
+                  .signOut()
+                  .then(() => {
+                    ipcRenderer.send('shutdown');
+                  });
               }}
             >
               LOGOUT
