@@ -31,7 +31,7 @@ import {
   signUp as SignUp,
   rxFirebaseuser
 } from '../../helpers/firebase';
-import { filter, distinctUntilChanged, tap } from 'rxjs/operators';
+import { filter, distinctUntilChanged } from 'rxjs/operators';
 import { SetupOptionsPopup } from './SetupOptionsPopup';
 import { SetupAsExistingUserPopup } from './SetupAsExistingUserPopup';
 
@@ -585,7 +585,7 @@ const Chat = ({ props }) => {
 
     if (!config.init) return;
     if (
-      config.authKey &&
+      !!config.authKey &&
       !config.streamerDisplayName &&
       config.init &&
       !streamerDisplayName &&
@@ -593,6 +593,7 @@ const Chat = ({ props }) => {
       typeof config.isFirebaseUser !== 'undefined' &&
       (config.isFirebaseUser ? config.loadedFirebaseConfig : true)
     ) {
+      console.log('GOT CONFIG', config);
       streamerDisplayName = true;
       addPopup(
         <AddCommandPopup
@@ -707,40 +708,6 @@ const Chat = ({ props }) => {
     }
     if (
       !config.streamerDisplayName &&
-      !streamerDisplayName &&
-      config.acceptedToS &&
-      typeof config.isFirebaseUser !== 'undefined' &&
-      (config.isFirebaseUser ? config.loadedFirebaseConfig : true)
-    ) {
-      streamerDisplayName = true;
-      addPopup(
-        <AddCommandPopup
-          styles={styles}
-          addPopup={addPopup}
-          closeCurrentPopup={(input, setError) => {
-            if (input !== '') {
-              let Config = Object.assign(
-                {},
-                { streamerDisplayName: input },
-                config
-              );
-              setRxConfig(Config);
-              closeCurrentPopup();
-            } else {
-              setError('Input field must not be empty!');
-            }
-          }}
-          stateTheme={stateTheme}
-          configName={'Streamer Username'}
-          text={
-            'Note if, you input the incorrect name, you can change later in the options file.'
-          }
-        />
-      );
-    }
-
-    if (
-      !config.streamerDisplayName &&
       isStartUp &&
       config.acceptedToS &&
       config.isFirebaseUser === false
@@ -852,6 +819,11 @@ const Chat = ({ props }) => {
       </div>
       <div style={{}} className={styles.content} id='messages'>
         {Messages.map((message, nth) => {
+          if (
+            !message.content ||
+            (message.content ? message.content.length === 0 : true)
+          )
+            return null;
           return (
             <Message
               addPopup={addPopup}

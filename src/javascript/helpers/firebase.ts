@@ -1,6 +1,6 @@
 import * as firebase from 'firebase';
 import { BehaviorSubject, config, combineLatest } from 'rxjs';
-import { filter, first, mergeMap, switchMap, map, tap } from 'rxjs/operators';
+import { filter, first, mergeMap, switchMap, map } from 'rxjs/operators';
 import {
   isEmpty,
   isEqual,
@@ -97,8 +97,8 @@ firebase.auth().onAuthStateChanged(user => {
       if (Object.keys(data).length !== 0) {
         console.log('first if');
         delete data.id;
-        rxConfig.pipe(first()).subscribe(config => {
-          if (isEqual(config, data))
+        rxConfig.pipe(first()).subscribe((config: any) => {
+          if (isEqual(config, data) && config.loadedFirebaseConfig)
             return console.log('theyre equal', config, data);
           setRxConfig(Object.assign({}, { loadedFirebaseConfig: true }, data));
         });
@@ -110,10 +110,10 @@ firebase.auth().onAuthStateChanged(user => {
           let Config: any = Object.assign({}, config);
           if (typeof Config.isFirebaseUser === 'undefined') {
             Config.isFirebaseUser = user.uid;
-            setRxConfig(
-              Object.assign({}, { loadedFirebaseConfig: true }, Config)
-            );
           }
+          setRxConfig(
+            Object.assign({}, { loadedFirebaseConfig: true }, Config)
+          );
           configRef.set(Config, { merge: true });
         });
       }
