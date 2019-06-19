@@ -25,6 +25,16 @@ storage.get('config', (err, data) => {
   if (!data.enableTimestamps) data.enableTimestamps = true;
   // Defaults to true
   if (!data.enableTimestampsAsDigital) data.enableTimestampsAsDigital = true;
+  // Defualts to false
+  if (!data.hasTTSDonations) data.hasTTSDonations = false;
+  // Defaults to 100
+  if (!data.tts_Amplitude) data.tts_Amplitude = 100;
+  // Defaults to 100
+  if (!data.tts_Pitch) data.tts_Pitch = 100;
+  // Defualts to 100
+  if (!data.tts_Speed) data.tts_Speed = 100;
+  // Defaults to 0 (in ms)
+  if(!data.tts_WordGap) data.tts_WordGap = 0;
 
   rxConfig.next(data);
   rxConfig.subscribe(data => {
@@ -36,6 +46,11 @@ storage.get('config', (err, data) => {
     data.enableStickersAsText = Boolean(data.enableStickersAsText);
     data.enableTimestamps = Boolean(data.enableTimestamps);
     data.enableTimestampsAsDigital = Boolean(data.enableTimestampsAsDigital);
+    data.hasTTSDonations = Boolean(data.hasTTSDonations);
+    data.tts_Amplitude = Number(data.tts_Amplitude);
+    data.tts_Pitch = Number(data.tts_Pitch);
+    data.tts_Speed = Number(data.tts_Speed);
+    data.tts_WordGap = Number(data.tts_WordGap);
     storage.set('config', data);
   });
 });

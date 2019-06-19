@@ -65,6 +65,7 @@ const ChatFiltersPopup = ({
       setHasStickersAsText(data.enableStickersAsText);
       setHasFilteredTimestamps(data.enableTimestamps);
       setHasTimestampsAsDigital(data.enableTimestampsAsDigital);
+      setHasTTSDonations(data.hasTTSDonations);
     });
     return () => {
       listener.unsubscribe();
@@ -89,7 +90,7 @@ const ChatFiltersPopup = ({
     } else if (id === 'enableTimestampsAsDigital') {
       tConfig[id] = !hasTimestampsAsDigital;
       setHasTimestampsAsDigital(!hasTimestampsAsDigital);
-    } else if (id === 'enableTTSDonations') {
+    } else if (id === 'hasTTSDonations') {
       tConfig[id] = !hasTTSDonations;
       setHasTTSDonations(tConfig[id]);
     }
@@ -127,16 +128,6 @@ const ChatFiltersPopup = ({
           isOn={hasStickersAsText}
           onClick={() => {
             saveToDB('enableStickersAsText');
-          }}
-          stateTheme={stateTheme}
-        />
-        <Toggle
-          header='Enable TTS on Donations'
-          type={ToggleType.stretched}
-          isEnabled={true}
-          isOn={hasTTSDonations}
-          onClick={() => {
-            saveToDB('enableTTSDonations');
           }}
           stateTheme={stateTheme}
         />

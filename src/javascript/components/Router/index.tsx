@@ -24,6 +24,7 @@ import { QuotesPage } from '../Quotes';
 import { rxLists } from '../../helpers/rxLists';
 import { ListsPage } from '../Lists';
 import { first } from 'rxjs/operators';
+import { config } from 'rxjs';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -88,10 +89,10 @@ class RouterWrapper extends Component<any, any> {
       });
     });
     let soundIsRunning = false;
-    let newSound = message => {
+    let newSound = (message, config) => {
       if (soundIsRunning) {
         setTimeout(() => {
-          newSound(message);
+          newSound(message, config);
         }, 1000);
       } else if (
         message.donationMessage ? message.donationMessage.length : false
@@ -116,7 +117,9 @@ class RouterWrapper extends Component<any, any> {
         } ${giftType()} ${
           message.donationMessage ? message.donationMessage : ''
         }`;
-        utter.volume = 0.4;
+        utter.volume = config.tts_Amplitude / 100;
+        utter.pitch = config.tts_Pitch / 100;
+        utter.rate = config.tts_Speed / 100;
         utter.onend = () => {
           soundIsRunning = false;
         };
@@ -126,8 +129,8 @@ class RouterWrapper extends Component<any, any> {
 
     ipcRenderer.on('newdonation', (event, { message }) => {
       rxConfig.pipe(first()).subscribe((config: any) => {
-        if (config.enableTTSDonations) {
-          newSound(message);
+        if (config.hasTTSDonations) {
+          newSound(message, config);
         }
       });
     });

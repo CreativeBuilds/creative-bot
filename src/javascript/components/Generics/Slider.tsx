@@ -16,7 +16,6 @@ const Slider = ({header = "", hasHeader, minValue = 0, maxValue = 10, val = 5, v
             </div>
             : null}
             <input id="myRange" className={styles.sliderInput} type="range" min={minValue} max={maxValue} value={value} onChange={(e) => {
-                console.log(e.target.value);
                 setValue(Number(e.target.value));
                 onChange(e, Number(e.target.value));
             }}></input>

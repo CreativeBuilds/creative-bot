@@ -35,7 +35,21 @@ const ChatTextToSpeechPopup = ({
     closeCurrentPopup
   }: popup) => {
     const [name, setName] = useState<string>('');
-    const [hasFilteredEvents, setHasFilteredEvents] = useState(Config.enableEvents);
+    const [hasTTSDonations, setHasTTSDonations] = useState(
+      Config.hasTTSDonations
+    );
+    const [ttsAmplitude, setTTSAmplitude] = useState(
+      Config.tts_Amplitude
+    );
+    const [ttsPitch, setTTSPitch] = useState(
+      Config.tts_Pitch
+    );
+    const [ttsSpeed, setTTSSpeed] = useState(
+      Config.tts_Speed
+    );
+    const [ttsWordGap, setTTSWordGap] = useState(
+      Config.tts_WordGap
+    );
     const [error, SetError] = useState(false);
     const [config, setConfig] = useState(Config);
 
@@ -43,46 +57,58 @@ const ChatTextToSpeechPopup = ({
       let listener = rxConfig.subscribe((data: any) => {
         delete data.first;
         setConfig(data);
+        setHasTTSDonations(data.hasTTSDonations);
+        setTTSAmplitude(data.tts_Amplitude);
+        setTTSPitch(data.tts_Pitch);
+        setTTSSpeed(data.tts_Speed);
+        setTTSWordGap(data.tts_WordGap);
       });
       return () => {
         listener.unsubscribe();
       };
     }, []);
     
-    const saveToDB = (id) => {
-      /*let tConfig = Object.assign({}, config);
-
-      if (id === 'enableEvents') {
-        tConfig[id] = !hasFilteredEvents;
-        setHasFilteredEvents(!hasFilteredEvents);
-      } else if (id === 'enableStickers') {
-        tConfig[id] = !hasFilteredStickers;
-        setHasFilteredStickers(!hasFilteredStickers);
-      } else if (id === 'enableStickersAsText') {
-        tConfig[id] = !hasStickersAsText;
-        setHasStickersAsText(!hasStickersAsText);
-      } else if (id === 'enableTimestamps') {
-        tConfig[id] = !hasFilteredTimestamps;
-        setHasFilteredTimestamps(!hasFilteredTimestamps);
-      } else if (id === 'enableTimestampsAsDigital') {
-        tConfig[id] = !hasTimestampsAsDigital
-        setHasTimestampsAsDigital(!hasTimestampsAsDigital);
+    const saveToDB = (id, value = null) => {
+      let tConfig = Object.assign({}, config);
+  
+      if (id === "hasTTSDonations") {
+        tConfig[id] = !hasTTSDonations;
+        setHasTTSDonations(tConfig[id]);
+      } else {
+        tConfig[id] = value;
       }
-      setRxConfig(tConfig);*/
+      setRxConfig(tConfig);
     };
 
 
     return (
       <div className={`${styles.popup}`}>
-        <h2>Chat Filters</h2>
+        <h2>Text To Speech Settings</h2>
         <div className={`${styles.chatFilterPopup}`}>
-          <Toggle header="Enable Text To Speech (TTS)" type={ToggleType.stretched} isEnabled={true} isOn={hasFilteredEvents} onClick={() => { saveToDB('enableEvents'); }} stateTheme={stateTheme}/>
-          <Slider header="Amplitude" val={100} maxValue={200} hasHeader={true} onChange={(e, value) => {}} style={styles}/>
-          <Slider header="Pitch" val={50} maxValue={100} hasHeader={true} onChange={(e, value) => {}} style={styles}/>
-          <Slider header="Speed" val={175} maxValue={300} hasHeader={true} onChange={(e, value) => {}} style={styles}/>
-          <Slider header="Word Gap" val={0} valType={"ms"} maxValue={100} hasHeader={true} onChange={(e, value) => {}} style={styles}/>
+          <Toggle header='Enable TTS on Donations' type={ToggleType.stretched} isEnabled={true} isOn={hasTTSDonations} onClick={() => { saveToDB("hasTTSDonations"); }} stateTheme={stateTheme} />
+          <Slider header="Amplitude" val={ttsAmplitude} maxValue={200} hasHeader={true} onChange={(e, value) => {setTTSAmplitude(value); saveToDB("tts_Amplitude", value);}} style={styles}/>
+          <Slider header="Pitch" val={ttsPitch} maxValue={200} hasHeader={true} onChange={(e, value) => {setTTSPitch(value); saveToDB("tts_Pitch", value);}} style={styles}/>
+          <Slider header="Speed" val={ttsSpeed} maxValue={300} hasHeader={true} onChange={(e, value) => {setTTSSpeed(value); saveToDB("tts_Speed", value);}} style={styles}/>
+          {/*<Slider header="Word Gap" val={ttsWordGap} valType={"ms"} maxValue={100} hasHeader={true} onChange={(e, value) => {setTTSWordGap(value); saveToDB("tts_WordGap", value);}} style={styles}/>*/}
         </div>
-        <div
+          <div className={styles.buttonstack}>
+          <div
+          className={styles.submit}
+          style={stateTheme.submitButton}
+          onClick={() => { 
+              var utter = new SpeechSynthesisUtterance();
+              utter.text = "I scream, you scream, we all scream for ice cream"
+              utter.volume = config.tts_Amplitude / 100;
+              utter.pitch = config.tts_Pitch / 100;
+              utter.rate = config.tts_Speed / 100;
+              utter.onend = () => {
+                
+              };
+              speechSynthesis.speak(utter);
+            }}>
+          Test TTS
+          </div>
+          <div
           className={styles.submit}
           style={stateTheme.submitButton}
           onClick={() => { 
@@ -90,6 +116,7 @@ const ChatTextToSpeechPopup = ({
             }}>
           Close
           </div>
+        </div>
       </div>
     );
   };
