@@ -260,6 +260,13 @@ function createWindow() {
     rxCommands.next(CommandsCopy);
   });
 
+  ipcMain.on('logout', () => {
+    rxConfig.next({});
+    setTimeout(() => {
+      process.exit();
+    }, 1000);
+  });
+
   ipcMain.on('shutdown', () => {
     process.exit();
   });

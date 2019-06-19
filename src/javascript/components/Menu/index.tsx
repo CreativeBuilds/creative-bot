@@ -171,7 +171,8 @@ const Menu = props => {
                   .auth()
                   .signOut()
                   .then(() => {
-                    ipcRenderer.send('shutdown');
+                    ipcRenderer.send('logout');
+                    window.close();
                   });
               }}
             >
