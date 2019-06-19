@@ -86,9 +86,9 @@ const ChatTextToSpeechPopup = ({
         <h2>Text To Speech Settings</h2>
         <div className={`${styles.chatFilterPopup}`}>
           <Toggle header='Enable TTS on Donations' type={ToggleType.stretched} isEnabled={true} isOn={hasTTSDonations} onClick={() => { saveToDB("hasTTSDonations"); }} stateTheme={stateTheme} />
-          <Slider header="Amplitude" val={ttsAmplitude} maxValue={200} hasHeader={true} onChange={(e, value) => {setTTSAmplitude(value); saveToDB("tts_Amplitude", value);}} style={styles}/>
-          <Slider header="Pitch" val={ttsPitch} maxValue={200} hasHeader={true} onChange={(e, value) => {setTTSPitch(value); saveToDB("tts_Pitch", value);}} style={styles}/>
-          <Slider header="Speed" val={ttsSpeed} maxValue={300} hasHeader={true} onChange={(e, value) => {setTTSSpeed(value); saveToDB("tts_Speed", value);}} style={styles}/>
+          <Slider header="Amplitude" val={ttsAmplitude} maxValue={200} hasHeader={true} onValueChanged={(value) => {setTTSAmplitude(value); saveToDB("tts_Amplitude", value);}} style={styles}/>
+          <Slider header="Pitch" val={ttsPitch} maxValue={200} hasHeader={true} onValueChanged={(value) => {setTTSPitch(value); saveToDB("tts_Pitch", value);}} style={styles}/>
+          <Slider header="Speed" val={ttsSpeed} maxValue={300} hasHeader={true} onValueChanged={(value) => {setTTSSpeed(value); saveToDB("tts_Speed", value);}} style={styles}/>
           {/*<Slider header="Word Gap" val={ttsWordGap} valType={"ms"} maxValue={100} hasHeader={true} onChange={(e, value) => {setTTSWordGap(value); saveToDB("tts_WordGap", value);}} style={styles}/>*/}
         </div>
           <div className={styles.buttonstack}>

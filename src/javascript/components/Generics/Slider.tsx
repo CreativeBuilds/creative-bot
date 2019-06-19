@@ -5,8 +5,9 @@ import { number } from 'prop-types';
 
 const styles: any = require('./Slider.scss');
 
-const Slider = ({header = "", hasHeader, minValue = 0, maxValue = 10, val = 5, valType = "", onChange = null, style}) => {
+const Slider = ({header = "", hasHeader, minValue = 0, maxValue = 10, val = 5, valType = "", onChange = null, onValueChanged = null, style}) => {
     const [value, setValue] = useState<number>(val);
+    const [isChanging, setIsChanging] = useState<Boolean>(false);
     return (
         <div className={styles.slider} style={style}>
             { hasHeader ? 
@@ -15,9 +16,11 @@ const Slider = ({header = "", hasHeader, minValue = 0, maxValue = 10, val = 5, v
                 <div className={styles.value}>{value}{valType}</div>
             </div>
             : null}
-            <input id="myRange" className={styles.sliderInput} type="range" min={minValue} max={maxValue} value={value} onChange={(e) => {
+            <input id="myRange" className={styles.sliderInput} type="range" min={minValue} max={maxValue} value={value} onMouseDown={() => { setIsChanging(true); }} onMouseUp={() => { setIsChanging(false); if (onValueChanged != null) { onValueChanged(Number(val)); }}} onChange={(e) => {
                 setValue(Number(e.target.value));
-                onChange(e, Number(e.target.value));
+                if (onChange != null) {
+                    onChange(e, Number(e.target.value));
+                }
             }}></input>
         </div>
     );
