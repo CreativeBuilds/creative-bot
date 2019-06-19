@@ -1,6 +1,6 @@
 {
   "name": "creative-bot",
-  "version": "1.6.2-beta",
+  "version": "1.6.3-beta",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -21,6 +21,7 @@
     "axios": "^0.19.0",
     "compass-mixins": "^0.12.10",
     "dlive-js": "^1.0.32",
+    "electron-debug": "^3.0.0",
     "electron-json-storage": "^4.1.6",
     "electron-log": "^3.0.6",
     "electron-reload": "^1.4.0",
@@ -29,7 +30,6 @@
     "fstream": "^1.0.12",
     "https": "^1.0.0",
     "jszip": "^3.2.1",
-    "unzip": "^0.1.11",
     "lino-js": "^1.0.19",
     "lodash": "^4.17.11",
     "moment": "^2.24.0",
@@ -44,6 +44,7 @@
     "rxjs": "^6.5.2",
     "rxjs-websockets": "^7.0.0",
     "tar": "^2.2.2",
+    "unzip": "^0.1.11",
     "ws": "^6.2.1"
   },
   "devDependencies": {
