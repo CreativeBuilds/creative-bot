@@ -541,7 +541,7 @@ function createWindow() {
         // TODO Check permissions
         let obj = {};
         obj[commandName] = Object.assign({}, command);
-        obj[commandName].uses += 1;
+        // obj[commandName].uses += 1;
         Commands = Object.assign({}, Commands, obj);
         if (!command.enabled) return;
         if (!dlive) {
