@@ -26,7 +26,7 @@ storage.get('config', (err, data) => {
   // Defaults to true
   if (!data.enableTimestampsAsDigital) data.enableTimestampsAsDigital = true;
   // Defualts to false
-  if (!data.hasTTSDonations) data.hasTTSDonations = false;
+  if (!data.hasTTSDonations) data.hasTTSDonations = true;
   // Defaults to 100
   if (!data.tts_Amplitude) data.tts_Amplitude = 100;
   // Defaults to 100
@@ -34,7 +34,7 @@ storage.get('config', (err, data) => {
   // Defualts to 100
   if (!data.tts_Speed) data.tts_Speed = 100;
   // Defaults to 0 (in ms)
-  if(!data.tts_WordGap) data.tts_WordGap = 0;
+  if (!data.tts_WordGap) data.tts_WordGap = 0;
 
   rxConfig.next(data);
   rxConfig.subscribe(data => {
