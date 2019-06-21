@@ -16,15 +16,14 @@ const RemoveQuotePopup = ({
   quotes
 }) => {
   let name = quote.quote;
+  console.log('DA QUOTE', quote);
 
   const saveToDB = () => {
-    if (name.length === 0) return;
+    if (name.length === 0) return console.log('NAME LENGTH IS 0');
     let Quotes = Object.assign({}, quotes);
-    Quotes['quotes'].splice((nth - 1), 1);;
-
-    for (var i = 0; i < Quotes['quotes'].length; i++) {
-      Quotes['quotes'][i].quoteId = i;
-    }
+    delete Quotes[
+      Number(quote.quoteId) ? Number(quote.quoteId) : quote.quoteId
+    ];
 
     setRxQuotes(Quotes);
   };
