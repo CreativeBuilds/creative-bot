@@ -39,7 +39,9 @@ rxFirebaseuser
     })
   )
   .subscribe(firestoreConfig => {
-    rxConfig.next(firestoreConfig);
+    rxConfig.next(
+      Object.assign({}, firestoreConfig, { loadedFirebaseConfig: true })
+    );
     ipcRenderer.send('setRxConfig', firestoreConfig);
   });
 const setRxConfig = config => {

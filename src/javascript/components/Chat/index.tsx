@@ -580,7 +580,7 @@ const Chat = ({ props }) => {
     // if's at the top of this will be rendered last
 
     let showExistingUserPopup = false;
-
+    console.log('config', config);
     if (!config.init) return;
     if (
       !!config.authKey &&
