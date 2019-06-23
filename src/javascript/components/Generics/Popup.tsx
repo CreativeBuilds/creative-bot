@@ -22,6 +22,8 @@ class Popup extends Component<any, any> {
       return theme.dark;
     } else if (themeVal == 'light') {
       return theme.light;
+    } else {
+      return theme.dark;
     }
   };
 
@@ -45,7 +47,8 @@ class Popup extends Component<any, any> {
           style={
             this.props.hasGradiant
               ? theme.dark
-              : this.state.stateTheme.base.quinaryBackground
+              : (this.state.stateTheme ? this.state.stateTheme : theme.dark)
+                  .base.quinaryBackground
           }
         >
           {this.props.noX ? null : (
