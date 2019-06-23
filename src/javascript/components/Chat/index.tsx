@@ -13,8 +13,8 @@ import {
 
 import { Message } from './Message';
 import { StickerPopup } from './StickerPopup';
-import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
-import { rxEmotes, setRxEmotes } from '../../helpers/rxEmotes';
+import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
+import { firebaseEmotes$, setRxEmotes } from '../../helpers/rxEmotes';
 import { Action } from 'rxjs/internal/scheduler/Action';
 import { remote } from 'electron';
 import { CreativeBotPopup } from './../WebServices/CreativeBotPopup';
@@ -516,14 +516,14 @@ const Chat = ({ props }) => {
         setIsScrolledUp(true);
       }
     });
-    let listener = rxConfig
+    let listener = firebaseConfig$
       .pipe(distinctUntilChanged((prev, curr) => isEqual(prev, curr)))
       .subscribe((data: any) => {
         delete data.first;
         setConfig(data);
         setIsStartUp(data.streamerDisplayName == null);
       });
-    let emoteslistener = rxEmotes.subscribe((data: any) => {
+    let emoteslistener = firebaseEmotes$.subscribe((data: any) => {
       delete data.first;
       setEmotes(data);
     });
@@ -580,8 +580,8 @@ const Chat = ({ props }) => {
     // if's at the top of this will be rendered last
 
     let showExistingUserPopup = false;
-    console.log('config', config);
-    if (!config.init) return;
+    console.log('config!', config);
+    // if (!config.init) return;
     if (
       !!config.authKey &&
       !config.streamerDisplayName &&
@@ -732,14 +732,16 @@ const Chat = ({ props }) => {
         />
       );
     }
-
-    if (!config.acceptedToS) {
+    console.log('REEEEEEEEEEEEEEE');
+    if (!config.acceptedToS && config.init) {
+      console.log('USER HAS NOT ACCEPTED TOS');
       addPopup(
         <AddCommandPopup
           styles={styles}
           addPopup={addPopup}
           closeCurrentPopup={() => {
             let Config = Object.assign({}, { acceptedToS: true }, config);
+            console.log('CLOSING POPUP WITH NEW CONFIG', Config);
             setRxConfig(Config);
             closeCurrentPopup();
           }}
@@ -764,6 +766,8 @@ const Chat = ({ props }) => {
         false,
         true
       );
+    } else {
+      console.log('CURRENT CONFIG', config);
     }
   }, [config]);
 
@@ -832,7 +836,7 @@ const Chat = ({ props }) => {
             borderColor: stateTheme.base.quinaryBackground.backgroundColor
           })}
           value={text}
-          maxLength={140}
+          maxLength={280}
           onKeyDown={onEnterPress}
           onChange={e => {
             updateText(e);

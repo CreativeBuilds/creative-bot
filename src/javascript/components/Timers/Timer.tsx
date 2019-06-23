@@ -8,6 +8,7 @@ import { theme } from '../../helpers';
 import { MdModeEdit, MdEdit, MdDelete } from 'react-icons/md';
 let { setRxTimers, rxTimers } = require('../../helpers/rxTimers');
 import { first } from 'rxjs/operators';
+import { firebaseTimers$ } from '../../helpers/rxTimers';
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
@@ -20,12 +21,18 @@ const Popup = ({ command, styles, closeCurrentPopup, stateTheme }) => {
 
   const saveToDB = () => {
     if (name.length === 0) return;
-    rxTimers.pipe(first()).subscribe(timers => {
+    firebaseTimers$.pipe(first()).subscribe(timers => {
       let Timers = Object.assign({}, timers);
+      console.log(timers, Timers);
       if (command.name !== name) {
         delete Timers[name];
       }
-      if (isNaN(Number(messages)) || isNaN(Number(seconds))) return;
+      if (isNaN(Number(messages)) || isNaN(Number(seconds)))
+        return console.log(
+          'SOMETHING IS NAN',
+          isNaN(Number(messages)),
+          isNaN(Number(seconds))
+        );
       Timers[name] = {
         reply,
         name,
@@ -34,6 +41,7 @@ const Popup = ({ command, styles, closeCurrentPopup, stateTheme }) => {
         seconds: Number(seconds),
         enabled: command.enabled
       };
+      console.log('GOING TO SETT TIMERS');
       setRxTimers(Timers);
     });
 
@@ -113,9 +121,11 @@ const RemoveTimerPopup = ({ timer, styles, closeCurrentPopup, stateTheme }) => {
 
   const saveToDB = () => {
     if (name.length === 0) return;
-    rxTimers.pipe(first()).subscribe(timers => {
+    firebaseTimers$.pipe(first()).subscribe(timers => {
+      console.log('TIMERS', timers);
       let Timers = Object.assign({}, timers);
       delete Timers[name];
+      console.log('SETTING RX TIMERS', Timers);
       setRxTimers(Timers);
     });
   };
@@ -170,7 +180,7 @@ const Timer = ({
   };
 
   const editTimer = (name, enabled) => {
-    rxTimers.pipe(first()).subscribe(Timers => {
+    firebaseTimers$.pipe(first()).subscribe(Timers => {
       let timer = Object.assign({}, Timers[name]);
       timer.enabled = enabled;
       let obj = {};
@@ -186,7 +196,7 @@ const Timer = ({
       style={Object.assign(
         {},
         stateTheme.cell.normal,
-        nth % 2 ? stateTheme.cell.alternate : { }
+        nth % 2 ? stateTheme.cell.alternate : {}
       )}
     >
       <div className={styles.toggle_wrappers}>

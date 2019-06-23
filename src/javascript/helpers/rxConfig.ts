@@ -1,51 +1,64 @@
-import { BehaviorSubject, from } from 'rxjs';
-import { firestore, rxFirebaseuser } from '../helpers/firebase';
-import { first, filter, switchMap } from 'rxjs/operators';
-import { isEmpty } from 'lodash';
-import { docData } from 'rxfire/firestore';
+import { first, filter, switchMap, mergeMap, map, tap } from 'rxjs/operators';
+// import {
+//   firebaseConfigs$
+// } from './firebase';
+import { isEmpty, differenceWith, isEqual } from 'lodash';
+import { rxFirebaseuser, firestore } from './firebase';
+import { collectionData, docData } from 'rxfire/firestore';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
-const rxConfig = new BehaviorSubject({});
+// const rxConfigs = new BehaviorSubject({});
 
-ipcRenderer.send('getRxConfig');
 ipcRenderer.on('rxConfig', (event, config) => {
-  // rxConfig.next(config);
-  let isFirebaseUser = config.isFirebaseUser;
-  if (typeof isFirebaseUser === 'undefined') {
-    return rxConfig.next(config);
-  } else if (typeof isFirebaseUser === 'string' && isFirebaseUser.length > 0) {
-    rxFirebaseuser.pipe(first()).subscribe((user: any) => {
-      if (!isEmpty(user)) {
-        // User is signed in, update the config
-        delete config.loadedFirebaseConfig;
-        firestore
-          .collection('configs')
-          .doc(user.uid)
-          .set(config, { merge: true });
-      }
-    });
-  } else {
-    return rxConfig.next(config);
-  }
+  console.log('got config back from ipcRenderer', config);
+  setRxConfig(config);
 });
 
+export const firebaseConfig$ = new BehaviorSubject({ first: true });
+
 rxFirebaseuser
-  .pipe(filter(x => !isEmpty(x)))
   .pipe(
-    switchMap((rxUser: any) => {
-      return docData(firestore.collection('configs').doc(rxUser.uid));
+    filter(x => !!x),
+    mergeMap((user: any) => {
+      if (isEmpty(user))
+        return new BehaviorSubject({ init: true }).pipe(first());
+      console.log('TRYING TO GET CONFIG FROM FIRESTORE');
+      return docData(firestore.collection('configs').doc(user.uid));
     })
   )
-  .subscribe(firestoreConfig => {
-    rxConfig.next(
-      Object.assign({}, firestoreConfig, { loadedFirebaseConfig: true })
-    );
-    ipcRenderer.send('setRxConfig', firestoreConfig);
+  .subscribe((config: any) => {
+    console.log('inside subscribe', config);
+    firebaseConfig$.next(config);
   });
-const setRxConfig = config => {
-  ipcRenderer.send('setRxConfig', config);
-};
 
-export { rxConfig, setRxConfig };
+firebaseConfig$.subscribe(config => {
+  if (config.first === true) return;
+  ipcRenderer.send('setRxConfig', config);
+});
+
+export const setRxConfig = config => {
+  rxFirebaseuser
+    .pipe(
+      tap(x => console.log('current user progress', x)),
+      filter(x => !!x),
+      tap(x => console.log('USER HAS PASSED FILTER TEST', x)),
+      first()
+    )
+    .subscribe((rxUser: any) => {
+      if (isEmpty(rxUser)) {
+        console.log('rxUser is empty');
+        firebaseConfig$.next(config);
+        return ipcRenderer.send('setRxConfig', config);
+      } else {
+        console.log('GOT RX USER', rxUser);
+      }
+      console.log('setting config');
+      firestore
+        .collection('configs')
+        .doc(rxUser.uid)
+        .set(config);
+    });
+};

@@ -6,7 +6,7 @@ import { ThemeContext, theme } from '../../helpers';
 import { firebase } from '../../helpers/firebase';
 
 import { Li } from './li';
-import { rxConfig } from '../../helpers/rxConfig';
+import { firebaseConfig$ } from '../../helpers/rxConfig';
 
 const styles: any = require('./Menu.scss');
 const Window: any = window;
@@ -20,7 +20,7 @@ const Menu = props => {
   const { setUrl } = props;
 
   useEffect(() => {
-    let listener = rxConfig.subscribe(setConfig);
+    let listener = firebaseConfig$.subscribe(setConfig);
     return () => {
       listener.unsubscribe();
     };
@@ -158,7 +158,7 @@ const Menu = props => {
           >
             SETTINGS
           </Li>
-          {typeof config.isFirebaseUser !== 'undefined' ? (
+          {
             <Li
               style={{}}
               hoverStyle={Object.assign(
@@ -178,7 +178,7 @@ const Menu = props => {
             >
               LOGOUT
             </Li>
-          ) : null}
+          }
         </ul>
       </div>
       <div

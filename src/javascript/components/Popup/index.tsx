@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
-import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
+import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
 import { MdClose } from 'react-icons/md';
 import { theme } from '../../helpers';
 
@@ -20,7 +20,7 @@ const Popup = ({ Component, hasGradiant = false, closePopup, noX = false }) => {
   };
 
   useEffect(() => {
-    let listener = rxConfig.subscribe((data: any) => {
+    let listener = firebaseConfig$.subscribe((data: any) => {
       delete data.first;
       setConfig(data);
       changeTheme(data.themeType);

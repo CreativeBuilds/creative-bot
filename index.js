@@ -132,6 +132,7 @@ function createWindow() {
 
   let oldGiveaways = { first: true };
   let timeouts = [];
+  let winnersSentMessages = {};
   rxGiveaways.subscribe(giveaways => {
     /**
      * 1. Detect new giveaways
@@ -180,23 +181,27 @@ function createWindow() {
         let milliSecondsLeft = Math.floor(
           giveaway.createdAt + giveaway.secondsUntilClose * 1000 - Date.now()
         );
-        timeouts.push(
-          setTimeout(() => {
-            sendMessage(
-              `Giveaway ${giveaway.name} has ended for ${giveaway.reward}!`
-            );
-          }, milliSecondsLeft)
-        );
-        if (milliSecondsLeft > 15000)
+        if (milliSecondsLeft > 0) {
           timeouts.push(
             setTimeout(() => {
               sendMessage(
-                `Giveaway ${giveaway.name} for ${
-                  giveaway.reward
-                } has 15 seconds left hurry up and enter with !${
-                  giveaway.name
-                } !`
+                `Giveaway ${giveaway.name} has ended for ${giveaway.reward}!`
               );
+            }, milliSecondsLeft)
+          );
+        }
+        if (milliSecondsLeft > 15000)
+          timeouts.push(
+            setTimeout(() => {
+              rxConfig.pipe(first()).subscribe(config => {
+                sendMessage(
+                  `The giveaway '${config.commandPrefix}${giveaway.name}' for ${
+                    giveaway.reward
+                  } has 15 seconds left hurry up and enter with !${
+                    giveaway.name
+                  } !`
+                );
+              });
             }, milliSecondsLeft - 15000)
           );
       }
@@ -204,9 +209,16 @@ function createWindow() {
         if (giveaway.winners.length > 0) {
           console.log('giveaway winners', giveaway.winners);
           let winner = giveaway.winners[giveaway.winners.length - 1];
-          sendMessage(
-            `${winner.username} has won the giveaway! Speak up in chat!`
-          );
+          if (
+            winnersSentMessages[winner.username] &&
+            Date.now() - (winnersSentMessages[winner.username] || Date.now()) <=
+              5000
+          ) {
+            return;
+          } else {
+            winnersSentMessages[winner.username] = Date.now();
+          }
+          sendMessage(`${winner.name} has won the giveaway! Speak up in chat!`);
         }
       }
     });
@@ -441,7 +453,9 @@ function createWindow() {
   });
 
   ipcMain.on('getRxGiveaways', () => {
+    console.log('GOT GET RX GIVEAWAYS');
     rxGiveaways.subscribe(giveaways => {
+      console.log('SENDING GIVEAWAYS OBJECT TO CLIENT', giveaways);
       win.webContents.send('rxGiveaways', giveaways);
     });
   });
@@ -586,7 +600,7 @@ function createWindow() {
             return sendMessage(
               `${
                 message.sender.dliveUsername
-              } that giveaway already has a winner!`
+              } that giveaway has a winner and is closed!`
             );
           let one = giveaway.createdAt + giveaway.secondsUntilClose * 1000;
           let secondsLeft = one - Date.now();
@@ -597,7 +611,7 @@ function createWindow() {
               if (!users[sender]) return;
               let user = Object.assign({}, users[sender]);
               if (user.points > giveaway.cost) {
-                if (!giveaway.entires) giveaway.entires = {};
+                if (!giveaway.entries) giveaway.entries = {};
                 if (giveaway.cost === 0) {
                   if (!giveaway.entries[sender]) {
                     let newObj = {};
@@ -619,9 +633,9 @@ function createWindow() {
                   }
                 } else if (
                   giveaway.maxEntries > 0 &&
-                  giveaway.entires[sender]
+                  giveaway.entries[sender]
                 ) {
-                  let giveawayUser = giveaway.entires[sender];
+                  let giveawayUser = giveaway.entries[sender];
                   if (giveawayUser.tickets >= giveaway.maxEntries) return;
                   let ticketsToPurchase = Number(args[1]);
                   if (isNaN(ticketsToPurchase)) ticketsToPurchase = 1;

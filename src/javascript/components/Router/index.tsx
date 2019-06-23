@@ -9,20 +9,22 @@ import { UsersPage } from '../Users';
 import { Menu } from '../Menu';
 import { Popup } from '../Popup';
 import { CommandsPage } from '../Commands';
-import { rxUsers } from '../../helpers/rxUsers';
-import { rxCommands } from '../../helpers/rxCommands';
-import { rxConfig } from '../../helpers/rxConfig';
+import { firebaseUsers$ } from '../../helpers/rxUsers';
+import { firebaseCommands$ } from '../../helpers/rxCommands';
+import { firebaseConfig$ } from '../../helpers/rxConfig';
 import { ConfigPage } from '../Config';
-import { rxTimers } from '../../helpers/rxTimers';
+import { firebaseTimers$ } from '../../helpers/rxTimers';
 import { TimersPage } from '../Timers';
 import { GiveawaysPage } from '../Giveaways';
-import { rxGiveaways } from '../../helpers/rxGiveaways';
-import { rxEmotes } from '../../helpers/rxEmotes';
-import { rxQuotes } from '../../helpers/rxQuotes';
+import { firebaseGiveaways$ } from '../../helpers/rxGiveaways';
+import { firebaseEmotes$ } from '../../helpers/rxEmotes';
+import { firebaseQuotes$ } from '../../helpers/rxQuotes';
 import { QuotesPage } from '../Quotes';
 import { rxLists } from '../../helpers/rxLists';
 import { ListsPage } from '../Lists';
-import { first } from 'rxjs/operators';
+import { first, filter } from 'rxjs/operators';
+
+import { isEmpty } from 'lodash';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -51,22 +53,22 @@ class RouterWrapper extends Component<any, any> {
     noX: false
   };
   componentDidMount() {
-    rxUsers.subscribe(Users => {
+    firebaseUsers$.subscribe(Users => {
       this.setState({ users: Users });
     });
-    rxCommands.subscribe(Commands => {
+    firebaseCommands$.subscribe(Commands => {
       this.setState({ commands: Commands });
     });
-    rxTimers.subscribe(Timers => {
+    firebaseTimers$.subscribe(Timers => {
       this.setState({ timers: Timers });
     });
-    rxGiveaways.subscribe(Giveaways => {
+    firebaseGiveaways$.subscribe(Giveaways => {
       this.setState({ giveaways: Giveaways });
     });
-    rxEmotes.subscribe(Emotes => {
+    firebaseEmotes$.subscribe(Emotes => {
       this.setState({ emotes: Emotes });
     });
-    rxQuotes.subscribe(Quotes => {
+    firebaseQuotes$.subscribe(Quotes => {
       this.setState({ quotes: Quotes });
     });
     rxLists.subscribe(Lists => {
@@ -124,11 +126,16 @@ class RouterWrapper extends Component<any, any> {
     };
 
     ipcRenderer.on('newdonation', (event, { message }) => {
-      rxConfig.pipe(first()).subscribe((config: any) => {
-        if (config.enableTTSDonations) {
-          newSound(message);
-        }
-      });
+      firebaseConfig$
+        .pipe(
+          first(),
+          filter(x => !isEmpty(x))
+        )
+        .subscribe((config: any) => {
+          if (config.enableTTSDonations) {
+            newSound(message);
+          }
+        });
     });
 
     ipcRenderer.on('newmessage', (event, { message }) => {
@@ -163,7 +170,7 @@ class RouterWrapper extends Component<any, any> {
       this.setState({ livestream });
     });
 
-    rxConfig.subscribe(Config => {
+    firebaseConfig$.subscribe(Config => {
       this.setState({ config: Config });
     });
   }
