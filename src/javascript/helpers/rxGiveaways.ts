@@ -69,19 +69,6 @@ export const setRxGiveaways = giveaways => {
             Object.keys(giveaways),
             Object.keys(firebaseGiveaways),
             (giveawayIDClient, giveawayIDServer) => {
-              console.log(
-                'INSIDE NEWGIVEAWAYS LOOP',
-                isEqual(
-                  giveaways[giveawayIDClient],
-                  firebaseGiveaways[giveawayIDServer]
-                ),
-                isEqual(
-                  giveaways[giveawayIDClient].entries,
-                  firebaseGiveaways[giveawayIDServer].entries
-                ),
-                (giveaways[giveawayIDClient].winners || []).length ===
-                  (firebaseGiveaways[giveawayIDServer].winners || []).length
-              );
               return (
                 isEqual(
                   giveaways[giveawayIDClient],
@@ -100,16 +87,6 @@ export const setRxGiveaways = giveaways => {
             Object.keys(firebaseGiveaways),
             Object.keys(giveaways),
             (var1, var2) => {
-              console.log(
-                'INSIDE DELETE GIVEAWAYS',
-                isEqual(firebaseGiveaways[var1], giveaways[var2]),
-                isEqual(
-                  firebaseGiveaways[var1].entries,
-                  giveaways[var2].entries
-                ),
-                (firebaseGiveaways[var1].winners || []).length ===
-                  (giveaways[var2].winners || []).length
-              );
               return (
                 isEqual(firebaseGiveaways[var1], giveaways[var2]) &&
                 isEqual(
@@ -122,12 +99,6 @@ export const setRxGiveaways = giveaways => {
             }
           );
           let sameArr = [];
-          console.log(
-            'GIVEAWAY ARRAYS',
-            newGiveawaysIncoming,
-            deleteGiveawaysIncoming,
-            sameArr
-          );
           deleteGiveawaysIncoming = deleteGiveawaysIncoming.reduce(
             (acc, key) => {
               if (newGiveawaysIncoming.includes(key)) {
@@ -177,7 +148,6 @@ export const setRxGiveaways = giveaways => {
               .doc(rxUser.uid)
               .collection('giveaways')
               .doc(key);
-            console.log('KEY', key, 'giveaways', giveaways[key]);
             batch.update(ref, giveaways[key]);
             updated++;
             update = true;

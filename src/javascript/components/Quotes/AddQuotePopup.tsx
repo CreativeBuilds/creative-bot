@@ -34,7 +34,6 @@ const AddQuotePopup = ({
   }, []);
 
   const saveToDB = () => {
-    console.log(quote, typeof quote);
     if (quote.length === 0) return;
     let Quotes = Object.assign({}, quotes);
 
@@ -92,7 +91,6 @@ const AddQuotePopup = ({
         <textarea
           className={styles.input}
           onChange={e => {
-            console.log(e.target.value, 'VALUE', typeof e.target.value);
             var limitVal = 90 - e.target.value.length;
             setQuoteLimit(limitVal);
             setHasQuoteLimitError(limitVal < 0 ? true : false);
@@ -112,7 +110,6 @@ const AddQuotePopup = ({
         <textarea
           className={styles.input}
           onChange={e => {
-            console.log(e.target.value, 'VALUE FROM SECOND INPUT');
             var limitVal = 20 - e.target.value.length;
             setQuoteByLimit(limitVal);
             setHasQuoteByLimitError(limitVal < 0 ? true : false);

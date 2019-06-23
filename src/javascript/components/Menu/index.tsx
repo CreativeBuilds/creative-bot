@@ -172,7 +172,9 @@ const Menu = props => {
                   .signOut()
                   .then(() => {
                     ipcRenderer.send('logout');
-                    window.close();
+                    setTimeout(() => {
+                      window.close();
+                    }, 500);
                   });
               }}
             >

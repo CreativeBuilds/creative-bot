@@ -11,6 +11,7 @@ const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
 // const rxQuotes = new BehaviorSubject({});
+ipcRenderer.send('getRxQuotes');
 
 ipcRenderer.on('rxQuotes', (event, quotes) => {
   setRxQuotes(quotes);

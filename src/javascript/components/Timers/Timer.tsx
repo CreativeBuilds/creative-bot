@@ -23,16 +23,10 @@ const Popup = ({ command, styles, closeCurrentPopup, stateTheme }) => {
     if (name.length === 0) return;
     firebaseTimers$.pipe(first()).subscribe(timers => {
       let Timers = Object.assign({}, timers);
-      console.log(timers, Timers);
       if (command.name !== name) {
         delete Timers[name];
       }
-      if (isNaN(Number(messages)) || isNaN(Number(seconds)))
-        return console.log(
-          'SOMETHING IS NAN',
-          isNaN(Number(messages)),
-          isNaN(Number(seconds))
-        );
+      if (isNaN(Number(messages)) || isNaN(Number(seconds))) return;
       Timers[name] = {
         reply,
         name,
@@ -41,7 +35,6 @@ const Popup = ({ command, styles, closeCurrentPopup, stateTheme }) => {
         seconds: Number(seconds),
         enabled: command.enabled
       };
-      console.log('GOING TO SETT TIMERS');
       setRxTimers(Timers);
     });
 
@@ -122,10 +115,8 @@ const RemoveTimerPopup = ({ timer, styles, closeCurrentPopup, stateTheme }) => {
   const saveToDB = () => {
     if (name.length === 0) return;
     firebaseTimers$.pipe(first()).subscribe(timers => {
-      console.log('TIMERS', timers);
       let Timers = Object.assign({}, timers);
       delete Timers[name];
-      console.log('SETTING RX TIMERS', Timers);
       setRxTimers(Timers);
     });
   };

@@ -8,7 +8,7 @@ const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
 // const rxCommands = new BehaviorSubject({});
-
+ipcRenderer.send('getRxCommands');
 ipcRenderer.on('rxCommands', (event, commands) => {
   setRxCommands(commands);
 });

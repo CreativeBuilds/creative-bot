@@ -16,7 +16,6 @@ const RemoveQuotePopup = ({
   quotes
 }) => {
   let name = quote.quote;
-  console.log('DA QUOTE', quote);
 
   const saveToDB = () => {
     if (name.length === 0) return console.log('NAME LENGTH IS 0');

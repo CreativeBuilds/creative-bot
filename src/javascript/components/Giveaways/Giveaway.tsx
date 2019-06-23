@@ -121,7 +121,6 @@ const Giveaway = ({
     newObj[giveaway.name] = Object.assign({}, giveaway);
     firebaseGiveaways$.pipe(first()).subscribe(giveaways => {
       let Giveaways = Object.assign({}, giveaways, newObj);
-      console.log('BEFORE GIVEAWAY SET', Giveaways, giveaways);
       setRxGiveaways(Giveaways);
     });
   };

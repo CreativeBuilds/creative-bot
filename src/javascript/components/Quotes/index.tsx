@@ -91,7 +91,6 @@ const QuotesPage = ({ props }) => {
           stateTheme={stateTheme}
         />
         {Object.keys(quotes).map((key, nth) => {
-          console.log('quote', quotes[key]);
           return (
             <Quote
               styles={styles}

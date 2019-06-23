@@ -6,25 +6,7 @@ let rxConfig = new BehaviorSubject({});
 storage.get('config', (err, data) => {
   if (err) throw err;
   data.init = true;
-  if (!data.commandPrefix) data.commandPrefix = '!';
-
-  // Set default points to 5, and if it's a string, set it to be a number
-  if (!data.points || isNaN(Number(data.points))) data.points = 5;
-  // Defaults to 5 minutes
-  if (!data.pointsTimer || isNaN(Number(data.pointsTimer)))
-    data.pointsTimer = 300;
-  // Defaults to Dark Theme 'dark'
-  if (!data.themeType) data.themeType = 'dark';
-  // Defaults to true
-  if (!data.enableEvents) data.enableEvents = true;
-  // Defaults to true
-  if (!data.enableStickers) data.enableStickers = true;
-  // Defaults to true
-  if (!data.enableStickersAsText) data.enableStickersAsText = false;
-  // Defaults to true
-  if (!data.enableTimestamps) data.enableTimestamps = true;
-  // Defaults to true
-  if (!data.enableTimestampsAsDigital) data.enableTimestampsAsDigital = true;
+  // if (!data.commandPrefix) data.commandPrefix = '!';
 
   rxConfig.next(data);
   rxConfig.subscribe(data => {

@@ -308,7 +308,7 @@ const AddAcceptFirebasePopup = ({
                 flex: 1,
                 paddingRight: '5px',
                 textAlign: 'center',
-                maxWidth: '50%'
+                maxWidth: '100%'
               }}
               hoverStyle={Object.assign(
                 {},
@@ -324,7 +324,7 @@ const AddAcceptFirebasePopup = ({
                 Sign up
               </div>
             </AdvancedDiv>
-            <AdvancedDiv
+            {/* <AdvancedDiv
               aStyle={{
                 flex: 1,
                 paddingLeft: '5px',
@@ -344,7 +344,7 @@ const AddAcceptFirebasePopup = ({
               >
                 No thanks, I don't like awesome content
               </div>
-            </AdvancedDiv>
+            </AdvancedDiv> */}
           </React.Fragment>
         )}
       </div>
@@ -580,7 +580,6 @@ const Chat = ({ props }) => {
     // if's at the top of this will be rendered last
 
     let showExistingUserPopup = false;
-    console.log('config!', config);
     // if (!config.init) return;
     if (
       !!config.authKey &&
@@ -591,7 +590,6 @@ const Chat = ({ props }) => {
       typeof config.isFirebaseUser !== 'undefined' &&
       (config.isFirebaseUser ? config.loadedFirebaseConfig : true)
     ) {
-      console.log('GOT CONFIG', config);
       streamerDisplayName = true;
       addPopup(
         <AddCommandPopup
@@ -704,44 +702,41 @@ const Chat = ({ props }) => {
         true
       );
     }
-    if (
-      !config.streamerDisplayName &&
-      isStartUp &&
-      config.acceptedToS &&
-      config.isFirebaseUser === false
-    ) {
-      addPopup(
-        <SetupOptionsPopup
-          styles={styles}
-          closeCurrentPopup={closeCurrentPopup}
-          addPopup={addPopup}
-          stateTheme={stateTheme}
-          setupAsNewUser={e => {}}
-          setupAsExistingUser={e => {
-            setTimeout(function() {
-              addPopup(
-                <SetupAsExistingUserPopup
-                  styles={styles}
-                  closeCurrentPopup={closeCurrentPopup}
-                  addPopup={addPopup}
-                  stateTheme={stateTheme}
-                />
-              );
-            }, 8);
-          }}
-        />
-      );
-    }
-    console.log('REEEEEEEEEEEEEEE');
+    // if (
+    //   !config.streamerDisplayName &&
+    //   isStartUp &&
+    //   config.acceptedToS &&
+    //   config.isFirebaseUser === false
+    // ) {
+    //   addPopup(
+    //     <SetupOptionsPopup
+    //       styles={styles}
+    //       closeCurrentPopup={closeCurrentPopup}
+    //       addPopup={addPopup}
+    //       stateTheme={stateTheme}
+    //       setupAsNewUser={e => {}}
+    //       setupAsExistingUser={e => {
+    //         setTimeout(function() {
+    //           addPopup(
+    //             <SetupAsExistingUserPopup
+    //               styles={styles}
+    //               closeCurrentPopup={closeCurrentPopup}
+    //               addPopup={addPopup}
+    //               stateTheme={stateTheme}
+    //             />
+    //           );
+    //         }, 8);
+    //       }}
+    //     />
+    //   );
+    // }
     if (!config.acceptedToS && config.init) {
-      console.log('USER HAS NOT ACCEPTED TOS');
       addPopup(
         <AddCommandPopup
           styles={styles}
           addPopup={addPopup}
           closeCurrentPopup={() => {
             let Config = Object.assign({}, { acceptedToS: true }, config);
-            console.log('CLOSING POPUP WITH NEW CONFIG', Config);
             setRxConfig(Config);
             closeCurrentPopup();
           }}
@@ -766,8 +761,6 @@ const Chat = ({ props }) => {
         false,
         true
       );
-    } else {
-      console.log('CURRENT CONFIG', config);
     }
   }, [config]);
 

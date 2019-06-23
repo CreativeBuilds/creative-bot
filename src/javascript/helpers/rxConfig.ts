@@ -10,14 +10,18 @@ import { BehaviorSubject, Observable } from 'rxjs';
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
-// const rxConfigs = new BehaviorSubject({});
-
 ipcRenderer.on('rxConfig', (event, config) => {
-  console.log('got config back from ipcRenderer', config);
   setRxConfig(config);
 });
 
 export const firebaseConfig$ = new BehaviorSubject({ first: true });
+
+ipcRenderer.on('rxConfigFirst', (throwaway, originalConfig) => {
+  firebaseConfig$.pipe(first()).subscribe(config => {
+    let newConfig = Object.assign({}, config, originalConfig);
+    setRxConfig(newConfig);
+  });
+});
 
 rxFirebaseuser
   .pipe(
@@ -25,12 +29,25 @@ rxFirebaseuser
     mergeMap((user: any) => {
       if (isEmpty(user))
         return new BehaviorSubject({ init: true }).pipe(first());
-      console.log('TRYING TO GET CONFIG FROM FIRESTORE');
-      return docData(firestore.collection('configs').doc(user.uid));
+      ipcRenderer.send('getRxConfig');
+      return docData(firestore.collection('configs').doc(user.uid)).pipe(
+        map((x: any) => {
+          return Object.assign(
+            {},
+            x,
+            {
+              loadedFirebaseConfig: true,
+              init: true,
+              isFirebaseUser: user.uid,
+              acceptedToS: true
+            },
+            typeof x.theme === 'undefined' ? { theme: 'dark' } : {}
+          );
+        })
+      );
     })
   )
   .subscribe((config: any) => {
-    console.log('inside subscribe', config);
     firebaseConfig$.next(config);
   });
 
@@ -48,14 +65,48 @@ export const setRxConfig = config => {
       first()
     )
     .subscribe((rxUser: any) => {
+      // Set default points to 5, and if it's a string, set it to be a number
+      if (!config.points || isNaN(Number(config.points))) config.points = 5;
+      // Defaults to 5 minutes
+      if (!config.pointsTimer || isNaN(Number(config.pointsTimer)))
+        config.pointsTimer = 300;
+      // Defaults to Dark Theme 'dark'
+      if (!config.themeType) config.themeType = 'dark';
+      // Defaults to true
+      if (
+        !config.enableEvents &&
+        typeof config.enableStickersAsText !== 'boolean'
+      )
+        config.enableEvents = true;
+      // Defaults to true
+      if (
+        !config.enableStickers &&
+        typeof config.enableStickersAsText !== 'boolean'
+      )
+        config.enableStickers = true;
+      // Defaults to true
+      if (
+        !config.enableStickersAsText &&
+        typeof config.enableStickersAsText !== 'boolean'
+      )
+        config.enableStickersAsText = false;
+      // Defaults to true
+      if (
+        !config.enableTimestamps &&
+        typeof config.enableStickersAsText !== 'boolean'
+      )
+        config.enableTimestamps = true;
+      // Defaults to true
+      if (
+        !config.enableTimestampsAsDigital &&
+        typeof config.enableStickersAsText !== 'boolean'
+      )
+        config.enableTimestampsAsDigital = true;
+      if (!config.commandPrefix) config.commandPrefix = '!';
       if (isEmpty(rxUser)) {
-        console.log('rxUser is empty');
         firebaseConfig$.next(config);
         return ipcRenderer.send('setRxConfig', config);
-      } else {
-        console.log('GOT RX USER', rxUser);
       }
-      console.log('setting config');
       firestore
         .collection('configs')
         .doc(rxUser.uid)

@@ -2,6 +2,7 @@ let config = {};
 let rxConfig = require('./rxConfig');
 rxConfig.subscribe(data => (config = data));
 const sendRequestToDlive = require('./sendRequestToDlive');
+const { first } = require('rxjs/operators');
 
 let msgs = [];
 let loop;
@@ -15,53 +16,55 @@ const checkMessages = () => {
   }
   let msg = msgs[0];
   msgs = msgs.splice(1);
-  sendRequestToDlive({
-    operationName: 'SendStreamChatMessage',
-    query: `mutation SendStreamChatMessage($input: SendStreamchatMessageInput!) {
-                sendStreamchatMessage(input: $input) {
-                  err {
-                    code
-                    __typename
-                  }
-                  message {
-                    type
-                    ... on ChatText {
-                      id
-                      content
-                      ...VStreamChatSenderInfoFrag
+  rxConfig.pipe(first()).subscribe(config => {
+    sendRequestToDlive({
+      operationName: 'SendStreamChatMessage',
+      query: `mutation SendStreamChatMessage($input: SendStreamchatMessageInput!) {
+                  sendStreamchatMessage(input: $input) {
+                    err {
+                      code
+                      __typename
+                    }
+                    message {
+                      type
+                      ... on ChatText {
+                        id
+                        content
+                        ...VStreamChatSenderInfoFrag
+                        __typename
+                      }
                       __typename
                     }
                     __typename
                   }
+                }
+                
+                fragment VStreamChatSenderInfoFrag on SenderInfo {
+                  subscribing
+                  role
+                  roomRole
+                  sender {
+                    id
+                    username
+                    displayname
+                    avatar
+                    partnerStatus
+                    __typename
+                  }
                   __typename
                 }
-              }
-              
-              fragment VStreamChatSenderInfoFrag on SenderInfo {
-                subscribing
-                role
-                roomRole
-                sender {
-                  id
-                  username
-                  displayname
-                  avatar
-                  partnerStatus
-                  __typename
-                }
-                __typename
-              }
-              `,
-    variables: {
-      input: {
-        streamer: config.streamer,
-        message: msg.message,
-        roomRole: 'Moderator',
-        subscribing: true
+                `,
+      variables: {
+        input: {
+          streamer: config.streamer,
+          message: msg.message,
+          roomRole: 'Moderator',
+          subscribing: true
+        }
       }
-    }
-  }).catch(err => {
-    throw err;
+    }).catch(err => {
+      throw err;
+    });
   });
 };
 
