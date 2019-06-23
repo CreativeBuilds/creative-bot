@@ -118,9 +118,14 @@ class RouterWrapper extends Component<any, any> {
         } ${giftType()} ${
           message.donationMessage ? message.donationMessage : ''
         }`;
-        utter.volume = (config.tts_Amplitude || 100) / 100;
-        utter.pitch = (config.tts_Pitch || 100) / 100;
-        utter.rate = (config.tts_Speed || 100) / 100;
+        utter.volume =
+          (typeof config.tts_Amplitude === 'number'
+            ? config.tts_Amplitude
+            : 100) / 100;
+        utter.pitch =
+          (typeof config.tts_Pitch === 'number' ? config.tts_Pitch : 100) / 100;
+        utter.rate =
+          (typeof config.tts_Speed === 'number' ? config.tts_Speed : 100) / 100;
         utter.onend = () => {
           soundIsRunning = false;
         };
