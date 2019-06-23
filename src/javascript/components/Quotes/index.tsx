@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 import { AddQuotePopup } from './AddQuotePopup';
 import { MdAddCircle } from 'react-icons/md';
 import { Quote } from './Quote';
-let { setRxQuotes, rxQuotes } = require('../../helpers/rxQuotes');
+let { setRxQuotes, firebaseQuotes$ } = require('../../helpers/rxQuotes');
 
 const { Sorting } = require('./Sorting');
 
@@ -23,7 +23,7 @@ const QuotesPage = ({ props }) => {
   const [quotesObj, setQuotes] = useState(quotes);
 
   useEffect(() => {
-    let listener = rxQuotes.subscribe((data: any) => {
+    let listener = firebaseQuotes$.subscribe((data: any) => {
       setQuotes(data);
     });
     return () => {

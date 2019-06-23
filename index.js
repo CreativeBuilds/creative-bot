@@ -46,6 +46,7 @@ rxConfig
   )
   .subscribe(config => {
     if (config.noInitMessage) return;
+    if (env !== 'production') return;
     sendMessage(
       `CreativeBot initialized, if you have any issues please report them in the support discord https://discord.gg/2DGaWDW`
     );
@@ -411,6 +412,7 @@ function createWindow() {
 
   ipcMain.on('getRxQuotes', () => {
     rxQuotes.subscribe(quotes => {
+      console.log('SENDING QUOTES', Object.keys(quotes).length);
       win.webContents.send('rxQuotes', quotes);
     });
   });

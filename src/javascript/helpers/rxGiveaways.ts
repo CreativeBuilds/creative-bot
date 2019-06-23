@@ -11,7 +11,7 @@ const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
 // const rxGiveaways = new BehaviorSubject({});
-ipcRenderer.send('getRxGiveaways');
+// ipcRenderer.send('getRxGiveaways');
 ipcRenderer.on('rxGiveaways', (event, giveaways) => {
   setRxGiveaways(giveaways);
 });

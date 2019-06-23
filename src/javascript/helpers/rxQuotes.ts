@@ -14,6 +14,7 @@ const { ipcRenderer } = Window.require('electron');
 ipcRenderer.send('getRxQuotes');
 
 ipcRenderer.on('rxQuotes', (event, quotes) => {
+  console.log('GOT QUOTES FROM NODE', quotes);
   setRxQuotes(quotes);
 });
 
@@ -57,9 +58,14 @@ export const setRxQuotes = quotes => {
       firebaseQuotes$
         .pipe(
           first(),
-          filter(x => !isEmpty(x))
+          filter(x => !!x)
         )
         .subscribe(firebaseQuotes => {
+          if (
+            Object.keys(firebaseQuotes).length === 1 &&
+            firebaseQuotes.first === true
+          )
+            return;
           let newQuotesIncoming = differenceWith(
             Object.keys(quotes),
             Object.keys(firebaseQuotes),

@@ -11,7 +11,7 @@ const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
 // const rxEmotes = new BehaviorSubject({});
-ipcRenderer.send('getRxEmotes');
+// ipcRenderer.send('getRxEmotes');
 ipcRenderer.on('rxEmotes', (event, emotes) => {
   setRxEmotes(emotes);
 });
