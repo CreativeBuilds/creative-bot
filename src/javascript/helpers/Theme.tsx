@@ -101,7 +101,15 @@ const theme = {
     submitButton: {
       backgroundColor: '#141517',
       color: '#f0f0f0',
-      borderColor: '#141517'
+      borderColor: '#141517',
+      borderRadius: '5px',
+      transition: 'all 0.15s ease-in-out'
+    },
+    submitButton_hover: {
+      cursor: 'pointer',
+      color: '#ffd300',
+      borderColor: '#ffd300',
+      border: '1.5px solid'
     },
     disabledSubmitButton: {
       backgroundColor: '#191a1c',

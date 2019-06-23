@@ -5,6 +5,8 @@ import { ToggleBox } from './ToggleBox';
 
 import { MdModeEdit, MdEdit, MdDelete } from 'react-icons/md';
 import { theme } from '../../helpers';
+import { firebaseCommands$ } from '../../helpers/rxCommands';
+import { first } from 'rxjs/operators';
 let { setRxCommands } = require('../../helpers/rxCommands');
 
 const Window: any = window;
@@ -18,17 +20,26 @@ const Popup = ({ command, styles, closeCurrentPopup, stateTheme }) => {
 
   const saveToDB = () => {
     if (name.length === 0) return;
-    ipcRenderer.send('editcommand', {
-      oldName: command.name,
-      name,
-      obj: {
-        reply,
-        name,
-        uses: 0,
-        permissions,
-        enabled: command.enabled
+    firebaseCommands$.pipe(first()).subscribe(commands => {
+      let newCommands = Object.assign({}, commands);
+      console.log('GOT COMMANDS IN SAVETODB', commands, newCommands);
+      if (command.name !== name) {
+        delete newCommands[command.name];
       }
+      newCommands[name] = Object.assign({}, command, { name, reply });
+      setRxCommands(newCommands);
     });
+    // ipcRenderer.send('editcommand', {
+    //   oldName: command.name,
+    //   name,
+    // obj: {
+    //   reply,
+    //   name,
+    //   uses: 0,
+    //   permissions,
+    //   enabled: command.enabled
+    // }
+    // });
   };
 
   return (

@@ -3,7 +3,7 @@ import { useContext, Component, useState, useEffect } from 'react';
 import Styles from './Message.scss';
 import { MdClose, MdAdd } from 'react-icons/md';
 import { AddStickerPopup } from './AddStickerPopup';
-import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
+import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
 import {
   removeMessage,
   timeoutUser,
@@ -34,7 +34,6 @@ const MessageHeader = ({
   hasTimestamp = true,
   hasTimestampAsDigital = true
 }) => {
-
   return (
     <div
       className={
@@ -43,10 +42,15 @@ const MessageHeader = ({
           : `${styles.messageHeader}`
       }
     >
-      {hasTimestamp ?
-      <div className={styles.timestampContainer}>
-        <span style={stateTheme.timeStamp}>{hasTimestampAsDigital ? message.Msg_timestamp_digital : message.Msg_timestamp}</span>
-      </div> : null }
+      {hasTimestamp ? (
+        <div className={styles.timestampContainer}>
+          <span style={stateTheme.timeStamp}>
+            {hasTimestampAsDigital
+              ? message.Msg_timestamp_digital
+              : message.Msg_timestamp}
+          </span>
+        </div>
+      ) : null}
       <div className={styles.image_container}>
         <img src={message.sender.avatar} width={26} height={26} />
       </div>
@@ -120,12 +124,16 @@ const Message = ({
   const [hasStickersAsText, setHasStickersAsText] = useState(
     Config.enableStickersAsText
   );
-  const [hasFilteredTimestamps, setHasFilteredTimestamps] = useState(Config.enableTimestamps);
-  const [hasTimestampsAsDigital, setHasTimestampsAsDigital] = useState(Config.enableTimestampsAsDigital);
+  const [hasFilteredTimestamps, setHasFilteredTimestamps] = useState(
+    Config.enableTimestamps
+  );
+  const [hasTimestampsAsDigital, setHasTimestampsAsDigital] = useState(
+    Config.enableTimestampsAsDigital
+  );
   const [config, setConfig] = useState(Config);
 
   useEffect(() => {
-    let listener = rxConfig.subscribe((data: any) => {
+    let listener = firebaseConfig$.subscribe((data: any) => {
       delete data.first;
       setConfig(data);
       setHasFilteredEvents(data.enableEvents);
@@ -182,7 +190,6 @@ const Message = ({
 
   const eventMessage = () => {
     if (message.type === 'Gift') {
-      
       return `just donated ${message.amount} ${giftType()} ${giftEmoteType()}`;
     } else if (message.type === 'Follow') {
       return 'Has Just Followed';

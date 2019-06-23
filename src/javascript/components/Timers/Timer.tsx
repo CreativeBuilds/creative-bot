@@ -8,6 +8,7 @@ import { theme } from '../../helpers';
 import { MdModeEdit, MdEdit, MdDelete } from 'react-icons/md';
 let { setRxTimers, rxTimers } = require('../../helpers/rxTimers');
 import { first } from 'rxjs/operators';
+import { firebaseTimers$ } from '../../helpers/rxTimers';
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
@@ -20,7 +21,7 @@ const Popup = ({ command, styles, closeCurrentPopup, stateTheme }) => {
 
   const saveToDB = () => {
     if (name.length === 0) return;
-    rxTimers.pipe(first()).subscribe(timers => {
+    firebaseTimers$.pipe(first()).subscribe(timers => {
       let Timers = Object.assign({}, timers);
       if (command.name !== name) {
         delete Timers[name];
@@ -113,7 +114,7 @@ const RemoveTimerPopup = ({ timer, styles, closeCurrentPopup, stateTheme }) => {
 
   const saveToDB = () => {
     if (name.length === 0) return;
-    rxTimers.pipe(first()).subscribe(timers => {
+    firebaseTimers$.pipe(first()).subscribe(timers => {
       let Timers = Object.assign({}, timers);
       delete Timers[name];
       setRxTimers(Timers);
@@ -170,7 +171,7 @@ const Timer = ({
   };
 
   const editTimer = (name, enabled) => {
-    rxTimers.pipe(first()).subscribe(Timers => {
+    firebaseTimers$.pipe(first()).subscribe(Timers => {
       let timer = Object.assign({}, Timers[name]);
       timer.enabled = enabled;
       let obj = {};
@@ -186,7 +187,7 @@ const Timer = ({
       style={Object.assign(
         {},
         stateTheme.cell.normal,
-        nth % 2 ? stateTheme.cell.alternate : { }
+        nth % 2 ? stateTheme.cell.alternate : {}
       )}
     >
       <div className={styles.toggle_wrappers}>
