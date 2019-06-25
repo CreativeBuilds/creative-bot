@@ -66,7 +66,7 @@ const ViewListPopup = props => {
   const [list, setList] = useState(List);
   const [name, setName] = useState<string>(list.name);
   const [reply, setReply] = useState<string>(list.reply);
-  const [uses, setUses] = useState<number>(list.uses);
+  // const [uses, setUses] = useState<number>(list.uses);
   const [search, setSearch] = useState<string>('');
   const [permissions, setPermissions] = useState(list.permissions);
 
@@ -88,7 +88,7 @@ const ViewListPopup = props => {
       obj: {
         reply,
         name,
-        uses,
+        uses: 0,
         permissions,
         enabled: list.enabled
       }
@@ -111,7 +111,9 @@ const ViewListPopup = props => {
   return (
     <div
       className={styles.popup}
-      style={Object.assign({}, stateTheme.base.quinaryForeground, { position: 'relative' })}
+      style={Object.assign({}, stateTheme.base.quinaryForeground, {
+        position: 'relative'
+      })}
     >
       <div className={styles.popup_add_item}>
         <MdAddCircle
@@ -163,7 +165,7 @@ const ViewListPopup = props => {
                 style={Object.assign(
                   {},
                   stateTheme.cell.normal,
-                  nth % 2 ? stateTheme.cell.alternate : { }
+                  nth % 2 ? stateTheme.cell.alternate : {}
                 )}
               >
                 {value.value || 'Test string'}

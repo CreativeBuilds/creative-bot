@@ -5,6 +5,8 @@ import { ToggleBox } from './ToggleBox';
 
 import { MdModeEdit, MdEdit, MdDelete } from 'react-icons/md';
 import { theme } from '../../helpers';
+import { firebaseGiveaways$ } from '../../helpers/rxGiveaways';
+import { first } from 'rxjs/operators';
 let { setRxGiveaways } = require('../../helpers/rxGiveaways');
 
 const Window: any = window;
@@ -85,19 +87,20 @@ const Giveaway = ({
     );
   };
 
-  const pickWinner = giveaway => {
+  const pickWinner = Giveaway => {
     /**
      * 1. Figure out total tickets entered
      * 2. Generate a number between 1 and max tickets
      * 3. Award that user the tickets
      */
     let totalEntries = [];
+    let giveaway = Object.assign({}, Giveaway);
     Object.keys(giveaway.entries).forEach(entryUser => {
       let entry = giveaway.entries[entryUser];
       if (entry.alreadyPicked) return;
       for (let x = 0; x < entry.tickets; x++) {
         totalEntries.push({
-          name: entry.dliveUsername,
+          name: entry.displayname,
           username: entry.username,
           tickets: entry.tickets
         });
@@ -110,12 +113,16 @@ const Giveaway = ({
     let winningNumber = Math.floor(Math.random() * total);
     let newObj = {};
     let winner = totalEntries[winningNumber];
-    if (!giveaway.winners) giveaway.winners = [winner];
-    giveaway.winners.push(winner);
+    if (!giveaway.winners) giveaway.winners = [];
+    let winningArr = [].concat(giveaway.winners);
+    winningArr.push(winner);
+    giveaway.winners = [].concat(winningArr);
     delete giveaway.entries[winner.username];
     newObj[giveaway.name] = Object.assign({}, giveaway);
-    let Giveaways = Object.assign({}, giveaways, newObj);
-    setRxGiveaways(Giveaways);
+    firebaseGiveaways$.pipe(first()).subscribe(giveaways => {
+      let Giveaways = Object.assign({}, giveaways, newObj);
+      setRxGiveaways(Giveaways);
+    });
   };
 
   return (
@@ -124,7 +131,7 @@ const Giveaway = ({
       style={Object.assign(
         {},
         stateTheme.cell.normal,
-        nth % 2 ? stateTheme.cell.alternate : { }
+        nth % 2 ? stateTheme.cell.alternate : {}
       )}
     >
       <div className={styles.toggle_wrappers}>
@@ -147,8 +154,8 @@ const Giveaway = ({
         </div>
         <div className={styles.spacer}>
           {giveaway.winners
-            ? giveaway.winners[0]
-              ? giveaway.winners[0].username
+            ? giveaway.winners[giveaway.winners.length - 1]
+              ? giveaway.winners[giveaway.winners.length - 1].name
               : 'N/A'
             : 'N/A'}
         </div>
@@ -159,11 +166,9 @@ const Giveaway = ({
             }`}
             style={{
               color: stateTheme.base.quaternaryForeground.color,
-              backgroundColor: stateTheme.base.quaternaryBackground.backgroundColor,
-              opacity:
-                Object.keys(giveaway.entries).length > 0
-                  ? 1.0
-                  : 0.25
+              backgroundColor:
+                stateTheme.base.quaternaryBackground.backgroundColor,
+              opacity: Object.keys(giveaway.entries).length > 0 ? 1.0 : 0.25
             }}
             onClick={() => {
               pickWinner(giveaway);

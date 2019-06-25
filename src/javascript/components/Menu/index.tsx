@@ -6,9 +6,11 @@ import { ThemeContext, theme } from '../../helpers';
 import { firebase } from '../../helpers/firebase';
 
 import { Li } from './li';
-import { rxConfig } from '../../helpers/rxConfig';
+import { firebaseConfig$ } from '../../helpers/rxConfig';
 
 const styles: any = require('./Menu.scss');
+const Window: any = window;
+const { ipcRenderer, shell } = Window.require('electron');
 
 const Menu = props => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -18,7 +20,7 @@ const Menu = props => {
   const { setUrl } = props;
 
   useEffect(() => {
-    let listener = rxConfig.subscribe(setConfig);
+    let listener = firebaseConfig$.subscribe(setConfig);
     return () => {
       listener.unsubscribe();
     };
@@ -156,7 +158,7 @@ const Menu = props => {
           >
             SETTINGS
           </Li>
-          {typeof config.isFirebaseUser !== 'undefined' ? (
+          {
             <Li
               style={{}}
               hoverStyle={Object.assign(
@@ -165,14 +167,20 @@ const Menu = props => {
                 theme.globals.accentForeground
               )}
               onClick={() => {
-                firebase.auth().signOut();
-                setIsOpen(false);
-                window.location.reload();
+                firebase
+                  .auth()
+                  .signOut()
+                  .then(() => {
+                    ipcRenderer.send('logout');
+                    setTimeout(() => {
+                      window.close();
+                    }, 500);
+                  });
               }}
             >
               LOGOUT
             </Li>
-          ) : null}
+          }
         </ul>
       </div>
       <div

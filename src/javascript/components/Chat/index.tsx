@@ -14,8 +14,8 @@ import {
 
 import { Message } from './Message';
 import { StickerPopup } from './StickerPopup';
-import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
-import { rxEmotes, setRxEmotes } from '../../helpers/rxEmotes';
+import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
+import { firebaseEmotes$, setRxEmotes } from '../../helpers/rxEmotes';
 import { Action } from 'rxjs/internal/scheduler/Action';
 import { remote } from 'electron';
 import { CreativeBotPopup } from './../WebServices/CreativeBotPopup';
@@ -310,7 +310,7 @@ const AddAcceptFirebasePopup = ({
                 flex: 1,
                 paddingRight: '5px',
                 textAlign: 'center',
-                maxWidth: '50%'
+                maxWidth: '100%'
               }}
               hoverStyle={Object.assign(
                 {},
@@ -326,7 +326,7 @@ const AddAcceptFirebasePopup = ({
                 Sign up
               </div>
             </AdvancedDiv>
-            <AdvancedDiv
+            {/* <AdvancedDiv
               aStyle={{
                 flex: 1,
                 paddingLeft: '5px',
@@ -346,7 +346,7 @@ const AddAcceptFirebasePopup = ({
               >
                 No thanks, I don't like awesome content
               </div>
-            </AdvancedDiv>
+            </AdvancedDiv> */}
           </React.Fragment>
         )}
       </div>
@@ -518,14 +518,14 @@ const Chat = ({ props }) => {
         setIsScrolledUp(true);
       }
     });
-    let listener = rxConfig
+    let listener = firebaseConfig$
       .pipe(distinctUntilChanged((prev, curr) => isEqual(prev, curr)))
       .subscribe((data: any) => {
         delete data.first;
         setConfig(data);
         setIsStartUp(data.streamerDisplayName == null);
       });
-    let emoteslistener = rxEmotes.subscribe((data: any) => {
+    let emoteslistener = firebaseEmotes$.subscribe((data: any) => {
       delete data.first;
       setEmotes(data);
     });
@@ -582,8 +582,7 @@ const Chat = ({ props }) => {
     // if's at the top of this will be rendered last
 
     let showExistingUserPopup = false;
-
-    if (!config.init) return;
+    // if (!config.init) return;
     if (
       !!config.authKey &&
       !config.streamerDisplayName &&
@@ -593,7 +592,6 @@ const Chat = ({ props }) => {
       typeof config.isFirebaseUser !== 'undefined' &&
       (config.isFirebaseUser ? config.loadedFirebaseConfig : true)
     ) {
-      console.log('GOT CONFIG', config);
       streamerDisplayName = true;
       addPopup(
         <AddCommandPopup
@@ -706,36 +704,35 @@ const Chat = ({ props }) => {
         true
       );
     }
-    if (
-      !config.streamerDisplayName &&
-      isStartUp &&
-      config.acceptedToS &&
-      config.isFirebaseUser === false
-    ) {
-      addPopup(
-        <SetupOptionsPopup
-          styles={styles}
-          closeCurrentPopup={closeCurrentPopup}
-          addPopup={addPopup}
-          stateTheme={stateTheme}
-          setupAsNewUser={e => {}}
-          setupAsExistingUser={e => {
-            setTimeout(function() {
-              addPopup(
-                <SetupAsExistingUserPopup
-                  styles={styles}
-                  closeCurrentPopup={closeCurrentPopup}
-                  addPopup={addPopup}
-                  stateTheme={stateTheme}
-                />
-              );
-            }, 8);
-          }}
-        />
-      );
-    }
-
-    if (!config.acceptedToS) {
+    // if (
+    //   !config.streamerDisplayName &&
+    //   isStartUp &&
+    //   config.acceptedToS &&
+    //   config.isFirebaseUser === false
+    // ) {
+    //   addPopup(
+    //     <SetupOptionsPopup
+    //       styles={styles}
+    //       closeCurrentPopup={closeCurrentPopup}
+    //       addPopup={addPopup}
+    //       stateTheme={stateTheme}
+    //       setupAsNewUser={e => {}}
+    //       setupAsExistingUser={e => {
+    //         setTimeout(function() {
+    //           addPopup(
+    //             <SetupAsExistingUserPopup
+    //               styles={styles}
+    //               closeCurrentPopup={closeCurrentPopup}
+    //               addPopup={addPopup}
+    //               stateTheme={stateTheme}
+    //             />
+    //           );
+    //         }, 8);
+    //       }}
+    //     />
+    //   );
+    // }
+    if (!config.acceptedToS && config.init) {
       addPopup(
         <AddCommandPopup
           styles={styles}
@@ -850,7 +847,7 @@ const Chat = ({ props }) => {
             borderColor: stateTheme.base.quinaryBackground.backgroundColor
           })}
           value={text}
-          maxLength={140}
+          maxLength={280}
           onKeyDown={onEnterPress}
           onChange={e => {
             updateText(e);

@@ -66,34 +66,48 @@ textarea.usersearch {
     margin: 0px;
     font-size: 1.5em;
   }
-  textarea {
+  input {
     flex: 1;
     border: 0;
     outline-width: 0;
-    resize: none;
-    text-align: center;
-    height: 40px;
-    font-size: 30px;
-    padding: 12px;
-    width: 250px;
+    text-align: left;
+    padding: 0px;
+    padding-left: 5px;
+    width: calc(100% - 10px);
+    font-size: 1.2em;
     overflow-y: hidden;
     overflow-x: auto;
+    font-size: 15px;
+    height: 30px;
+    // width: 60%;
+  }
+  .input_wrapper {
+    display: flex;
+    justify-content: center;
+    // align-items: center;
+    flex-direction: column;
+    width: 60%;
+    div,
+    input {
+      margin-bottom: 5px !important;
+    }
   }
   .input {
-    margin: 10px;
+    // margin: 10px;
     outline-width: 0;
     background: rgba(0, 0, 0, 0);
     border: 2px solid;
+    border-radius: 5px;
     color: inherit;
   }
   .submit {
-    width: 80%;
+    width: 100%;
     height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 30px;
-    border: 3px solid;
+    border: 1.5px solid;
     &:hover {
       cursor: pointer;
     }

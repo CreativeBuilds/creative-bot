@@ -4,7 +4,9 @@ storage/*
 build/*
 extras
 dist/*
+src/javascript/helpers/firebaseConfig.ts
 
 electron-builder.json
 yarn-error.log
 *.log
+list.txt
