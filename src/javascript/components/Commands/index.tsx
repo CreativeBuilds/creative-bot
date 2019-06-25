@@ -3,6 +3,8 @@ import { useContext, useState, useEffect } from 'react';
 import { theme, ThemeContext } from '../../helpers';
 import * as _ from 'lodash';
 import { MdAddCircle } from 'react-icons/md';
+import { firebaseConfig$ } from '../../helpers/rxConfig';
+import { filter } from 'rxjs/operators';
 const { Command } = require('./Command');
 const { Sorting } = require('./Sorting');
 let { setRxCommands } = require('../../helpers/rxCommands');
@@ -19,8 +21,18 @@ const AddCommandPopup = ({
 }) => {
   const [name, setName] = useState<string>('');
   const [reply, setReply] = useState<string>('');
+  const [commandPrefix, setCommandPrefix] = useState('!');
   // const [uses, setUses] = useState<number>(0);
   const [permissions, setPermissions] = useState({});
+
+  useEffect(() => {
+    let listener = firebaseConfig$
+      .pipe(filter((x: any) => !!x.commandPrefix))
+      .subscribe(config => setCommandPrefix(config.commandPrefix));
+    return () => {
+      listener.unsubscribe();
+    };
+  }, []);
 
   const saveToDB = () => {
     if (name.length === 0) return;
@@ -53,6 +65,10 @@ const AddCommandPopup = ({
           }}
           value={name}
         />
+        <div className={styles.input_name}>
+          <b>Example Useage:</b> {commandPrefix}
+          {name}
+        </div>
       </div>
       <div className={styles.input_wrapper}>
         <div className={styles.input_name}>Reply</div>

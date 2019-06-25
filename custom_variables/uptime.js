@@ -5,6 +5,7 @@ module.exports = {
   name: 'uptime',
   function: ({ message, streamChannel }) => {
     return new Promise((res, rej) => {
+      console.log(streamChannel, 'STREAM CHANNEL');
       if (!streamChannel || !streamChannel.getUptime) res('null');
       streamChannel.getUptime().then(seconds => {
         if (!seconds) res(`OFFLINE`);

@@ -595,18 +595,8 @@ function createWindow() {
           // obj[commandName].uses += 1;
           Commands = Object.assign({}, Commands, obj);
           if (!command.enabled) return console.log('command not enabled');
-          if (!dlive) {
-            parseReply({
-              reply: command.reply,
-              message,
-              custom_variables,
-              streamChannel: null
-            }).then(reply => {
-              console.log('GOT REPLY WITHOUT DLIVEJS', reply);
-              sendMessage(reply);
-              rxCommands.next(Commands);
-            });
-          } else {
+          sendMessage(`Fetching info...`);
+          rxDlive.pipe(filter(x => !!x)).subscribe(dlive => {
             dlive.getChannel(streamerDisplayName).then(streamChannel => {
               parseReply({
                 reply: command.reply,
@@ -619,7 +609,21 @@ function createWindow() {
                 rxCommands.next(Commands);
               });
             });
-          }
+          });
+          // if (!dlive) {
+          //   parseReply({
+          //     reply: command.reply,
+          //     message,
+          //     custom_variables,
+          //     streamChannel: null
+          //   }).then(reply => {
+          //     console.log('GOT REPLY WITHOUT DLIVEJS', reply);
+          //     sendMessage(reply);
+          //     rxCommands.next(Commands);
+          //   });
+          // } else {
+
+          // }
         } else {
           rxGiveaways.pipe(first()).subscribe(giveaways => {
             let giveaway = Object.assign({}, giveaways[commandName]);
