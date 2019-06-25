@@ -9,6 +9,9 @@ import { MdModeEdit } from 'react-icons/md';
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 import { setRxConfig } from '../../helpers/rxConfig';
+import { ipcMain } from 'electron';
+import { AdvancedDiv } from '../AdvancedDiv';
+import { theme } from '../../helpers/Theme';
 
 const Popup = ({
   configOption,
@@ -18,36 +21,76 @@ const Popup = ({
   config
 }) => {
   const [value, setValue] = useState<string>(configOption.value.toString());
+  const [error, setError] = useState<string>('');
 
   return (
     <div className={styles.popup}>
       <h1>{configOption.name}</h1>
-      <textarea
-        className={styles.input}
-        onChange={e => {
-          setValue(e.target.value);
-        }}
-        value={value}
-      />
-      <div
+      <div className={styles.input_wrapper}>
+        <div className={styles.input_name}>Name</div>
+        <input
+          className={styles.input}
+          onChange={e => {
+            let val = e.target.value;
+            if (configOption.key === 'pointsTimer') {
+              let numVal = Number(val);
+              if (numVal < 60) {
+                setError('Minimum amount for interval is 60 seconds');
+              } else {
+                setError('');
+              }
+            }
+            setValue(e.target.value);
+          }}
+          value={value}
+        />
+      </div>
+      {error.length ? (
+        <div
+          style={{
+            width: '60%',
+            textAlign: 'left',
+            marginBottom: '5px',
+            color: theme.globals.destructiveButton.backgroundColor
+          }}
+        >
+          {error}
+        </div>
+      ) : null}
+      <AdvancedDiv
         className={styles.submit}
         style={stateTheme.submitButton}
-        onClick={() => {
-          let Config = Object.assign({}, config);
-          switch (configOption.type) {
-            case 'number':
-              Config[configOption.key] = Number(value);
-            case 'string':
-              Config[configOption.key] = String(value);
-            default:
-              Config[configOption.key] = value;
-          }
-          setRxConfig(Config);
-          closeCurrentPopup();
-        }}
+        hoverStyle={stateTheme.submitButton_hover}
+        aStyle={{ width: '60%' }}
       >
-        SAVE
-      </div>
+        <div
+          onClick={() => {
+            if (error.length > 0) return;
+            let Config = Object.assign({}, config);
+            switch (configOption.type) {
+              case 'number':
+                Config[configOption.key] = Number(value);
+              case 'string':
+                Config[configOption.key] = String(value);
+              default:
+                Config[configOption.key] = value;
+            }
+            let passedConfig = () => {
+              closeCurrentPopup();
+              ipcRenderer.removeListener('failedConfig', failedConfig);
+            };
+            let failedConfig = (obj, err) => {
+              setError(err);
+              ipcRenderer.removeListener('passedConfig', passedConfig);
+            };
+            ipcRenderer.once('passedConfig', passedConfig);
+            ipcRenderer.once('failedConfig', failedConfig);
+            setRxConfig(Config);
+          }}
+        >
+          SAVE
+        </div>
+      </AdvancedDiv>
     </div>
   );
 };
@@ -88,7 +131,7 @@ const Config = ({
       style={Object.assign(
         {},
         stateTheme.cell.normal,
-        nth % 2 ? stateTheme.cell.alternate : { }
+        nth % 2 ? stateTheme.cell.alternate : {}
       )}
     >
       <div className={styles.toggle_wrappers}>

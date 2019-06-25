@@ -5,7 +5,7 @@ const { ipcRenderer } = Window.require('electron');
 
 const rxLists = new BehaviorSubject({});
 
-ipcRenderer.send('getRxLists');
+// ipcRenderer.send('getRxLists');
 ipcRenderer.on('rxLists', (event, lists) => {
   rxLists.next(lists);
 });

@@ -4,10 +4,11 @@ let config = {};
 const rxConfig = require('./rxConfig');
 rxConfig.subscribe(data => (config = data));
 
-module.exports = displayname => {
-  return sendRequestToDlive({
-    operationName: 'LivestreamChatroomInfo',
-    query: `query LivestreamChatroomInfo($displayname: String!, $isLoggedIn: Boolean!, $limit: Int!) {
+module.exports = (displayname, overrideConfig = null) => {
+  return sendRequestToDlive(
+    {
+      operationName: 'LivestreamChatroomInfo',
+      query: `query LivestreamChatroomInfo($displayname: String!, $isLoggedIn: Boolean!, $limit: Int!) {
         userByDisplayName(displayname: $displayname) {
           id
           ...VLivestreamChatroomFrag
@@ -287,10 +288,12 @@ module.exports = displayname => {
         __typename
       }
       `,
-    variables: {
-      displayname,
-      isLoggedIn: true,
-      limit: 20
-    }
-  });
+      variables: {
+        displayname,
+        isLoggedIn: true,
+        limit: 20
+      }
+    },
+    overrideConfig
+  );
 };

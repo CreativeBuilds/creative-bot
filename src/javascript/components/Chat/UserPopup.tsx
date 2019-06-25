@@ -5,7 +5,7 @@ import { removeMessage } from '../../helpers/removeMessage';
 import ReactTooltip from 'react-tooltip';
 import { Toggle, ToggleType } from '../Generics/Toggle';
 
-import { rxUsers, setRxUsers } from '../../helpers/rxUsers';
+import { firebaseUsers$, setRxUsers } from '../../helpers/rxUsers';
 
 import Styles from './Chat.scss';
 import { first } from 'rxjs/operators';
@@ -29,7 +29,7 @@ const UserPopup = ({
   useEffect(() => {
     let first = true;
     // Needs to fire a thing to the ipcMain and then listen for a response
-    let listener = rxUsers.pipe().subscribe(users => {
+    let listener = firebaseUsers$.pipe().subscribe(users => {
       if (first) {
         first = false;
         let User = users[user.blockchainUsername];

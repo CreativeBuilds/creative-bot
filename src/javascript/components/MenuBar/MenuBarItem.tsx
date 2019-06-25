@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect, useRef } from 'react';
 import { theme, ThemeContext, useComponentVisible } from '../../helpers';
-import { rxConfig, setRxConfig } from '../../helpers/rxConfig';
+import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
 
 import { MenuItem } from './index';
 import { ContextMenu, ContextItem } from './../ContextMenu/index';
@@ -32,7 +32,7 @@ const MenuBarItem = ({ menuItem, hidden = true, action }: MenuBar) => {
   };
 
   useEffect(() => {
-    let listener = rxConfig.subscribe((data: any) => {
+    let listener = firebaseConfig$.subscribe((data: any) => {
       delete data.first;
       setConfig(data);
       changeTheme(data.themeType);

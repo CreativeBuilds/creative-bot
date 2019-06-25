@@ -5,6 +5,8 @@ import { ToggleBox } from './ToggleBox';
 
 import { MdModeEdit, MdEdit, MdDelete } from 'react-icons/md';
 import { theme } from '../../helpers';
+import { firebaseCommands$ } from '../../helpers/rxCommands';
+import { first } from 'rxjs/operators';
 let { setRxCommands } = require('../../helpers/rxCommands');
 
 const Window: any = window;
@@ -13,22 +15,31 @@ const { ipcRenderer } = Window.require('electron');
 const Popup = ({ command, styles, closeCurrentPopup, stateTheme }) => {
   const [name, setName] = useState<string>(command.name);
   const [reply, setReply] = useState<string>(command.reply);
-  const [uses, setUses] = useState<number>(command.uses);
+  // const [uses, setUses] = useState<number>(command.uses);
   const [permissions, setPermissions] = useState(command.permissions);
 
   const saveToDB = () => {
     if (name.length === 0) return;
-    ipcRenderer.send('editcommand', {
-      oldName: command.name,
-      name,
-      obj: {
-        reply,
-        name,
-        uses,
-        permissions,
-        enabled: command.enabled
+    firebaseCommands$.pipe(first()).subscribe(commands => {
+      let newCommands = Object.assign({}, commands);
+      console.log('GOT COMMANDS IN SAVETODB', commands, newCommands);
+      if (command.name !== name) {
+        delete newCommands[command.name];
       }
+      newCommands[name] = Object.assign({}, command, { name, reply });
+      setRxCommands(newCommands);
     });
+    // ipcRenderer.send('editcommand', {
+    //   oldName: command.name,
+    //   name,
+    // obj: {
+    //   reply,
+    //   name,
+    //   uses: 0,
+    //   permissions,
+    //   enabled: command.enabled
+    // }
+    // });
   };
 
   return (
@@ -53,7 +64,7 @@ const Popup = ({ command, styles, closeCurrentPopup, stateTheme }) => {
           value={reply}
         />
       </div>
-      <div className={styles.input_wrapper}>
+      {/* <div className={styles.input_wrapper}>
         <div className={styles.input_name}>Uses</div>
         <textarea
           className={styles.input}
@@ -62,13 +73,13 @@ const Popup = ({ command, styles, closeCurrentPopup, stateTheme }) => {
           }}
           value={uses}
         />
-      </div>
+      </div> */}
       <div
         className={styles.submit}
-        style={stateTheme.submitButton }
+        style={stateTheme.submitButton}
         onClick={() => {
-          if (isNaN(Number(uses))) return;
-          setUses(Number(uses));
+          // if (isNaN(Number(uses))) return;
+          // setUses(Number(uses));
           saveToDB();
           closeCurrentPopup();
         }}
@@ -152,10 +163,13 @@ const Command = ({
       style={Object.assign(
         {},
         stateTheme.cell.normal,
-        nth % 2 ? stateTheme.cell.alternate : { }
+        nth % 2 ? stateTheme.cell.alternate : {}
       )}
     >
-      <div className={styles.toggle_wrappers} style={stateTheme.base.quinaryForeground}>
+      <div
+        className={styles.toggle_wrappers}
+        style={stateTheme.base.quinaryForeground}
+      >
         <div className={styles.username}>
           {command.name}{' '}
           <MdEdit
@@ -164,7 +178,7 @@ const Command = ({
             }}
           />
         </div>
-        <div className={styles.points}>{command.uses}</div>
+        {/* <div className={styles.points}>{command.uses}</div> */}
         <div className={styles.spacer} />
         <div className={styles.modded}>
           <ToggleBox

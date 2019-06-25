@@ -40,14 +40,14 @@ const Sorting = ({
         >
           NAME <Arrow isDesc={isDesc} toggle={toggle} type={'name'} />
         </div>
-        <div
+        {/* <div
           className={styles.points}
           onClick={() => {
             swapOrToggle(isDesc, toggle, 'uses');
           }}
         >
           USES <Arrow isDesc={isDesc} toggle={toggle} type={'uses'} />
-        </div>
+        </div> */}
         <div className={styles.spacer} />
         <div className={styles.modded}>
           ENABLED {/*<Arrow isDesc={isDesc} toggle={toggle} type={'mod'}/>*/}

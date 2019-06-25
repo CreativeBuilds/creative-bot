@@ -1,32 +1,40 @@
 import * as React from 'react';
 import { useState, Component } from 'react';
 
+import { theme, ThemeContext } from '../../helpers';
+
 import { Route } from './Route';
 import { Chat } from '../Chat';
 import { UsersPage } from '../Users';
 import { Menu } from '../Menu';
-import { Popup } from '../Popup';
+//import { Popup } from '../Popup';
+import { Popup } from '../Generics/Popup';
 import { CommandsPage } from '../Commands';
-import { rxUsers } from '../../helpers/rxUsers';
-import { rxCommands } from '../../helpers/rxCommands';
-import { rxConfig } from '../../helpers/rxConfig';
+import { firebaseUsers$ } from '../../helpers/rxUsers';
+import { firebaseCommands$ } from '../../helpers/rxCommands';
+import { firebaseConfig$ } from '../../helpers/rxConfig';
 import { ConfigPage } from '../Config';
-import { rxTimers } from '../../helpers/rxTimers';
+import { firebaseTimers$ } from '../../helpers/rxTimers';
 import { TimersPage } from '../Timers';
 import { GiveawaysPage } from '../Giveaways';
-import { rxGiveaways } from '../../helpers/rxGiveaways';
-import { rxEmotes } from '../../helpers/rxEmotes';
-import { rxQuotes } from '../../helpers/rxQuotes';
+import { firebaseGiveaways$ } from '../../helpers/rxGiveaways';
+import { firebaseEmotes$ } from '../../helpers/rxEmotes';
+import { firebaseQuotes$ } from '../../helpers/rxQuotes';
 import { QuotesPage } from '../Quotes';
 import { rxLists } from '../../helpers/rxLists';
 import { ListsPage } from '../Lists';
+import { first, filter } from 'rxjs/operators';
+
+import { isEmpty } from 'lodash';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
 const RouteContext: any = React.createContext({ currentUrl: '/' });
 
-class RouterWrapper extends Component<any,any>{
+const styles: any = require('./Route.scss');
+
+class RouterWrapper extends Component<any, any> {
   constructor(props) {
     super(props);
   }
@@ -42,25 +50,26 @@ class RouterWrapper extends Component<any,any>{
     emotes: {},
     quotes: {},
     lists: {},
-    livestream: { watchingCount: 0 }
+    livestream: { watchingCount: 0 },
+    noX: false
   };
   componentDidMount() {
-    rxUsers.subscribe(Users => {
+    firebaseUsers$.subscribe(Users => {
       this.setState({ users: Users });
     });
-    rxCommands.subscribe(Commands => {
+    firebaseCommands$.subscribe(Commands => {
       this.setState({ commands: Commands });
     });
-    rxTimers.subscribe(Timers => {
+    firebaseTimers$.subscribe(Timers => {
       this.setState({ timers: Timers });
     });
-    rxGiveaways.subscribe(Giveaways => {
+    firebaseGiveaways$.subscribe(Giveaways => {
       this.setState({ giveaways: Giveaways });
     });
-    rxEmotes.subscribe(Emotes => {
+    firebaseEmotes$.subscribe(Emotes => {
       this.setState({ emotes: Emotes });
     });
-    rxQuotes.subscribe(Quotes => {
+    firebaseQuotes$.subscribe(Quotes => {
       this.setState({ quotes: Quotes });
     });
     rxLists.subscribe(Lists => {
@@ -80,10 +89,68 @@ class RouterWrapper extends Component<any,any>{
         messages: newArr
       });
     });
+    let soundIsRunning = false;
+    let newSound = (message, config) => {
+      if (soundIsRunning) {
+        setTimeout(() => {
+          newSound(message, config);
+        }, 1000);
+      } else if (
+        message.donationMessage ? message.donationMessage.length : false
+      ) {
+        const giftType = () => {
+          if (message.gift === 'LEMON') {
+            return 'lemon';
+          } else if (message.gift === 'ICE_CREAM') {
+            return 'ice cream';
+          } else if (message.gift === 'DIAMOND') {
+            return 'diamond!';
+          } else if (message.gift === 'NINJAGHINI') {
+            return 'ninjaghini!';
+          } else if (message.gift === 'NINJET') {
+            return 'ninjet!';
+          }
+        };
+        soundIsRunning = true;
+        var utter = new SpeechSynthesisUtterance();
+        utter.text = `${message.sender.dliveUsername} just donated ${
+          message.amount
+        } ${giftType()} ${
+          message.donationMessage ? message.donationMessage : ''
+        }`;
+        utter.volume =
+          (typeof config.tts_Amplitude === 'number'
+            ? config.tts_Amplitude
+            : 100) / 100;
+        utter.pitch =
+          (typeof config.tts_Pitch === 'number' ? config.tts_Pitch : 100) / 100;
+        utter.rate =
+          (typeof config.tts_Speed === 'number' ? config.tts_Speed : 100) / 100;
+        utter.onend = () => {
+          soundIsRunning = false;
+        };
+        speechSynthesis.speak(utter);
+      }
+    };
+
+    ipcRenderer.on('newdonation', (event, { message }) => {
+      firebaseConfig$
+        .pipe(
+          first(),
+          filter(x => !isEmpty(x))
+        )
+        .subscribe((config: any) => {
+          if (config.hasTTSDonations) {
+            newSound(message, config);
+          }
+        });
+    });
+
     ipcRenderer.on('newmessage', (event, { message }) => {
       var date = new Date();
       var hourMilitary = '';
-
+      if (!!message.gift) {
+      }
       if (date.getHours() > 12) {
         hourMilitary = String(date.getHours() - 12);
       } else {
@@ -96,11 +163,11 @@ class RouterWrapper extends Component<any,any>{
         String(date.getMinutes()).padStart(2, '0') +
         ':' +
         String(date.getSeconds()).padStart(2, '0');
-        
-      var timeMilitary = 
-      hourMilitary.padStart(2, '0') +
-      ':' +
-      String(date.getMinutes()).padStart(2, '0');
+
+      var timeMilitary =
+        hourMilitary.padStart(2, '0') +
+        ':' +
+        String(date.getMinutes()).padStart(2, '0');
 
       message['Msg_timestamp_digital'] = timeDigital;
       message['Msg_timestamp'] = timeMilitary;
@@ -110,18 +177,20 @@ class RouterWrapper extends Component<any,any>{
     ipcRenderer.on('livestreamObject', (event, livestream) => {
       this.setState({ livestream });
     });
-    rxConfig.subscribe(Config => {
+
+    firebaseConfig$.subscribe(Config => {
       this.setState({ config: Config });
     });
   }
 
   popups = [];
 
-  addPopup = (element, hasGradiant = false) => {
+  addPopup = (element, hasGradiant = false, noX = false) => {
     this.popups = this.popups.concat([element]);
     this.setState({
       popups: this.popups,
-      hasGradiant: hasGradiant
+      hasGradiant: hasGradiant,
+      noX
     });
   };
 
@@ -133,19 +202,36 @@ class RouterWrapper extends Component<any,any>{
   };
 
   render() {
-    const { url, setUrl} = this.props;
+    const { url, setUrl } = this.props;
     const { popups, hasGradiant } = this.state;
 
     return (
       <React.Fragment>
         {popups.length > 0 ? (
-          <Popup
+          /*<Popup
             Component={popups[popups.length - 1]}
             closePopup={this.closeCurrentPopup}
             hasGradiant={hasGradiant}
-          />
+            noX={this.state.noX}
+          />*/
+          <Popup
+            hasGradiant={hasGradiant}
+            noX={this.state.noX}
+            closePopup={this.closeCurrentPopup}
+          >
+            {popups[popups.length - 1]}
+          </Popup>
         ) : null}
-        <div id='content'>
+        <div
+          id='content'
+          style={Object.assign(
+            {},
+            this.state.popups == null || this.state.popups.length == 0
+              ? null
+              : theme.globals.blurred,
+            {}
+          )}
+        >
           <Route
             url={url}
             path={'/'}
@@ -239,7 +325,7 @@ const Router = (props, getFuncs) => {
   return (
     <RouteContext.Provider value={{ currentUrl: url, setUrl }}>
       <Menu setUrl={setUrl} />
-      <RouterWrapper url={url} setUrl={setUrl}/>
+      <RouterWrapper url={url} setUrl={setUrl} />
     </RouteContext.Provider>
   );
 };

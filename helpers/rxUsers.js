@@ -8,7 +8,7 @@ let rxUsers = new BehaviorSubject({});
 storage.get('users', (err, data) => {
   if (err) throw err;
   rxUsers.next(data);
-  rxUsers.pipe(filter(x => !_.isEmpty(x))).subscribe(data => {
+  rxUsers.pipe(filter(x => !!x)).subscribe(data => {
     storage.set('users', data);
   });
 });

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 
 import { ThemeContext, theme } from '../helpers';
-import { rxConfig, setRxConfig } from '../helpers/rxConfig';
+import { firebaseConfig$, setRxConfig } from '../helpers/rxConfig';
 
 import { Router } from './Router';
 import { TitleBar } from './TitleBar';
@@ -40,10 +40,10 @@ const Main = ({ Config }: Main) => {
   const getFuncs = (addPop, closecurrentPopup) => {
     setAddPopup(addPop);
     setCloseCurrentPopup(closecurrentPopup);
-  }
+  };
 
   useEffect(() => {
-    let listener = rxConfig.subscribe((data: any) => {
+    let listener = firebaseConfig$.subscribe((data: any) => {
       delete data.first;
       setConfig(data);
       changeTheme(data.themeType);
@@ -55,13 +55,17 @@ const Main = ({ Config }: Main) => {
 
   return (
     <ThemeContext.Provider value={{ stateTheme, setStateTheme }}>
-        <div className={styles.appFrame}>         
-          <TitleBar Config={config} addPopup={addPopup} closeCurrentPopup={closeCurrentPopup}/>
-          <Banner />
-          <div className={styles.main} style={style().base.tertiaryBackground}>
-            <Router getFuncs={getFuncs} />
-          </div>
+      <div className={styles.appFrame}>
+        <TitleBar
+          Config={config}
+          addPopup={addPopup}
+          closeCurrentPopup={closeCurrentPopup}
+        />
+        <Banner />
+        <div className={styles.main} style={style().base.tertiaryBackground}>
+          <Router getFuncs={getFuncs} />
         </div>
+      </div>
     </ThemeContext.Provider>
   );
 };

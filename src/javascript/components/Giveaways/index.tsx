@@ -3,6 +3,8 @@ import { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../../helpers';
 import * as _ from 'lodash';
 import { MdAddCircle } from 'react-icons/md';
+import { firebaseGiveaways$ } from '../../helpers/rxGiveaways';
+import { first } from 'rxjs/operators';
 const { Giveaway } = require('./Giveaway');
 const { Sorting } = require('./Sorting');
 let { setRxGiveaways } = require('../../helpers/rxGiveaways');
@@ -29,19 +31,21 @@ const AddGiveawayPopup = ({
 
   const saveToDB = () => {
     if (name.length === 0) return;
-    let Giveaways = Object.assign({}, giveaways);
-    Giveaways[name] = {
-      reward,
-      name,
-      entries,
-      maxEntries,
-      permissions,
-      cost,
-      secondsUntilClose,
-      createdAt: Date.now(),
-      enabled: true
-    };
-    setRxGiveaways(Giveaways);
+    firebaseGiveaways$.pipe(first()).subscribe(giveaways => {
+      let Giveaways = Object.assign({}, giveaways);
+      Giveaways[name] = {
+        reward,
+        name,
+        entries,
+        maxEntries,
+        permissions,
+        cost,
+        secondsUntilClose,
+        createdAt: Date.now(),
+        enabled: true
+      };
+      setRxGiveaways(Giveaways);
+    });
   };
 
   return (
@@ -156,7 +160,14 @@ const GiveawaysPage = ({ props }) => {
 
   return (
     <div style={stateTheme.base.tertiaryBackground} className={styles.Points}>
-      <div style={Object.assign({}, stateTheme.toolBar, stateTheme.base.quinaryForeground)} className={styles.header}>
+      <div
+        style={Object.assign(
+          {},
+          stateTheme.toolBar,
+          stateTheme.base.quinaryForeground
+        )}
+        className={styles.header}
+      >
         GIVEAWAYS
         <textarea
           className={styles.usersearch}

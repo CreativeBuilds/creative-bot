@@ -1,7 +1,7 @@
 const DLive = require('dlive-js');
 const rxConfig = require('./rxConfig');
 const { BehaviorSubject } = require('rxjs');
-const { filter, first } = require('rxjs/operators');
+const { filter, first, distinctUntilChanged } = require('rxjs/operators');
 
 let rxDlive = new BehaviorSubject(null).pipe(filter(x => !!x));
 
@@ -12,7 +12,7 @@ let newDlive = config => {
     new DLive(
       Object.assign(
         {},
-        { authKey: config.authKey },
+        { authKey: config.authKey, debug: false },
         config.blockchainPrivKey
           ? { blockchainPrivKey: config.blockchainPrivKey }
           : {}
@@ -23,15 +23,20 @@ let newDlive = config => {
 
 let firstRun = true;
 
-rxConfig.pipe(filter(x => !!x.authKey)).subscribe(config => {
-  if (firstRun) {
-    firstRun = false;
-    return newDlive(config);
-  }
-  rxDlive.pipe(first()).subscribe(dlive => {
-    if (dlive) {
-      dlive = null;
+rxConfig
+  .pipe(
+    filter(x => !!x.authKey),
+    distinctUntilChanged((prev, curr) => prev.authKey === curr.authKey)
+  )
+  .subscribe(config => {
+    if (firstRun) {
+      firstRun = false;
+      return newDlive(config);
     }
-    newDlive(config);
+    rxDlive.pipe(first()).subscribe(dlive => {
+      if (dlive) {
+        dlive = null;
+      }
+      newDlive(config);
+    });
   });
-});
