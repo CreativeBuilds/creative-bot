@@ -82,6 +82,65 @@ const theme = {
         stroke: '#CCCCCC'
       }
     },
+    checkbox: {
+      height: '24px',
+      width: '24px',
+      border: '3px solid',
+      padding: '0px !important',
+      display: 'flex',
+      'justify-content': 'center',
+      'align-items': 'center',
+      tick: {
+        'stroke-width': '2px',
+        'font-size': '1.2em'
+      }
+    },
+    panel: {
+      padding: '10px',
+      'border-radius': '10px',
+    
+      title: {
+        'text-align': 'center',
+        margin: '0',
+        padding: '0',
+        'margin-bottom': '10px',
+        'user-select': 'none',
+      }
+    },
+    popup: {
+      overlay: {
+        background: 'rgba(0, 0, 0, 0.6)',
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        top: '0',
+        left: '0',
+        'z-index': '999999',
+        display: 'flex',
+        'justify-content': 'center',
+        'align-items': 'center',
+      },
+      dialog: {
+        width: '475px',
+        'max-height': '90%',
+        overflow: 'auto',
+        padding: '10px',
+        'border-radius': '5px',
+        'box-shadow': '5px 5px 5px rgba(0, 0, 0, 0.5)'
+      },
+      close: {
+        position: 'relative',
+        icon: {
+          'z-index': '999',
+          'font-size': '2em',
+          'stroke-width': '1px',
+          position: 'absolute',
+          top: '0',
+          right: '0',
+          transition: 'all 0.15s ease-in-out',
+        }
+      }
+    },
     seperator: {},
     cell: {
       normal: {
@@ -177,6 +236,92 @@ const theme = {
         stroke: '#333333'
       }
     },
+    checkbox: {
+      height: '24px',
+      width: '24px',
+      border: '3px solid',
+      padding: '0px !important',
+      display: 'flex',
+      'justify-content': 'center',
+      'align-items': 'center',
+      tick: {
+        'stroke-width': '2px',
+        'font-size': '1.2em',
+      },
+    },
+    panel: {
+      padding: '10px',
+      'border-radius': '10px',
+      title: {
+        'text-align': 'center',
+        margin: '0',
+        padding: '0',
+        'margin-bottom': '10px',
+        'user-select': 'none',
+      },
+    },
+    popup: {
+      overlay: {
+        background: 'rgba(0, 0, 0, 0.6)',
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        top: '0',
+        left: '0',
+        'z-index': '999999',
+        display: 'flex',
+        'justify-content': 'center',
+        'align-items': 'center',
+      },
+      dialog: {
+        width: '475px',
+        'max-height': '90%',
+        overflow: 'auto',
+        padding: '10px',
+        'border-radius': '5px',
+        'box-shadow': '5px 5px 5px rgba(0, 0, 0, 0.5)',
+      },
+      close: {
+        position: 'relative',
+        icon: {
+          'z-index': '999',
+          'font-size': '2em',
+          'stroke-width': '1px',
+          position: 'absolute',
+          top: '0',
+          right: '0',
+          transition: 'all 0.15s ease-in-out',
+        },
+      },
+    },
+    toggle: {
+      display: 'flex',
+      'flex-direction': 'column',
+      'margin-left': '10px',
+      position: 'relative',
+      'margin-bottom': '7px',
+      compact: {
+        width: '85px',
+      },
+      stretched: {
+        width: '100%',
+        height: '25px',
+        'margin-left': '0px !important',
+        position: 'relative',
+      },
+      header: {
+        compact: {
+          height: 'auto',
+          'text-align': 'center',
+          width: 'auto',
+          display: 'contents',
+        },
+        stretched: {
+          display: 'inline-block',
+          height: '100%',
+        }
+      }
+    },
     seperator: {},
     cell: {
       normal: {
@@ -212,7 +357,7 @@ const theme = {
     },
     dashedBorder: {
       border: '3px dashed #202225',
-      'box-sizing': 'border-box'
+      'box-sizing': 'border-box',
     }
   }
 };
