@@ -9,7 +9,7 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 
 import { SegmentControl, SegmentControlSource } from '../SegmentControl/index';
 import { Toggle, ToggleType } from '../Generics/Toggle';
-import { Slider } from '../Generics/Slider';
+import { RangeSlider } from '../Generics/Slider';
 import { Panel } from '../Generics/Panel';
 
 const Window: any = window;
@@ -92,10 +92,10 @@ const ChatTextToSpeechPopup = ({
           }}
           stateTheme={stateTheme}
         />
-        <Slider
+        <RangeSlider
           header='Amplitude'
           val={ttsAmplitude}
-          maxValue={200}
+          maxValue={100}
           hasHeader={true}
           onValueChanged={value => {
             console.log('AMP CHANGED');
@@ -103,8 +103,9 @@ const ChatTextToSpeechPopup = ({
             saveToDB('tts_Amplitude', value);
           }}
           style={styles}
+          stateTheme={stateTheme}
         />
-        <Slider
+        <RangeSlider
           header='Pitch'
           val={ttsPitch}
           maxValue={200}
@@ -114,8 +115,9 @@ const ChatTextToSpeechPopup = ({
             saveToDB('tts_Pitch', value);
           }}
           style={styles}
+          stateTheme={stateTheme}
         />
-        <Slider
+        <RangeSlider
           header='Speed'
           val={ttsSpeed}
           maxValue={300}
@@ -125,6 +127,7 @@ const ChatTextToSpeechPopup = ({
             saveToDB('tts_Speed', value);
           }}
           style={styles}
+          stateTheme={stateTheme}
         />
         {/*<Slider header="Word Gap" val={ttsWordGap} valType={"ms"} maxValue={100} hasHeader={true} onChange={(e, value) => {setTTSWordGap(value); saveToDB("tts_WordGap", value);}} style={styles}/>*/}
       </div>

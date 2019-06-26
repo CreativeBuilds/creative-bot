@@ -2,12 +2,12 @@ import * as React from 'react';
 import { useState } from 'react';
 
 import { ToggleBox } from './ToggleBox';
+import { Checkbox } from '../Generics/Checkbox';
 
 import { MdModeEdit, MdEdit, MdDelete } from 'react-icons/md';
 import { theme } from '../../helpers';
-import { firebaseCommands$ } from '../../helpers/rxCommands';
+import { firebaseCommands$, setRxCommands } from '../../helpers/rxCommands';
 import { first } from 'rxjs/operators';
-let { setRxCommands } = require('../../helpers/rxCommands');
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -181,12 +181,27 @@ const Command = ({
         {/* <div className={styles.points}>{command.uses}</div> */}
         <div className={styles.spacer} />
         <div className={styles.modded}>
-          <ToggleBox
+          {/*<ToggleBox
             styles={styles}
             command={command}
             stateTheme={stateTheme}
             ipcRenderer={ipcRenderer}
-          />
+          />*/}
+          <Checkbox isOn={command.enabled} 
+          stateTheme={stateTheme} 
+          onClick={(value) => { 
+            firebaseCommands$.pipe(first()).subscribe(commands => {
+              let newCommands = Object.assign({}, commands);
+              Object.keys(newCommands).forEach(key => {
+                if (key === command.name) {
+                  newCommands[key] = Object.assign({}, newCommands[key], {
+                    enabled: value
+                  });
+                }
+              });
+              setRxCommands(newCommands);
+            });
+           }} />
         </div>
         <div className={styles.modded}>
           <MdDelete

@@ -85,6 +85,7 @@ const SetupAsExistingUserPopup = ({
         </p>
         <Panel
           hasHeader={false}
+          stateTheme={stateTheme}
           style={Object.assign(
             {},
             stateTheme.dashedBorder,
@@ -92,7 +93,8 @@ const SetupAsExistingUserPopup = ({
           )}
           content={
             <DragDrop
-              className={styles.dragDropContentBox}
+              className={stateTheme.dragDrop.contentBox}
+              stateTheme={stateTheme}
               fileTypes={['zip']}
               draggedTitle='Drop Here'
               handleDrop={onDropHandler}

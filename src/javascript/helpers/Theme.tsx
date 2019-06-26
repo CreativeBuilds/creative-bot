@@ -13,6 +13,10 @@ const theme = {
     accentForeground: {
       color: '#ffd300'
     },
+    accentDarkBackground: {
+      backgroundColor: '#b39400',
+      color: '#202225'
+    },
     eventAccent: {
       backgroundColor: '#ffd300',
       color: '#202225'
@@ -82,6 +86,58 @@ const theme = {
         stroke: '#CCCCCC'
       }
     },
+    dragDrop: {
+      display: 'inline-block',
+      position: 'relative',
+      'box-sizing': 'border-box',
+      width: '100%',  
+      draggedBackground: {
+        position: 'absolute',
+        top: '0',
+        bottom: '0',
+        left: '0',
+        right: '0',
+        'z-index': '9999',
+        'border-radius': '10px',
+        padding: '-10px !important',
+        margin: '-10px !important',
+        title: {
+          position: 'absolute',
+          top: '45%',
+          right: '0',
+          left: '0',
+          'text-align': 'center',
+          'font-size': '20px',
+          'font-weight': 'bold',
+        }
+      },
+      content: {
+        'backdrop-filter': 'blur(10px)',
+        '-webkit-filter': 'blur(10px)',
+      },
+      contentBox: {
+        padding: '15px',
+        position: 'relative',
+        iconContainer: {
+          position: 'relative',
+          height: '64px',
+        },   
+        logo: { 
+          height: '64px', 
+          width: '64px',
+          left: '0',
+          right: '0',
+          position: 'absolute',
+          'text-align': 'center',
+          margin: 'auto',
+        },
+        dragDropMessage: {  
+          'text-align': 'center',
+          margin: 'auto',
+          'word-wrap': 'break-word',
+        }
+      }
+    },
     checkbox: {
       height: '24px',
       width: '24px',
@@ -100,11 +156,11 @@ const theme = {
       'border-radius': '10px',
     
       title: {
-        'text-align': 'center',
+        textAlign: 'center',
         margin: '0',
         padding: '0',
-        'margin-bottom': '10px',
-        'user-select': 'none',
+        marginBottom: '10px',
+        userSelect: 'none',
       }
     },
     popup: {
@@ -115,25 +171,25 @@ const theme = {
         position: 'absolute',
         top: '0',
         left: '0',
-        'z-index': '999999',
+        zIndex: '999999',
         display: 'flex',
-        'justify-content': 'center',
-        'align-items': 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
       },
       dialog: {
         width: '475px',
-        'max-height': '90%',
+        maxHeight: '90%',
         overflow: 'auto',
         padding: '10px',
-        'border-radius': '5px',
-        'box-shadow': '5px 5px 5px rgba(0, 0, 0, 0.5)'
+        borderRadius: '5px',
+        boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)'
       },
       close: {
         position: 'relative',
         icon: {
-          'z-index': '999',
-          'font-size': '2em',
-          'stroke-width': '1px',
+          zIndex: '999',
+          fontSize: '2em',
+          strokeWidth: '1px',
           position: 'absolute',
           top: '0',
           right: '0',
@@ -141,6 +197,120 @@ const theme = {
         }
       }
     },
+    toggle: {
+      display: 'flex',
+      flexDirection: 'column',
+      marginLeft: '10px',
+      position: 'relative',
+      marginBottom: '7px',
+      compact: {
+        width: '85px',
+      },
+      stretched: {
+        width: '100%',
+        height: '25px',
+        marginLeft: '0px !important',
+        position: 'relative',
+      },
+      header: {
+        compact: {
+          height: 'auto',
+          textAlign: 'center',
+          width: 'auto',
+          display: 'contents',
+        },
+        stretched: {
+          display: 'inline-block',
+          height: '100%',
+        }
+      },
+      disabled: {
+        color: 'rgb(127,127,127)',
+        toggleBody: { 
+          opacity: '0.5'
+        }
+      },
+      toggleBody: {
+        compact: {
+          width: 'auto'
+        },
+        stretched: {
+          position: 'absolute',
+          right: '0px',
+          marginRight: '10px'
+        },
+        transition: 'all 0.15s ease-in-out',
+        borderRadius: '25px',
+        width: '75px',
+        height: '25px',
+        handle: {
+          width: '25px',
+          height: '25px',
+          borderRadius: '50%',
+          transition: 'all 0.15s ease-in-out'
+        },
+        isOn: {
+          'margin-left': '-50px'
+        },
+        isOff: {
+          'margin-left': '50px'
+        }
+      }
+    },
+    slider: {
+      width: '100%',
+      padding: '0',
+      headerContainer: {
+        'margin-bottom': '0px',
+        header: {
+          display: 'inline-block', 
+          margin: '0', 
+        },
+        value: {
+          display: 'inline-block', 
+          margin: '0',
+          float: 'right', 
+        }
+      },
+      input: {
+        '-webkit-appearance': 'none',
+        width: '100%',
+        background: 'transparent',
+        marginTop: '12px',
+        height: '24px',
+        position: 'relative'
+      },
+      rail: {
+        width: '100%',
+        height: '8px',
+        borderRadius: '4px',
+        borderWidth: '0px',
+        outline: 'none',
+        padding: '0',
+        position: 'absolute'
+      },
+      track: {
+        height: '8px',
+        borderRadius: '4px',
+        borderWidth: '0px',
+        outline: 'none',
+        padding: '0',
+        position: 'absolute'
+      },
+      thumb: {
+        position: 'absolute',
+        WebkitAppearance: 'none',
+        height: '24px',
+        width: '24px',
+        borderRadius: '50%',
+        cursor: 'pointer',
+        marginTop: '-8px',
+        marginLeft: '-10px',
+        borderWidth: '0px',
+        outline: 'none',
+        boxShadow: '1px 1px 1px #000000, 0px 0px 1px #0d0d0d'
+      }
+    },    
     seperator: {},
     cell: {
       normal: {
@@ -236,9 +406,63 @@ const theme = {
         stroke: '#333333'
       }
     },
+    dragDrop: {
+      display: 'inline-block',
+      position: 'relative',
+      'box-sizing': 'border-box',
+      width: '100%',  
+      draggedBackground: {
+        position: 'absolute',
+        top: '0',
+        bottom: '0',
+        left: '0',
+        right: '0',
+        'z-index': '9999',
+        'border-radius': '10px',
+        padding: '-10px !important',
+        margin: '-10px !important',
+        title: {
+          position: 'absolute',
+          top: '45%',
+          right: '0',
+          left: '0',
+          'text-align': 'center',
+          'font-size': '20px',
+          'font-weight': 'bold',
+        }
+      },
+      content: {
+        'backdrop-filter': 'blur(10px)',
+        '-webkit-filter': 'blur(10px)',
+      },
+      contentBox: {
+        padding: '15px',
+        position: 'relative',
+        iconContainer: {
+          position: 'relative',
+          height: '64px',
+        },   
+        logo: { 
+          height: '64px', 
+          width: '64px',
+          left: '0',
+          right: '0',
+          position: 'absolute',
+          'text-align': 'center',
+          margin: 'auto',
+        },
+        dragDropMessage: {  
+          'text-align': 'center',
+          margin: 'auto',
+          'word-wrap': 'break-word',
+        }
+      }
+    },
     checkbox: {
-      height: '24px',
-      width: '24px',
+      height: '24px !important',
+      width: '24px !important',
+      'max-height': '24px !important',
+      'max-width': '24px !important',
       border: '3px solid',
       padding: '0px !important',
       display: 'flex',
@@ -296,23 +520,23 @@ const theme = {
     },
     toggle: {
       display: 'flex',
-      'flex-direction': 'column',
-      'margin-left': '10px',
+      flexDirection: 'column',
+      marginLeft: '10px',
       position: 'relative',
-      'margin-bottom': '7px',
+      marginBottom: '7px',
       compact: {
         width: '85px',
       },
       stretched: {
         width: '100%',
         height: '25px',
-        'margin-left': '0px !important',
+        marginLeft: '0px !important',
         position: 'relative',
       },
       header: {
         compact: {
           height: 'auto',
-          'text-align': 'center',
+          textAlign: 'center',
           width: 'auto',
           display: 'contents',
         },
@@ -320,6 +544,82 @@ const theme = {
           display: 'inline-block',
           height: '100%',
         }
+      },
+      disabled: {
+        color: 'rgb(127,127,127)',
+        toggleBody: { 
+          opacity: '0.5'
+        }
+      },
+      toggleBody: {
+        compact: {
+
+        },
+        stretched: {
+          position: 'absolute',
+          right: '0px'
+        },
+        transition: 'all 0.15s ease-in-out',
+        borderRadius: '25px',
+        width: '75px',
+        height: '25px',
+        handle: {
+          width: '25px',
+          height: '25px',
+          borderRadius: '50%',
+          transition: 'all 0.15s ease-in-out'
+        }
+      }
+    },
+    slider: {
+      width: '100%',
+      padding: '0',
+      headerContainer: {
+        'margin-bottom': '0px',
+        header: {
+          display: 'inline-block', 
+          margin: '0', 
+        },
+        value: {
+          display: 'inline-block', 
+          margin: '0',
+          float: 'right', 
+        }
+      },
+      input: {
+        '-webkit-appearance': 'none',
+        width: '100%',
+        background: 'transparent',
+      },    
+      rail: {
+        width: '100%',
+        height: '8px',
+        borderRadius: '4px',
+        borderWidth: '0px',
+        outline: 'none',
+        padding: '0',
+        position: 'absolute'
+      },
+      track: {
+        height: '8px',
+        borderRadius: '4px',
+        borderWidth: '0px',
+        outline: 'none',
+        padding: '0',
+        position: 'absolute'
+      },
+      thumb: {
+        position: 'absolute',
+        WebkitAppearance: 'none',
+        height: '24px',
+        width: '24px',
+        borderRadius: '50%',
+        cursor: 'pointer',
+        marginTop: '-8px',
+        marginLeft: '-10px',
+        borderWidth: '0px',
+        outline: 'none',
+        boxShadow: '1px 1px 1px #000000, 0px 0px 1px #0d0d0d'
       }
     },
     seperator: {},

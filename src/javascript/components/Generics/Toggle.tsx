@@ -16,21 +16,26 @@ const Toggle = ({header, type, isOn, isEnabled, onClick, onChange = null, stateT
     const [isenabled, setIsEnabled] = useState(isEnabled);
 
     return (
-        <div className={`${styles.toggle} ${type == ToggleType.stretched ? styles.stretched : styles.compact} ${!isenabled ? styles.disabled : null} `}>
-              <div className={styles.header}>{header}</div>
-              <div style={stateTheme.base.background} onClick={(e) => {
+        <div className={`${!isenabled ? styles.disabled : null} `} style={
+          Object.assign({}, type == ToggleType.stretched ? stateTheme.toggle.stretched : stateTheme.toggle.compact, stateTheme.toggle)
+        }>
+              <div style={Object.assign({}, type == ToggleType.stretched ? stateTheme.toggle.header.stretched : stateTheme.toggle.header.compact)}>{header}</div>
+              <div style={
+                Object.assign({},
+                   Object.assign({}, stateTheme.base.background, type == ToggleType.stretched ? stateTheme.toggle.toggleBody.stretched : stateTheme.toggle.toggleBody.compact), 
+                   stateTheme.toggle.toggleBody)} onClick={(e) => {
                   setIsOn(!ison);
                   if (isenabled) {
                     onClick();
                   }
                   }}>
                 <div
-                  style={{
+                  style={Object.assign({}, {
                     background: ison
                       ? theme.globals.accentBackground.backgroundColor
                       : stateTheme.base.secondaryBackground.backgroundColor
-                  }}
-                  className={ison ? styles.isOn : ''}
+                  }, stateTheme.toggle.toggleBody.handle)}
+                  className={ison ? stateTheme.toggle.toggleBody.isOff : ''}
                 />
               </div>
         </div>

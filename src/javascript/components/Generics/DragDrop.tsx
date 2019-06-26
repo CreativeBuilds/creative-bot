@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
 
-const styles: any = require('./DragDrop.scss');
-
 class DragDrop extends Component<any, any> {
   constructor(props) {
     super(props);
@@ -69,18 +67,18 @@ class DragDrop extends Component<any, any> {
   render() {
     return (
       <div
-        className={`${this.props.className} ${styles.dragDrop}`}
+        style={Object.assign({}, this.props.className, this.props.stateTheme.dragDrop)}
         onDrop={this.handleDrop}
         onDragOver={this.handleDrag}
         onDragLeave={this.handleDragOut}
         onDragEnter={this.handleDragIn}
       >
         {this.state.drag == true ? (
-          <div className={styles.draggedBackground}>
-            <div className={styles.draggedTitle}>{this.props.draggedTitle}</div>
+          <div style={Object.assign({}, this.props.stateTheme.dragDrop.draggedBackground)}>
+            <div style={Object.assign({}, this.props.stateTheme.dragDrop.draggedBackground.title)}>{this.props.draggedTitle}</div>
           </div>
         ) : null}
-        <div className={this.state.drag ? styles.content : null}>
+        <div style={Object.assign({}, this.state.drag ? this.props.stateTheme.dragDrop.content : null)}>
           {this.props.children}
         </div>
       </div>

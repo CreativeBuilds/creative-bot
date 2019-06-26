@@ -134,6 +134,7 @@ const ChatFiltersPopup = ({
           header='Timestamp Filters'
           hasHeader={true}
           style={stateTheme.base.tertiaryBackground}
+          stateTheme={stateTheme}
           content={
             <div>
               <Toggle

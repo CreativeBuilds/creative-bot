@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 
 import { ToggleBox } from './ToggleBox';
+import { Checkbox } from '../Generics/Checkbox';
 
 import { MdModeEdit, MdEdit, MdDelete } from 'react-icons/md';
 import { theme } from '../../helpers';

@@ -2,13 +2,11 @@ import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
 import { theme, ThemeContext } from '../../helpers';
 
-const styles: any = require('./Panel.scss');
-
-const Panel = ({header = "", hasHeader, content, style}) => {
+const Panel = ({header = "", hasHeader, content, style = null, stateTheme}) => {
 
     return (
-        <div className={styles.panel} style={style}>
-            { hasHeader ? <h4 className={styles.title}>{header}</h4> : null}
+        <div style={Object.assign({}, style, stateTheme.panel)}>
+            { hasHeader ? <h4 style={stateTheme.panel.title}>{header}</h4> : null}
             {content}
         </div>
     );

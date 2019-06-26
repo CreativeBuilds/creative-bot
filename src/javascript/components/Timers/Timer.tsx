@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useState } from 'react';
 
 import { ToggleBox } from './ToggleBox';
+import { Checkbox } from '../Generics/Checkbox';
 
 import { theme } from '../../helpers';
 
@@ -203,13 +204,18 @@ const Timer = ({
         <div className={styles.points}>{timer.messages}</div>
         <div className={styles.spacer} />
         <div className={styles.modded}>
-          <ToggleBox
+          {/*<ToggleBox
             styles={styles}
             timer={timer}
             stateTheme={stateTheme}
             ipcRenderer={ipcRenderer}
             editTimer={editTimer}
-          />
+          />*/}
+          <Checkbox isOn={timer.enabled} 
+          stateTheme={stateTheme} 
+          onClick={(value) => { 
+            editTimer(timer.name, value);
+           }} />
         </div>
         <div className={styles.modded}>
           <MdDelete
