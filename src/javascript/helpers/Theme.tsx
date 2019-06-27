@@ -456,10 +456,8 @@ const theme = {
       }
     },
     checkbox: {
-      height: '24px !important',
-      width: '24px !important',
-      'max-height': '24px !important',
-      'max-width': '24px !important',
+      height: '24px',
+      width: '24px',
       border: '3px solid',
       padding: '0px !important',
       display: 'flex',
@@ -467,19 +465,20 @@ const theme = {
       'align-items': 'center',
       tick: {
         'stroke-width': '2px',
-        'font-size': '1.2em',
-      },
+        'font-size': '1.2em'
+      }
     },
     panel: {
       padding: '10px',
       'border-radius': '10px',
+    
       title: {
-        'text-align': 'center',
+        textAlign: 'center',
         margin: '0',
         padding: '0',
-        'margin-bottom': '10px',
-        'user-select': 'none',
-      },
+        marginBottom: '10px',
+        userSelect: 'none',
+      }
     },
     popup: {
       overlay: {
@@ -489,31 +488,31 @@ const theme = {
         position: 'absolute',
         top: '0',
         left: '0',
-        'z-index': '999999',
+        zIndex: '999999',
         display: 'flex',
-        'justify-content': 'center',
-        'align-items': 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
       },
       dialog: {
         width: '475px',
-        'max-height': '90%',
+        maxHeight: '90%',
         overflow: 'auto',
         padding: '10px',
-        'border-radius': '5px',
-        'box-shadow': '5px 5px 5px rgba(0, 0, 0, 0.5)',
+        borderRadius: '5px',
+        boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)'
       },
       close: {
         position: 'relative',
         icon: {
-          'z-index': '999',
-          'font-size': '2em',
-          'stroke-width': '1px',
+          zIndex: '999',
+          fontSize: '2em',
+          strokeWidth: '1px',
           position: 'absolute',
           top: '0',
           right: '0',
           transition: 'all 0.15s ease-in-out',
-        },
-      },
+        }
+      }
     },
     toggle: {
       display: 'flex',
@@ -550,11 +549,12 @@ const theme = {
       },
       toggleBody: {
         compact: {
-
+          width: 'auto'
         },
         stretched: {
           position: 'absolute',
-          right: '0px'
+          right: '0px',
+          marginRight: '10px'
         },
         transition: 'all 0.15s ease-in-out',
         borderRadius: '25px',
@@ -565,7 +565,10 @@ const theme = {
           height: '25px',
           borderRadius: '50%',
           transition: 'all 0.15s ease-in-out'
-        }
+        },
+        isOn: {
+          'margin-left': '50px'
+        },
       }
     },
     slider: {
@@ -587,7 +590,10 @@ const theme = {
         '-webkit-appearance': 'none',
         width: '100%',
         background: 'transparent',
-      },    
+        marginTop: '12px',
+        height: '24px',
+        position: 'relative'
+      },
       rail: {
         width: '100%',
         height: '8px',
