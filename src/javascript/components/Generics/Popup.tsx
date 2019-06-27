@@ -4,8 +4,6 @@ import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
 import { MdClose } from 'react-icons/md';
 import { theme } from '../../helpers';
 
-const styles: any = require('./popup.scss');
-
 class Popup extends Component<any, any> {
   constructor(props) {
     super(props);
@@ -39,11 +37,9 @@ class Popup extends Component<any, any> {
 
   render() {
     return (
-      <div className={`${styles.animated} animated fadeIn`} style={Object.assign({}, this.state.stateTheme.popup.overlay)}>
+      <div className={`animated fadeIn`} style={Object.assign({}, this.state.stateTheme.popup.overlay)}>
         <div
-          className={`${styles.dialog} ${
-            this.props.hasGradiant ? styles.startupBackground : ''
-          } animated fadeInUp`}
+          className={`animated fadeInUp`}
           style={
             Object.assign({},
             this.props.hasGradiant

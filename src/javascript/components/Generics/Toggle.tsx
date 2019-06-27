@@ -3,8 +3,6 @@ import { useContext, Component, useState, useEffect } from 'react';
 import { theme, ThemeContext } from '../../helpers';
 import { MdSend, MdPerson, MdMood, MdFace, MdLocalMovies, MdEvent, MdFilterList } from 'react-icons/md';
 
-const styles: any = require('./Toggle.scss');
-
 enum ToggleType {
     compact,
     stretched
@@ -16,13 +14,18 @@ const Toggle = ({header, type, isOn, isEnabled, onClick, onChange = null, stateT
     const [isenabled, setIsEnabled] = useState(isEnabled);
 
     return (
-        <div className={`${!isenabled ? styles.disabled : null} `} style={
-          Object.assign({}, type == ToggleType.stretched ? stateTheme.toggle.stretched : stateTheme.toggle.compact, stateTheme.toggle)
+        <div style={
+          Object.assign({}, 
+            Object.assign({}, 
+              !isenabled ? stateTheme.toggle.disabled : null, type == ToggleType.stretched ? stateTheme.toggle.stretched : stateTheme.toggle.compact), 
+            stateTheme.toggle)
         }>
               <div style={Object.assign({}, type == ToggleType.stretched ? stateTheme.toggle.header.stretched : stateTheme.toggle.header.compact)}>{header}</div>
               <div style={
                 Object.assign({},
-                   Object.assign({}, stateTheme.base.background, type == ToggleType.stretched ? stateTheme.toggle.toggleBody.stretched : stateTheme.toggle.toggleBody.compact), 
+                   Object.assign({}, 
+                    Object.assign({},  !isenabled ? stateTheme.toggle.disabled.toggleBody : null, stateTheme.base.background), 
+                    type == ToggleType.stretched ? stateTheme.toggle.toggleBody.stretched : stateTheme.toggle.toggleBody.compact), 
                    stateTheme.toggle.toggleBody)} onClick={(e) => {
                   setIsOn(!ison);
                   if (isenabled) {
@@ -34,8 +37,7 @@ const Toggle = ({header, type, isOn, isEnabled, onClick, onChange = null, stateT
                     background: ison
                       ? theme.globals.accentBackground.backgroundColor
                       : stateTheme.base.secondaryBackground.backgroundColor
-                  }, stateTheme.toggle.toggleBody.handle)}
-                  className={ison ? stateTheme.toggle.toggleBody.isOff : ''}
+                  }, Object.assign({}, ison ? stateTheme.toggle.toggleBody.isOn : '' ,stateTheme.toggle.toggleBody.handle))}
                 />
               </div>
         </div>

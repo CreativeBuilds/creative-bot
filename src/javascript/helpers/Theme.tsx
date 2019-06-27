@@ -250,11 +250,8 @@ const theme = {
           transition: 'all 0.15s ease-in-out'
         },
         isOn: {
-          'margin-left': '-50px'
-        },
-        isOff: {
           'margin-left': '50px'
-        }
+        },
       }
     },
     slider: {
