@@ -7,7 +7,7 @@ const {
 } = require('./helpers');
 const log = require('electron-log');
 const { app, BrowserWindow, ipcMain } = require('electron');
-app.setAppUserModelId('creativebot');
+// app.setAppUserModelId('creativebot');
 app.commandLine.appendSwitch('enable-speech-dispatcher');
 const debug = require('electron-debug');
 debug({ showDevTools: false, isEnabled: true });

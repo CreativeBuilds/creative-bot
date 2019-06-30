@@ -1,6 +1,6 @@
 {
   "name": "creative-bot",
-  "version": "1.6",
+  "version": "1.6.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,9 +13,6 @@
     "electron-compile": "webpack && cross-env NODE_ENV=dev electron .",
     "electron-reset": "cross-env NODE_ENV=dev NODE_HARD=true electron .",
     "release": "build"
-  },
-  "build": {
-    "appId": "creativebot"
   },
   "author": "CreativeBuilds",
   "license": "ISC",
