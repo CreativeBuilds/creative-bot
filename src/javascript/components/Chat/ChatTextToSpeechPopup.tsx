@@ -93,7 +93,7 @@ const ChatTextToSpeechPopup = ({
           stateTheme={stateTheme}
         />
         <Slider
-          header='Amplitude'
+          header='Volume'
           val={ttsAmplitude}
           maxValue={200}
           hasHeader={true}

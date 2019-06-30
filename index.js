@@ -7,6 +7,7 @@ const {
 } = require('./helpers');
 const log = require('electron-log');
 const { app, BrowserWindow, ipcMain } = require('electron');
+app.setAppUserModelId('creativebot');
 app.commandLine.appendSwitch('enable-speech-dispatcher');
 const debug = require('electron-debug');
 debug({ showDevTools: false, isEnabled: true });
@@ -15,6 +16,11 @@ const path = require('path');
 const { distinctUntilChanged, filter, first } = require('rxjs/operators');
 const _ = require('lodash');
 const storage = require('electron-json-storage');
+
+const express = require('express');
+const APP = express();
+const port = 6942;
+
 // const DLive = require('dlive-js');
 const { rxDlive } = require('./helpers/rxDlive');
 let dlive;
@@ -120,6 +126,58 @@ function createWindow() {
   win.on('close', function() {
     process.exit();
   });
+
+  let oauthWindowStart = () => {
+    let popup = new BrowserWindow({ width: 400, height: 600, frame: false });
+    popup.webContents.on('did-finish-load', function() {
+      let injectJs = `function addStyleString(str) {
+        var node = document.createElement('style');
+        node.innerHTML = str;
+        document.body.appendChild(node);
+    }
+    
+    addStyleString('.container{ max-height: 100vh !important; overflow-y: auto !important;height:min-content;display:block;}');`;
+      popup.webContents.executeJavaScript(injectJs);
+    });
+    popup.loadURL(
+      `https://dlive.tv/o/authorize?client_id=2582484581&redirect_uri=https://creativebuilds.io/oauth/dlive&response_type=code&scope=identity%20chat:write%20chest:write%20comment:write%20email:read%20emote:read%20emote:write%20moderation:read%20moderation:write%20relationship:read%20relationship:write%20streamtemplate:read%20streamtemplate:write%20subscription:read%20subsetting:write%20&state=http://localhost:6942/oauth`
+    );
+
+    popup.webContents.on(
+      'did-fail-load',
+      (event, e, desc, url, isMainFrame) => {
+        console.log('FAILED', e, desc, url, isMainFrame);
+      }
+    );
+
+    popup.webContents.on('will-redirect', (event, url) => {
+      // console.log('GOT NEW URL', url.slice(0, 10));
+      if (url.startsWith('http://localhost')) {
+        // console.log('URL STARTS WITH THIS');
+        let auth = url.split('?auth=')[1];
+        // console.log('GOT AUTH', url.split('?=auth='));
+        if (!auth) {
+          popup.close();
+          oauthWindowStart();
+        } else {
+          // We got auth string boiiiiss time to set it on the
+          win.webContents.send('newAuthKey', auth);
+          popup.close();
+        }
+      }
+    });
+  };
+
+  ipcMain.on('oauthWindowStart', () => {
+    oauthWindowStart();
+  });
+
+  // APP.get('/oauth', (req, res) => {
+  //   let authorization = req.param('auth');
+  //   res.send('<script>window.close();</script>');
+  // });
+
+  // APP.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
   rxConfig
     .pipe(

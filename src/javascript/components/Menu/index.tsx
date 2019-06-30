@@ -144,7 +144,7 @@ const Menu = props => {
           >
             LISTS
           </Li>} */}
-          <Li
+          {/* <Li
             style={{}}
             hoverStyle={Object.assign(
               {},
@@ -157,7 +157,7 @@ const Menu = props => {
             }}
           >
             SETTINGS
-          </Li>
+          </Li> */}
           {
             <Li
               style={{}}
