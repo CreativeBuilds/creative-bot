@@ -10,6 +10,8 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 import { SegmentControl, SegmentControlSource } from '../SegmentControl/index';
 import { Toggle, ToggleType } from '../Generics/Toggle';
 import { Panel } from '../Generics/Panel';
+import { GoNoNewline } from 'react-icons/go';
+import { first } from 'rxjs/operators';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -54,6 +56,39 @@ const ChatFiltersPopup = ({
   const [helperText, SetHelperText] = useState(text);
   const [error, SetError] = useState(false);
   const [config, setConfig] = useState(Config);
+
+  const [payoutAmount, setPayoutAmount] = useState(Config.points || 5);
+  const [payoutRate, setPayoutRate] = useState(
+    Math.ceil((Config.pointsTimer || 300) / 60)
+  );
+
+  let payoutTimeout;
+  useEffect(() => {
+    if (!payoutAmount && typeof payoutAmount !== 'number') return;
+    if (Number(payoutAmount) === Number(Config.points || 5)) return;
+    if (payoutTimeout) clearInterval(payoutTimeout);
+    payoutTimeout = setTimeout(() => {
+      firebaseConfig$.pipe(first()).subscribe(config => {
+        let copy: any = Object.assign({}, config);
+        copy.points = Number(payoutAmount);
+        setRxConfig(copy);
+      });
+    }, 500);
+  }, [payoutAmount]);
+
+  let payoutRateTimeout;
+  useEffect(() => {
+    if (!payoutRate && typeof payoutRate !== 'number') return;
+    if (Number(payoutRate) === (Config.pointsTimer || 300) / 60) return;
+    if (payoutRateTimeout) clearInterval(payoutRateTimeout);
+    payoutRateTimeout = setTimeout(() => {
+      firebaseConfig$.pipe(first()).subscribe(config => {
+        let copy: any = Object.assign({}, config);
+        copy.pointsTimer = Number(payoutRate) * 60;
+        setRxConfig(copy);
+      });
+    }, 500);
+  }, [payoutRate]);
 
   useEffect(() => {
     let listener = firebaseConfig$.subscribe((data: any) => {
@@ -130,6 +165,56 @@ const ChatFiltersPopup = ({
           }}
           stateTheme={stateTheme}
         />
+        <div
+          style={{ display: 'flex', flexDirection: 'column', width: '100%' }}
+        >
+          <div>Points Per Minute</div>
+          <input
+            type={'number'}
+            style={Object.assign(
+              {},
+              {
+                flex: 1,
+                border: '0px solid #000',
+                borderRadius: '5px',
+                padding: '5px',
+                outline: 'none',
+                height: '20px',
+                fontSize: '16px'
+              },
+              stateTheme.base.tertiaryBackground
+            )}
+            value={payoutAmount}
+            min={0}
+            onChange={e => setPayoutAmount(e.target.value)}
+          />
+        </div>
+        <div
+          style={{ display: 'flex', flexDirection: 'column', width: '100%' }}
+        >
+          <div>
+            Payout Every {payoutRate} Minute{payoutRate === 1 ? '' : 's'}
+          </div>
+          <input
+            type={'number'}
+            style={Object.assign(
+              {},
+              {
+                flex: 1,
+                border: '0px solid #000',
+                borderRadius: '5px',
+                padding: '5px',
+                outline: 'none',
+                height: '20px',
+                fontSize: '16px'
+              },
+              stateTheme.base.tertiaryBackground
+            )}
+            min={1}
+            value={payoutRate}
+            onChange={e => setPayoutRate(Number(e.target.value))}
+          />
+        </div>
         <Panel
           header='Timestamp Filters'
           hasHeader={true}

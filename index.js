@@ -683,7 +683,9 @@ function createWindow() {
 
           // }
         } else {
+          console.log('CHECKING TO SEE IF GIVEAWAY EXISTS');
           rxGiveaways.pipe(first()).subscribe(giveaways => {
+            console.log('giveaways', giveaways);
             let giveaway = Object.assign({}, giveaways[commandName]);
             if (!giveaways[commandName]) return;
             if (typeof giveaway.winners !== 'undefined')
@@ -796,8 +798,10 @@ function createWindow() {
                   let newObj = {};
                   newObj[commandName] = giveaway;
                   if (giveaway === giveaways[commandName]) return;
-
-                  rxGiveaways.next(Object.assign({}, giveaways, newObj));
+                  win.webContents.send(
+                    'rxGiveaways',
+                    Object.assign({}, giveaways, newObj)
+                  );
                 } else {
                   sendMessage(
                     `${
