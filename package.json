@@ -1,6 +1,6 @@
 {
   "name": "creative-bot",
-  "version": "1.6.12-canary",
+  "version": "1.7.0-canary",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -26,6 +26,7 @@
     "electron-log": "^3.0.6",
     "electron-reload": "^1.4.0",
     "electron-updater": "^4.0.6",
+    "express": "^4.17.1",
     "firebase": "^6.2.2",
     "fstream": "^1.0.12",
     "https": "^1.0.0",

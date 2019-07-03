@@ -10,7 +10,7 @@ const RangeSlider = ({
   hasHeader,
   minValue = 0,
   maxValue = 10,
-  val = 5,
+  val = 100 < (maxValue || 10) ? 100 : 5,
   valType = '',
   onChange = null,
   onValueChanged = null,

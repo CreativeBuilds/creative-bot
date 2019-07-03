@@ -98,7 +98,7 @@ const ChatFiltersPopup = ({
 
   return (
     <div className={`${styles.popup}`}>
-      <h2>Chat Filters</h2>
+      <h2>Chat Settings</h2>
       <div className={`${styles.chatFilterPopup}`}>
         <Toggle
           header='Show Event Messages'
