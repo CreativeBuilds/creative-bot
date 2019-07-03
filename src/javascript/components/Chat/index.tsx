@@ -9,7 +9,11 @@ import {
   MdLocalMovies,
   MdEvent,
   MdFilterList,
-  MdSettingsVoice
+  MdSettingsVoice,
+  MdSettings,
+  MdRemoveRedEye,
+  MdVisibility,
+  MdVisibilityOff
 } from 'react-icons/md';
 
 import { Message } from './Message';
@@ -20,7 +24,7 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 import { remote } from 'electron';
 import { CreativeBotPopup } from './../WebServices/CreativeBotPopup';
 import { ChatFiltersPopup } from './ChatFiltersPopup';
-import { ChatTextToSpeechPopup} from './ChatTextToSpeechPopup';
+import { ChatTextToSpeechPopup } from './ChatTextToSpeechPopup';
 import { AdvancedDiv } from '../AdvancedDiv';
 import { firebase } from '../../helpers/firebase';
 
@@ -31,9 +35,10 @@ import {
   signUp as SignUp,
   rxFirebaseuser
 } from '../../helpers/firebase';
-import { filter, distinctUntilChanged } from 'rxjs/operators';
+import { filter, distinctUntilChanged, first } from 'rxjs/operators';
 import { SetupOptionsPopup } from './SetupOptionsPopup';
 import { SetupAsExistingUserPopup } from './SetupAsExistingUserPopup';
+import { AccountsPopup } from './AccountsPopup';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -465,6 +470,72 @@ const AddCommandPopup = ({
   );
 };
 
+const LoginWithDlivePopup = ({
+  styles,
+  closeCurrentPopup,
+  stateTheme,
+  configName,
+  text = '',
+  buttonText = 'NEXT',
+  noInput = false,
+  Config = {},
+  type = 'text'
+}: popup) => {
+  return (
+    <div className={styles.popup}>
+      <h3 style={{ margin: '0px', marginBottom: '5px' }}>
+        BOT ACCOUNT SIGN IN!
+      </h3>
+      <i
+        style={{
+          textAlign: 'center',
+          width: '70%',
+          margin: 'auto',
+          marginBottom: '10px'
+        }}
+      >
+        Please do not use your streamer account,{' '}
+        <b>make a seperate bot account</b>
+      </i>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      >
+        {/* TODO: This is going to need a Generic button file */}
+        <AdvancedDiv
+          style={{
+            whiteSpace: 'nowrap',
+            width: 'min-content',
+            padding: '10px',
+            background: theme.globals.actionButton.backgroundColor,
+            color: theme.globals.actionButton.color,
+            borderRadius: '5px'
+          }}
+          hoverStyle={{
+            cursor: 'pointer',
+            boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
+          }}
+        >
+          <div
+            onClick={e => {
+              // Need to create a popup that is oauth for dlive
+              ipcRenderer.send('oauthWindowStart');
+              ipcRenderer.once('newAuthKey', (event, key) => {
+                closeCurrentPopup(key);
+              });
+            }}
+          >
+            Sign-in With DLive
+          </div>
+        </AdvancedDiv>
+      </div>
+    </div>
+  );
+};
+
 const Chat = ({ props }) => {
   const { stateTheme, setStateTheme } = useContext(ThemeContext);
   const [isScrolledUp, setIsScrolledUp] = useState(false);
@@ -572,6 +643,19 @@ const Chat = ({ props }) => {
     );
   };
 
+  const openAccountsPannel = () => {
+    addPopup(
+      <AccountsPopup
+        stateTheme={stateTheme}
+        styles={styles}
+        Config={Object.assign({}, config)}
+        closeCurrentPopup={closeCurrentPopup}
+      />,
+      false,
+      true
+    );
+  };
+
   useEffect(() => {
     if (isScrolledUp) return;
     document.getElementById('bottomOfMessages').scrollIntoView();
@@ -633,20 +717,20 @@ const Chat = ({ props }) => {
       !config.authKey &&
       config.init &&
       !authKey &&
-      !config.streamerDisplayName &&
+      // !config.streamerDisplayName &&
       config.acceptedToS &&
       typeof config.isFirebaseUser !== 'undefined' &&
       (config.isFirebaseUser ? config.loadedFirebaseConfig : true)
     ) {
       authKey = true;
       addPopup(
-        <AddCommandPopup
+        <LoginWithDlivePopup
           styles={styles}
           addPopup={addPopup}
           Config={Object.assign({}, config)}
           closeCurrentPopup={(input, setError) => {
             if (input !== '') {
-              let Config = Object.assign({}, { authKey: input }, config);
+              let Config = Object.assign({}, config, { authKey: input });
               setRxConfig(Config);
               closeCurrentPopup();
             } else {
@@ -800,8 +884,15 @@ const Chat = ({ props }) => {
               openChatFiltersPanel();
             }}
           >
-            <MdFilterList />
-            <span> </span>
+            <MdSettings />
+          </div>
+          <div
+            className={styles.events}
+            onClick={() => {
+              openAccountsPannel();
+            }}
+          >
+            <MdPerson />
           </div>
           <div
             className={styles.viewers}
@@ -809,8 +900,12 @@ const Chat = ({ props }) => {
               setViewersToggle(!viewersToggle);
             }}
           >
-            <MdPerson />
-            <span> {viewersToggle ? viewers : 'HIDDEN'}</span>
+            {viewersToggle ? (
+              <MdVisibility style={{ paddingRight: '5px' }} />
+            ) : (
+              <MdVisibilityOff />
+            )}
+            <span> {viewersToggle ? viewers : null}</span>
           </div>
         </div>
       </div>

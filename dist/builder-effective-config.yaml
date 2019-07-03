@@ -1,4 +1,5 @@
 directories:
   output: dist
   buildResources: build
-electronVersion: 4.2.0
+appId: creativebot
+electronVersion: 4.2.5
