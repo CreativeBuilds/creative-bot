@@ -40,7 +40,7 @@ const DestructiveButton = ({title, isSubmit = false, width = 'auto', isEnabled =
           <div
             onClick={onClick}
           >
-            {title}
+            <span>{title}</span>
           </div>
         </AdvancedDiv>
     );
@@ -62,7 +62,7 @@ const ActionButton = ({title, isSubmit = false, width = 'auto', isEnabled = true
           <div
             onClick={onClick}
           >
-            {title}
+            <span>{title}</span>
           </div>
         </AdvancedDiv>
     );
