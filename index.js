@@ -653,7 +653,7 @@ function createWindow() {
           // obj[commandName].uses += 1;
           Commands = Object.assign({}, Commands, obj);
           if (!command.enabled) return console.log('command not enabled');
-          sendMessage(`Fetching info...`);
+          // sendMessage(`Fetching info...`);
           rxDlive.pipe(filter(x => !!x)).subscribe(dlive => {
             dlive.getChannel(streamerDisplayName).then(streamChannel => {
               parseReply({
