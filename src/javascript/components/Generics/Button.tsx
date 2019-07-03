@@ -15,7 +15,7 @@ const Button = ({title, isSubmit = false, width = 'auto', isEnabled = true, onCl
                 Object.assign({}, stateTheme.base.tertiaryBackground, stateTheme.button.normal)))}
           hoverStyle={Object.assign({}, theme.globals.accentBorderColor, stateTheme.button.normal.hover)}
           isButton={true}
-          buttonStyle={buttonStyle}
+          aStyle={buttonStyle}
         >
           <div
             onClick={onClick}
@@ -35,7 +35,7 @@ const DestructiveButton = ({title, isSubmit = false, width = 'auto', isEnabled =
             Object.assign({}, theme.globals.destructive, 
                 Object.assign({}, isSubmit ? stateTheme.button.normal.submit : {width: width, 'margin-bottom': '10px'} , stateTheme.button.normal)))}
           hoverStyle={Object.assign({}, theme.globals.accentBorderColor, stateTheme.button.normal.hover)}
-          buttonStyle={buttonStyle}
+          aStyle={buttonStyle}
         >
           <div
             onClick={onClick}
@@ -57,7 +57,7 @@ const ActionButton = ({title, isSubmit = false, width = 'auto', isEnabled = true
                 Object.assign({}, isSubmit ? stateTheme.button.normal.submit : {width: width, 'margin-bottom': '10px'} , stateTheme.button.normal)))}
           hoverStyle={Object.assign({}, theme.globals.accentBorderColor, stateTheme.button.normal.hover)}
           isButton={true}
-          buttonStyle={buttonStyle}
+          aStyle={buttonStyle}
         >
           <div
             onClick={onClick}

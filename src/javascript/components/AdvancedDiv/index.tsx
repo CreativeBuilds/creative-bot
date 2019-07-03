@@ -20,9 +20,7 @@ export const AdvancedDiv = (props: IProps) => {
     className = '',
     hoverClassName = '',
     style = {},
-    hoverStyle = {},
-    isButton = false,
-    buttonStyle = {}
+    hoverStyle = {}
   } = props;
   const [hover, setHover] = useState(false);
 
@@ -39,7 +37,7 @@ export const AdvancedDiv = (props: IProps) => {
       onMouseLeave={() => {
         setHover(false);
       }}
-      style={Object.assign({}, isButton ? buttonStyle : null, aStyle)}
+      style={aStyle}
       className={aClassName}
     >
       {React.cloneElement(props.children, {
