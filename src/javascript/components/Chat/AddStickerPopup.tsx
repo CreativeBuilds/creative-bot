@@ -8,6 +8,7 @@ import { firebaseEmotes$, setRxEmotes } from '../../helpers/rxEmotes';
 import { Action } from 'rxjs/internal/scheduler/Action';
 
 import { SegmentControl, SegmentControlSource } from '../SegmentControl/index';
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -111,24 +112,21 @@ const AddStickerPopup = ({
         </div>
       </div>
       <div className={styles.buttonstack}>
-        <div
-          className={styles.submit}
-          style={stateTheme.submitButton}
-          onClick={() => {
-            sendMessage();
-          }}
-        >
-          Send Sticker
-        </div>
-        <div
-          className={styles.submit}
-          style={stateTheme.submitButton}
-          onClick={() => {
-            save();
-          }}
-        >
-          Add Sticker
-        </div>
+        <Button title={"Send Sticker"} 
+        isSubmit={true} 
+        stateTheme={stateTheme}
+        buttonStyle={{width: '-webkit-fill-available'}}
+        onClick={() => {
+          sendMessage();
+          }}/>
+        <Button title={"Add Sticker"} 
+        isSubmit={true} 
+        stateTheme={stateTheme} 
+        buttonStyle={{width: '-webkit-fill-available',
+        'margin-left': '10px'}} 
+        onClick={() => {
+          save();
+        }} />
       </div>
     </div>
   );

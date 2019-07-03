@@ -27,6 +27,7 @@ import { ChatFiltersPopup } from './ChatFiltersPopup';
 import { ChatTextToSpeechPopup } from './ChatTextToSpeechPopup';
 import { AdvancedDiv } from '../AdvancedDiv';
 import { firebase } from '../../helpers/firebase';
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
 
 import { isEmpty, isEqual } from 'lodash';
 
@@ -140,7 +141,7 @@ const AddAcceptFirebasePopup = ({
           <div
             style={{
               paddingBottom: '10px',
-              color: theme.globals.destructiveButton.backgroundColor
+              color: theme.globals.destructive.backgroundColor
             }}
           >
             {emailErr}
@@ -202,7 +203,7 @@ const AddAcceptFirebasePopup = ({
           <div
             style={{
               paddingBottom: '10px',
-              color: theme.globals.destructiveButton.backgroundColor
+              color: theme.globals.destructive.backgroundColor
             }}
           >
             {passwordErr}
@@ -235,55 +236,51 @@ const AddAcceptFirebasePopup = ({
         </React.Fragment>
       ) : null}
       {signUp ? (
-        <div
-          className={`${styles.submit} ${
-            confErr.length === 0 &&
-            passwordErr.length === 0 &&
-            emailErr.length === 0
-              ? styles.enabled
-              : styles.disabled
-          }`}
-          onClick={() => {
-            SignUp(email, password)
-              .then(boop => {
-                closeCurrentPopup({
-                  uid: boop.user.uid,
-                  refreshToken: boop.user.refreshToken
-                });
-              })
-              .catch(e => {
-                if (e.message) {
-                  setEmailErr(e.message);
-                }
+        <Button title={"Create Account"} 
+        isSubmit={true} 
+        stateTheme={stateTheme} 
+        isEnabled={
+          confErr.length === 0 &&
+          passwordErr.length === 0 &&
+          emailErr.length === 0
+            ? true
+            : false} 
+        onClick={() => {
+          SignUp(email, password)
+            .then(boop => {
+              closeCurrentPopup({
+                uid: boop.user.uid,
+                refreshToken: boop.user.refreshToken
               });
-          }}
-        >
-          Create Account
-        </div>
+            })
+            .catch(e => {
+              if (e.message) {
+                setEmailErr(e.message);
+              }
+            });
+        }} />
       ) : (
-        <div
-          className={`${styles.submit} ${styles.enabled}`}
-          onClick={() => {
-            initLogin(email, password)
-              .then(boop => {
-                closeCurrentPopup({
-                  uid: boop.user.uid,
-                  refreshToken: boop.user.refreshToken
-                });
-              })
-              .catch(e => {
-                if (e.code.includes('wrong-password')) {
-                  if (e.message) {
-                    setPasswordErr(`Invalid password.`);
-                  }
-                } else if (e.code.includes('user-not-found')) {
-                  setEmailErr(`User not found.`);
-                }
+        <Button title={"Login"} 
+        isSubmit={true} 
+        stateTheme={stateTheme}  
+        onClick={() => {
+          initLogin(email, password)
+            .then(boop => {
+              closeCurrentPopup({
+                uid: boop.user.uid,
+                refreshToken: boop.user.refreshToken
               });
-          }}
-        >
-          Login
-        </div>
+            })
+            .catch(e => {
+              if (e.code.includes('wrong-password')) {
+                if (e.message) {
+                  setPasswordErr(`Invalid password.`);
+                }
+              } else if (e.code.includes('user-not-found')) {
+                setEmailErr(`User not found.`);
+              }
+            });
+        }} />
       )}
       <div style={{ display: 'flex', marginTop: '10px' }}>
         {signUp ? (
@@ -307,6 +304,7 @@ const AddAcceptFirebasePopup = ({
             >
               Sign in
             </div>
+            
           </AdvancedDiv>
         ) : (
           <React.Fragment>
@@ -330,6 +328,7 @@ const AddAcceptFirebasePopup = ({
               >
                 Sign up
               </div>
+              
             </AdvancedDiv>
             {/* <AdvancedDiv
               aStyle={{
@@ -453,19 +452,9 @@ const AddCommandPopup = ({
       >
         {helperText}
       </div>
-      <div
-        className={`${styles.submit} ${
-          error ? styles.disabled : styles.enabled
-        }`}
-        style={
-          error ? stateTheme.disabledSubmitButton : stateTheme.submitButton
-        }
-        onClick={() => {
+      <Button title={buttonText} isSubmit={true} isEnabled={error ? false : true} stateTheme={stateTheme} onClick={() => {
           verifySave();
-        }}
-      >
-        {buttonText}
-      </div>
+        }} />
     </div>
   );
 };
@@ -505,7 +494,7 @@ const LoginWithDlivePopup = ({
         }}
       >
         {/* TODO: This is going to need a Generic button file */}
-        <AdvancedDiv
+        {/*<AdvancedDiv
           style={{
             whiteSpace: 'nowrap',
             width: 'min-content',
@@ -530,7 +519,17 @@ const LoginWithDlivePopup = ({
           >
             Sign-in With DLive
           </div>
-        </AdvancedDiv>
+        </AdvancedDiv>*/}
+        <ActionButton 
+        title={"Save"} 
+        stateTheme={stateTheme}  
+        onClick={e => {
+          // Need to create a popup that is oauth for dlive
+          ipcRenderer.send('oauthWindowStart');
+          ipcRenderer.once('newAuthKey', (event, key) => {
+            closeCurrentPopup(key);
+          });
+        }}/>
       </div>
     </div>
   );

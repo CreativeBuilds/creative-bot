@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 import { ToggleBox } from './ToggleBox';
 import { Checkbox } from '../Generics/Checkbox';
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
 
 import { MdModeEdit, MdEdit, MdDelete } from 'react-icons/md';
 import { theme } from '../../helpers';
@@ -74,18 +75,16 @@ const Popup = ({ command, styles, closeCurrentPopup, stateTheme }) => {
           value={uses}
         />
       </div> */}
-      <div
-        className={styles.submit}
-        style={stateTheme.submitButton}
+      <Button 
+        title={"Save"} 
+        isSubmit={true} 
+        stateTheme={stateTheme}  
         onClick={() => {
           // if (isNaN(Number(uses))) return;
           // setUses(Number(uses));
           saveToDB();
           closeCurrentPopup();
-        }}
-      >
-        SAVE
-      </div>
+        }} />
     </div>
   );
 };
@@ -111,16 +110,14 @@ const RemoveCommandPopup = ({
       <div className={styles.remove_text}>
         You're about to delete this command! Are you sure you want to do that?
       </div>
-      <div
-        className={styles.submit}
-        style={theme.globals.destructiveButton}
+      <DestructiveButton 
+        title={"Yes"} 
+        isSubmit={true}
+        stateTheme={stateTheme} 
         onClick={() => {
-          saveToDB();
-          closeCurrentPopup();
-        }}
-      >
-        YES
-      </div>
+            saveToDB();
+            closeCurrentPopup();
+          }} />
     </div>
   );
 };

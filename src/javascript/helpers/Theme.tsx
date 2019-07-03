@@ -6,6 +6,11 @@ const theme = {
       backgroundColor: '#ffd300',
       color: '#202225'
     },
+    accentBorderColor: {
+      color: '#ffd300',
+      fill: '#ffd300',
+      borderColor: '#ffd300',
+    },
     accentHighlight: {
       highlightColor: '#ffd300',
       color: '#202225'
@@ -17,16 +22,28 @@ const theme = {
       backgroundColor: '#b39400',
       color: '#202225'
     },
+    accentDarkBorderColor: {
+      color: '#b39400',
+      fill: '#b39400',
+      borderColor: '#b39400',
+    },
+    accentDarkHighlight: {
+      highlightColor: '#b39400',
+      color: '#202225'
+    },
+    accentDarkForeground: {
+      color: '#b39400'
+    },
     eventAccent: {
       backgroundColor: '#ffd300',
       color: '#202225'
     },
-    destructiveButton: {
+    destructive: {
       backgroundColor: '#dc143c',
       color: '#f0f0f0',
       borderColor: '#dc143c'
     },
-    actionButton: {
+    action: {
       backgroundColor: '#1e90ff',
       color: '#f0f0f0',
       borderColor: '#1e90ff'
@@ -323,7 +340,39 @@ const theme = {
       'border-bottom': '4px solid #202225',
       'font-size': '30px'
     },
-    button: {},
+    button: {
+      normal: {
+        height: '25px',
+        display: 'flex',
+        'justify-content': 'center',
+        'align-items': 'center',
+        'font-size': '20px',
+        padding: '6px',
+        'border-radius': '5px',
+        color: '#f0f0f0',
+        transition: 'all 0.15s ease-in-out',
+        submit: {
+          'margin-bottom': '0px !important'
+        },
+        disabled: {
+          backgroundColor: '#191a1c',
+          color: '#d0d0d0',
+        },
+        hover: {
+          cursor: 'pointer',
+          border: '1.5px solid',
+          boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
+        }
+      },
+      sender: {
+        disabled: {
+
+        },
+        hover: {
+
+        }
+      }
+    },
     submitButton: {
       backgroundColor: '#141517',
       color: '#f0f0f0',
@@ -341,6 +390,16 @@ const theme = {
       backgroundColor: '#191a1c',
       color: '#d0d0d0',
       borderColor: '#191a1c'
+    },
+    input: {
+      search: {
+        backgroundColor: '#0e0f10',
+        color: '#0f0f0f',
+        borderColor: '#0e0f10'
+      },
+      message: {
+        
+      }
     },
     searchInput: {
       backgroundColor: '#0e0f10',
@@ -640,6 +699,42 @@ const theme = {
       'border-bottom': '4px solid #cccccc',
       'font-size': '30px'
     },
+    button: {
+      normal: {
+        width: 'calc(70% - 9px)',
+        height: '25px',
+        display: 'flex',
+        'justify-content': 'center',
+        'align-items': 'center',
+        'font-size': '20px',
+        padding: '6px',
+        'border-radius': '5px',
+        color: '#f0f0f0',
+        transition: 'all 0.15s ease-in-out',
+        'margin-bottom': '10px',
+        submit: {
+          width: 'calc(70% - 9px)',
+          'margin-bottom': '0px'
+        },
+        disabled: {
+          backgroundColor: '#dddddd',
+          color: '#202225',
+        },
+        hover: {
+          cursor: 'pointer',
+          border: '1.5px solid',
+          boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
+        }
+      },
+      sender: {
+        disabled: {
+
+        },
+        hover: {
+          
+        }
+      }
+    },
     submitButton: {
       backgroundColor: `#eeeeee`,
       color: '#202225',
@@ -649,6 +744,16 @@ const theme = {
       backgroundColor: '#dddddd',
       color: '#202225',
       borderColor: '#dddddd'
+    },
+    input: {
+      search: {
+        backgroundColor: `#F1F1F1`,
+        color: '#202225',
+        borderColor: `#F1F1F1`
+      },
+      message: {
+
+      }
     },
     searchInput: {
       backgroundColor: `#F1F1F1`,

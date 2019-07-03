@@ -51,7 +51,7 @@ const Popup = ({
             width: '60%',
             textAlign: 'left',
             marginBottom: '5px',
-            color: theme.globals.destructiveButton.backgroundColor
+            color: theme.globals.destructive.backgroundColor
           }}
         >
           {error}

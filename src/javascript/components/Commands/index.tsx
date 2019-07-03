@@ -9,6 +9,8 @@ const { Command } = require('./Command');
 const { Sorting } = require('./Sorting');
 let { setRxCommands } = require('../../helpers/rxCommands');
 
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
 
@@ -102,13 +104,11 @@ const AddCommandPopup = ({
           </span>
         </div>
       </div>
-      <div
-        className={styles.submit}
-        onClick={save}
-        style={stateTheme.submitButton}
-      >
-        CREATE
-      </div>
+      <Button 
+        title={"Create"} 
+        isSubmit={true} 
+        stateTheme={stateTheme}  
+        onClick={save} />
     </div>
   );
 };

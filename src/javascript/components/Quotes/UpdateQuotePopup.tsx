@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import * as _ from 'lodash';
 let { setRxQuotes } = require('../../helpers/rxQuotes');
 
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+
 const UpdateQuotePopup = ({
   quote,
   styles,
@@ -126,13 +128,11 @@ const UpdateQuotePopup = ({
           value={date}
         />
       </div>
-      <div
-        className={styles.submit}
-        onClick={save}
-        style={stateTheme.submitButton}
-      >
-        UPDATE
-      </div>
+      <Button 
+        title={"Update"} 
+        isSubmit={true} 
+        stateTheme={stateTheme}  
+        onClick={save} />
     </div>
   );
 };

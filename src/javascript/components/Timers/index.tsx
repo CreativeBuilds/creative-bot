@@ -7,6 +7,8 @@ const { Timer } = require('./Timer');
 const { Sorting } = require('./Sorting');
 let { setRxTimers } = require('../../helpers/rxTimers');
 
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
@@ -80,17 +82,15 @@ const AddCommandPopup = ({
           value={reply}
         />
       </div>
-      <div
-        className={styles.submit}
-        style={stateTheme.submitButton}
+      <Button 
+        title={"Create"} 
+        isSubmit={true} 
+        stateTheme={stateTheme}  
         onClick={() => {
           if (isNaN(Number(messages)) || isNaN(Number(seconds))) return;
           saveToDB();
           closeCurrentPopup();
-        }}
-      >
-        CREATE
-      </div>
+        }} />
     </div>
   );
 };

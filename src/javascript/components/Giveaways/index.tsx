@@ -9,6 +9,8 @@ const { Giveaway } = require('./Giveaway');
 const { Sorting } = require('./Sorting');
 let { setRxGiveaways } = require('../../helpers/rxGiveaways');
 
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
@@ -113,16 +115,16 @@ const AddGiveawayPopup = ({
           value={secondsUntilClose}
         />
       </div>
-      <div
-        className={styles.submit}
-        style={stateTheme.submitButton}
+      <Button 
+        title={"Create"} 
+        isSubmit={true} 
+        stateTheme={stateTheme}  
         onClick={() => {
+          // if (isNaN(Number(uses))) return;
+          // setUses(Number(uses));
           saveToDB();
           closeCurrentPopup();
-        }}
-      >
-        CREATE
-      </div>
+        }} />
     </div>
   );
 };

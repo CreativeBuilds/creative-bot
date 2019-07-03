@@ -3,7 +3,9 @@ import { useState, useEffect } from 'react';
 import { MdClose, MdTimer, MdDoNotDisturb, MdCancel } from 'react-icons/md';
 import { removeMessage } from '../../helpers/removeMessage';
 import ReactTooltip from 'react-tooltip';
+
 import { Toggle, ToggleType } from '../Generics/Toggle';
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
 
 import { firebaseUsers$, setRxUsers } from '../../helpers/rxUsers';
 
@@ -128,15 +130,9 @@ const UserPopup = ({
               stateTheme={stateTheme}
             />
           </div>
-          <div
-            className={Styles.user_submit}
-            style={stateTheme.base.secondaryBackground}
-            onClick={() => {
-              SaveUser();
-            }}
-          >
-            {submitText}
-          </div>
+          <Button title={submitText} isSubmit={true} stateTheme={stateTheme} onClick={() => {
+            SaveUser();
+          }} />
         </div>
       </div>
     </div>

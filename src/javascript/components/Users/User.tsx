@@ -3,6 +3,8 @@ import { useState } from 'react';
 
 import { ModBox } from './ModBox';
 
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+
 import { MdModeEdit } from 'react-icons/md';
 import { theme } from '../../helpers';
 
@@ -46,17 +48,15 @@ const Popup = ({ user, styles, closeCurrentPopup, stateTheme }) => {
           value={points}
         />
       </div>
-      <div
-        className={styles.submit}
-        style={stateTheme.submitButton}
+      <Button 
+        title={"Save"} 
+        isSubmit={true} 
+        stateTheme={stateTheme}  
         onClick={() => {
-          if (isNaN(Number(points))) return;
-          saveToDB(Number(points));
-          closeCurrentPopup();
-        }}
-      >
-        SAVE
-      </div>
+            if (isNaN(Number(points))) return;
+            saveToDB(Number(points));
+            closeCurrentPopup();
+          }} />
     </div>
   );
 };

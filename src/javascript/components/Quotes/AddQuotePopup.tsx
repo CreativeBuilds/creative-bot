@@ -4,6 +4,8 @@ import * as _ from 'lodash';
 import { Quote } from './Quote';
 let { setRxQuotes } = require('../../helpers/rxQuotes');
 
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+
 const AddQuotePopup = ({
   styles,
   closeCurrentPopup,
@@ -138,13 +140,11 @@ const AddQuotePopup = ({
           value={date}
         />
       </div>
-      <div
-        className={styles.submit}
-        onClick={save}
-        style={stateTheme.submitButton}
-      >
-        CREATE
-      </div>
+      <Button 
+        title={"Create"} 
+        isSubmit={true} 
+        stateTheme={stateTheme}  
+        onClick={save} />
     </div>
   );
 };

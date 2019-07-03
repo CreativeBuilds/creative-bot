@@ -7,10 +7,12 @@ import { Message } from './Message';
 import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
 import { Action } from 'rxjs/internal/scheduler/Action';
 
+// Generic Components
 import { SegmentControl, SegmentControlSource } from '../SegmentControl/index';
 import { Toggle, ToggleType } from '../Generics/Toggle';
 import { RangeSlider } from '../Generics/Slider';
 import { Panel } from '../Generics/Panel';
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -132,10 +134,11 @@ const ChatTextToSpeechPopup = ({
         {/*<Slider header="Word Gap" val={ttsWordGap} valType={"ms"} maxValue={100} hasHeader={true} onChange={(e, value) => {setTTSWordGap(value); saveToDB("tts_WordGap", value);}} style={styles}/>*/}
       </div>
       <div className={styles.buttonstack}>
-        <div
-          className={styles.submit}
-          style={stateTheme.submitButton}
-          onClick={() => {
+        <Button title={"Test TTS"} 
+        isSubmit={true} 
+        stateTheme={stateTheme}
+        buttonStyle={{width: '-webkit-fill-available'}}
+        onClick={() => {
             var utter = new SpeechSynthesisUtterance();
             utter.text = 'I scream, you scream, we all scream for ice cream';
             utter.volume = config.tts_Amplitude / 100;
@@ -143,19 +146,15 @@ const ChatTextToSpeechPopup = ({
             utter.rate = config.tts_Speed / 100;
             utter.onend = () => {};
             speechSynthesis.speak(utter);
-          }}
-        >
-          Test TTS
-        </div>
-        <div
-          className={styles.submit}
-          style={stateTheme.submitButton}
-          onClick={() => {
-            closeCurrentPopup();
-          }}
-        >
-          Close
-        </div>
+          }}/>
+        <Button title={"Close"} 
+        isSubmit={true} 
+        stateTheme={stateTheme} 
+        buttonStyle={{width: '-webkit-fill-available',
+        'margin-left': '10px'}} 
+        onClick={() => {
+          closeCurrentPopup();
+        }} />
       </div>
     </div>
   );

@@ -7,9 +7,11 @@ import { Message } from './Message';
 import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
 import { Action } from 'rxjs/internal/scheduler/Action';
 
+// Generic Components
 import { SegmentControl, SegmentControlSource } from '../SegmentControl/index';
 import { Toggle, ToggleType } from '../Generics/Toggle';
 import { Panel } from '../Generics/Panel';
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -161,15 +163,9 @@ const ChatFiltersPopup = ({
           }
         />
       </div>
-      <div
-        className={styles.submit}
-        style={stateTheme.submitButton}
-        onClick={() => {
+      <Button title={"Close"} isSubmit={true} stateTheme={stateTheme} onClick={() => {
           closeCurrentPopup();
-        }}
-      >
-        Close
-      </div>
+        }} />
     </div>
   );
 };

@@ -10,8 +10,12 @@ import {
 } from 'react-icons/md';
 import { removeMessage } from '../../helpers/removeMessage';
 import ReactTooltip from 'react-tooltip';
+
+// Generic Components
 import { Panel } from '../Generics/Panel';
 import { DragDrop } from '../Generics/DragDrop';
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+
 import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
 
 import Styles from './Chat.scss';
@@ -156,6 +160,19 @@ const SetupAsExistingUserPopup = ({
       >
         Relaunch & Continue
       </div>
+        <Button title={"Relaunch & Continue"} 
+        isSubmit={true} 
+        stateTheme={stateTheme} 
+        onClick={() => {
+          if (hasFile) {
+            importBackupFile();
+
+            setTimeout(function() {
+              remote.app.relaunch();
+              remote.app.exit();
+            }, 1000);
+          }
+        }} />
     </div>
   );
 };
