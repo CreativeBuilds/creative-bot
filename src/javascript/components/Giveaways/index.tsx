@@ -10,6 +10,7 @@ const { Sorting } = require('./Sorting');
 let { setRxGiveaways } = require('../../helpers/rxGiveaways');
 
 import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { TextField } from '../Generics/Input';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -173,15 +174,20 @@ const GiveawaysPage = ({ props }) => {
         className={styles.header}
       >
         GIVEAWAYS
-        <textarea
-          className={styles.usersearch}
-          style={stateTheme.searchInput}
-          placeholder={'Search...'}
-          value={searchGiveawayName}
+        <TextField 
+          placeholderText={"Search..."} 
+          stateTheme={stateTheme} 
+          width={'150px'}
+          style={{
+            right: '10px',
+            'overflow-y': 'hidden',
+            'overflow-x': 'auto',
+            position: 'absolute',
+          }}
+          inputStyle={stateTheme.base.secondaryBackground}
           onChange={e => {
             setSearchGiveawayName(e.target.value);
-          }}
-        />
+          }}/>
         <MdAddCircle
           className={styles.add_circle}
           onClick={() => {

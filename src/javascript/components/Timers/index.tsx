@@ -8,6 +8,7 @@ const { Sorting } = require('./Sorting');
 let { setRxTimers } = require('../../helpers/rxTimers');
 
 import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { TextField } from '../Generics/Input';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -130,15 +131,20 @@ const TimersPage = ({ props }) => {
     <div style={stateTheme.base.tertiaryBackground} className={styles.Points}>
       <div style={Object.assign({}, stateTheme.toolBar, stateTheme.base.quinaryForeground)} className={styles.header}>
         TIMERS
-        <textarea
-          className={styles.usersearch}
-          style={stateTheme.searchInput}
-          placeholder={'Search...'}
-          value={searchCommandName}
+        <TextField 
+          placeholderText={"Search..."} 
+          stateTheme={stateTheme} 
+          width={'150px'}
+          style={{
+            right: '10px',
+            'overflow-y': 'hidden',
+            'overflow-x': 'auto',
+            position: 'absolute',
+          }}
+          inputStyle={stateTheme.base.secondaryBackground}
           onChange={e => {
             setSearchCommandName(e.target.value);
-          }}
-        />
+          }}/>
         <MdAddCircle
           className={styles.add_circle}
           onClick={() => {

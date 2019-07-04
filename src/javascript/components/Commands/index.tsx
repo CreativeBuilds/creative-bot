@@ -9,7 +9,8 @@ const { Command } = require('./Command');
 const { Sorting } = require('./Sorting');
 let { setRxCommands } = require('../../helpers/rxCommands');
 
-import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { Button } from '../Generics/Button';
+import { TextField } from '../Generics/Input';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -157,15 +158,21 @@ const CommandsPage = ({ props }) => {
         className={styles.header}
       >
         COMMANDS
-        <textarea
-          className={styles.usersearch}
-          style={stateTheme.searchInput}
-          placeholder={'Search...'}
-          value={searchCommandName}
+
+        <TextField 
+          placeholderText={"Search..."} 
+          stateTheme={stateTheme} 
+          width={'150px'}
+          style={{
+            right: '10px',
+            'overflow-y': 'hidden',
+            'overflow-x': 'auto',
+            position: 'absolute',
+          }}
+          inputStyle={stateTheme.base.secondaryBackground}
           onChange={e => {
             setSearchCommandName(e.target.value);
-          }}
-        />
+          }}/>
         <MdAddCircle
           className={styles.add_circle}
           onClick={() => {

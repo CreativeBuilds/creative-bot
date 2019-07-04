@@ -8,6 +8,8 @@ const { Sorting } = require('./Sorting');
 let { setRxLists } = require('../../helpers/rxLists');
 import { AddListPopup } from './AddListPopup';
 
+import { TextField } from '../Generics/Input';
+
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
 

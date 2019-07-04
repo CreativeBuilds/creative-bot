@@ -6,6 +6,7 @@ import ReactTooltip from 'react-tooltip';
 
 import { Toggle, ToggleType } from '../Generics/Toggle';
 import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { TextField, StepperField } from '../Generics/Input';
 
 import { firebaseUsers$, setRxUsers } from '../../helpers/rxUsers';
 
@@ -108,7 +109,7 @@ const UserPopup = ({
         </div>
         <div className={Styles.UserPopup_header_down}>
           <div className={Styles.input_wrapper}>
-            <div className={Styles.input_points}>
+{            /*<div className={Styles.input_points}>
               <div>Points</div>
               <input
                 onChange={e => {
@@ -118,7 +119,16 @@ const UserPopup = ({
                 style={stateTheme.base.secondaryBackground}
                 value={points}
               />
-            </div>
+            </div>*/}
+            <TextField 
+              placeholderText={"Enter Points"} 
+              stateTheme={stateTheme} 
+              width={'50%'}
+              inputStyle={stateTheme.base.secondaryBackground}
+              onChange={e => {
+                if (!isNaN(Number(e.target.value)) || e.target.value === '')
+                  setPoints(e.target.value);
+              }}/>
             <Toggle
               header='Is Admin'
               type={ToggleType.compact}
