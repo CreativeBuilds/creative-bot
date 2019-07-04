@@ -6,8 +6,13 @@ module.exports = {
   function: ({ message }) => {
     return new Promise((res, rej) => {
       rxUsers.pipe(filter(x => !!x)).subscribe(users => {
-        if (!users[message.sender.blockchainUsername]) res(null);
-        res(users[message.sender.blockchainUsername].points);
+        // if (!users[message.sender.blockchainUsername]) res(null);
+        try {
+          res(users[message.sender.blockchainUsername].points);
+        } catch (err) {
+          console.error(err);
+          res(0);
+        }
       });
     });
   }

@@ -14,7 +14,6 @@ const { ipcRenderer } = Window.require('electron');
 ipcRenderer.send('getRxQuotes');
 
 ipcRenderer.on('rxQuotes', (event, quotes) => {
-  console.log('GOT QUOTES FROM NODE', quotes);
   setRxQuotes(quotes);
 });
 
