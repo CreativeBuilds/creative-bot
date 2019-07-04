@@ -1,11 +1,7 @@
-const {
-  sendMessage,
-  keepActive,
-  wss,
-  SaveToJson,
-  sendLino
-} = require('./helpers');
+const { sendMessage, keepActive, wss, sendLino } = require('./helpers');
+const setRxUsers = require('./helpers/setRxUsers');
 const log = require('electron-log');
+const storage = require('electron-json-storage');
 const { app, BrowserWindow, ipcMain } = require('electron');
 // app.setAppUserModelId('creativebot');
 app.commandLine.appendSwitch('enable-speech-dispatcher');
@@ -13,9 +9,8 @@ const debug = require('electron-debug');
 debug({ showDevTools: false, isEnabled: true });
 const fs = require('fs');
 const path = require('path');
-const { distinctUntilChanged, filter, first } = require('rxjs/operators');
+const { distinctUntilChanged, filter, first, skip } = require('rxjs/operators');
 const _ = require('lodash');
-const storage = require('electron-json-storage');
 
 const express = require('express');
 const APP = express();
@@ -29,9 +24,6 @@ var env = process.env.NODE_ENV || 'production';
 console.print = console.log;
 if (env === 'production') {
   console.log = () => {};
-}
-if (process.env.NODE_HARD) {
-  storage.clear();
 }
 
 let config = {};
@@ -305,10 +297,15 @@ function createWindow() {
 
   let users = {};
 
+  setRxUsers.pipe(skip(1)).subscribe(users => {
+    console.log('GOT DA USERS', users);
+    win.webContents.send('rxUsers', users);
+  });
+
   ipcMain.on('editpoints', (event, { username, points }) => {
     let Users = Object.assign({}, users);
     Users[username].points = points;
-    rxUsers.next(Users);
+    setRxUsers.next(Users);
   });
 
   ipcMain.on('removecommand', (event, { name }) => {
@@ -350,14 +347,6 @@ function createWindow() {
   });
 
   ipcMain.on('logout', () => {
-    storage.set('commands', {});
-    storage.set('quotes', {});
-    storage.set('config', {});
-    storage.set('emotes', {});
-    storage.set('giveaways', {});
-    storage.set('timers', {});
-    storage.set('users', {});
-    storage.set('lists', {});
     setTimeout(() => {
       process.exit();
     }, 1000);
@@ -554,31 +543,31 @@ function createWindow() {
       }
     });
   });
-  ipcMain.on('getRxUsers', () => {
-    rxUsers.pipe(filter(x => !!x)).subscribe(Users => {
-      let obj = {};
-      let change = false;
-      Object.keys(Users).forEach(blockchainUsername => {
-        let user = Users[blockchainUsername];
-        if (user.username) {
-          user.blockchainUsername = user.username;
-          delete user.username;
-          change = true;
-        }
-        if (user.displayname) {
-          user.dliveUsername = user.displayname;
-          delete user.displayname;
-          change = true;
-        }
-        obj[blockchainUsername] = user;
-      });
-      users = obj;
-      if (change) {
-        rxUsers.next(obj);
-      }
-      win.webContents.send('rxUsers', obj);
-    });
-  });
+  // ipcMain.on('getRxUsers', () => {
+  //   rxUsers.pipe(filter(x => !!x)).subscribe(Users => {
+  //     let obj = {};
+  //     let change = false;
+  //     Object.keys(Users).forEach(blockchainUsername => {
+  //       let user = Users[blockchainUsername];
+  //       if (user.username) {
+  //         user.blockchainUsername = user.username;
+  //         delete user.username;
+  //         change = true;
+  //       }
+  //       if (user.displayname) {
+  //         user.dliveUsername = user.displayname;
+  //         delete user.displayname;
+  //         change = true;
+  //       }
+  //       obj[blockchainUsername] = user;
+  //     });
+  //     users = obj;
+  //     if (change) {
+  //       rxUsers.next(obj);
+  //     }
+  //     win.webContents.send('rxUsers', obj);
+  //   });
+  // });
 
   ipcMain.on('setRxUsers', (event, Users) => {
     if (users !== Users) {
@@ -586,6 +575,38 @@ function createWindow() {
       users = Users;
       rxUsers.next(Users);
     }
+  });
+
+  ipcMain.on('getAllOldData', event => {
+    storage.get('users', (err, data = {}) => {
+      if (err) throw err;
+      win.webContents.send('rxUsers', data);
+    });
+    storage.get('commands', (err, data = {}) => {
+      if (err) throw err;
+      win.webContents.send('rxCommands', data);
+    });
+    storage.get('timers', (err, data = {}) => {
+      if (err) throw err;
+      win.webContents.send('rxTimers', data);
+    });
+    storage.get('emotes', (err, data = {}) => {
+      if (err) throw err;
+      win.webContents.send('rxEmotes', data);
+    });
+    storage.get('giveaways', (err, data = {}) => {
+      if (err) throw err;
+      win.webContents.send('rxGiveaways', data);
+    });
+    storage.get('quotes', (err, data = {}) => {
+      if (err) throw err;
+      win.webContents.send('rxQuotes', data);
+    });
+
+    rxConfig.pipe(first()).subscribe(config => {
+      config.ported = true;
+      win.webContents.send('rxConfig', config);
+    });
   });
 
   ipcMain.on('resetRxConfig', () => {
@@ -653,7 +674,7 @@ function createWindow() {
           // obj[commandName].uses += 1;
           Commands = Object.assign({}, Commands, obj);
           if (!command.enabled) return console.log('command not enabled');
-          sendMessage(`Fetching info...`);
+          // sendMessage(`Fetching info...`);
           rxDlive.pipe(filter(x => !!x)).subscribe(dlive => {
             dlive.getChannel(streamerDisplayName).then(streamChannel => {
               parseReply({
@@ -683,7 +704,9 @@ function createWindow() {
 
           // }
         } else {
+          console.log('CHECKING TO SEE IF GIVEAWAY EXISTS');
           rxGiveaways.pipe(first()).subscribe(giveaways => {
+            console.log('giveaways', giveaways);
             let giveaway = Object.assign({}, giveaways[commandName]);
             if (!giveaways[commandName]) return;
             if (typeof giveaway.winners !== 'undefined')
@@ -751,7 +774,7 @@ function createWindow() {
                     user.points -= totalCost;
                     let usersObj = {};
                     usersObj[sender] = user;
-                    rxUsers.next(Object.assign({}, users, usersObj));
+                    setRxUsers.next(Object.assign({}, users, usersObj));
                     sendMessage(
                       `${
                         message.sender.dliveUsername
@@ -785,7 +808,7 @@ function createWindow() {
                     user.points -= totalCost;
                     let usersObj = {};
                     usersObj[sender] = user;
-                    rxUsers.next(Object.assign({}, users, usersObj));
+                    setRxUsers.next(Object.assign({}, users, usersObj));
                     // TODO make helper file to handle a lot of users joining at once, so the bot doesnt lag aka (john, steve, and sam have entered the giveaway!);
                     sendMessage(
                       `${
@@ -796,8 +819,10 @@ function createWindow() {
                   let newObj = {};
                   newObj[commandName] = giveaway;
                   if (giveaway === giveaways[commandName]) return;
-
-                  rxGiveaways.next(Object.assign({}, giveaways, newObj));
+                  win.webContents.send(
+                    'rxGiveaways',
+                    Object.assign({}, giveaways, newObj)
+                  );
                 } else {
                   sendMessage(
                     `${

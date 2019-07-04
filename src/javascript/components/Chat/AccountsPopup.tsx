@@ -63,7 +63,8 @@ const AccountsPopup = ({
           flex: 1,
           display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
+          flexDirection: 'column'
         }}
       >
         {!!config.authKey ? (
@@ -75,6 +76,36 @@ const AccountsPopup = ({
             //   closeCurrentPopup();
             // }, 50);
           }} />
+        ) : null}
+        {!config.ported ? (
+          <AdvancedDiv
+            style={Object.assign({}, theme.globals.actionButton, {
+              flex: 1,
+              height: 'auto',
+              padding: '10px',
+              borderRadius: '5px',
+              marginBottom: '10px'
+            })}
+            hoverStyle={{
+              cursor: 'pointer',
+              boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
+            }}
+          >
+            <div
+              onClick={() => {
+                ipcRenderer.send('getAllOldData');
+                if (needRestart()) {
+                  saveToDB(config);
+                  setTimeout(() => {
+                    ipcRenderer.send('shutdown');
+                  }, 250);
+                }
+                closeCurrentPopup();
+              }}
+            >
+              Import Old Users (1.5 and Older)
+            </div>
+          </AdvancedDiv>
         ) : null}
       </div>
       <Button title={"Close"} isSubmit={true} stateTheme={stateTheme}  onClick={() => {
