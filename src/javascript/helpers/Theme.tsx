@@ -199,7 +199,13 @@ const theme = {
         overflow: 'auto',
         padding: '10px',
         borderRadius: '5px',
-        boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)'
+        boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)',
+        content: {
+          'display': 'flex',
+          'justify-content': 'center',
+          'align-items': 'center',
+          'flex-direction': 'column'
+        }
       },
       close: {
         position: 'relative',
@@ -552,7 +558,13 @@ const theme = {
         overflow: 'auto',
         padding: '10px',
         borderRadius: '5px',
-        boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)'
+        boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)',
+        content: {
+          'display': 'flex',
+          'justify-content': 'center',
+          'align-items': 'center',
+          'flex-direction': 'column'
+        }
       },
       close: {
         position: 'relative',

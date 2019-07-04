@@ -4,7 +4,7 @@ import { AdvancedDiv } from '../AdvancedDiv';
 import { theme, ThemeContext } from '../../helpers';
 import { MdSend, MdPerson, MdMood, MdFace, MdLocalMovies, MdEvent, MdFilterList } from 'react-icons/md';
 
-const TextField = ({text = '', placeholderText = '', width = null, header = null, isEnabled = true, onChange = null, onValueChanged = null, stateTheme, style = {}, inputStyle = {}}) => {
+const TextField = ({text = '', placeholderText = '', width = null, header = null, isEnabled = true, onChange = null, onKeyDown = null, onKeyUp = null, stateTheme, style = {}, inputStyle = {}}) => {
     
     const [isenabled, setIsEnabled] = useState(isEnabled);
     const [textInput, setTextInput] = useState(text);
@@ -23,13 +23,15 @@ const TextField = ({text = '', placeholderText = '', width = null, header = null
                     ,   
                     stateTheme.input.text 
                     )}
-                onChange={e => { onChange(e); }}
+                onChange={onChange}
+                onKeyDown={onKeyDown}
+                onKeyUp={onKeyUp}
             />
         </div>
     );
 }
 
-const EmailField = ({text = '', placeholderText = '', width = null, header = null, isEnabled = true, onChange = null, onValueChanged = null, stateTheme, style = {}, inputStyle = {}}) => {
+const EmailField = ({text = '', placeholderText = '', width = null, header = null, isEnabled = true, onChange = null, onKeyDown = null, onKeyUp = null, stateTheme, style = {}, inputStyle = {}}) => {
     
     const [isenabled, setIsEnabled] = useState(isEnabled);
     const [textInput, setTextInput] = useState(text);
@@ -48,13 +50,15 @@ const EmailField = ({text = '', placeholderText = '', width = null, header = nul
                     ,   
                     stateTheme.input.text 
                     )}
-                onChange={e => { onChange(e); }}
+                onChange={onChange}
+                onKeyDown={onKeyDown}
+                onKeyUp={onKeyUp}
             />
         </div>
     );
 }
 
-const PasswordField = ({text = '', placeholderText = '', width = null, header = null, isEnabled = true, hasForgotLabel = false, onChange = null, onValueChanged = null, onForgotPassword = null, stateTheme, style = {}, inputStyle = {}}) => {
+const PasswordField = ({text = '', placeholderText = '', width = null, header = null, isEnabled = true, hasForgotLabel = false, onChange = null, onKeyDown = null, onKeyUp = null, onForgotPassword = null, stateTheme, style = {}, inputStyle = {}}) => {
     
     const [isenabled, setIsEnabled] = useState(isEnabled);
     const [textInput, setTextInput] = useState(text);
@@ -85,13 +89,15 @@ const PasswordField = ({text = '', placeholderText = '', width = null, header = 
                     ,   
                     stateTheme.input.text 
                     )}
-                onChange={e => { onChange(e); }}
+                onChange={onChange}
+                onKeyDown={onKeyDown}
+                onKeyUp={onKeyUp}
             />
         </div>
     );
 }
 
-const StepperField = ({value = 0, minValue = 0, maxValue = 0, width = null, header = null, isEnabled = true, onChange = null, onValueChanged = null, stateTheme, style = {}, inputStyle = {}}) => {
+const StepperField = ({value = 0, minValue = 0, maxValue = 0, width = null, header = null, isEnabled = true, onChange = null, onKeyDown = null, onKeyUp = null, stateTheme, style = {}, inputStyle = {}}) => {
     
     const [isenabled, setIsEnabled] = useState(isEnabled);
     const [valueInput, setTextInput] = useState(value);
@@ -112,6 +118,8 @@ const StepperField = ({value = 0, minValue = 0, maxValue = 0, width = null, head
                 min={minValue}
                 max={maxValue != 0 ? maxValue : null}
                 onChange={onChange}
+                onKeyDown={onKeyDown}
+                onKeyUp={onKeyUp}
             />
         </div>
     );

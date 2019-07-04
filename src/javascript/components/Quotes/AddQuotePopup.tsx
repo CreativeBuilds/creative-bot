@@ -5,6 +5,7 @@ import { Quote } from './Quote';
 let { setRxQuotes } = require('../../helpers/rxQuotes');
 
 import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { TextField } from '../Generics/Input';
 
 const AddQuotePopup = ({
   styles,
@@ -79,72 +80,78 @@ const AddQuotePopup = ({
   };
 
   return (
-    <div className={styles.popup}>
+    <div style={stateTheme.popup.dialog.content}>
       <h2>Add a Quote</h2>
-      {hasError ? <h4 className={styles.errorMsg}>{errorMsg}</h4> : null}
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>
-          Quote (Characters Left:{' '}
-          <span className={hasQuoteLimitError ? styles.errorMsg : null}>
-            {quoteLimit}
-          </span>{' '}
-          )
-        </div>
-        <textarea
-          className={styles.input}
+      <div style={{ width: '70%', minWidth: 'unset' }}>
+        {hasError ? <h4 className={styles.errorMsg}>{errorMsg}</h4> : null}
+        <TextField 
+          text={quote}
+          placeholderText={"Quote"} 
+          header={
+            <div>
+              Quote (Characters Left:{' '}
+              <span className={hasQuoteLimitError ? styles.errorMsg : null}>
+                {quoteLimit}
+              </span>{' '}
+              )
+            </div>
+          }
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             var limitVal = 90 - e.target.value.length;
             setQuoteLimit(limitVal);
             setHasQuoteLimitError(limitVal < 0 ? true : false);
             setQuote(e.target.value);
-          }}
-          value={quote}
-        />
-      </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>
-          Quoted By (Characters Left:{' '}
-          <span className={hasQuoteByLimitError ? styles.errorMsg : null}>
-            {quoteByLimit}
-          </span>{' '}
-          )
-        </div>
-        <textarea
-          className={styles.input}
+          }}/>
+        <TextField 
+          text={quoteBy}
+          placeholderText={"Quote"} 
+          header={
+            <div>
+              Quoted By (Characters Left:{' '}
+              <span className={hasQuoteByLimitError ? styles.errorMsg : null}>
+                {quoteByLimit}
+              </span>{' '}
+              )
+            </div>
+          }
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             var limitVal = 20 - e.target.value.length;
             setQuoteByLimit(limitVal);
             setHasQuoteByLimitError(limitVal < 0 ? true : false);
             setQuoteBy(e.target.value);
-          }}
-          value={quoteBy}
-        />
-      </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Event (Optional)</div>
-        <textarea
-          className={styles.input}
+          }}/>
+        <TextField 
+          text={event}
+          placeholderText={"Event"} 
+          header={"Event (Optional)"}
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             setEvent(e.target.value);
-          }}
-          value={event}
-        />
-      </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Date Quoted (Optional)</div>
-        <textarea
-          className={styles.input}
+          }}/>
+        <TextField 
+          text={date}
+          placeholderText={"Date Quoted"} 
+          header={"Date Quoted (Optional)"}
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             setDate(e.target.value);
-          }}
-          value={date}
-        />
+          }}/>
+        <Button 
+          title={"Create"} 
+          isSubmit={true} 
+          stateTheme={stateTheme}  
+          onClick={save} />
       </div>
-      <Button 
-        title={"Create"} 
-        isSubmit={true} 
-        stateTheme={stateTheme}  
-        onClick={save} />
     </div>
   );
 };

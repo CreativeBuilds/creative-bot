@@ -58,38 +58,38 @@ const AddCommandPopup = ({
   };
 
   return (
-    <div className={styles.popup}>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Name</div>
-        <textarea
-          className={styles.input}
-          onChange={e => {
-            let val = e.target.value;
-            val = val.replace(' ', '-').replace('--', '-');
-            setName(val);
-          }}
-          value={name}
-        />
-        <div className={styles.input_name}>
-          <b>Example Useage:</b> {commandPrefix}
-          {name}
-        </div>
-      </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Reply</div>
-        <textarea
-          className={styles.input}
+    <div style={stateTheme.popup.dialog.content}>
+      <h2>Add Command</h2>
+      <div style={{ width: '70%', minWidth: 'unset' }}>
+        <TextField 
+            text={name}
+            placeholderText={"Name"} 
+            header={"Name"}
+            stateTheme={stateTheme} 
+            width={'100%'}
+            inputStyle={Object.assign({}, {'margin-bottom': '5px'},stateTheme.base.secondaryBackground)}
+            onChange={e => {
+              let val = e.target.value;
+              val = val.replace(' ', '-').replace('--', '-');
+              setName(val);
+            }}/>
+        <div style={{marginBottom: '15px'}}><b>Example Useage:</b> {commandPrefix}{name} </div>
+        <TextField 
+          text={reply}
+          placeholderText={"Reply"} 
+          header={"Reply"}
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '5px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             setReply(e.target.value);
           }}
-          value={reply}
           onKeyDown={e => {
             if (e.key === 'Enter') {
               save();
             }
-          }}
-        />
-        <div className={styles.input_name}>
+          }}/>
+        <div style={{marginBottom: '15px'}}>
           <span
             className={styles.hover}
             style={{
@@ -106,12 +106,12 @@ const AddCommandPopup = ({
             Advanced Command Useage
           </span>
         </div>
-      </div>
-      <Button 
+        <Button 
         title={"Create"} 
         isSubmit={true} 
         stateTheme={stateTheme}  
         onClick={save} />
+      </div>
     </div>
   );
 };

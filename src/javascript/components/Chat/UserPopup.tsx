@@ -109,17 +109,6 @@ const UserPopup = ({
         </div>
         <div className={Styles.UserPopup_header_down}>
           <div className={Styles.input_wrapper}>
-{            /*<div className={Styles.input_points}>
-              <div>Points</div>
-              <input
-                onChange={e => {
-                  if (!isNaN(Number(e.target.value)) || e.target.value === '')
-                    setPoints(e.target.value);
-                }}
-                style={stateTheme.base.secondaryBackground}
-                value={points}
-              />
-            </div>*/}
             <TextField 
               placeholderText={"Enter Points"} 
               stateTheme={stateTheme} 

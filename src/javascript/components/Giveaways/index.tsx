@@ -52,82 +52,91 @@ const AddGiveawayPopup = ({
   };
 
   return (
-    <div className={styles.popup} style={stateTheme.main}>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>
-          Name -{' '}
-          <span style={{ fontSize: '0.68em' }}>
-            If name is test then a user doing <br />
-            !test numberOfTickets will purchase those tickets
-          </span>
-        </div>
-        <textarea
-          className={styles.input}
+    <div style={stateTheme.popup.dialog.content}>
+      <h2>Add Giveaway</h2>
+      <div style={{ width: '70%', minWidth: 'unset' }}>
+        <TextField 
+          text={name}
+          placeholderText={"Reply"} 
+          header={
+            <div>
+              Name -{' '}
+              <span style={{ fontSize: '0.68em' }}>
+                If name is test then a user doing <br />
+                !test numberOfTickets will purchase those tickets
+              </span>
+            </div>
+          }
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             let val = e.target.value;
             val = val.replace(' ', '-').replace('--', '-');
             setName(val);
-          }}
-          value={name}
-        />
-      </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Reward</div>
-        <textarea
-          className={styles.input}
+          }}/>
+        <TextField 
+          text={reward}
+          placeholderText={"Reward"} 
+          header={"Reward"}
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             setReward(e.target.value);
-          }}
-          value={reward}
-        />
-      </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Cost (Default: No Cost)</div>
-        <textarea
-          className={styles.input}
+          }}/>
+        <TextField 
+          text={String(cost)}
+          placeholderText={"Cost"} 
+          header={"Cost (Default: No Cost)"}
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
-            if (isNaN(Number(e.target.value))) return;
+             if (isNaN(Number(e.target.value))) return;
             setCost(Math.abs(Number(e.target.value)));
-          }}
-          value={cost}
-        />
-      </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>
-          Max Entries <br /> (0 - no max)
-        </div>
-        <textarea
-          className={styles.input}
+          }}/>
+        <TextField 
+          text={String(maxEntries)}
+          placeholderText={"Max Entries"} 
+          header={
+          <div>
+            Max Entries <br /> (0 - no max)
+          </div>
+          }
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             if (isNaN(Number(e.target.value))) return;
             setMaxEntries(Math.abs(Number(e.target.value)));
-          }}
-          value={maxEntries}
-        />
-      </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>
-          Seconds Until Close <br /> (0 - doesn't close)
-        </div>
-        <textarea
-          className={styles.input}
+          }}/>
+        <TextField 
+          text={String(secondsUntilClose)}
+          placeholderText={"Seconds Until Close"} 
+          header={
+          <div>
+            Seconds Until Close <br /> (0 - doesn't close)
+          </div>
+          }
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             if (isNaN(Number(e.target.value))) return;
             setSecondsUntilClose(Math.abs(Number(e.target.value)));
-          }}
-          value={secondsUntilClose}
-        />
+          }}/>
+        <Button 
+          title={"Create"} 
+          isSubmit={true} 
+          stateTheme={stateTheme}  
+          onClick={() => {
+            // if (isNaN(Number(uses))) return;
+            // setUses(Number(uses));
+            saveToDB();
+            closeCurrentPopup();
+          }} />
       </div>
-      <Button 
-        title={"Create"} 
-        isSubmit={true} 
-        stateTheme={stateTheme}  
-        onClick={() => {
-          // if (isNaN(Number(uses))) return;
-          // setUses(Number(uses));
-          saveToDB();
-          closeCurrentPopup();
-        }} />
     </div>
   );
 };
