@@ -68,56 +68,48 @@ const AccountsPopup = ({
         }}
       >
         {!!config.authKey ? (
-          <DestructiveButton title={"Reconnect Bot Account"} stateTheme={stateTheme} onClick={() => {
-            let tconfig = Object.assign({}, config);
-            delete tconfig.authKey;
-            setConfig(tconfig);
-            // setTimeout(() => {
-            //   closeCurrentPopup();
-            // }, 50);
-          }} />
+          <DestructiveButton 
+            title={"Reconnect Bot Account"} 
+            stateTheme={stateTheme} 
+            onClick={() => {
+              let tconfig = Object.assign({}, config);
+              delete tconfig.authKey;
+              setConfig(tconfig);
+              // setTimeout(() => {
+              //   closeCurrentPopup();
+              // }, 50);
+            }} />
         ) : null}
         {!config.ported ? (
-          <AdvancedDiv
-            style={Object.assign({}, theme.globals.actionButton, {
-              flex: 1,
-              height: 'auto',
-              padding: '10px',
-              borderRadius: '5px',
-              marginBottom: '10px'
-            })}
-            hoverStyle={{
-              cursor: 'pointer',
-              boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
-            }}
-          >
-            <div
-              onClick={() => {
-                ipcRenderer.send('getAllOldData');
-                if (needRestart()) {
-                  saveToDB(config);
-                  setTimeout(() => {
-                    ipcRenderer.send('shutdown');
-                  }, 250);
-                }
-                closeCurrentPopup();
-              }}
-            >
-              Import Old Users (1.5 and Older)
-            </div>
-          </AdvancedDiv>
+          <ActionButton 
+            title={"Import Old Users (1.5 and Older)"} 
+            stateTheme={stateTheme}  
+            onClick={() => {
+              ipcRenderer.send('getAllOldData');
+              if (needRestart()) {
+                saveToDB(config);
+                setTimeout(() => {
+                  ipcRenderer.send('shutdown');
+                }, 250);
+              }
+              closeCurrentPopup();
+            }} />
         ) : null}
       </div>
-      <Button title={"Close"} isSubmit={true} stateTheme={stateTheme}  onClick={() => {
-          // Check to see if a change has happened
-          if (needRestart()) {
-            saveToDB(config);
-            setTimeout(() => {
-              ipcRenderer.send('shutdown');
-            }, 250);
-          }
-          closeCurrentPopup();
-        }} />
+      <Button 
+        title={"Close"} 
+        isSubmit={true} 
+        stateTheme={stateTheme}  
+        onClick={() => {
+            // Check to see if a change has happened
+            if (needRestart()) {
+              saveToDB(config);
+              setTimeout(() => {
+                ipcRenderer.send('shutdown');
+              }, 250);
+            }
+            closeCurrentPopup();
+          }} />
       {needRestart() ? (
         <i style={{ marginTop: '5px' }}>Bot will need to be restarted...</i>
       ) : null}
