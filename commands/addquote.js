@@ -1,6 +1,6 @@
 let rxQuotes = require('./../helpers/rxQuotes.js');
 const { first } = require('rxjs/operators');
-const storage = require('electron-json-storage');
+ 
 var _ = require('lodash');
 
 const run = ({ message, args }) => {

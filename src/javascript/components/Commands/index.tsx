@@ -61,7 +61,9 @@ const AddCommandPopup = ({
         <textarea
           className={styles.input}
           onChange={e => {
-            setName(e.target.value);
+            let val = e.target.value;
+            val = val.replace(' ', '-').replace('--', '-');
+            setName(val);
           }}
           value={name}
         />
