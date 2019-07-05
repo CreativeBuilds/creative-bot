@@ -384,6 +384,9 @@ const theme = {
         display: 'flex', 
         flexDirection: 'column', 
       },
+      header: {
+        'margin-bottom': '2px'
+      },
       text: {
         flex: '1',
         border: '0px solid #000',
@@ -745,6 +748,9 @@ const theme = {
       container: {
         display: 'flex', 
         flexDirection: 'column', 
+      },
+      header: {
+        'margin-bottom': '2px'
       },
       text: {
         flex: '1',

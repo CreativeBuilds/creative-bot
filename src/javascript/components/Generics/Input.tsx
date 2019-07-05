@@ -11,8 +11,8 @@ const TextField = ({text = '', placeholderText = '', width = null, header = null
 
     return (
         <div style={Object.assign({}, 
-            Object.assign({}, width != null ? { width: width} : null, style) ,stateTheme.input.container)}>
-            {header != null ?  <div>{header}</div> : null }
+            Object.assign({}, width != null ? { width: width} : null, style), stateTheme.input.container)}>
+            {header != null ?  <div style={stateTheme.input.header}>{header}</div> : null }
             <input
                 type={'text'}
                 placeholder={placeholderText}
@@ -39,7 +39,7 @@ const EmailField = ({text = '', placeholderText = '', width = null, header = nul
     return (
         <div style={Object.assign({}, 
             Object.assign({}, width != null ? { width: width} : null, style) ,stateTheme.input.container)}>
-            {header != null ?  <div>{header}</div> : null }
+            {header != null ?  <div style={stateTheme.input.header}>{header}</div> : null }
             <input
                 type={'email'}
                 placeholder={placeholderText}
@@ -67,7 +67,7 @@ const PasswordField = ({text = '', placeholderText = '', width = null, header = 
         <div style={Object.assign({}, 
             Object.assign({}, width != null ? { width: width} : null, style) ,stateTheme.input.container)}>
             {header != null ?  
-            <div>
+            <div style={stateTheme.input.header}>
                 <span>{header}</span>
                 { hasForgotLabel ? <AdvancedDiv
                 style={{
@@ -105,7 +105,7 @@ const StepperField = ({value = 0, minValue = 0, maxValue = 0, width = null, head
     return (
         <div style={Object.assign({}, 
             Object.assign({}, width != null ? { width: width} : null, style) ,stateTheme.input.container)}>
-            {header != null ?  <div>{header}</div> : null }
+            {header != null ?  <div style={stateTheme.input.header}>{header}</div> : null }
             <input
                 type={'number'}
                 style={Object.assign(
