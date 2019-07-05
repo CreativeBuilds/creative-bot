@@ -59,44 +59,6 @@ const MenuItems = (
         contextMenu: [
           {
             role: 'normal',
-            title: 'Export Bot Data (Beta)',
-            icon: 'MdCloudUpload',
-            enabled: true,
-            action() {
-              var toLocalPath = path.resolve(app.getPath('documents'));
-              dialog.showOpenDialog(
-                {
-                  title: 'Back-up Bot Data to...',
-                  properties: ['openDirectory'],
-                  defaultPath: toLocalPath
-                },
-                e => {
-                  var dir = e[0];
-                  ipcRenderer.send('backup-data', dir);
-                }
-              );
-            }
-          },
-          /*{
-                        role: 'normal',
-                        title: 'Import Bot Data',
-                        icon: 'MdCloudDownload',
-                        enabled: true,
-                        action() { 
-                            addPopup(
-                                <SetupAsExistingUserPopup
-                                  styles={styles} 
-                                  closeCurrentPopup={closeCurrentPopup}
-                                  addPopup={addPopup} 
-                                  stateTheme={stateTheme} 
-                                  />)
-                        }
-                    },*/
-          {
-            role: 'seperator'
-          },
-          {
-            role: 'normal',
             title: 'Cut',
             shortcut: 'Ctrl+X',
             icon: 'MdContentCut',
@@ -316,14 +278,14 @@ const MenuItems = (
               let options = {
                 type: 'info',
                 title: 'About App',
-                message: 'About Dlive Chat Bot',
+                message: 'About CreativeBot',
                 detail: `
-                                Version: ${app.getVersion()}, 
-                                Electron: ${process.versions.electron}, 
-                                chrome: ${process.versions.chrome}, 
-                                node: ${process.versions.node}, 
-                                v8: ${process.versions.v8}, 
-                                Developed By CreativeBuilds`
+                        Version: ${app.getVersion()}, 
+                        Electron: ${process.versions.electron}, 
+                        chrome: ${process.versions.chrome}, 
+                        node: ${process.versions.node}, 
+                        v8: ${process.versions.v8}, 
+                        Developed By CreativeBuilds`
               };
 
               dialog.showMessageBox(options);
