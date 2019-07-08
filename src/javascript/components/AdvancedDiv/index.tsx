@@ -8,6 +8,8 @@ interface IProps {
   hoverClassName?: string;
   style?: {};
   hoverStyle?: {};
+  isButton?: Boolean;
+  buttonStyle?: {};
   children: any;
 }
 

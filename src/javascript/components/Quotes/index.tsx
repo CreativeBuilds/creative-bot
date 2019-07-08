@@ -7,6 +7,8 @@ import { MdAddCircle } from 'react-icons/md';
 import { Quote } from './Quote';
 let { setRxQuotes, firebaseQuotes$ } = require('../../helpers/rxQuotes');
 
+import { TextField } from '../Generics/Input';
+
 const { Sorting } = require('./Sorting');
 
 const Window: any = window;
@@ -64,15 +66,20 @@ const QuotesPage = ({ props }) => {
         className={styles.header}
       >
         QUOTES
-        <textarea
-          className={styles.usersearch}
-          style={stateTheme.searchInput}
-          placeholder={'Search...'}
-          value={searchQuoteName}
+        <TextField 
+          placeholderText={"Search..."} 
+          stateTheme={stateTheme} 
+          width={'150px'}
+          style={{
+            right: '10px',
+            'overflow-y': 'hidden',
+            'overflow-x': 'auto',
+            position: 'absolute',
+          }}
+          inputStyle={stateTheme.base.secondaryBackground}
           onChange={e => {
             setSearchQuoteName(e.target.value);
-          }}
-        />
+          }}/>
         <MdAddCircle
           className={styles.add_circle}
           onClick={() => {

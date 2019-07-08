@@ -10,8 +10,12 @@ import {
 } from 'react-icons/md';
 import { removeMessage } from '../../helpers/removeMessage';
 import ReactTooltip from 'react-tooltip';
+
+// Generic Components
 import { Panel } from '../Generics/Panel';
 import { DragDrop } from '../Generics/DragDrop';
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+
 import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
 
 import Styles from './Chat.scss';
@@ -85,6 +89,7 @@ const SetupAsExistingUserPopup = ({
         </p>
         <Panel
           hasHeader={false}
+          stateTheme={stateTheme}
           style={Object.assign(
             {},
             stateTheme.dashedBorder,
@@ -92,7 +97,8 @@ const SetupAsExistingUserPopup = ({
           )}
           content={
             <DragDrop
-              className={styles.dragDropContentBox}
+              className={stateTheme.dragDrop.contentBox}
+              stateTheme={stateTheme}
               fileTypes={['zip']}
               draggedTitle='Drop Here'
               handleDrop={onDropHandler}
@@ -154,6 +160,19 @@ const SetupAsExistingUserPopup = ({
       >
         Relaunch & Continue
       </div>
+        <Button title={"Relaunch & Continue"} 
+        isSubmit={true} 
+        stateTheme={stateTheme} 
+        onClick={() => {
+          if (hasFile) {
+            importBackupFile();
+
+            setTimeout(function() {
+              remote.app.relaunch();
+              remote.app.exit();
+            }, 1000);
+          }
+        }} />
     </div>
   );
 };

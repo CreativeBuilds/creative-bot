@@ -9,6 +9,9 @@ const { Command } = require('./Command');
 const { Sorting } = require('./Sorting');
 let { setRxCommands } = require('../../helpers/rxCommands');
 
+import { Button } from '../Generics/Button';
+import { TextField } from '../Generics/Input';
+
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
 
@@ -55,38 +58,38 @@ const AddCommandPopup = ({
   };
 
   return (
-    <div className={styles.popup}>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Name</div>
-        <textarea
-          className={styles.input}
-          onChange={e => {
-            let val = e.target.value;
-            val = val.replace(' ', '-').replace('--', '-');
-            setName(val);
-          }}
-          value={name}
-        />
-        <div className={styles.input_name}>
-          <b>Example Useage:</b> {commandPrefix}
-          {name}
-        </div>
-      </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Reply</div>
-        <textarea
-          className={styles.input}
+    <div style={stateTheme.popup.dialog.content}>
+      <h2>Add Command</h2>
+      <div style={{ width: '70%', minWidth: 'unset' }}>
+        <TextField 
+            text={name}
+            placeholderText={"Name"} 
+            header={"Name"}
+            stateTheme={stateTheme} 
+            width={'100%'}
+            inputStyle={Object.assign({}, {'margin-bottom': '5px'},stateTheme.base.secondaryBackground)}
+            onChange={e => {
+              let val = e.target.value;
+              val = val.replace(' ', '-').replace('--', '-');
+              setName(val);
+            }}/>
+        <div style={{marginBottom: '15px'}}><b>Example Useage:</b> {commandPrefix}{name} </div>
+        <TextField 
+          text={reply}
+          placeholderText={"Reply"} 
+          header={"Reply"}
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '5px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             setReply(e.target.value);
           }}
-          value={reply}
           onKeyDown={e => {
             if (e.key === 'Enter') {
               save();
             }
-          }}
-        />
-        <div className={styles.input_name}>
+          }}/>
+        <div style={{marginBottom: '15px'}}>
           <span
             className={styles.hover}
             style={{
@@ -103,13 +106,11 @@ const AddCommandPopup = ({
             Advanced Command Useage
           </span>
         </div>
-      </div>
-      <div
-        className={styles.submit}
-        onClick={save}
-        style={stateTheme.submitButton}
-      >
-        CREATE
+        <Button 
+        title={"Create"} 
+        isSubmit={true} 
+        stateTheme={stateTheme}  
+        onClick={save} />
       </div>
     </div>
   );
@@ -157,15 +158,21 @@ const CommandsPage = ({ props }) => {
         className={styles.header}
       >
         COMMANDS
-        <textarea
-          className={styles.usersearch}
-          style={stateTheme.searchInput}
-          placeholder={'Search...'}
-          value={searchCommandName}
+
+        <TextField 
+          placeholderText={"Search..."} 
+          stateTheme={stateTheme} 
+          width={'150px'}
+          style={{
+            right: '10px',
+            'overflow-y': 'hidden',
+            'overflow-x': 'auto',
+            position: 'absolute',
+          }}
+          inputStyle={stateTheme.base.secondaryBackground}
           onChange={e => {
             setSearchCommandName(e.target.value);
-          }}
-        />
+          }}/>
         <MdAddCircle
           className={styles.add_circle}
           onClick={() => {

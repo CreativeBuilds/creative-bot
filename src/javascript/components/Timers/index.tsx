@@ -7,6 +7,9 @@ const { Timer } = require('./Timer');
 const { Sorting } = require('./Sorting');
 let { setRxTimers } = require('../../helpers/rxTimers');
 
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { TextField } from '../Generics/Input';
+
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
@@ -39,57 +42,58 @@ const AddCommandPopup = ({
   };
 
   return (
-    <div className={styles.popup} style={stateTheme.main}>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Name</div>
-        <textarea
-          className={styles.input}
+    <div style={stateTheme.popup.dialog.content}>
+      <h2>Add Timer</h2>
+      <div style={{ width: '70%', minWidth: 'unset' }}>
+        <TextField 
+          text={name}
+          placeholderText={"Name"} 
+          header={"Name"}
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             setName(e.target.value);
-          }}
-          value={name}
-        />
-      </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Repeat Every -- Seconds</div>
-        <textarea
-          className={styles.input}
+          }}/>
+        <TextField 
+          text={seconds}
+          placeholderText={"Seconds Repeated"} 
+          header={"Repeat Every -- Seconds"}
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             setSeconds(e.target.value);
-          }}
-          value={seconds}
-        />
-      </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Min. Amount of Msgs Between</div>
-        <textarea
-          className={styles.input}
+          }}/>
+        <TextField 
+          text={messages}
+          placeholderText={"Amount of Msgs Between"} 
+          header={"Min. Amount of Msgs Between"}
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             setMessages(e.target.value);
-          }}
-          value={messages}
-        />
-      </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Reply</div>
-        <textarea
-          className={styles.input}
+          }}/>
+        <TextField 
+          text={reply}
+          placeholderText={"Reply"} 
+          header={"Reply"}
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             setReply(e.target.value);
-          }}
-          value={reply}
-        />
-      </div>
-      <div
-        className={styles.submit}
-        style={stateTheme.submitButton}
-        onClick={() => {
-          if (isNaN(Number(messages)) || isNaN(Number(seconds))) return;
-          saveToDB();
-          closeCurrentPopup();
-        }}
-      >
-        CREATE
+          }}/>
+        <Button 
+          title={"Create"} 
+          isSubmit={true} 
+          stateTheme={stateTheme}  
+          onClick={() => {
+            if (isNaN(Number(messages)) || isNaN(Number(seconds))) return;
+            saveToDB();
+            closeCurrentPopup();
+          }} />
       </div>
     </div>
   );
@@ -130,15 +134,20 @@ const TimersPage = ({ props }) => {
     <div style={stateTheme.base.tertiaryBackground} className={styles.Points}>
       <div style={Object.assign({}, stateTheme.toolBar, stateTheme.base.quinaryForeground)} className={styles.header}>
         TIMERS
-        <textarea
-          className={styles.usersearch}
-          style={stateTheme.searchInput}
-          placeholder={'Search...'}
-          value={searchCommandName}
+        <TextField 
+          placeholderText={"Search..."} 
+          stateTheme={stateTheme} 
+          width={'150px'}
+          style={{
+            right: '10px',
+            'overflow-y': 'hidden',
+            'overflow-x': 'auto',
+            position: 'absolute',
+          }}
+          inputStyle={stateTheme.base.secondaryBackground}
           onChange={e => {
             setSearchCommandName(e.target.value);
-          }}
-        />
+          }}/>
         <MdAddCircle
           className={styles.add_circle}
           onClick={() => {

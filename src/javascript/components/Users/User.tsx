@@ -3,6 +3,9 @@ import { useState } from 'react';
 
 import { ModBox } from './ModBox';
 
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { TextField } from '../Generics/Input';
+
 import { MdModeEdit } from 'react-icons/md';
 import { theme } from '../../helpers';
 
@@ -20,42 +23,44 @@ const Popup = ({ user, styles, closeCurrentPopup, stateTheme }) => {
   };
 
   return (
-    <div className={styles.popup}>
-      {/* <h1>
+    <div style={stateTheme.popup.dialog.content}>
+      <h2>
         Edit {user.dliveUsername}
         {user.dliveUsername[user.dliveUsername.length - 1].toLowerCase() === 's'
           ? `'`
           : `'s`}{' '}
         Points
-      </h1> */}
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>
-          {user.dliveUsername ? user.dliveUsername : user.dliveUsername}
-          {(user.dliveUsername ? user.dliveUsername : user.dliveUsername)[
-            user.dliveUsername.length - 1
-          ].toLowerCase() === 's'
-            ? `'`
-            : `'s`}
-          {' points'}
-        </div>
-        <textarea
-          className={styles.input}
+        </h2>
+      <div style={{ width: '70%', minWidth: 'unset' }}>
+        <TextField 
+          text={points}
+          placeholderText={"Points"} 
+          header={
+          <div>
+            {user.dliveUsername ? user.dliveUsername : user.dliveUsername}
+            {(user.dliveUsername ? user.dliveUsername : user.dliveUsername)[
+              user.dliveUsername.length - 1
+            ].toLowerCase() === 's'
+              ? `'`
+              : `'s`}
+            {' points'}
+          </div>
+          }
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             setPoints(e.target.value);
-          }}
-          value={points}
-        />
-      </div>
-      <div
-        className={styles.submit}
-        style={stateTheme.submitButton}
-        onClick={() => {
-          if (isNaN(Number(points))) return;
-          saveToDB(Number(points));
-          closeCurrentPopup();
-        }}
-      >
-        SAVE
+          }}/>
+        <Button 
+          title={"Save"} 
+          isSubmit={true} 
+          stateTheme={stateTheme}  
+          onClick={() => {
+              if (isNaN(Number(points))) return;
+              saveToDB(Number(points));
+              closeCurrentPopup();
+            }} />
       </div>
     </div>
   );

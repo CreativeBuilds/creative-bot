@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+
 interface popup {
   styles: any;
   stateTheme: any;
@@ -34,26 +36,23 @@ const SetupOptionsPopup = ({
         </p>
       </div>
       <div className={styles.buttonstack}>
-        <div
-          className={styles.submit}
-          style={stateTheme.submitButton}
-          onClick={() => {
-            setupAsNewUser();
-            closeCurrentPopup();
-          }}
-        >
-          Setup As New User
-        </div>
-        <div
-          className={styles.submit}
-          style={stateTheme.submitButton}
-          onClick={() => {
-            setupAsExistingUser();
-            closeCurrentPopup();
-          }}
-        >
-          Setup As Existing User
-        </div>
+        <Button title={"Setup As New User"} 
+        isSubmit={true} 
+        stateTheme={stateTheme}
+        buttonStyle={{width: '-webkit-fill-available'}}
+        onClick={() => {
+          setupAsExistingUser();
+          closeCurrentPopup();
+        }}/>
+        <Button title={"Setup As Existing User"} 
+        isSubmit={true} 
+        stateTheme={stateTheme} 
+        buttonStyle={{width: '-webkit-fill-available',
+        'margin-left': '10px'}} 
+        onClick={() => {
+          setupAsExistingUser();
+          closeCurrentPopup();
+        }} />
       </div>
     </div>
   );

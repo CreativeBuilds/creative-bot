@@ -2,12 +2,14 @@ import * as React from 'react';
 import { useState } from 'react';
 
 import { ToggleBox } from './ToggleBox';
+import { Checkbox } from '../Generics/Checkbox';
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { TextField, StepperField } from '../Generics/Input';
 
 import { MdModeEdit, MdEdit, MdDelete } from 'react-icons/md';
 import { theme } from '../../helpers';
-import { firebaseCommands$ } from '../../helpers/rxCommands';
+import { firebaseCommands$, setRxCommands } from '../../helpers/rxCommands';
 import { first } from 'rxjs/operators';
-let { setRxCommands } = require('../../helpers/rxCommands');
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -44,26 +46,29 @@ const Popup = ({ command, styles, closeCurrentPopup, stateTheme }) => {
 
   return (
     <div className={styles.popup}>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Name</div>
-        <textarea
-          className={styles.input}
+      <h2>Edit Command</h2>
+      <div style={{ width: '70%', minWidth: 'unset' }}>
+        <TextField 
+          text={name}
+          placeholderText={"Name"} 
+          header={"Name"}
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={stateTheme.base.secondaryBackground}
           onChange={e => {
             setName(e.target.value);
-          }}
-          value={name}
-        />
-      </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Reply</div>
-        <textarea
-          className={styles.input}
+          }}/>
+        <TextField 
+          text={reply}
+          placeholderText={"Reply"} 
+          header={"Reply"}
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={stateTheme.base.secondaryBackground}
           onChange={e => {
             setReply(e.target.value);
-          }}
-          value={reply}
-        />
-      </div>
+          }}/>
+        </div>
       {/* <div className={styles.input_wrapper}>
         <div className={styles.input_name}>Uses</div>
         <textarea
@@ -74,18 +79,16 @@ const Popup = ({ command, styles, closeCurrentPopup, stateTheme }) => {
           value={uses}
         />
       </div> */}
-      <div
-        className={styles.submit}
-        style={stateTheme.submitButton}
+      <Button 
+        title={"Save"} 
+        isSubmit={true} 
+        stateTheme={stateTheme}  
         onClick={() => {
           // if (isNaN(Number(uses))) return;
           // setUses(Number(uses));
           saveToDB();
           closeCurrentPopup();
-        }}
-      >
-        SAVE
-      </div>
+        }} />
     </div>
   );
 };
@@ -111,16 +114,14 @@ const RemoveCommandPopup = ({
       <div className={styles.remove_text}>
         You're about to delete this command! Are you sure you want to do that?
       </div>
-      <div
-        className={styles.submit}
-        style={theme.globals.destructiveButton}
+      <DestructiveButton 
+        title={"Yes"} 
+        isSubmit={true}
+        stateTheme={stateTheme} 
         onClick={() => {
-          saveToDB();
-          closeCurrentPopup();
-        }}
-      >
-        YES
-      </div>
+            saveToDB();
+            closeCurrentPopup();
+          }} />
     </div>
   );
 };
@@ -181,12 +182,27 @@ const Command = ({
         {/* <div className={styles.points}>{command.uses}</div> */}
         <div className={styles.spacer} />
         <div className={styles.modded}>
-          <ToggleBox
+          {/*<ToggleBox
             styles={styles}
             command={command}
             stateTheme={stateTheme}
             ipcRenderer={ipcRenderer}
-          />
+          />*/}
+          <Checkbox isOn={command.enabled} 
+          stateTheme={stateTheme} 
+          onClick={(value) => { 
+            firebaseCommands$.pipe(first()).subscribe(commands => {
+              let newCommands = Object.assign({}, commands);
+              Object.keys(newCommands).forEach(key => {
+                if (key === command.name) {
+                  newCommands[key] = Object.assign({}, newCommands[key], {
+                    enabled: value
+                  });
+                }
+              });
+              setRxCommands(newCommands);
+            });
+           }} />
         </div>
         <div className={styles.modded}>
           <MdDelete

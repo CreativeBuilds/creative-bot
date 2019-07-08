@@ -4,6 +4,8 @@ import { filter, first } from 'rxjs/operators';
 import { theme } from '../../helpers';
 let { setRxQuotes, rxQuotes } = require('../../helpers/rxQuotes');
 
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
@@ -32,16 +34,14 @@ const RemoveQuotePopup = ({
       <div className={styles.remove_text}>
         You're about to delete this quote! Are you sure you want to do that?
       </div>
-      <div
-        className={styles.submit}
-        style={theme.globals.destructiveButton}
+      <DestructiveButton 
+        title={"Yes"} 
+        isSubmit={true}
+        stateTheme={stateTheme} 
         onClick={() => {
-          saveToDB();
-          closeCurrentPopup();
-        }}
-      >
-        YES
-      </div>
+            saveToDB();
+            closeCurrentPopup();
+          }} />
     </div>
   );
 };

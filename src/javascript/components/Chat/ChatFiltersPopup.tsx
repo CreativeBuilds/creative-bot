@@ -7,9 +7,12 @@ import { Message } from './Message';
 import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
 import { Action } from 'rxjs/internal/scheduler/Action';
 
+// Generic Components
 import { SegmentControl, SegmentControlSource } from '../SegmentControl/index';
 import { Toggle, ToggleType } from '../Generics/Toggle';
 import { Panel } from '../Generics/Panel';
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { TextField, StepperField } from '../Generics/Input';
 import { GoNoNewline } from 'react-icons/go';
 import { first } from 'rxjs/operators';
 
@@ -165,60 +168,27 @@ const ChatFiltersPopup = ({
           }}
           stateTheme={stateTheme}
         />
-        <div
-          style={{ display: 'flex', flexDirection: 'column', width: '100%' }}
-        >
-          <div>Points Per Minute</div>
-          <input
-            type={'number'}
-            style={Object.assign(
-              {},
-              {
-                flex: 1,
-                border: '0px solid #000',
-                borderRadius: '5px',
-                padding: '5px',
-                outline: 'none',
-                height: '20px',
-                fontSize: '16px'
-              },
-              stateTheme.base.tertiaryBackground
-            )}
-            value={payoutAmount}
-            min={0}
-            onChange={e => setPayoutAmount(e.target.value)}
-          />
-        </div>
-        <div
-          style={{ display: 'flex', flexDirection: 'column', width: '100%' }}
-        >
-          <div>
-            Payout Every {payoutRate} Minute{payoutRate === 1 ? '' : 's'}
-          </div>
-          <input
-            type={'number'}
-            style={Object.assign(
-              {},
-              {
-                flex: 1,
-                border: '0px solid #000',
-                borderRadius: '5px',
-                padding: '5px',
-                outline: 'none',
-                height: '20px',
-                fontSize: '16px'
-              },
-              stateTheme.base.tertiaryBackground
-            )}
-            min={1}
-            value={payoutRate}
-            onChange={e => setPayoutRate(Number(e.target.value))}
-          />
-        </div>
+        <StepperField 
+          value={payoutAmount} 
+          minValue={0} 
+          header={"Points Per Minute"}
+          width={'100%'}
+          inputStyle={stateTheme.base.tertiaryBackground} 
+          stateTheme={stateTheme} 
+          onChange={e => setPayoutAmount(e.target.value)}/>
+        <StepperField 
+          value={payoutRate} 
+          minValue={1}  
+          header={`Payout Every ${payoutRate} Minute${payoutRate === 1 ? '' : 's'}`} 
+          width={'100%'}
+          inputStyle={stateTheme.base.tertiaryBackground} 
+          stateTheme={stateTheme} 
+          onChange={e => setPayoutRate(Number(e.target.value))}/>
         <Panel
           header='Timestamp Filters'
           hasHeader={true}
           style={stateTheme.base.tertiaryBackground}
+          stateTheme={stateTheme}
           content={
             <div>
               <Toggle
@@ -245,15 +215,9 @@ const ChatFiltersPopup = ({
           }
         />
       </div>
-      <div
-        className={styles.submit}
-        style={stateTheme.submitButton}
-        onClick={() => {
+      <Button title={"Close"} isSubmit={true} stateTheme={stateTheme} onClick={() => {
           closeCurrentPopup();
-        }}
-      >
-        Close
-      </div>
+        }} />
     </div>
   );
 };

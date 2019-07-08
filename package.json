@@ -1,6 +1,6 @@
 {
   "name": "creative-bot",
-  "version": "1.6.2",
+  "version": "1.7.0-canary",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -36,11 +36,13 @@
     "moment": "^2.24.0",
     "open": "^6.3.0",
     "queueing-subject": "^0.3.2",
+    "rc-slider": "^8.6.13",
     "react": "^16.8.6",
     "react-icons": "^3.7.0",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
     "react-tooltip": "^3.10.0",
+    "reactrangeslider": "^3.0.6",
     "rxfire": "^3.6.2",
     "rxjs": "^6.5.2",
     "rxjs-websockets": "^7.0.0",

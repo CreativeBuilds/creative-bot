@@ -2,12 +2,15 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 
 import { ToggleBox } from './ToggleBox';
+import { Checkbox } from '../Generics/Checkbox';
 
 import { MdModeEdit, MdEdit, MdDelete } from 'react-icons/md';
 import { theme } from '../../helpers';
 import { firebaseGiveaways$ } from '../../helpers/rxGiveaways';
 import { first } from 'rxjs/operators';
 let { setRxGiveaways } = require('../../helpers/rxGiveaways');
+
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -32,16 +35,14 @@ const RemoveGiveawayPopup = ({
       <div className={styles.remove_text}>
         You're about to delete this giveaway! Are you sure you want to do that?
       </div>
-      <div
-        className={styles.submit}
-        style={theme.globals.destructiveButton}
+      <DestructiveButton 
+        title={"Yes"} 
+        isSubmit={true}
+        stateTheme={stateTheme} 
         onClick={() => {
-          saveToDB();
-          closeCurrentPopup();
-        }}
-      >
-        YES
-      </div>
+            saveToDB();
+            closeCurrentPopup();
+          }} />
     </div>
   );
 };

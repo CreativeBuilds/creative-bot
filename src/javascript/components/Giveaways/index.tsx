@@ -9,6 +9,9 @@ const { Giveaway } = require('./Giveaway');
 const { Sorting } = require('./Sorting');
 let { setRxGiveaways } = require('../../helpers/rxGiveaways');
 
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { TextField } from '../Generics/Input';
+
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
@@ -49,81 +52,90 @@ const AddGiveawayPopup = ({
   };
 
   return (
-    <div className={styles.popup} style={stateTheme.main}>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>
-          Name -{' '}
-          <span style={{ fontSize: '0.68em' }}>
-            If name is test then a user doing <br />
-            !test numberOfTickets will purchase those tickets
-          </span>
-        </div>
-        <textarea
-          className={styles.input}
+    <div style={stateTheme.popup.dialog.content}>
+      <h2>Add Giveaway</h2>
+      <div style={{ width: '70%', minWidth: 'unset' }}>
+        <TextField 
+          text={name}
+          placeholderText={"Reply"} 
+          header={
+            <div>
+              Name -{' '}
+              <span style={{ fontSize: '0.68em' }}>
+                If name is test then a user doing <br />
+                !test numberOfTickets will purchase those tickets
+              </span>
+            </div>
+          }
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             let val = e.target.value;
             val = val.replace(' ', '-').replace('--', '-');
             setName(val);
-          }}
-          value={name}
-        />
-      </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Reward</div>
-        <textarea
-          className={styles.input}
+          }}/>
+        <TextField 
+          text={reward}
+          placeholderText={"Reward"} 
+          header={"Reward"}
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             setReward(e.target.value);
-          }}
-          value={reward}
-        />
-      </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Cost (Default: No Cost)</div>
-        <textarea
-          className={styles.input}
+          }}/>
+        <TextField 
+          text={String(cost)}
+          placeholderText={"Cost"} 
+          header={"Cost (Default: No Cost)"}
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
-            if (isNaN(Number(e.target.value))) return;
+             if (isNaN(Number(e.target.value))) return;
             setCost(Math.abs(Number(e.target.value)));
-          }}
-          value={cost}
-        />
-      </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>
-          Max Entries <br /> (0 - no max)
-        </div>
-        <textarea
-          className={styles.input}
+          }}/>
+        <TextField 
+          text={String(maxEntries)}
+          placeholderText={"Max Entries"} 
+          header={
+          <div>
+            Max Entries <br /> (0 - no max)
+          </div>
+          }
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             if (isNaN(Number(e.target.value))) return;
             setMaxEntries(Math.abs(Number(e.target.value)));
-          }}
-          value={maxEntries}
-        />
-      </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>
-          Seconds Until Close <br /> (0 - doesn't close)
-        </div>
-        <textarea
-          className={styles.input}
+          }}/>
+        <TextField 
+          text={String(secondsUntilClose)}
+          placeholderText={"Seconds Until Close"} 
+          header={
+          <div>
+            Seconds Until Close <br /> (0 - doesn't close)
+          </div>
+          }
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             if (isNaN(Number(e.target.value))) return;
             setSecondsUntilClose(Math.abs(Number(e.target.value)));
-          }}
-          value={secondsUntilClose}
-        />
-      </div>
-      <div
-        className={styles.submit}
-        style={stateTheme.submitButton}
-        onClick={() => {
-          saveToDB();
-          closeCurrentPopup();
-        }}
-      >
-        CREATE
+          }}/>
+        <Button 
+          title={"Create"} 
+          isSubmit={true} 
+          stateTheme={stateTheme}  
+          onClick={() => {
+            // if (isNaN(Number(uses))) return;
+            // setUses(Number(uses));
+            saveToDB();
+            closeCurrentPopup();
+          }} />
       </div>
     </div>
   );
@@ -171,15 +183,20 @@ const GiveawaysPage = ({ props }) => {
         className={styles.header}
       >
         GIVEAWAYS
-        <textarea
-          className={styles.usersearch}
-          style={stateTheme.searchInput}
-          placeholder={'Search...'}
-          value={searchGiveawayName}
+        <TextField 
+          placeholderText={"Search..."} 
+          stateTheme={stateTheme} 
+          width={'150px'}
+          style={{
+            right: '10px',
+            'overflow-y': 'hidden',
+            'overflow-x': 'auto',
+            position: 'absolute',
+          }}
+          inputStyle={stateTheme.base.secondaryBackground}
           onChange={e => {
             setSearchGiveawayName(e.target.value);
-          }}
-        />
+          }}/>
         <MdAddCircle
           className={styles.add_circle}
           onClick={() => {

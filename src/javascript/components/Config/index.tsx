@@ -6,6 +6,8 @@ import * as _ from 'lodash';
 const { Config } = require('./Config');
 const { Sorting } = require('./Sorting');
 
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 

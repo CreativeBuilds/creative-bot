@@ -16,6 +16,8 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 
 import { SegmentControl, SegmentControlSource } from '../SegmentControl/index';
 import { SegmentControlItem } from '../SegmentControl/SegmentControlItem';
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+
 import { Emote } from './Emote';
 import { string } from 'prop-types';
 

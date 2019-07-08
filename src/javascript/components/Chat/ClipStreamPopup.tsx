@@ -7,6 +7,7 @@ import { Message } from './Message';
 import { Action } from 'rxjs/internal/scheduler/Action';
 
 import { SegmentControl, SegmentControlSource } from '../SegmentControl/index';
+import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');

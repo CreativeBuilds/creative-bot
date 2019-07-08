@@ -6,6 +6,8 @@ import * as _ from 'lodash';
 const { User } = require('./User');
 const { Sorting } = require('./Sorting');
 
+import { TextField } from '../Generics/Input';
+
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
@@ -35,15 +37,20 @@ const UsersPage = ({ props }) => {
     <div style={stateTheme.base.tertiaryBackground} className={styles.Points}>
       <div style={Object.assign({}, stateTheme.toolBar, stateTheme.base.quinaryForeground)} className={styles.header}>
         USERS
-        <textarea
-          className={styles.usersearch}
-          style={stateTheme.searchInput}
-          placeholder={'Search...'}
-          value={searchUsername}
+        <TextField 
+          placeholderText={"Search..."} 
+          stateTheme={stateTheme} 
+          width={'150px'}
+          style={{
+            right: '10px',
+            'overflow-y': 'hidden',
+            'overflow-x': 'auto',
+            position: 'absolute',
+          }}
+          inputStyle={stateTheme.base.secondaryBackground}
           onChange={e => {
             setSearchUsername(e.target.value);
-          }}
-        />
+          }}/>
       </div>
       <div style={{}} className={styles.content}>
         {/* TODO ADD PAGINATION */}
