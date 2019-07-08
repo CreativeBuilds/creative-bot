@@ -9,7 +9,7 @@ const theme = {
     accentBorderColor: {
       color: '#ffd300',
       fill: '#ffd300',
-      borderColor: '#ffd300',
+      borderColor: '#ffd300'
     },
     accentHighlight: {
       highlightColor: '#ffd300',
@@ -25,7 +25,7 @@ const theme = {
     accentDarkBorderColor: {
       color: '#b39400',
       fill: '#b39400',
-      borderColor: '#b39400',
+      borderColor: '#b39400'
     },
     accentDarkHighlight: {
       highlightColor: '#b39400',
@@ -107,7 +107,7 @@ const theme = {
       display: 'inline-block',
       position: 'relative',
       'box-sizing': 'border-box',
-      width: '100%',  
+      width: '100%',
       draggedBackground: {
         position: 'absolute',
         top: '0',
@@ -125,33 +125,33 @@ const theme = {
           left: '0',
           'text-align': 'center',
           'font-size': '20px',
-          'font-weight': 'bold',
+          'font-weight': 'bold'
         }
       },
       content: {
         'backdrop-filter': 'blur(10px)',
-        '-webkit-filter': 'blur(10px)',
+        '-webkit-filter': 'blur(10px)'
       },
       contentBox: {
         padding: '15px',
         position: 'relative',
         iconContainer: {
           position: 'relative',
+          height: '64px'
+        },
+        logo: {
           height: '64px',
-        },   
-        logo: { 
-          height: '64px', 
           width: '64px',
           left: '0',
           right: '0',
           position: 'absolute',
           'text-align': 'center',
-          margin: 'auto',
+          margin: 'auto'
         },
-        dragDropMessage: {  
+        dragDropMessage: {
           'text-align': 'center',
           margin: 'auto',
-          'word-wrap': 'break-word',
+          'word-wrap': 'break-word'
         }
       }
     },
@@ -171,13 +171,13 @@ const theme = {
     panel: {
       padding: '10px',
       'border-radius': '10px',
-    
+
       title: {
         textAlign: 'center',
         margin: '0',
         padding: '0',
         marginBottom: '10px',
-        userSelect: 'none',
+        userSelect: 'none'
       }
     },
     popup: {
@@ -191,7 +191,7 @@ const theme = {
         zIndex: '999999',
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
       },
       dialog: {
         width: '475px',
@@ -201,7 +201,7 @@ const theme = {
         borderRadius: '5px',
         boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)',
         content: {
-          'display': 'flex',
+          display: 'flex',
           'justify-content': 'center',
           'align-items': 'center',
           'flex-direction': 'column'
@@ -216,7 +216,7 @@ const theme = {
           position: 'absolute',
           top: '0',
           right: '0',
-          transition: 'all 0.15s ease-in-out',
+          transition: 'all 0.15s ease-in-out'
         }
       }
     },
@@ -227,29 +227,29 @@ const theme = {
       position: 'relative',
       marginBottom: '7px',
       compact: {
-        width: '85px',
+        width: '85px'
       },
       stretched: {
         width: '100%',
         height: '25px',
         marginLeft: '0px !important',
-        position: 'relative',
+        position: 'relative'
       },
       header: {
         compact: {
           height: 'auto',
           textAlign: 'center',
           width: 'auto',
-          display: 'contents',
+          display: 'contents'
         },
         stretched: {
           display: 'inline-block',
-          height: '100%',
+          height: '100%'
         }
       },
       disabled: {
         color: 'rgb(127,127,127)',
-        toggleBody: { 
+        toggleBody: {
           opacity: '0.5'
         }
       },
@@ -274,7 +274,7 @@ const theme = {
         },
         isOn: {
           'margin-left': '50px'
-        },
+        }
       }
     },
     slider: {
@@ -283,13 +283,13 @@ const theme = {
       headerContainer: {
         'margin-bottom': '0px',
         header: {
-          display: 'inline-block', 
-          margin: '0', 
+          display: 'inline-block',
+          margin: '0'
         },
         value: {
-          display: 'inline-block', 
+          display: 'inline-block',
           margin: '0',
-          float: 'right', 
+          float: 'right'
         }
       },
       input: {
@@ -330,7 +330,7 @@ const theme = {
         outline: 'none',
         boxShadow: '1px 1px 1px #000000, 0px 0px 1px #0d0d0d'
       }
-    },    
+    },
     seperator: {},
     cell: {
       normal: {
@@ -357,12 +357,13 @@ const theme = {
         'border-radius': '5px',
         color: '#f0f0f0',
         transition: 'all 0.15s ease-in-out',
+        border: '1.5px solid rgba(0,0,0,0)',
         submit: {
           'margin-bottom': '0px !important'
         },
         disabled: {
           backgroundColor: '#191a1c',
-          color: '#d0d0d0',
+          color: '#d0d0d0'
         },
         hover: {
           cursor: 'pointer',
@@ -371,18 +372,14 @@ const theme = {
         }
       },
       sender: {
-        disabled: {
-
-        },
-        hover: {
-
-        }
+        disabled: {},
+        hover: {}
       }
     },
     input: {
       container: {
-        display: 'flex', 
-        flexDirection: 'column', 
+        display: 'flex',
+        flexDirection: 'column'
       },
       header: {
         'margin-bottom': '2px'
@@ -405,9 +402,7 @@ const theme = {
         height: '20px',
         fontSize: '16px'
       },
-      message: {
-
-      }
+      message: {}
     },
     timeStamp: {
       color: '#AAAAAA'
@@ -469,7 +464,7 @@ const theme = {
       display: 'inline-block',
       position: 'relative',
       'box-sizing': 'border-box',
-      width: '100%',  
+      width: '100%',
       draggedBackground: {
         position: 'absolute',
         top: '0',
@@ -487,33 +482,33 @@ const theme = {
           left: '0',
           'text-align': 'center',
           'font-size': '20px',
-          'font-weight': 'bold',
+          'font-weight': 'bold'
         }
       },
       content: {
         'backdrop-filter': 'blur(10px)',
-        '-webkit-filter': 'blur(10px)',
+        '-webkit-filter': 'blur(10px)'
       },
       contentBox: {
         padding: '15px',
         position: 'relative',
         iconContainer: {
           position: 'relative',
+          height: '64px'
+        },
+        logo: {
           height: '64px',
-        },   
-        logo: { 
-          height: '64px', 
           width: '64px',
           left: '0',
           right: '0',
           position: 'absolute',
           'text-align': 'center',
-          margin: 'auto',
+          margin: 'auto'
         },
-        dragDropMessage: {  
+        dragDropMessage: {
           'text-align': 'center',
           margin: 'auto',
-          'word-wrap': 'break-word',
+          'word-wrap': 'break-word'
         }
       }
     },
@@ -533,13 +528,13 @@ const theme = {
     panel: {
       padding: '10px',
       'border-radius': '10px',
-    
+
       title: {
         textAlign: 'center',
         margin: '0',
         padding: '0',
         marginBottom: '10px',
-        userSelect: 'none',
+        userSelect: 'none'
       }
     },
     popup: {
@@ -553,7 +548,7 @@ const theme = {
         zIndex: '999999',
         display: 'flex',
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
       },
       dialog: {
         width: '475px',
@@ -563,7 +558,7 @@ const theme = {
         borderRadius: '5px',
         boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)',
         content: {
-          'display': 'flex',
+          display: 'flex',
           'justify-content': 'center',
           'align-items': 'center',
           'flex-direction': 'column'
@@ -578,7 +573,7 @@ const theme = {
           position: 'absolute',
           top: '0',
           right: '0',
-          transition: 'all 0.15s ease-in-out',
+          transition: 'all 0.15s ease-in-out'
         }
       }
     },
@@ -589,29 +584,29 @@ const theme = {
       position: 'relative',
       marginBottom: '7px',
       compact: {
-        width: '85px',
+        width: '85px'
       },
       stretched: {
         width: '100%',
         height: '25px',
         marginLeft: '0px !important',
-        position: 'relative',
+        position: 'relative'
       },
       header: {
         compact: {
           height: 'auto',
           textAlign: 'center',
           width: 'auto',
-          display: 'contents',
+          display: 'contents'
         },
         stretched: {
           display: 'inline-block',
-          height: '100%',
+          height: '100%'
         }
       },
       disabled: {
         color: 'rgb(127,127,127)',
-        toggleBody: { 
+        toggleBody: {
           opacity: '0.5'
         }
       },
@@ -636,7 +631,7 @@ const theme = {
         },
         isOn: {
           'margin-left': '50px'
-        },
+        }
       }
     },
     slider: {
@@ -645,13 +640,13 @@ const theme = {
       headerContainer: {
         'margin-bottom': '0px',
         header: {
-          display: 'inline-block', 
-          margin: '0', 
+          display: 'inline-block',
+          margin: '0'
         },
         value: {
-          display: 'inline-block', 
+          display: 'inline-block',
           margin: '0',
-          float: 'right', 
+          float: 'right'
         }
       },
       input: {
@@ -721,13 +716,14 @@ const theme = {
         color: '#f0f0f0',
         transition: 'all 0.15s ease-in-out',
         'margin-bottom': '10px',
+        border: '1.5px solid rgba(0,0,0,0)',
         submit: {
           width: 'calc(70% - 9px)',
           'margin-bottom': '0px'
         },
         disabled: {
           backgroundColor: '#dddddd',
-          color: '#202225',
+          color: '#202225'
         },
         hover: {
           cursor: 'pointer',
@@ -736,18 +732,14 @@ const theme = {
         }
       },
       sender: {
-        disabled: {
-
-        },
-        hover: {
-          
-        }
+        disabled: {},
+        hover: {}
       }
     },
     input: {
       container: {
-        display: 'flex', 
-        flexDirection: 'column', 
+        display: 'flex',
+        flexDirection: 'column'
       },
       header: {
         'margin-bottom': '2px'
@@ -770,16 +762,14 @@ const theme = {
         height: '20px',
         fontSize: '16px'
       },
-      message: {
-
-      }
+      message: {}
     },
     timeStamp: {
       color: '#555555'
     },
     dashedBorder: {
       border: '3px dashed #202225',
-      'box-sizing': 'border-box',
+      'box-sizing': 'border-box'
     }
   }
 };
