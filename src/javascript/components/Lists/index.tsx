@@ -8,6 +8,8 @@ const { Sorting } = require('./Sorting');
 let { setRxLists } = require('../../helpers/rxLists');
 import { AddListPopup } from './AddListPopup';
 
+import { TextField } from '../Generics/Input';
+
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
 
@@ -48,15 +50,20 @@ const ListsPage = ({ props }) => {
     <div style={stateTheme.base.tertiaryBackground} className={styles.Points}>
       <div style={Object.assign({}, stateTheme.toolBar, stateTheme.base.quinaryForeground)} className={styles.header}>
         LISTS
-        <textarea
-          className={styles.usersearch}
-          style={stateTheme.searchInput}
-          placeholder={'Search...'}
-          value={searchListName}
+        <TextField 
+          placeholderText={"Search..."} 
+          stateTheme={stateTheme} 
+          width={'150px'}
+          style={{
+            right: '10px',
+            'overflow-y': 'hidden',
+            'overflow-x': 'auto',
+            position: 'absolute',
+          }}
+          inputStyle={stateTheme.base.secondaryBackground}
           onChange={e => {
             setSearchListName(e.target.value);
-          }}
-        />
+          }}/>
         <MdAddCircle
           className={styles.add_circle}
           onClick={() => {

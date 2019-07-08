@@ -25,6 +25,7 @@ const Button = ({title, isSubmit = false, width = 'auto', isEnabled = true, onCl
         </AdvancedDiv>
     );
 }
+
 const DestructiveButton = ({title, isSubmit = false, width = 'auto', isEnabled = true, onClick = null, stateTheme, buttonStyle = {}}) => {
     
     const [isenabled, setIsEnabled] = useState(isEnabled);

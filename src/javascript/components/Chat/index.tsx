@@ -27,7 +27,9 @@ import { ChatFiltersPopup } from './ChatFiltersPopup';
 import { ChatTextToSpeechPopup } from './ChatTextToSpeechPopup';
 import { AdvancedDiv } from '../AdvancedDiv';
 import { firebase } from '../../helpers/firebase';
+
 import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { TextField, EmailField, PasswordField, StepperField } from '../Generics/Input';
 
 import { isEmpty, isEqual } from 'lodash';
 
@@ -127,16 +129,15 @@ const AddAcceptFirebasePopup = ({
         awesome features!
       </p>
       <React.Fragment>
-        <div className={styles.input_name}>Email</div>
-        <input
-          className={styles.input}
-          type={'email'}
-          onChange={e => {
-            validateEmail(e.target.value);
-          }}
-          value={email}
-          style={{ width: 'calc(70% - 10px)', minWidth: 'unset' }}
-        />
+        <EmailField 
+              header={"Email"}
+              placeholderText={"Email"} 
+              stateTheme={stateTheme} 
+              style={{ width: 'calc(70% - 10px)', minWidth: 'unset' }}
+              inputStyle={stateTheme.base.secondaryBackground}
+              onChange={e => {
+                validateEmail(e.target.value);
+              }}/>
         {emailErr ? (
           <div
             style={{
@@ -149,56 +150,39 @@ const AddAcceptFirebasePopup = ({
         ) : null}
       </React.Fragment>
       <React.Fragment>
-        <div className={styles.input_name}>
-          Password{' '}
-          {!signUp && emailErr.length === 0 ? (
-            <AdvancedDiv
-              style={{
-                fontSize: '0.7em',
-                color: theme.globals.accentHighlight.highlightColor
+        <PasswordField 
+              header={"Password"}
+              placeholderText={"Password"}
+              hasForgotLabel={!signUp && emailErr.length === 0 ? true : false} 
+              onForgotPassword={() => {
+                if (emailErr) {
+                  setEmailErr(
+                    'Cannot send password request to email with no user!'
+                  );
+                } else if (!validateStringForEmail(email)) {
+                  setEmailErr(
+                    'Cannot send password request to email with no user!'
+                  );
+                } else {
+                  firebase
+                    .auth()
+                    .sendPasswordResetEmail(email)
+                    .then(() => {
+                      setEmailErr('Check email for password reset link!');
+                    })
+                    .catch(e => {
+                      if (e.message) {
+                        setEmailErr(e.message);
+                      }
+                    });
+                }
               }}
-              hoverStyle={{ cursor: 'pointer' }}
-            >
-              <span
-                onClick={() => {
-                  if (emailErr) {
-                    setEmailErr(
-                      'Cannot send password request to email with no user!'
-                    );
-                  } else if (!validateStringForEmail(email)) {
-                    setEmailErr(
-                      'Cannot send password request to email with no user!'
-                    );
-                  } else {
-                    firebase
-                      .auth()
-                      .sendPasswordResetEmail(email)
-                      .then(() => {
-                        setEmailErr('Check email for password reset link!');
-                      })
-                      .catch(e => {
-                        if (e.message) {
-                          setEmailErr(e.message);
-                        }
-                      });
-                  }
-                }}
-              >
-                Forgot Password?
-              </span>
-            </AdvancedDiv>
-          ) : null}
-        </div>
-        <input
-          className={styles.input}
-          onKeyDown={e => {}}
-          type={'password'}
-          onChange={e => {
-            validatePassword(e.target.value);
-          }}
-          style={{ width: 'calc(70% - 10px)', minWidth: 'unset' }}
-          value={password}
-        />
+              stateTheme={stateTheme} 
+              style={{ width: 'calc(70% - 10px)', minWidth: 'unset' }}
+              inputStyle={stateTheme.base.secondaryBackground}
+              onChange={e => {
+                validatePassword(e.target.value);
+              }}/>
         {passwordErr ? (
           <div
             style={{
@@ -212,17 +196,15 @@ const AddAcceptFirebasePopup = ({
       </React.Fragment>
       {signUp ? (
         <React.Fragment>
-          <div className={styles.input_name}>Confirm Password</div>
-          <input
-            className={styles.input}
-            onKeyDown={e => {}}
-            type={'password'}
-            style={{ width: 'calc(70% - 10px)', minWidth: 'unset' }}
-            onChange={e => {
-              validateConfirmationPassword(e.target.value);
-            }}
-            value={confirmationPassword}
-          />
+          <PasswordField 
+              header={"Confirm Password"}
+              placeholderText={"Confirm Password"}
+              stateTheme={stateTheme} 
+              style={{ width: 'calc(70% - 10px)', minWidth: 'unset' }}
+              inputStyle={stateTheme.base.secondaryBackground}
+              onChange={e => {
+                validateConfirmationPassword(e.target.value);
+              }}/>
           {confErr ? (
             <div
               style={{

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ToggleBox } from './ToggleBox';
 import { Checkbox } from '../Generics/Checkbox';
 import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { TextField, StepperField } from '../Generics/Input';
 
 import { MdModeEdit, MdEdit, MdDelete } from 'react-icons/md';
 import { theme } from '../../helpers';
@@ -45,26 +46,29 @@ const Popup = ({ command, styles, closeCurrentPopup, stateTheme }) => {
 
   return (
     <div className={styles.popup}>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Name</div>
-        <textarea
-          className={styles.input}
+      <h2>Edit Command</h2>
+      <div style={{ width: '70%', minWidth: 'unset' }}>
+        <TextField 
+          text={name}
+          placeholderText={"Name"} 
+          header={"Name"}
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={stateTheme.base.secondaryBackground}
           onChange={e => {
             setName(e.target.value);
-          }}
-          value={name}
-        />
-      </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Reply</div>
-        <textarea
-          className={styles.input}
+          }}/>
+        <TextField 
+          text={reply}
+          placeholderText={"Reply"} 
+          header={"Reply"}
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={stateTheme.base.secondaryBackground}
           onChange={e => {
             setReply(e.target.value);
-          }}
-          value={reply}
-        />
-      </div>
+          }}/>
+        </div>
       {/* <div className={styles.input_wrapper}>
         <div className={styles.input_name}>Uses</div>
         <textarea

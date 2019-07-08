@@ -199,7 +199,13 @@ const theme = {
         overflow: 'auto',
         padding: '10px',
         borderRadius: '5px',
-        boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)'
+        boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)',
+        content: {
+          'display': 'flex',
+          'justify-content': 'center',
+          'align-items': 'center',
+          'flex-direction': 'column'
+        }
       },
       close: {
         position: 'relative',
@@ -373,38 +379,35 @@ const theme = {
         }
       }
     },
-    submitButton: {
-      backgroundColor: '#141517',
-      color: '#f0f0f0',
-      borderColor: '#141517',
-      borderRadius: '5px',
-      transition: 'all 0.15s ease-in-out'
-    },
-    submitButton_hover: {
-      cursor: 'pointer',
-      color: '#ffd300',
-      borderColor: '#ffd300',
-      border: '1.5px solid'
-    },
-    disabledSubmitButton: {
-      backgroundColor: '#191a1c',
-      color: '#d0d0d0',
-      borderColor: '#191a1c'
-    },
     input: {
-      search: {
-        backgroundColor: '#0e0f10',
-        color: '#0f0f0f',
-        borderColor: '#0e0f10'
+      container: {
+        display: 'flex', 
+        flexDirection: 'column', 
+      },
+      header: {
+        'margin-bottom': '2px'
+      },
+      text: {
+        flex: '1',
+        border: '0px solid #000',
+        borderRadius: '5px',
+        padding: '5px',
+        outline: 'none',
+        height: '20px',
+        fontSize: '16px'
+      },
+      stepper: {
+        flex: '1',
+        border: '0px solid #000',
+        borderRadius: '5px',
+        padding: '5px',
+        outline: 'none',
+        height: '20px',
+        fontSize: '16px'
       },
       message: {
-        
+
       }
-    },
-    searchInput: {
-      backgroundColor: '#0e0f10',
-      color: '#0f0f0f',
-      borderColor: '#0e0f10'
     },
     timeStamp: {
       color: '#AAAAAA'
@@ -558,7 +561,13 @@ const theme = {
         overflow: 'auto',
         padding: '10px',
         borderRadius: '5px',
-        boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)'
+        boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)',
+        content: {
+          'display': 'flex',
+          'justify-content': 'center',
+          'align-items': 'center',
+          'flex-direction': 'column'
+        }
       },
       close: {
         position: 'relative',
@@ -735,30 +744,35 @@ const theme = {
         }
       }
     },
-    submitButton: {
-      backgroundColor: `#eeeeee`,
-      color: '#202225',
-      borderColor: `#eeeeee`
-    },
-    disabledSubmitButton: {
-      backgroundColor: '#dddddd',
-      color: '#202225',
-      borderColor: '#dddddd'
-    },
     input: {
-      search: {
-        backgroundColor: `#F1F1F1`,
-        color: '#202225',
-        borderColor: `#F1F1F1`
+      container: {
+        display: 'flex', 
+        flexDirection: 'column', 
+      },
+      header: {
+        'margin-bottom': '2px'
+      },
+      text: {
+        flex: '1',
+        border: '0px solid #000',
+        borderRadius: '5px',
+        padding: '5px',
+        outline: 'none',
+        height: '20px',
+        fontSize: '16px'
+      },
+      stepper: {
+        flex: '1',
+        border: '0px solid #000',
+        borderRadius: '5px',
+        padding: '5px',
+        outline: 'none',
+        height: '20px',
+        fontSize: '16px'
       },
       message: {
 
       }
-    },
-    searchInput: {
-      backgroundColor: `#F1F1F1`,
-      color: '#202225',
-      borderColor: `#F1F1F1`
     },
     timeStamp: {
       color: '#555555'

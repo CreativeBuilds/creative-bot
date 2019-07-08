@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { ToggleBox } from './ToggleBox';
 import { Checkbox } from '../Generics/Checkbox';
 import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { TextField } from '../Generics/Input';
 
 import { theme } from '../../helpers';
 
@@ -55,56 +56,59 @@ const Popup = ({ command, styles, closeCurrentPopup, stateTheme }) => {
   };
 
   return (
-    <div className={styles.popup} style={stateTheme.main}>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Name</div>
-        <textarea
-          className={styles.input}
+    <div style={stateTheme.popup.dialog.content}>
+      <h2>Update Timer</h2>
+      <div style={{ width: '70%', minWidth: 'unset' }}>
+        <TextField 
+          text={name}
+          placeholderText={"Name"} 
+          header={"Name"}
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             setName(e.target.value);
-          }}
-          value={name}
-        />
-      </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Reply</div>
-        <textarea
-          className={styles.input}
+          }}/>
+        <TextField 
+          text={seconds}
+          placeholderText={"Seconds Repeated"} 
+          header={"Repeat Every -- Seconds"}
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
+          onChange={e => {
+            setSeconds(e.target.value);
+          }}/>
+        <TextField 
+          text={messages}
+          placeholderText={"Amount of Msgs Between"} 
+          header={"Min. Amount of Msgs Between"}
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
+          onChange={e => {
+            setMessages(e.target.value);
+          }}/>
+        <TextField 
+          text={reply}
+          placeholderText={"Reply"} 
+          header={"Reply"}
+          stateTheme={stateTheme} 
+          width={'100%'}
+          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
           onChange={e => {
             setReply(e.target.value);
-          }}
-          value={reply}
-        />
+          }}/>
+        <Button 
+          title={"Create"} 
+          isSubmit={true} 
+          stateTheme={stateTheme}  
+          onClick={() => {
+            if (isNaN(Number(messages)) || isNaN(Number(seconds))) return;
+            saveToDB();
+            closeCurrentPopup();
+          }} />
       </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Repeat Every -- Seconds</div>
-        <textarea
-          className={styles.input}
-          onChange={e => {
-            setSeconds(Number(e.target.value));
-          }}
-          value={seconds}
-        />
-      </div>
-      <div className={styles.input_wrapper}>
-        <div className={styles.input_name}>Min. Amount of Msgs Between</div>
-        <textarea
-          className={styles.input}
-          onChange={e => {
-            setMessages(Number(e.target.value));
-          }}
-          value={messages}
-        />
-      </div>
-      <Button 
-        title={"Save"} 
-        isSubmit={true} 
-        stateTheme={stateTheme}  
-        onClick={() => {
-          if (isNaN(Number(messages)) || isNaN(Number(seconds))) return;
-          saveToDB();
-          closeCurrentPopup();
-        }} />
     </div>
   );
 };
