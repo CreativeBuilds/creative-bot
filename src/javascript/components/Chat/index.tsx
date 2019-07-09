@@ -29,7 +29,12 @@ import { AdvancedDiv } from '../AdvancedDiv';
 import { firebase } from '../../helpers/firebase';
 
 import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
-import { TextField, EmailField, PasswordField, StepperField } from '../Generics/Input';
+import {
+  TextField,
+  EmailField,
+  PasswordField,
+  StepperField
+} from '../Generics/Input';
 
 import { isEmpty, isEqual } from 'lodash';
 
@@ -129,15 +134,16 @@ const AddAcceptFirebasePopup = ({
         awesome features!
       </p>
       <React.Fragment>
-        <EmailField 
-              header={"Email"}
-              placeholderText={"Email"} 
-              stateTheme={stateTheme} 
-              style={{ width: 'calc(70% - 10px)', minWidth: 'unset' }}
-              inputStyle={stateTheme.base.secondaryBackground}
-              onChange={e => {
-                validateEmail(e.target.value);
-              }}/>
+        <EmailField
+          header={'Email'}
+          placeholderText={'Email'}
+          stateTheme={stateTheme}
+          style={{ width: 'calc(70% - 10px)', minWidth: 'unset' }}
+          inputStyle={stateTheme.base.secondaryBackground}
+          onChange={e => {
+            validateEmail(e.target.value);
+          }}
+        />
         {emailErr ? (
           <div
             style={{
@@ -150,39 +156,40 @@ const AddAcceptFirebasePopup = ({
         ) : null}
       </React.Fragment>
       <React.Fragment>
-        <PasswordField 
-              header={"Password"}
-              placeholderText={"Password"}
-              hasForgotLabel={!signUp && emailErr.length === 0 ? true : false} 
-              onForgotPassword={() => {
-                if (emailErr) {
-                  setEmailErr(
-                    'Cannot send password request to email with no user!'
-                  );
-                } else if (!validateStringForEmail(email)) {
-                  setEmailErr(
-                    'Cannot send password request to email with no user!'
-                  );
-                } else {
-                  firebase
-                    .auth()
-                    .sendPasswordResetEmail(email)
-                    .then(() => {
-                      setEmailErr('Check email for password reset link!');
-                    })
-                    .catch(e => {
-                      if (e.message) {
-                        setEmailErr(e.message);
-                      }
-                    });
-                }
-              }}
-              stateTheme={stateTheme} 
-              style={{ width: 'calc(70% - 10px)', minWidth: 'unset' }}
-              inputStyle={stateTheme.base.secondaryBackground}
-              onChange={e => {
-                validatePassword(e.target.value);
-              }}/>
+        <PasswordField
+          header={'Password'}
+          placeholderText={'Password'}
+          hasForgotLabel={!signUp && emailErr.length === 0 ? true : false}
+          onForgotPassword={() => {
+            if (emailErr) {
+              setEmailErr(
+                'Cannot send password request to email with no user!'
+              );
+            } else if (!validateStringForEmail(email)) {
+              setEmailErr(
+                'Cannot send password request to email with no user!'
+              );
+            } else {
+              firebase
+                .auth()
+                .sendPasswordResetEmail(email)
+                .then(() => {
+                  setEmailErr('Check email for password reset link!');
+                })
+                .catch(e => {
+                  if (e.message) {
+                    setEmailErr(e.message);
+                  }
+                });
+            }
+          }}
+          stateTheme={stateTheme}
+          style={{ width: 'calc(70% - 10px)', minWidth: 'unset' }}
+          inputStyle={stateTheme.base.secondaryBackground}
+          onChange={e => {
+            validatePassword(e.target.value);
+          }}
+        />
         {passwordErr ? (
           <div
             style={{
@@ -196,15 +203,16 @@ const AddAcceptFirebasePopup = ({
       </React.Fragment>
       {signUp ? (
         <React.Fragment>
-          <PasswordField 
-              header={"Confirm Password"}
-              placeholderText={"Confirm Password"}
-              stateTheme={stateTheme} 
-              style={{ width: 'calc(70% - 10px)', minWidth: 'unset' }}
-              inputStyle={stateTheme.base.secondaryBackground}
-              onChange={e => {
-                validateConfirmationPassword(e.target.value);
-              }}/>
+          <PasswordField
+            header={'Confirm Password'}
+            placeholderText={'Confirm Password'}
+            stateTheme={stateTheme}
+            style={{ width: 'calc(70% - 10px)', minWidth: 'unset' }}
+            inputStyle={stateTheme.base.secondaryBackground}
+            onChange={e => {
+              validateConfirmationPassword(e.target.value);
+            }}
+          />
           {confErr ? (
             <div
               style={{
@@ -218,51 +226,56 @@ const AddAcceptFirebasePopup = ({
         </React.Fragment>
       ) : null}
       {signUp ? (
-        <Button title={"Create Account"} 
-        isSubmit={true} 
-        stateTheme={stateTheme} 
-        isEnabled={
-          confErr.length === 0 &&
-          passwordErr.length === 0 &&
-          emailErr.length === 0
-            ? true
-            : false} 
-        onClick={() => {
-          SignUp(email, password)
-            .then(boop => {
-              closeCurrentPopup({
-                uid: boop.user.uid,
-                refreshToken: boop.user.refreshToken
-              });
-            })
-            .catch(e => {
-              if (e.message) {
-                setEmailErr(e.message);
-              }
-            });
-        }} />
-      ) : (
-        <Button title={"Login"} 
-        isSubmit={true} 
-        stateTheme={stateTheme}  
-        onClick={() => {
-          initLogin(email, password)
-            .then(boop => {
-              closeCurrentPopup({
-                uid: boop.user.uid,
-                refreshToken: boop.user.refreshToken
-              });
-            })
-            .catch(e => {
-              if (e.code.includes('wrong-password')) {
+        <Button
+          title={'Create Account'}
+          isSubmit={true}
+          stateTheme={stateTheme}
+          isEnabled={
+            confErr.length === 0 &&
+            passwordErr.length === 0 &&
+            emailErr.length === 0
+              ? true
+              : false
+          }
+          onClick={() => {
+            SignUp(email, password)
+              .then(boop => {
+                closeCurrentPopup({
+                  uid: boop.user.uid,
+                  refreshToken: boop.user.refreshToken
+                });
+              })
+              .catch(e => {
                 if (e.message) {
-                  setPasswordErr(`Invalid password.`);
+                  setEmailErr(e.message);
                 }
-              } else if (e.code.includes('user-not-found')) {
-                setEmailErr(`User not found.`);
-              }
-            });
-        }} />
+              });
+          }}
+        />
+      ) : (
+        <Button
+          title={'Login'}
+          isSubmit={true}
+          stateTheme={stateTheme}
+          onClick={() => {
+            initLogin(email, password)
+              .then(boop => {
+                closeCurrentPopup({
+                  uid: boop.user.uid,
+                  refreshToken: boop.user.refreshToken
+                });
+              })
+              .catch(e => {
+                if (e.code.includes('wrong-password')) {
+                  if (e.message) {
+                    setPasswordErr(`Invalid password.`);
+                  }
+                } else if (e.code.includes('user-not-found')) {
+                  setEmailErr(`User not found.`);
+                }
+              });
+          }}
+        />
       )}
       <div style={{ display: 'flex', marginTop: '10px' }}>
         {signUp ? (
@@ -286,7 +299,6 @@ const AddAcceptFirebasePopup = ({
             >
               Sign in
             </div>
-            
           </AdvancedDiv>
         ) : (
           <React.Fragment>
@@ -310,7 +322,6 @@ const AddAcceptFirebasePopup = ({
               >
                 Sign up
               </div>
-              
             </AdvancedDiv>
             {/* <AdvancedDiv
               aStyle={{
@@ -434,9 +445,15 @@ const AddCommandPopup = ({
       >
         {helperText}
       </div>
-      <Button title={buttonText} isSubmit={true} isEnabled={error ? false : true} stateTheme={stateTheme} onClick={() => {
+      <Button
+        title={buttonText}
+        isSubmit={true}
+        isEnabled={error ? false : true}
+        stateTheme={stateTheme}
+        onClick={() => {
           verifySave();
-        }} />
+        }}
+      />
     </div>
   );
 };
@@ -502,16 +519,17 @@ const LoginWithDlivePopup = ({
             Sign-in With DLive
           </div>
         </AdvancedDiv>*/}
-        <ActionButton 
-        title={"Save"} 
-        stateTheme={stateTheme}  
-        onClick={e => {
-          // Need to create a popup that is oauth for dlive
-          ipcRenderer.send('oauthWindowStart');
-          ipcRenderer.once('newAuthKey', (event, key) => {
-            closeCurrentPopup(key);
-          });
-        }}/>
+        <ActionButton
+          title={'Save'}
+          stateTheme={stateTheme}
+          onClick={e => {
+            // Need to create a popup that is oauth for dlive
+            ipcRenderer.send('oauthWindowStart');
+            ipcRenderer.once('newAuthKey', (event, key) => {
+              closeCurrentPopup(key);
+            });
+          }}
+        />
       </div>
     </div>
   );
@@ -913,6 +931,7 @@ const Chat = ({ props }) => {
             />
           );
         })}
+        WOW THIS IS A TEST
         <div id={'bottomOfMessages'} />
         {/* This is for the actual chat messages */}
       </div>
