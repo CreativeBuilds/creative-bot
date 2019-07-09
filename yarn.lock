@@ -3039,10 +3039,10 @@ dir-glob@^2.0.0:
   dependencies:
     path-type "^3.0.0"
 
-dlive-js@^1.0.34:
-  version "1.0.35"
-  resolved "https://registry.yarnpkg.com/dlive-js/-/dlive-js-1.0.35.tgz#09f736b2c8128141d444bd5f9883fd47a70e7b91"
-  integrity sha512-echELsKgp9jTP+F0TEhHDcViHzvFTh/UbVVc8s/7zrvgkKE/wl4HTOf8pesUXDQfQysCX4Yrz1eZ9onyoXsycg==
+dlive-js@^1.0.37:
+  version "1.0.37"
+  resolved "https://registry.yarnpkg.com/dlive-js/-/dlive-js-1.0.37.tgz#2c20de9c64af996e35514d66972545b5102d5b04"
+  integrity sha512-FgIGZDM1S3cmxz3v5d7/DEaTPTWrtDQq/L+Kva/7ue2a5F7IbboLtQL8Kph/Fm/0dQYaol72xvTLnn804cspSg==
   dependencies:
     https "^1.0.0"
     lino-js "^1.0.19"
