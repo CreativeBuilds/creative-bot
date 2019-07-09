@@ -65,6 +65,7 @@ const exportBackupData = require('./helpers/exportBackupData');
 const importBackupData = require('./helpers/importBackupData');
 let { makeNewCommand, getBlockchainUsername } = require('./helpers');
 const { autoUpdater } = require('electron-updater');
+autoUpdater.allowPrerelease = true;
 require('./helpers/startTimers').run();
 
 const {
