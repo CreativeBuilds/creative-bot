@@ -14,7 +14,7 @@ Doesn't have a feature you want? Do you know how to code/know someone who knows?
 
 This bot is made by [CreativeBuilds](https://dlive.tv/creativebuilds) *(Owner)* and [Oblivifrek](https://dlive.tv/Oblivifrek) *(Contributor)*
 
-If you wish to be added to this list and help develop the bot, check out the Getting Started page!
+If you wish to be added to this list and help develop the bot, check out the [Developer Getting Started](https://github.com/CreativeBuilds/creative-bot/wiki/New-Developer-Setup) page!
 
 ### Installation Process
 
