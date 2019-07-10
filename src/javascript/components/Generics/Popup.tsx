@@ -4,6 +4,8 @@ import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
 import { MdClose } from 'react-icons/md';
 import { theme } from '../../helpers';
 
+import { WidgetButton } from './Button';
+
 class Popup extends Component<any, any> {
   constructor(props) {
     super(props);
@@ -49,14 +51,13 @@ class Popup extends Component<any, any> {
           }
         >
           {this.props.noX ? null : (
-            <div style={Object.assign({}, this.state.stateTheme.popup.close)}>
-              <MdClose
-                style={Object.assign({}, this.state.stateTheme.popup.close.icon)}
+              <WidgetButton 
+                icon={<MdClose style={this.state.stateTheme.button.widget.closePopup.icon}/>} 
+                stateTheme={this.state.stateTheme}
+                style={this.state.stateTheme.button.widget.closePopup}
                 onClick={() => {
                   this.props.closePopup();
-                }}
-              />
-            </div>
+                }}/>
           )}
           {this.props.children}
         </div>

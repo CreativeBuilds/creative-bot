@@ -37,11 +37,13 @@ const Menu = props => {
         )}
         className={`${styles.menu_popout} ${isOpen ? styles.menu_toggled : ''}`}
       >
-        <MdClose
-          onClick={() => {
-            setIsOpen(false);
-          }}
-        />
+        <WidgetButton 
+        icon={<MdClose style={stateTheme.button.widget.closeMenu.icon}/>} 
+        stateTheme={stateTheme}
+        style={stateTheme.button.widget.closeMenu} 
+        onClick={() => {
+          setIsOpen(false);
+        }}/>
         <ul>
           <Li
             style={Object.assign(
@@ -192,15 +194,6 @@ const Menu = props => {
         onClick={() => {
           setIsOpen(true);
         }}/>
-      {/*<div
-        className={styles.hamburger}
-        style={stateTheme.base.quinaryForeground}
-        onClick={() => {
-          setIsOpen(true);
-        }}
-      >
-        <MdMenu />
-      </div>*/}
     </React.Fragment>
   );
 };

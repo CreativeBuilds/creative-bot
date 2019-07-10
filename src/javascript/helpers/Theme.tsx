@@ -423,6 +423,37 @@ const theme = {
             marginTop: '3px',
           }
         },
+        closeMenu: {
+          'font-size': '2.4em',
+          position: 'absolute',
+          right: '0',
+          transition: 'all 0.15s',
+          icon: {
+            fontSize: '1em',
+            position: 'absolute',
+            right: '0',
+            top: '0',
+            marginTop: '6px',
+            transition: 'all 0.15s'
+          }
+        },
+        closePopup: {
+          position: 'absolute',
+          top: '10px',
+          right: '5px',
+          height: '32px',
+          width: '32px',
+          transition: 'all 0.15s',
+          icon: {
+            fontSize: '1.9em',
+            top: '0',
+            left: '0',
+            right: '0',
+            bottom: '0',
+            position: 'absolute',
+            transition: 'all 0.15s'
+          }
+        },
         hover: {
 
         }
@@ -851,6 +882,37 @@ const theme = {
             right: '0',
             verticalAlign: 'middle',
             marginTop: '3px',
+          }
+        },
+        closeMenu: {
+          'font-size': '2.4em',
+          position: 'absolute',
+          right: '0',
+          transition: 'all 0.15s',
+          icon: {
+            fontSize: '1em',
+            position: 'absolute',
+            right: '0',
+            top: '0',
+            marginTop: '6px',
+            transition: 'all 0.15s'
+          }
+        },
+        closePopup: {
+          position: 'absolute',
+          top: '10px',
+          right: '5px',
+          height: '32px',
+          width: '32px',
+          transition: 'all 0.15s',
+          icon: {
+            fontSize: '1.9em',
+            top: '0',
+            left: '0',
+            right: '0',
+            bottom: '0',
+            position: 'absolute',
+            transition: 'all 0.15s'
           }
         },
         hover: {
