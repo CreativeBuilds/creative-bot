@@ -5,6 +5,8 @@ import { ThemeContext, theme } from '../../helpers';
 
 import { firebase } from '../../helpers/firebase';
 
+import { WidgetButton } from '../Generics/Button';
+
 import { Li } from './li';
 import { firebaseConfig$ } from '../../helpers/rxConfig';
 
@@ -183,7 +185,14 @@ const Menu = props => {
           }
         </ul>
       </div>
-      <div
+      <WidgetButton 
+        icon={<MdMenu style={stateTheme.button.widget.hamburger.icon}/>} 
+        stateTheme={stateTheme} 
+        style={stateTheme.button.widget.hamburger}
+        onClick={() => {
+          setIsOpen(true);
+        }}/>
+      {/*<div
         className={styles.hamburger}
         style={stateTheme.base.quinaryForeground}
         onClick={() => {
@@ -191,7 +200,7 @@ const Menu = props => {
         }}
       >
         <MdMenu />
-      </div>
+      </div>*/}
     </React.Fragment>
   );
 };

@@ -28,8 +28,8 @@ import { ChatTextToSpeechPopup } from './ChatTextToSpeechPopup';
 import { AdvancedDiv } from '../AdvancedDiv';
 import { firebase } from '../../helpers/firebase';
 
-import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
-import { TextField, EmailField, PasswordField, StepperField } from '../Generics/Input';
+import { Button, DestructiveButton, ActionButton, SendButton, WidgetButton } from '../Generics/Button';
+import { TextField, EmailField, PasswordField, StepperField, MessageField } from '../Generics/Input';
 
 import { isEmpty, isEqual } from 'lodash';
 
@@ -209,7 +209,7 @@ const AddAcceptFirebasePopup = ({
             <div
               style={{
                 paddingBottom: '10px',
-                color: theme.globals.destructiveButton.backgroundColor
+                color: theme.globals.destructive.backgroundColor
               }}
             >
               {confErr}
@@ -843,8 +843,9 @@ const Chat = ({ props }) => {
       >
         CHAT
         <div className={styles.rightContainer}>
-          <div
-            className={styles.events}
+          <WidgetButton 
+            icon={<MdSettingsVoice />} 
+            stateTheme={stateTheme} 
             onClick={() => {
               addPopup(
                 <ChatTextToSpeechPopup
@@ -854,27 +855,19 @@ const Chat = ({ props }) => {
                   closeCurrentPopup={closeCurrentPopup}
                 />
               );
-            }}
-          >
-            <MdSettingsVoice />
-            <span> </span>
-          </div>
-          <div
-            className={styles.events}
+            }}/>
+          <WidgetButton 
+            icon={<MdSettings />} 
+            stateTheme={stateTheme} 
             onClick={() => {
               openChatFiltersPanel();
-            }}
-          >
-            <MdSettings />
-          </div>
-          <div
-            className={styles.events}
+            }}/>
+          <WidgetButton 
+            icon={<MdPerson />} 
+            stateTheme={stateTheme} 
             onClick={() => {
               openAccountsPannel();
-            }}
-          >
-            <MdPerson />
-          </div>
+            }}/>
           <div
             className={styles.viewers}
             onClick={() => {
@@ -918,44 +911,25 @@ const Chat = ({ props }) => {
       </div>
       <div style={stateTheme.base.secondaryBackground} className={styles.input}>
         {/* TODO change maxLength to be limitless and then send messages once every 2 seconds to get around chat slowmode */}
-        <textarea
-          style={Object.assign({}, stateTheme.base.quinaryBackground, {
-            borderColor: stateTheme.base.quinaryBackground.backgroundColor
-          })}
-          value={text}
-          maxLength={280}
-          onKeyDown={onEnterPress}
+        <MessageField 
+          placeholderText={"Type a Message..."} 
+          stateTheme={stateTheme} 
+          onKeyDown={onEnterPress} 
           onChange={e => {
             updateText(e);
-          }}
-        />
-        {/*<div
-          className={styles.send}
-          style={Object.assign({}, stateTheme.base.quinaryBackground, {
-            borderColor: stateTheme.base.quinaryBackground.backgroundColor
-          })}
-          onClick={openTidyClips}
-        >
-          <MdLocalMovies />
-        </div>*/}
-        <div
-          className={styles.send}
-          style={Object.assign({}, stateTheme.base.quinaryBackground, {
-            borderColor: stateTheme.base.quinaryBackground.backgroundColor
-          })}
-          onClick={openStickerPanel}
-        >
-          <MdFace />
-        </div>
-        <div
-          className={styles.send}
-          style={Object.assign({}, stateTheme.base.quinaryBackground, {
-            borderColor: stateTheme.base.quinaryBackground.backgroundColor
-          })}
-          onClick={sendMessage}
-        >
-          <MdSend />
-        </div>
+          }}/>
+        {/*<SendButton 
+          icon={<MdLocalMovies />} 
+          stateTheme={stateTheme} 
+          onClick={openTidyClips} />*/}
+        <SendButton 
+          icon={<MdFace />} 
+          stateTheme={stateTheme} 
+          onClick={openStickerPanel}/>
+        <SendButton 
+          icon={<MdSend />} 
+          stateTheme={stateTheme} 
+          onClick={sendMessage}/>
       </div>
     </div>
   );

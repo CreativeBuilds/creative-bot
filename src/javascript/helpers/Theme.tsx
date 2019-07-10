@@ -7,9 +7,10 @@ const theme = {
       color: '#202225'
     },
     accentBorderColor: {
-      color: '#ffd300',
-      fill: '#ffd300',
       borderColor: '#ffd300'
+    },
+    accentFillColor: {
+      fill: '#ffd300'
     },
     accentHighlight: {
       highlightColor: '#ffd300',
@@ -23,9 +24,10 @@ const theme = {
       color: '#202225'
     },
     accentDarkBorderColor: {
-      color: '#b39400',
-      fill: '#b39400',
       borderColor: '#b39400'
+    },
+    accentDarkFillColor: {
+      fill: '#b39400'
     },
     accentDarkHighlight: {
       highlightColor: '#b39400',
@@ -270,7 +272,8 @@ const theme = {
           width: '25px',
           height: '25px',
           borderRadius: '50%',
-          transition: 'all 0.15s ease-in-out'
+          transition: 'all 0.15s ease-in-out',
+          cursor: 'pointer',
         },
         isOn: {
           'margin-left': '50px'
@@ -372,8 +375,57 @@ const theme = {
         }
       },
       sender: {
+        'font-size': '2em',
+        width: '63px',
+        height: '100%',
+        display: 'flex',
+        flex: '1',
+        'justify-content': 'center',
+        'align-items': 'center',
+        'margin-left': '5px',
+        border: '2px solid rgba(0,0,0,0)',
+        'border-radius': '5px',
+        'box-sizing': 'border-box',
         disabled: {},
-        hover: {}
+        hover: {
+          cursor: 'pointer',
+          border: '1.5px solid',
+          boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
+        }
+      },
+      widget: {
+        'margin-right': '5px',
+        display: 'inline-flex',
+        'justify-content': 'center',
+        'align-items': 'center',
+        transition: 'all 0.15s ease-in-out',
+        height: '100%',
+        'vertical-align': 'middle',
+        'margin-bottom': '2px',
+        hamburger: {
+          'font-size': '2.4em',
+          position: 'absolute',
+          top: '0',
+          left: '0',
+          'z-index': '1',
+          'margin-left': '5px',
+          display: 'inline',
+          'vertical-align': 'middle',
+          height: '44px',
+          'margin-bottom': '12px',
+          icon: {
+            position: 'absolute',
+            top: '0',
+            bottom: '0',
+            left: '0',
+            right: '0',
+            verticalAlign: 'middle',
+            marginTop: '3px',
+          }
+        },
+        hover: {
+
+        }
       }
     },
     input: {
@@ -402,7 +454,31 @@ const theme = {
         height: '20px',
         fontSize: '16px'
       },
-      message: {}
+      message: {
+        height: '100%',
+        'flex-direction': 'unset !important',
+        display: 'flex',
+        width: '100%',
+        border: '0px solid rgba(0,0,0,0)',
+        hover: {
+          border: '1.5px solid',
+          boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
+        },
+        textField: {
+          flex: '1',
+          'outline-width': '0',
+          outline: 'none',
+          resize: 'none',
+          border: '2px solid rgba(0,0,0,0)',
+          padding: '5px',
+          height: '100% !important',
+          width: '100% !important',
+          transition: 'all 0.15s ease-in-out',
+          'border-radius': '5px',
+          color: '#CCCCCC',
+          'font-size': '16px'
+        }
+      }
     },
     timeStamp: {
       color: '#AAAAAA'
@@ -627,7 +703,8 @@ const theme = {
           width: '25px',
           height: '25px',
           borderRadius: '50%',
-          transition: 'all 0.15s ease-in-out'
+          transition: 'all 0.15s ease-in-out',
+          cursor: 'pointer',
         },
         isOn: {
           'margin-left': '50px'
@@ -732,8 +809,53 @@ const theme = {
         }
       },
       sender: {
+        'font-size': '2em',
+        width: '63px',
+        height: '100%',
+        display: 'flex',
+        flex: '1',
+        'justify-content': 'center',
+        'align-items': 'center',
+        'margin-left': '5px',
+        border: '2px solid rgba(0,0,0,0)',
+        'border-radius': '5px',
+        'box-sizing': 'border-box',
         disabled: {},
         hover: {}
+      },
+      widget: {
+        'margin-right': '5px',
+        display: 'inline-flex',
+        'justify-content': 'center',
+        'align-items': 'center',
+        transition: 'all 0.15s ease-in-out',
+        height: '100%',
+        'vertical-align': 'middle',
+        'margin-bottom': '2px',
+        hamburger: {
+          'font-size': '2.4em',
+          position: 'absolute',
+          top: '0',
+          left: '0',
+          'z-index': '1',
+          'margin-left': '5px',
+          display: 'inline',
+          'vertical-align': 'middle',
+          height: '44px',
+          'margin-bottom': '12px',
+          icon: {
+            position: 'absolute',
+            top: '0',
+            bottom: '0',
+            left: '0',
+            right: '0',
+            verticalAlign: 'middle',
+            marginTop: '3px',
+          }
+        },
+        hover: {
+
+        }
       }
     },
     input: {
@@ -762,7 +884,32 @@ const theme = {
         height: '20px',
         fontSize: '16px'
       },
-      message: {}
+      message: {
+        height: '100%',
+        'flex-direction': 'unset !important',
+        display: 'flex',
+        width: '100%',
+        border: '0px solid rgba(0,0,0,0)',
+        hover: {
+          cursor: 'pointer',
+          border: '1.5px solid',
+          boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
+        },
+        textField: {
+          flex: '1',
+          'outline-width': '0',
+          outline: 'none',
+          resize: 'none',
+          border: '2px solid rgba(0,0,0,0)',
+          padding: '5px',
+          height: '100% !important',
+          width: '100% !important',
+          transition: 'all 0.15s ease-in-out',
+          'border-radius': '5px',
+          color: '#333333',
+          'font-size': '16px'
+        }
+      }
     },
     timeStamp: {
       color: '#555555'

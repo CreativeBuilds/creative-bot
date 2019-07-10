@@ -140,4 +140,78 @@ const ActionButton = ({
   );
 };
 
-export { Button, DestructiveButton, ActionButton };
+const SendButton = ({
+  icon,
+  width = 'auto',
+  isEnabled = true,
+  onClick = null,
+  stateTheme,
+  buttonStyle = {}
+}) => {
+  const [isenabled, setIsEnabled] = useState(isEnabled);
+
+  return (
+    <AdvancedDiv
+      style={Object.assign(
+        {},
+        !isenabled ? stateTheme.button.normal.disabled : null,
+          Object.assign(
+          {},
+          Object.assign({}, stateTheme.base.quinaryBackground, {
+            borderColor: 'transparent'
+          }),
+          stateTheme.button.sender
+        )
+      )}
+      hoverStyle={Object.assign(
+        {},
+        Object.assign({}, theme.globals.accentFillColor, {
+          borderColor: theme.globals.accentBorderColor.borderColor
+        }),
+        stateTheme.button.sender.hover
+      )}
+      isButton={true}
+      aStyle={buttonStyle}
+    >
+        <div onClick={onClick}>
+          {icon}
+        </div>
+    </AdvancedDiv>
+  );
+};
+
+const WidgetButton = ({
+  icon,
+  style = null,
+  isEnabled = true,
+  onClick = null,
+  stateTheme
+}) => {
+  const [isenabled, setIsEnabled] = useState(isEnabled);
+
+  return (
+    <AdvancedDiv
+      style={Object.assign(
+        {},
+        !isenabled ? stateTheme.button.normal.disabled : null,
+          Object.assign(
+          {},
+          stateTheme.button.widget
+        )
+      )}
+      hoverStyle={Object.assign(
+        {},
+        { cursor: 'pointer' },
+        theme.globals.accentFillColor
+      )}
+      isButton={true}
+      aStyle={Object.assign({}, stateTheme.button.widget, style)}
+    >
+        <div onClick={onClick}>
+            {icon}
+          </div>
+    </AdvancedDiv>
+  );
+};
+
+export { Button, DestructiveButton, ActionButton, SendButton, WidgetButton };
