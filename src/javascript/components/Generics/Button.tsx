@@ -214,4 +214,47 @@ const WidgetButton = ({
   );
 };
 
-export { Button, DestructiveButton, ActionButton, SendButton, WidgetButton };
+const LinkButton = ({
+  title,
+  isSubmit = false,
+  width = 'auto',
+  isEnabled = true,
+  onClick = null,
+  stateTheme,
+  buttonStyle = {}
+}) => {
+  const [isenabled, setIsEnabled] = useState(isEnabled);
+
+  return (
+    <AdvancedDiv
+      style={Object.assign(
+        {},
+        !isenabled ? stateTheme.button.normal.disabled : null,
+        Object.assign(
+          {},
+          isSubmit
+            ? stateTheme.button.normal.submit
+            : { width: width, 'margin-bottom': '10px' },
+          Object.assign(
+            {},
+            stateTheme.base.tertiaryBackground,
+            stateTheme.button.normal.link
+          )
+        )
+      )}
+      hoverStyle={Object.assign(
+        {},
+        theme.globals.accentBorderColor,
+        stateTheme.button.normal.hover
+      )}
+      isButton={true}
+      aStyle={buttonStyle}
+    >
+      <div onClick={onClick}>
+        <div style={stateTheme.button.normal.link.title}>{title}</div>
+      </div>
+    </AdvancedDiv>
+  );
+};
+
+export { Button, DestructiveButton, ActionButton, SendButton, WidgetButton, LinkButton };

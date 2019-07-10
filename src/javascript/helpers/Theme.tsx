@@ -364,6 +364,20 @@ const theme = {
         submit: {
           'margin-bottom': '0px !important'
         },
+        link: {
+          backgroundColor: 'transparent',
+          'text-align': 'center',
+          'vertical-align': 'middle',
+          'justify-content': 'center',
+          'align-items': 'center',
+          border: '1.5px solid rgba(0,0,0,0)',
+          'border-radius': '5px',
+          height: '40px',
+          title: {
+            'margin-top': '10px',
+            'margin-bottom': '10px',
+          }
+        },
         disabled: {
           backgroundColor: '#191a1c',
           color: '#d0d0d0'
@@ -828,6 +842,20 @@ const theme = {
         submit: {
           width: 'calc(70% - 9px)',
           'margin-bottom': '0px'
+        },
+        link: {
+          backgroundColor: 'transparent',
+          'text-align': 'center',
+          'vertical-align': 'middle',
+          'justify-content': 'center',
+          'align-items': 'center',
+          border: '1.5px solid rgba(0,0,0,0)',
+          'border-radius': '5px',
+          height: '40px',
+          title: {
+            'margin-top': '10px',
+            'margin-bottom': '10px',
+          }
         },
         disabled: {
           backgroundColor: '#dddddd',

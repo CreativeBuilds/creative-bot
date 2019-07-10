@@ -28,7 +28,7 @@ import { ChatTextToSpeechPopup } from './ChatTextToSpeechPopup';
 import { AdvancedDiv } from '../AdvancedDiv';
 import { firebase } from '../../helpers/firebase';
 
-import { Button, DestructiveButton, ActionButton, SendButton, WidgetButton } from '../Generics/Button';
+import { Button, DestructiveButton, ActionButton, SendButton, WidgetButton, LinkButton } from '../Generics/Button';
 import { TextField, EmailField, PasswordField, StepperField, MessageField } from '../Generics/Input';
 
 import { isEmpty, isEqual } from 'lodash';
@@ -266,52 +266,22 @@ const AddAcceptFirebasePopup = ({
       )}
       <div style={{ display: 'flex', marginTop: '10px' }}>
         {signUp ? (
-          <AdvancedDiv
-            aStyle={{
-              flex: 1,
-              paddingRight: '5px',
-              textAlign: 'center',
-              maxWidth: '100%'
-            }}
-            hoverStyle={Object.assign(
-              {},
-              { cursor: 'pointer' },
-              { color: theme.globals.accentHighlight.highlightColor }
-            )}
-          >
-            <div
-              onClick={() => {
-                setSignUp(false);
-              }}
-            >
-              Sign in
-            </div>
-            
-          </AdvancedDiv>
+          <LinkButton title={"Sign In"} 
+          isSubmit={true} 
+          stateTheme={stateTheme} 
+          buttonStyle={{ width: '100%' }} 
+          onClick={() => {
+            setSignUp(false);
+          }} />
         ) : (
           <React.Fragment>
-            <AdvancedDiv
-              aStyle={{
-                flex: 1,
-                paddingRight: '5px',
-                textAlign: 'center',
-                maxWidth: '100%'
-              }}
-              hoverStyle={Object.assign(
-                {},
-                { cursor: 'pointer' },
-                { color: theme.globals.accentHighlight.highlightColor }
-              )}
-            >
-              <div
-                onClick={() => {
-                  setSignUp(true);
-                }}
-              >
-                Sign up
-              </div>
-              
-            </AdvancedDiv>
+            <LinkButton title={"Sign Up"} 
+              isSubmit={true} 
+              stateTheme={stateTheme} 
+              buttonStyle={{ width: '100%' }}  
+              onClick={() => {
+                setSignUp(true);
+              }} />
             {/* <AdvancedDiv
               aStyle={{
                 flex: 1,
