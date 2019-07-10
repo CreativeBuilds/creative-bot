@@ -931,7 +931,6 @@ const Chat = ({ props }) => {
             />
           );
         })}
-        WOW THIS IS A TEST
         <div id={'bottomOfMessages'} />
         {/* This is for the actual chat messages */}
       </div>
