@@ -4,14 +4,9 @@ import { theme, ThemeContext } from '../../helpers';
 import {
   MdSend,
   MdPerson,
-  MdMood,
   MdFace,
-  MdLocalMovies,
-  MdEvent,
-  MdFilterList,
   MdSettingsVoice,
   MdSettings,
-  MdRemoveRedEye,
   MdVisibility,
   MdVisibilityOff
 } from 'react-icons/md';
@@ -19,16 +14,14 @@ import {
 import { Message } from './Message';
 import { StickerPopup } from './StickerPopup';
 import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
-import { firebaseEmotes$, setRxEmotes } from '../../helpers/rxEmotes';
-import { Action } from 'rxjs/internal/scheduler/Action';
+import { firebaseEmotes$ } from '../../helpers/rxEmotes';
 import { remote } from 'electron';
 import { CreativeBotPopup } from './../WebServices/CreativeBotPopup';
 import { ChatFiltersPopup } from './ChatFiltersPopup';
 import { ChatTextToSpeechPopup } from './ChatTextToSpeechPopup';
 import { AdvancedDiv } from '../AdvancedDiv';
 import { firebase } from '../../helpers/firebase';
-
-import { isEmpty, isEqual } from 'lodash';
+import { isEqual } from 'lodash';
 
 import {
   initLogin,
