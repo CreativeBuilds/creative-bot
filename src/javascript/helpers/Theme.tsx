@@ -673,7 +673,7 @@ const theme = {
     },
     contextMenu: {
       'list-style-type': 'none',
-      display: 'inline-block',
+      display: 'contents',
       content: {
         position: 'absolute',
         'font-size': '12px',
@@ -683,7 +683,7 @@ const theme = {
         'margin-top': '0px',
         padding: '0',
         width: 'auto',
-        'min-width': '170px',
+        'min-width': '200px',
         'padding-top': '5px',
         'padding-bottom': '5px',
         'user-select': 'none',
@@ -698,7 +698,7 @@ const theme = {
         display: 'flow-root',
         height: 'auto',
         container: {
-          display: 'flow-root',
+          display: 'flex',
           height: '26px',
           submenu: {
             display: 'inline-block',
@@ -708,11 +708,10 @@ const theme = {
 
         },
         content: {
-          display: 'flow-root',
           height: '26px',
           'padding-left': '0px',
-          'padding-right': '10px',
-          width: 'calc(100% - 10px)',
+          'padding-right': '15px',
+          width: '100%',
           cursor: 'pointer', 
           title: {
             'padding-bottom': '5px',
@@ -753,7 +752,7 @@ const theme = {
             'margin-right': '10px',
             'margin-left': '20px',
             width: '34px',
-            display: 'inline-block', 
+            display: 'table', 
             height: 'auto',
             float: 'right',
             color: 'darkgrey',
@@ -766,8 +765,11 @@ const theme = {
           iconContainer: {
             'padding-bottom': '5px',
             'padding-top': '5px',
-            display: 'inline-block', 
+            'margin-right': '10px',
+            display: 'inline', 
             height: 'auto',
+            width: '36px',
+            float: 'left',
             icon: {
               height: 'auto',
               width: '16px',
@@ -1436,7 +1438,7 @@ const theme = {
     },
     contextMenu: {
       'list-style-type': 'none',
-      display: 'inline-block',
+      display: 'contents',
       content: {
         position: 'absolute',
         'font-size': '12px',
@@ -1446,7 +1448,7 @@ const theme = {
         'margin-top': '0px',
         padding: '0',
         width: 'auto',
-        'min-width': '170px',
+        'min-width': '200px',
         'padding-top': '5px',
         'padding-bottom': '5px',
         'user-select': 'none',
@@ -1461,7 +1463,7 @@ const theme = {
         display: 'flow-root',
         height: 'auto',
         container: {
-          display: 'flow-root',
+          display: 'flex',
           height: '26px',
           submenu: {
             display: 'inline-block',
@@ -1471,11 +1473,10 @@ const theme = {
 
         },
         content: {
-          display: 'flow-root',
           height: '26px',
           'padding-left': '0px',
-          'padding-right': '10px',
-          width: 'calc(100% - 10px)',
+          'padding-right': '15px',
+          width: '100%',
           cursor: 'pointer', 
           title: {
             'padding-bottom': '5px',
@@ -1516,7 +1517,7 @@ const theme = {
             'margin-right': '10px',
             'margin-left': '20px',
             width: '34px',
-            display: 'inline-block', 
+            display: 'table', 
             height: 'auto',
             float: 'right',
             color: 'darkgrey',
@@ -1529,8 +1530,11 @@ const theme = {
           iconContainer: {
             'padding-bottom': '5px',
             'padding-top': '5px',
-            display: 'inline-block', 
+            'margin-right': '10px',
+            display: 'inline', 
             height: 'auto',
+            width: '36px',
+            float: 'left',
             icon: {
               height: 'auto',
               width: '16px',

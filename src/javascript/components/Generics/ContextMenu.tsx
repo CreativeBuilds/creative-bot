@@ -32,8 +32,6 @@ import { GoMarkGithub, GoLink } from 'react-icons/go';
 const Window: any = window;
 const { ipcRenderer, shell, remote } = Window.require('electron');
 
-const styles: any = require('../ContextMenu/ContextMenu.scss');
-
 interface ContextItem {
   role: String;
   icon?: Object;
