@@ -113,11 +113,11 @@ const AddAcceptFirebasePopup = ({
   };
 
   return (
-    <div className={styles.popup}>
-      <h1>CreativeBot Sign-in</h1>
+    <div style={stateTheme.popup.dialog.content}>
+      <h1 style={{ marginBottom: '0px' }}>CreativeBot Sign-in</h1>
+      <div style={{ width: '70%', minWidth: 'unset' }}>
       <p
         style={{
-          width: '70%',
           margin: 'auto',
           paddingTop: '10px',
           paddingBottom: '10px',
@@ -133,7 +133,7 @@ const AddAcceptFirebasePopup = ({
               header={"Email"}
               placeholderText={"Email"} 
               stateTheme={stateTheme} 
-              style={{ width: 'calc(70% - 10px)', minWidth: 'unset' }}
+              style={{ marginBottom: '10px' }}
               inputStyle={stateTheme.base.secondaryBackground}
               onChange={e => {
                 validateEmail(e.target.value);
@@ -178,7 +178,7 @@ const AddAcceptFirebasePopup = ({
                 }
               }}
               stateTheme={stateTheme} 
-              style={{ width: 'calc(70% - 10px)', minWidth: 'unset' }}
+              style={{ marginBottom: '10px' }}
               inputStyle={stateTheme.base.secondaryBackground}
               onChange={e => {
                 validatePassword(e.target.value);
@@ -200,7 +200,7 @@ const AddAcceptFirebasePopup = ({
               header={"Confirm Password"}
               placeholderText={"Confirm Password"}
               stateTheme={stateTheme} 
-              style={{ width: 'calc(70% - 10px)', minWidth: 'unset' }}
+              style={{marginBottom: '10px' }}
               inputStyle={stateTheme.base.secondaryBackground}
               onChange={e => {
                 validateConfirmationPassword(e.target.value);
@@ -305,6 +305,7 @@ const AddAcceptFirebasePopup = ({
             </AdvancedDiv> */}
           </React.Fragment>
         )}
+      </div>
       </div>
     </div>
   );

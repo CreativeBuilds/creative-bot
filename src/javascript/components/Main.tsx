@@ -5,7 +5,7 @@ import { ThemeContext, theme } from '../helpers';
 import { firebaseConfig$, setRxConfig } from '../helpers/rxConfig';
 
 import { Router } from './Router';
-import { TitleBar } from './TitleBar';
+import { TitleBar } from './Generics/TitleBar';
 import { Banner } from './Banner';
 import { ContextMenu, ContextItem } from './ContextMenu';
 
@@ -60,6 +60,7 @@ const Main = ({ Config }: Main) => {
           Config={config}
           addPopup={addPopup}
           closeCurrentPopup={closeCurrentPopup}
+          stateTheme={stateTheme}
         />
         <Banner />
         <div className={styles.main} style={style().base.tertiaryBackground}>

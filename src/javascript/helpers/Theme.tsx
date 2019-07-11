@@ -525,6 +525,111 @@ const theme = {
         }
       }
     },
+    titleBar: {
+      display: 'table-row',
+      'min-width': '100%',
+      '-webkit-app-region': 'drag',
+      'user-select': 'none',
+      width: '100%',
+      windows: {
+        bar: {
+          width: '100%',
+          height: '30px',
+          display: 'block',
+          transition: 'all 0.15s ease-in-out',
+          iconContainer: {
+            display: 'table-column',
+            height: '30px',
+            width: '35px',
+            float: 'left',
+          },
+          contentContainer: {
+            display: 'inline-flex',
+            height: '30px',
+            width: 'calc(100% - (35px + 140px))',
+            float: 'left',
+          },
+          windowControlsContainer: {
+            display: 'flex',
+            'flex-grow': '0',
+            'flex-shrink': '0',
+            'text-align': 'center',
+            position: 'relative',
+            'z-index': '3000',
+            '-webkit-app-region': 'no-drag',
+            height: '100%',
+            width: 'auto',
+            'margin-left': 'auto',
+          },
+          icon: {
+            width: '18px',
+            margin: 'auto',
+            'margin-top': '6px',
+            display: 'block',
+          },
+          title: {
+            flex: '0 1 auto',
+            'font-size': '12px',
+            overflow: 'hidden',
+            'white-space': 'nowrap',
+            'text-overflow': 'ellipsis',
+            'margin-left': 'auto',
+            'margin-right': 'auto',
+            'line-height': '30px',
+            zoom: '1',
+            'font-family': 'Segoe WPC,Segoe UI,sans-serif',
+            transition: 'all 0.15s ease-in-out',
+          },
+          versionTag: {
+            'font-size': '12px',
+            height: '100%',
+            'line-height': '30px',
+            width: 'auto',
+            'font-family': 'Segoe WPC,Segoe UI,sans-serif',
+            'text-align': 'center',
+            float: 'right',
+            'padding-left': '5px',
+            'padding-right': '5px',
+            transition: 'all 0.15s ease-in-out',
+          },
+          actions: {
+            display: 'inline-block',
+            '-webkit-app-region': 'no-drag',
+            height: '30px',
+            width: '46px',
+            'box-sizing': 'border-box',
+            transition: 'all 0.15s ease-in-out',
+            hover: {
+              normal: { 
+                backgroundColor: '#565656',
+                filter: 'alpha(opacity=50)'
+              },
+              close: {
+                backgroundColor: '#dc143c',
+              }
+            },
+            icon: {
+              height: '100%',
+              width: '100%',
+              '-webkit-mask-size': '23.1%',
+              position: 'relative',
+              svg: {
+                'vertical-align': 'middle',
+                'text-align': 'center',
+                position: 'absolute',
+                top: '25%',
+                right: '25%',
+                bottom: '50%',
+                left: '25%',
+                maximized: {
+                  width: '14px'
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     timeStamp: {
       color: '#AAAAAA'
     },
@@ -880,7 +985,11 @@ const theme = {
         'border-radius': '5px',
         'box-sizing': 'border-box',
         disabled: {},
-        hover: {}
+        hover: {
+          cursor: 'pointer',
+          border: '1.5px solid',
+          boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
+        }
       },
       widget: {
         'margin-right': '5px',
@@ -998,6 +1107,111 @@ const theme = {
           'border-radius': '5px',
           color: '#333333',
           'font-size': '16px'
+        }
+      }
+    },
+    titleBar: {
+      display: 'table-row',
+      'min-width': '100%',
+      '-webkit-app-region': 'drag',
+      'user-select': 'none',
+      width: '100%',
+      windows: {
+        bar: {
+          width: '100%',
+          height: '30px',
+          display: 'block',
+          transition: 'all 0.15s ease-in-out',
+          iconContainer: {
+            display: 'table-column',
+            height: '30px',
+            width: '35px',
+            float: 'left',
+          },
+          contentContainer: {
+            display: 'inline-flex',
+            height: '30px',
+            width: 'calc(100% - (35px + 140px))',
+            float: 'left',
+          },
+          windowControlsContainer: {
+            display: 'flex',
+            'flex-grow': '0',
+            'flex-shrink': '0',
+            'text-align': 'center',
+            position: 'relative',
+            'z-index': '3000',
+            '-webkit-app-region': 'no-drag',
+            height: '100%',
+            width: 'auto',
+            'margin-left': 'auto',
+          },
+          icon: {
+            width: '18px',
+            margin: 'auto',
+            'margin-top': '6px',
+            display: 'block',
+          },
+          title: {
+            flex: '0 1 auto',
+            'font-size': '12px',
+            overflow: 'hidden',
+            'white-space': 'nowrap',
+            'text-overflow': 'ellipsis',
+            'margin-left': 'auto',
+            'margin-right': 'auto',
+            'line-height': '30px',
+            zoom: '1',
+            'font-family': 'Segoe WPC,Segoe UI,sans-serif',
+            transition: 'all 0.15s ease-in-out',
+          },
+          versionTag: {
+            'font-size': '12px',
+            height: '100%',
+            'line-height': '30px',
+            width: 'auto',
+            'font-family': 'Segoe WPC,Segoe UI,sans-serif',
+            'text-align': 'center',
+            float: 'right',
+            'padding-left': '5px',
+            'padding-right': '5px',
+            transition: 'all 0.15s ease-in-out',
+          },
+          actions: {
+            display: 'inline-block',
+            '-webkit-app-region': 'no-drag',
+            height: '30px',
+            width: '46px',
+            'box-sizing': 'border-box',
+            transition: 'all 0.15s ease-in-out',
+            hover: {
+              normal: { 
+                backgroundColor: '#565656',
+                filter: 'alpha(opacity=50)'
+              },
+              close: {
+                backgroundColor: '#dc143c',
+              }
+            },
+            icon: {
+              height: '100%',
+              width: '100%',
+              '-webkit-mask-size': '23.1%',
+              position: 'relative',
+              svg: {
+                'vertical-align': 'middle',
+                'text-align': 'center',
+                position: 'absolute',
+                top: '25%',
+                right: '25%',
+                bottom: '50%',
+                left: '25%',
+                maximized: {
+                  width: '14px'
+                }
+              }
+            }
+          }
         }
       }
     },
