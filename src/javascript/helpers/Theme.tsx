@@ -389,6 +389,7 @@ const theme = {
         }
       },
       sender: {
+        cursor: 'pointer',
         'font-size': '2em',
         width: '63px',
         height: '100%',
@@ -402,8 +403,7 @@ const theme = {
         'box-sizing': 'border-box',
         disabled: {},
         hover: {
-          cursor: 'pointer',
-          border: '1.5px solid',
+          borderWidth: '1.5px',
           boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
         }
       },
@@ -606,6 +606,8 @@ const theme = {
               },
               close: {
                 backgroundColor: '#dc143c',
+                color: '#CCCCCC',
+                fill: '#CCCCCC'
               }
             },
             icon: {
@@ -618,15 +620,54 @@ const theme = {
                 'text-align': 'center',
                 position: 'absolute',
                 top: '25%',
-                right: '25%',
+                right: '20%',
                 bottom: '50%',
-                left: '25%',
+                left: '30%',
                 maximized: {
-                  width: '14px'
+                  width: '14px',
+                  top: '25%',
+                  right: '25%',
+                  bottom: '50%',
+                  left: '25%',
                 }
               }
             }
           }
+        }
+      }
+    },
+    menuBar: {
+      display: 'inline-block',
+      margin: '0',
+      padding: '0',
+      height: '100%',
+      width: 'auto',
+      item: {
+        display: 'inline-block',
+        height: '100%',
+        container: {
+          display: 'block'
+        },
+        title: {
+          display: 'flow-root',
+          height: '30px',
+          width: 'auto',
+          'font-size': '12px',
+          'line-height': '30px',
+          '-webkit-app-region': 'no-drag',
+          'font-family': 'Segoe WPC,Segoe UI,sans-serif',
+          'text-align': 'center',
+          'box-sizing': 'border-box',
+          margin: '0',
+          'padding-left': '10px',
+          'padding-right': '10px',
+        },
+        hover: {
+          cursor: 'pointer',
+          backgroundColor: '#565656',
+          filter: 'alpha(opacity=50)',
+          color: '#CCCCCC',
+          fill: '#CCCCCC'
         }
       }
     },
@@ -970,9 +1011,11 @@ const theme = {
           cursor: 'pointer',
           border: '1.5px solid',
           boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
+          
         }
       },
       sender: {
+        cursor: 'pointer',
         'font-size': '2em',
         width: '63px',
         height: '100%',
@@ -986,8 +1029,7 @@ const theme = {
         'box-sizing': 'border-box',
         disabled: {},
         hover: {
-          cursor: 'pointer',
-          border: '1.5px solid',
+          borderWidth: '1.5px',
           boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
         }
       },
@@ -1191,6 +1233,8 @@ const theme = {
               },
               close: {
                 backgroundColor: '#dc143c',
+                color: '#CCCCCC',
+                fill: '#CCCCCC'
               }
             },
             icon: {
@@ -1203,15 +1247,54 @@ const theme = {
                 'text-align': 'center',
                 position: 'absolute',
                 top: '25%',
-                right: '25%',
+                right: '20%',
                 bottom: '50%',
-                left: '25%',
+                left: '30%',
                 maximized: {
-                  width: '14px'
+                  width: '14px',
+                  top: '25%',
+                  right: '25%',
+                  bottom: '50%',
+                  left: '25%',
                 }
               }
             }
           }
+        }
+      }
+    },
+    menuBar: {
+      display: 'inline-block',
+      margin: '0',
+      padding: '0',
+      height: '100%',
+      width: 'auto',
+      item: {
+        display: 'inline-block',
+        height: '100%',
+        container: {
+          display: 'block'
+        },
+        title: {
+          display: 'flow-root',
+          height: '30px',
+          width: 'auto',
+          'font-size': '12px',
+          'line-height': '30px',
+          '-webkit-app-region': 'no-drag',
+          'font-family': 'Segoe WPC,Segoe UI,sans-serif',
+          'text-align': 'center',
+          'box-sizing': 'border-box',
+          margin: '0',
+          'padding-left': '10px',
+          'padding-right': '10px',
+        },
+        hover: {
+          cursor: 'pointer',
+          backgroundColor: '#565656',
+          filter: 'alpha(opacity=50)',
+          color: '#CCCCCC',
+          fill: '#CCCCCC'
         }
       }
     },

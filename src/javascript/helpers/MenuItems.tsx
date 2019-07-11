@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { MenuItem } from '../components/MenuBar';
+import { MenuItem } from '../components/Generics/MenuBar';
 import { ContextItem } from '../components/ContextMenu';
 
 import { firebaseConfig$, setRxConfig } from './rxConfig';

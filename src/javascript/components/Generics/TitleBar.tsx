@@ -11,14 +11,12 @@ import {
   MdBrightness3
 } from 'react-icons/md';;
 
-import { MenuBar, MenuItem } from '../MenuBar';
+import { MenuBar, MenuItem } from './MenuBar';
 import { AdvancedDiv } from '../AdvancedDiv';
 
 const Window: any = window;
 const { ipcRenderer, shell, remote } = Window.require('electron');
 const { app } = remote;
-
-const styles: any = require('../TitleBar/TitleBar.scss');
 
 const TitleBar = ({ Config = null, stateTheme, addPopup, closeCurrentPopup, platform = 'windows' }) => {
   const [isDarkMode, setDarkMode] = useState<Boolean>(true);
@@ -29,7 +27,6 @@ const TitleBar = ({ Config = null, stateTheme, addPopup, closeCurrentPopup, plat
       config,
       'windows',
       addPopup,
-      styles,
       stateTheme,
       closeCurrentPopup
     )
@@ -64,25 +61,6 @@ const TitleBar = ({ Config = null, stateTheme, addPopup, closeCurrentPopup, plat
     saveThemeType(isDarkMode ? 'dark' : 'light');
   };
 
-  // minimize the current Window
-  const minimize = () => {
-    remote.getCurrentWindow().minimize();
-  };
-
-  // maximize the current window
-  const maximize = () => {
-    if (remote.getCurrentWindow().isMaximized()) {
-      remote.getCurrentWindow().unmaximize();
-    } else {
-      remote.getCurrentWindow().maximize();
-    };
-  };
-
-  // Closes current window
-  const close = () => {
-    remote.getCurrentWindow().close();
-  };
-
   return (<div style={stateTheme.titleBar}>
         {platform == 'windows' ? 
             <WindowsTitleBar 
@@ -92,16 +70,33 @@ const TitleBar = ({ Config = null, stateTheme, addPopup, closeCurrentPopup, plat
                 stateTheme={stateTheme} 
                 addPopup={addPopup} 
                 closeCurrentPopup={closeCurrentPopup} 
-                onDarkMode={toggleDarkMode} 
-                minimize={minimize} 
-                maximize={maximize} 
-                close={close} />
+                onDarkMode={toggleDarkMode} />
         : null}
     </div>
   );
 };
 
-const WindowsTitleBar = ({Config = null, stateTheme, addPopup, closeCurrentPopup, icon, menuItems, onDarkMode, minimize, maximize, close}) => {
+const WindowsTitleBar = ({Config = null, stateTheme, addPopup, closeCurrentPopup, icon, menuItems, onDarkMode}) => {
+
+    // minimize the current Window
+    const minimize = () => {
+      remote.getCurrentWindow().minimize();
+    };
+
+    // maximize the current window
+    const maximize = () => {
+      if (remote.getCurrentWindow().isMaximized()) {
+        remote.getCurrentWindow().unmaximize();
+      } else {
+        remote.getCurrentWindow().maximize();
+      };
+      setMaximized(isMaximized());
+    };
+
+    // Closes current window
+    const close = () => {
+      remote.getCurrentWindow().close();
+    };
 
     // check if maximized
     const isMaximized = () => {
@@ -111,23 +106,13 @@ const WindowsTitleBar = ({Config = null, stateTheme, addPopup, closeCurrentPopup
     // Declared maximized values (ables us to change the icon when maximzed or not)
     const [isMaximize, setMaximized] = useState(isMaximized());
 
-    // get maximized icon depending if unmaximized or maximized
-    const getMaximizedIcon = () => {
-        return isMaximize ? (
-        <MdFlipToFront style={stateTheme.titleBar.windows.bar.actions.icon.svg}/>
-        ) : (
-        <MdCheckBoxOutlineBlank  style={Object.assign({}, stateTheme.titleBar.windows.bar.actions.icon.svg.maximized, stateTheme.titleBar.windows.bar.actions.icon.svg)} />
-        );
-    };
-
     return (
         <div style={Object.assign({}, stateTheme.base.quinaryBackground, stateTheme.titleBar.windows.bar)}>
-          <div className={styles.dragRegion} />
           <div style={stateTheme.titleBar.windows.bar.iconContainer}>
             <img style={stateTheme.titleBar.windows.bar.icon} src={icon} />
           </div>
           <div style={stateTheme.titleBar.windows.bar.contentContainer}>
-            <MenuBar menuItems={menuItems} />
+            <MenuBar menuItems={menuItems} stateTheme={stateTheme} />
             <div style={stateTheme.titleBar.windows.bar.title}>
               {remote.getCurrentWindow().getTitle()}
             </div>
@@ -138,7 +123,9 @@ const WindowsTitleBar = ({Config = null, stateTheme, addPopup, closeCurrentPopup
               Config={Config}
               stateTheme={stateTheme}
               Icon={
-                stateTheme == theme.dark ? <MdBrightness3  style={stateTheme.titleBar.windows.bar.actions.icon.svg} /> : <MdBrightnessLow  style={stateTheme.titleBar.windows.bar.actions.icon.svg} />
+                stateTheme == theme.dark ? 
+                <MdBrightness3  style={stateTheme.titleBar.windows.bar.actions.icon.svg} /> : 
+                <MdBrightnessLow  style={stateTheme.titleBar.windows.bar.actions.icon.svg} />
               }
               isClose={false}
               onClick={() => {
@@ -157,10 +144,12 @@ const WindowsTitleBar = ({Config = null, stateTheme, addPopup, closeCurrentPopup
             <WindowsActionButton
               Config={Config}
               stateTheme={stateTheme}
-              Icon={getMaximizedIcon}
+              Icon={isMaximize ? 
+                <MdFlipToFront style={stateTheme.titleBar.windows.bar.actions.icon.svg}/>
+               : 
+                <MdCheckBoxOutlineBlank  style={Object.assign({}, stateTheme.titleBar.windows.bar.actions.icon.svg.maximized, stateTheme.titleBar.windows.bar.actions.icon.svg)} />}
               isClose={false}
               onClick={() => {
-                setMaximized(isMaximized());
                 maximize();
               }}
             />
@@ -214,7 +203,7 @@ const WindowsActionButton = ({
       aStyle={stateTheme.titleBar.windows.bar.actions}
       hoverStyle={isClose ? 
       stateTheme.titleBar.windows.bar.actions.hover.close : 
-      stateTheme.titleBar.windows.bar.actions.hover.normal 
+      stateTheme.menuBar.item.hover 
       }
       >
       <div
