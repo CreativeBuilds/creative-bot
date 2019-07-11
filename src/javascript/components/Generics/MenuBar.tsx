@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
 import { theme, useComponentVisible } from '../../helpers';
 
-import { ContextMenu, ContextItem } from './../ContextMenu/index';
+import { ContextMenu, ContextItem } from './ContextMenu';
 import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
 
 const Window: any = window;
@@ -84,6 +84,7 @@ const MenuBarItem = ({ menuItem, stateTheme, hidden = true, action }: MenuBarIte
         {isComponentVisible && (
           <ContextMenu
             contextItems={menuItem.contextMenu}
+            stateTheme={stateTheme}
             onClickedOutside={() => setIsComponentVisible(false)}
           />
         )}

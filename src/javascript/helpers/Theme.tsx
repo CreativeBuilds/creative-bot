@@ -637,7 +637,7 @@ const theme = {
       }
     },
     menuBar: {
-      display: 'inline-block',
+      display: 'contents',
       margin: '0',
       padding: '0',
       height: '100%',
@@ -668,6 +668,142 @@ const theme = {
           filter: 'alpha(opacity=50)',
           color: '#CCCCCC',
           fill: '#CCCCCC'
+        }
+      }
+    },
+    contextMenu: {
+      'list-style-type': 'none',
+      display: 'inline-block',
+      content: {
+        position: 'absolute',
+        'font-size': '12px',
+        'background-color': '#1f1f1f',
+        color: '#b4b4b4',
+        margin: '0',
+        'margin-top': '0px',
+        padding: '0',
+        width: 'auto',
+        'min-width': '170px',
+        'padding-top': '5px',
+        'padding-bottom': '5px',
+        'user-select': 'none',
+        '-webkit-box-shadow': '2px 2px 1px rgba(21,21,21,0.6)',
+        'z-index': '100000000000',
+        submenu: {
+          position: 'absolute',
+          right: 0,
+        }
+      },
+      item: {
+        display: 'flow-root',
+        height: 'auto',
+        container: {
+          display: 'flow-root',
+          height: '26px',
+          submenu: {
+            display: 'inline-block',
+            float: 'right',
+            position: 'relative',
+          }
+
+        },
+        content: {
+          display: 'flow-root',
+          height: '26px',
+          'padding-left': '0px',
+          'padding-right': '10px',
+          width: 'calc(100% - 10px)',
+          cursor: 'pointer', 
+          title: {
+            'padding-bottom': '5px',
+            'padding-top': '5px',
+            display: 'inline-block', 
+            height: 'auto',
+            float: 'left',
+            span: {
+              display: 'inline-block',
+              'vertical-align': 'middle',
+              'line-height': 'normal',
+            }
+          },
+          arrow: {
+            'padding-bottom': '5px',
+            'padding-top': '5px',
+            'margin-right': '10px',
+            'margin-left': '20px',
+            float: 'right',
+            display: 'inline-block', 
+            height: 'auto',
+            span: {
+              display: 'inline-block',
+              'vertical-align': 'middle',
+              'line-height': 'normal',
+            },
+            svg: {
+              color: 'darkgrey',
+              height: '18px',
+              width: '18px',
+              fill: 'darkgrey',
+              stroke: 'darkgrey',
+            }
+          },
+          shortcut: {
+            'padding-bottom': '5px',
+            'padding-top': '5px',
+            'margin-right': '10px',
+            'margin-left': '20px',
+            width: '34px',
+            display: 'inline-block', 
+            height: 'auto',
+            float: 'right',
+            color: 'darkgrey',
+            span: {
+              display: 'inline-block',
+              'vertical-align': 'middle',
+              'line-height': 'normal',
+            }
+          },
+          iconContainer: {
+            'padding-bottom': '5px',
+            'padding-top': '5px',
+            display: 'inline-block', 
+            height: 'auto',
+            icon: {
+              height: 'auto',
+              width: '16px',
+              float: 'right',
+              svg: {
+                'vertical-align': 'middle',
+                height: '16px',
+                width: '16px',
+              }
+            },
+            checkedIcon: {
+              height: 'auto',
+              width: '12px',
+              'margin-right': '5px',
+              svg: {
+                'vertical-align': 'middle',
+                height: '12px',
+                width: '12px',
+              }
+            }
+          }
+        },
+        inactive: {
+          color: 'gray'
+        },
+        seperator: {
+          display: 'block',
+          height: '0.5px',
+          border: '0',
+          'border-top': '0.5px solid #616161',
+          padding: '0',
+        },
+        hover: {
+          color: 'black',
+          fill: 'black',
+          stroke: 'black',
         }
       }
     },
@@ -1264,7 +1400,7 @@ const theme = {
       }
     },
     menuBar: {
-      display: 'inline-block',
+      display: 'contents',
       margin: '0',
       padding: '0',
       height: '100%',
@@ -1295,6 +1431,142 @@ const theme = {
           filter: 'alpha(opacity=50)',
           color: '#CCCCCC',
           fill: '#CCCCCC'
+        }
+      }
+    },
+    contextMenu: {
+      'list-style-type': 'none',
+      display: 'inline-block',
+      content: {
+        position: 'absolute',
+        'font-size': '12px',
+        'background-color': '#1f1f1f',
+        color: '#b4b4b4',
+        margin: '0',
+        'margin-top': '0px',
+        padding: '0',
+        width: 'auto',
+        'min-width': '170px',
+        'padding-top': '5px',
+        'padding-bottom': '5px',
+        'user-select': 'none',
+        '-webkit-box-shadow': '2px 2px 1px rgba(21,21,21,0.6)',
+        'z-index': '100000000000',
+        submenu: {
+          position: 'absolute',
+          right: 0,
+        }
+      },
+      item: {
+        display: 'flow-root',
+        height: 'auto',
+        container: {
+          display: 'flow-root',
+          height: '26px',
+          submenu: {
+            display: 'inline-block',
+            float: 'right',
+            position: 'relative',
+          }
+
+        },
+        content: {
+          display: 'flow-root',
+          height: '26px',
+          'padding-left': '0px',
+          'padding-right': '10px',
+          width: 'calc(100% - 10px)',
+          cursor: 'pointer', 
+          title: {
+            'padding-bottom': '5px',
+            'padding-top': '5px',
+            display: 'inline-block', 
+            height: 'auto',
+            float: 'left',
+            span: {
+              display: 'inline-block',
+              'vertical-align': 'middle',
+              'line-height': 'normal',
+            }
+          },
+          arrow: {
+            'padding-bottom': '5px',
+            'padding-top': '5px',
+            'margin-right': '10px',
+            'margin-left': '20px',
+            float: 'right',
+            display: 'inline-block', 
+            height: 'auto',
+            span: {
+              display: 'inline-block',
+              'vertical-align': 'middle',
+              'line-height': 'normal',
+            },
+            svg: {
+              color: 'darkgrey',
+              height: '18px',
+              width: '18px',
+              fill: 'darkgrey',
+              stroke: 'darkgrey',
+            }
+          },
+          shortcut: {
+            'padding-bottom': '5px',
+            'padding-top': '5px',
+            'margin-right': '10px',
+            'margin-left': '20px',
+            width: '34px',
+            display: 'inline-block', 
+            height: 'auto',
+            float: 'right',
+            color: 'darkgrey',
+            span: {
+              display: 'inline-block',
+              'vertical-align': 'middle',
+              'line-height': 'normal',
+            }
+          },
+          iconContainer: {
+            'padding-bottom': '5px',
+            'padding-top': '5px',
+            display: 'inline-block', 
+            height: 'auto',
+            icon: {
+              height: 'auto',
+              width: '16px',
+              float: 'right',
+              svg: {
+                'vertical-align': 'middle',
+                height: '16px',
+                width: '16px',
+              }
+            },
+            checkedIcon: {
+              height: 'auto',
+              width: '12px',
+              'margin-right': '5px',
+              svg: {
+                'vertical-align': 'middle',
+                height: '12px',
+                width: '12px',
+              }
+            }
+          }
+        },
+        inactive: {
+          color: 'gray'
+        },
+        seperator: {
+          display: 'block',
+          height: '0.5px',
+          border: '0',
+          'border-top': '0.5px solid #616161',
+          padding: '0',
+        },
+        hover: {
+          color: 'black',
+          fill: 'black',
+          stroke: 'black',
         }
       }
     },
