@@ -7,7 +7,7 @@ const { Timer } = require('./Timer');
 const { Sorting } = require('./Sorting');
 let { setRxTimers } = require('../../helpers/rxTimers');
 
-import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { Button, DestructiveButton, ActionButton, WidgetButton } from '../Generics/Button';
 import { TextField } from '../Generics/Input';
 
 const Window: any = window;
@@ -134,6 +134,13 @@ const TimersPage = ({ props }) => {
     <div style={stateTheme.base.tertiaryBackground} className={styles.Points}>
       <div style={Object.assign({}, stateTheme.toolBar, stateTheme.base.quinaryForeground)} className={styles.header}>
         TIMERS
+        <WidgetButton 
+          icon={<MdAddCircle />} 
+          style={stateTheme.button.widget.add}
+          stateTheme={stateTheme} 
+          onClick={() => {
+            addCommandPopup();
+          }}/>
         <TextField 
           placeholderText={"Search..."} 
           stateTheme={stateTheme} 
@@ -148,12 +155,6 @@ const TimersPage = ({ props }) => {
           onChange={e => {
             setSearchCommandName(e.target.value);
           }}/>
-        <MdAddCircle
-          className={styles.add_circle}
-          onClick={() => {
-            addCommandPopup();
-          }}
-        />
       </div>
       <div style={{}} className={styles.content}>
         {/* TODO ADD PAGINATION */}

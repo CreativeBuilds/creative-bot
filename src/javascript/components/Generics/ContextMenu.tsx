@@ -3,6 +3,8 @@ import { useContext, Component, useState, useEffect } from 'react';
 import { theme, ThemeContext, useComponentVisible } from '../../helpers';
 import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
 
+import { AdvancedDiv } from '../AdvancedDiv';
+
 import {
     MdHelpOutline,
     MdKeyboardArrowRight,
@@ -146,56 +148,64 @@ interface ContextMenuItem {
     const getMenuItemType = () => {
       if (contextItem.role.toLowerCase() == 'normal') {
         return (
-          <div style={stateTheme.contextMenu.item.container}>
-            <div style={stateTheme.contextMenu.item.content}>
-              <div style={stateTheme.contextMenu.item.content.iconContainer}>
-                {isChecked ? (
-                  <div style={stateTheme.contextMenu.item.content.iconContainer.checkedIcon}>
-                    <MdDone style={stateTheme.contextMenu.item.content.iconContainer.checkedIcon.svg} />
+          <AdvancedDiv
+            aStyle={stateTheme.contextMenu.item.container}
+            style={{ width: '100%', 'padding-right': '10px' }}
+            hoverStyle={theme.globals.accentBackground}>
+            <div>
+              <div style={stateTheme.contextMenu.item.content}>
+                <div style={stateTheme.contextMenu.item.content.iconContainer}>
+                  {isChecked ? (
+                    <div style={stateTheme.contextMenu.item.content.iconContainer.checkedIcon}>
+                      <MdDone style={stateTheme.contextMenu.item.content.iconContainer.checkedIcon.svg} />
+                    </div>
+                  ) : null}
+                  <div style={stateTheme.contextMenu.item.content.iconContainer.icon}>
+                    {getIconComponent(contextItem.icon)}
                   </div>
-                ) : null}
-                <div style={stateTheme.contextMenu.item.content.iconContainer.icon}>
-                  {getIconComponent(contextItem.icon)}
+                </div>
+                <div style={stateTheme.contextMenu.item.content.title}>
+                  <span>{contextItem.title}</span>
+                </div>
+                <div style={stateTheme.contextMenu.item.content.shortcut}>
+                  <span>{contextItem.shortcut}</span>
                 </div>
               </div>
-              <div style={stateTheme.contextMenu.item.content.title}>
-                <span>{contextItem.title}</span>
-              </div>
-              <div style={stateTheme.contextMenu.item.content.shortcut}>
-                <span>{contextItem.shortcut}</span>
-              </div>
             </div>
-          </div>
+          </AdvancedDiv>
         );
       } else if (contextItem.role.toLowerCase() == 'submenu') {
         return (
-          <div
-            style={stateTheme.contextMenu.item.container}
-            onMouseOver={() => setIsComponentVisible(true)}
-            onMouseLeave={() => setIsComponentVisible(false)}
-          >
-            <div style={stateTheme.contextMenu.item.content}>
-              <div style={stateTheme.contextMenu.item.content.iconContainer}>
-                <div style={stateTheme.contextMenu.item.content.iconContainer.icon}>
-                  {getIconComponent(contextItem.icon)}
+          <AdvancedDiv
+            aStyle={stateTheme.contextMenu.item.container}
+            style={{ width: '100%', 'padding-right': '10px' }}
+            hoverStyle={theme.globals.accentBackground}>
+            <div 
+              onMouseOver={() => setIsComponentVisible(true)}
+              onMouseLeave={() => setIsComponentVisible(false)}>
+              <div style={stateTheme.contextMenu.item.content}>
+                <div style={stateTheme.contextMenu.item.content.iconContainer}>
+                  <div style={stateTheme.contextMenu.item.content.iconContainer.icon}>
+                    {getIconComponent(contextItem.icon)}
+                  </div>
                 </div>
+                <div style={stateTheme.contextMenu.item.content.title}>
+                  <span>{contextItem.title}</span>
+                </div>
+                <MdKeyboardArrowRight style={Object.assign({}, stateTheme.contextMenu.item.content.arrow.svg, stateTheme.contextMenu.item.content.arrow)} />
               </div>
-              <div style={stateTheme.contextMenu.item.content.title}>
-                <span>{contextItem.title}</span>
+              <div style={stateTheme.contextMenu.item.container.submenu}>
+                {isComponentVisible && (
+                  <ContextMenu
+                    isSubMenu={true}
+                    stateTheme={stateTheme}
+                    contextItems={contextItem.contextMenu}
+                    onClickedOutside={() => setIsComponentVisible(false)}
+                  />
+                )}
               </div>
-              <MdKeyboardArrowRight style={Object.assign({}, stateTheme.contextMenu.item.content.arrow.svg, stateTheme.contextMenu.item.content.arrow)} />
             </div>
-            <div style={stateTheme.contextMenu.item.container.submenu}>
-              {isComponentVisible && (
-                <ContextMenu
-                  isSubMenu={true}
-                  stateTheme={stateTheme}
-                  contextItems={contextItem.contextMenu}
-                  onClickedOutside={() => setIsComponentVisible(false)}
-                />
-              )}
-            </div>
-          </div>
+          </AdvancedDiv>
         );
       }
     };

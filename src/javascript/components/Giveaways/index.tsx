@@ -9,7 +9,7 @@ const { Giveaway } = require('./Giveaway');
 const { Sorting } = require('./Sorting');
 let { setRxGiveaways } = require('../../helpers/rxGiveaways');
 
-import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { Button, DestructiveButton, ActionButton, WidgetButton } from '../Generics/Button';
 import { TextField } from '../Generics/Input';
 
 const Window: any = window;
@@ -183,6 +183,13 @@ const GiveawaysPage = ({ props }) => {
         className={styles.header}
       >
         GIVEAWAYS
+        <WidgetButton 
+          icon={<MdAddCircle />} 
+          style={stateTheme.button.widget.add}
+          stateTheme={stateTheme} 
+          onClick={() => {
+            addGiveawayPopup();
+          }}/>
         <TextField 
           placeholderText={"Search..."} 
           stateTheme={stateTheme} 
@@ -197,12 +204,6 @@ const GiveawaysPage = ({ props }) => {
           onChange={e => {
             setSearchGiveawayName(e.target.value);
           }}/>
-        <MdAddCircle
-          className={styles.add_circle}
-          onClick={() => {
-            addGiveawayPopup();
-          }}
-        />
       </div>
       <div style={{}} className={styles.content}>
         <Sorting

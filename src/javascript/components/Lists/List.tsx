@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import { ToggleBox } from './ToggleBox';
-
 import { MdModeEdit, MdEdit, MdDelete, MdRemoveRedEye } from 'react-icons/md';
 let { setRxLists } = require('../../helpers/rxLists');
 import { NamePopup } from './NamePopup';
 import { ViewListPopup } from './ViewListPopup';
 import { RemoveListPopup } from './RemoveListPopup';
+
+import { WidgetButton } from '../Generics/Button';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');

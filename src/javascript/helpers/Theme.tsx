@@ -468,6 +468,12 @@ const theme = {
             transition: 'all 0.15s'
           }
         },
+        add: {
+          position: 'absolute',
+          top: '1px',
+          right: '160px',
+          'font-size': '25px',
+        },
         hover: {
 
         }
@@ -687,7 +693,7 @@ const theme = {
         'padding-top': '5px',
         'padding-bottom': '5px',
         'user-select': 'none',
-        '-webkit-box-shadow': '2px 2px 1px rgba(21,21,21,0.6)',
+        boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)',
         'z-index': '100000000000',
         submenu: {
           position: 'absolute',
@@ -1094,7 +1100,6 @@ const theme = {
         boxShadow: '1px 1px 1px #000000, 0px 0px 1px #0d0d0d'
       }
     },
-    seperator: {},
     cell: {
       normal: {
         backgroundColor: '#ffffff',
@@ -1231,6 +1236,12 @@ const theme = {
             position: 'absolute',
             transition: 'all 0.15s'
           }
+        },
+        add: {
+          position: 'absolute',
+          top: '1px',
+          right: '160px',
+          'font-size': '25px',
         },
         hover: {
 
@@ -1452,7 +1463,7 @@ const theme = {
         'padding-top': '5px',
         'padding-bottom': '5px',
         'user-select': 'none',
-        '-webkit-box-shadow': '2px 2px 1px rgba(21,21,21,0.6)',
+        boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)',
         'z-index': '100000000000',
         submenu: {
           position: 'absolute',

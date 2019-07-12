@@ -7,6 +7,7 @@ const { User } = require('./User');
 const { Sorting } = require('./Sorting');
 
 import { TextField } from '../Generics/Input';
+import { WidgetButton } from '../Generics/Button';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
