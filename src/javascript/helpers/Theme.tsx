@@ -698,6 +698,8 @@ const theme = {
         submenu: {
           position: 'absolute',
           right: 0,
+          'list-style-type': 'none',
+          display: 'contents',
         }
       },
       item: {
@@ -706,12 +708,14 @@ const theme = {
         container: {
           display: 'flex',
           height: '26px',
+          position: 'relative',
           submenu: {
             display: 'inline-block',
             float: 'right',
-            position: 'relative',
+            position: 'absolute',
+            right: '0',
+            top: '0',
           }
-
         },
         content: {
           height: '26px',
@@ -774,12 +778,13 @@ const theme = {
             'margin-right': '10px',
             display: 'inline', 
             height: 'auto',
-            width: '36px',
+            width: '42px',
             float: 'left',
             icon: {
               height: 'auto',
               width: '16px',
               float: 'right',
+              display: 'inline',
               svg: {
                 'vertical-align': 'middle',
                 height: '16px',
@@ -787,9 +792,11 @@ const theme = {
               }
             },
             checkedIcon: {
+              'margin-left': '5px',
               height: 'auto',
               width: '12px',
               'margin-right': '5px',
+              display: 'inline',
               svg: {
                 'vertical-align': 'middle',
                 height: '12px',
@@ -1468,6 +1475,8 @@ const theme = {
         submenu: {
           position: 'absolute',
           right: 0,
+          'list-style-type': 'none',
+          display: 'contents',
         }
       },
       item: {
@@ -1476,10 +1485,13 @@ const theme = {
         container: {
           display: 'flex',
           height: '26px',
+          position: 'relative',
           submenu: {
             display: 'inline-block',
             float: 'right',
-            position: 'relative',
+            position: 'absolute',
+            right: '0',
+            top: '0',
           }
 
         },

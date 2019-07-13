@@ -213,7 +213,7 @@ interface ContextMenuItem {
     return (
       <li
         style={Object.assign({}, !isEnabled() ? stateTheme.contextMenu.item.inactive : null, stateTheme.contextMenu.item)}
-        onClick={() => contextItem.action()}
+        onClick={() => contextItem.action() != null ? contextItem.action() : null }
       >
         {isSeperator() ? (
           <div>

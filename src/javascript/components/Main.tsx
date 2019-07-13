@@ -7,7 +7,7 @@ import { firebaseConfig$, setRxConfig } from '../helpers/rxConfig';
 import { Router } from './Router';
 import { TitleBar } from './Generics/TitleBar';
 import { Banner } from './Banner';
-import { ContextMenu, ContextItem } from './ContextMenu';
+import { ContextMenu, ContextItem } from './Generics/ContextMenu';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');

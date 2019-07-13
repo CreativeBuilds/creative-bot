@@ -22,7 +22,6 @@ import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
 import { firebaseEmotes$, setRxEmotes } from '../../helpers/rxEmotes';
 import { Action } from 'rxjs/internal/scheduler/Action';
 import { remote } from 'electron';
-import { CreativeBotPopup } from './../WebServices/CreativeBotPopup';
 import { ChatFiltersPopup } from './ChatFiltersPopup';
 import { ChatTextToSpeechPopup } from './ChatTextToSpeechPopup';
 import { AdvancedDiv } from '../AdvancedDiv';
@@ -573,7 +572,7 @@ const Chat = ({ props }) => {
   const openTidyClips = () => {
     /*let win = new BrowserWindow({ width: 1024, height: 600 })
     win.loadURL('https://clips.tidylabs.stream/generate?clippedby=TidyClips+Website&url=CreativeBuilds')*/
-    addPopup(
+    /*addPopup(
       <CreativeBotPopup
         stateTheme={stateTheme}
         styles={styles}
@@ -581,7 +580,7 @@ const Chat = ({ props }) => {
         closeCurrentPopup={closeCurrentPopup}
       />,
       true
-    );
+    );*/
   };
 
   const openChatFiltersPanel = () => {
