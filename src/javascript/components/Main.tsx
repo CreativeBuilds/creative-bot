@@ -12,8 +12,6 @@ import { ContextMenu, ContextItem } from './Generics/ContextMenu';
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
-const styles: any = require('./Main.scss');
-
 // TODO move theme/style function to a different
 
 interface Main {
@@ -55,7 +53,7 @@ const Main = ({ Config }: Main) => {
 
   return (
     <ThemeContext.Provider value={{ stateTheme, setStateTheme }}>
-      <div className={styles.appFrame}>
+      <div style={stateTheme.main.frame}>
         <TitleBar
           Config={config}
           addPopup={addPopup}
@@ -63,7 +61,7 @@ const Main = ({ Config }: Main) => {
           stateTheme={stateTheme}
         />
         <Banner />
-        <div className={styles.main} style={style().base.tertiaryBackground}>
+        <div style={Object.assign({}, style().base.tertiaryBackground, stateTheme.main)}>
           <Router getFuncs={getFuncs} />
         </div>
       </div>

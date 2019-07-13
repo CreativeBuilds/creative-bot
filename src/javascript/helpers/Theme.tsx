@@ -822,6 +822,23 @@ const theme = {
         }
       }
     },
+    main: {
+      width: '100%',
+      height: '100%',
+      display: 'table-cell',
+      position: 'inherit',
+      frame: {
+        display: 'table',
+        'min-height': '100%',
+        'min-width': '100%',
+        position: 'relative',
+      },
+      titleBar: {
+        display: 'table-row',
+        height: '30px',
+        'min-width': '100%',    
+      }
+    },
     timeStamp: {
       color: '#AAAAAA'
     },
@@ -1595,6 +1612,23 @@ const theme = {
           fill: 'black',
           stroke: 'black',
         }
+      }
+    },
+    main: {
+      width: '100%',
+      height: '100%',
+      display: 'table-cell',
+      position: 'inherit',
+      frame: {
+        display: 'table',
+        'min-height': '100%',
+        'min-width': '100%',
+        position: 'relative',
+      },
+      titleBar: {
+        display: 'table-row',
+        height: '30px',
+        'min-width': '100%',    
       }
     },
     timeStamp: {
