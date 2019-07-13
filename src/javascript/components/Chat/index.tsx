@@ -24,7 +24,6 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 import { remote } from 'electron';
 import { ChatFiltersPopup } from './ChatFiltersPopup';
 import { ChatTextToSpeechPopup } from './ChatTextToSpeechPopup';
-import { AdvancedDiv } from '../AdvancedDiv';
 import { firebase } from '../../helpers/firebase';
 
 import { Button, DestructiveButton, ActionButton, SendButton, WidgetButton, LinkButton } from '../Generics/Button';

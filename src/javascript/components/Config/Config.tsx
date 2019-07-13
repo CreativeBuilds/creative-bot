@@ -10,7 +10,7 @@ const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 import { setRxConfig } from '../../helpers/rxConfig';
 import { ipcMain } from 'electron';
-import { AdvancedDiv } from '../AdvancedDiv';
+import { AdvancedDiv } from '../Generics/AdvancedDiv';
 import { theme } from '../../helpers/Theme';
 
 const Popup = ({

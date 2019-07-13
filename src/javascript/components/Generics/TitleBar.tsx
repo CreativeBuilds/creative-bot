@@ -12,7 +12,7 @@ import {
 } from 'react-icons/md';;
 
 import { MenuBar, MenuItem } from './MenuBar';
-import { AdvancedDiv } from '../AdvancedDiv';
+import { AdvancedDiv } from './AdvancedDiv';
 
 const Window: any = window;
 const { ipcRenderer, shell, remote } = Window.require('electron');

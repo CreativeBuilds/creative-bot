@@ -3,7 +3,7 @@ import { useContext, Component, useState, useEffect } from 'react';
 import { theme, ThemeContext, useComponentVisible } from '../../helpers';
 import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
 
-import { AdvancedDiv } from '../AdvancedDiv';
+import { AdvancedDiv } from './AdvancedDiv';
 
 import {
     MdHelpOutline,

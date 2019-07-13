@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
-import { AdvancedDiv } from '../AdvancedDiv';
+import { AdvancedDiv } from './AdvancedDiv';
 import { theme, ThemeContext } from '../../helpers';
 import {
   MdSend,
