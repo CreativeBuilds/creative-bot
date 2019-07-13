@@ -85,12 +85,6 @@ const List = ({
         <div className={styles.points}>{list.values.length}</div>
         <div className={styles.spacer} />
         <div className={styles.modded}>
-          <MdRemoveRedEye
-            style={{ strokeWidth: '0px' }}
-            onClick={() => {
-              updateListPopup(list);
-            }}
-          />
           <WidgetButton 
             icon={<MdRemoveRedEye />} 
             stateTheme={stateTheme} 
