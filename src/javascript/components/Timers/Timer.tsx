@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import { ToggleBox } from './ToggleBox';
 import { Checkbox } from '../Generics/Checkbox';
 import { Button, DestructiveButton, ActionButton, WidgetButton } from '../Generics/Button';
 import { TextField } from '../Generics/Input';

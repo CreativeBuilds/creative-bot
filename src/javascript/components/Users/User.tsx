@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import { ModBox } from './ModBox';
-
 import { Button, DestructiveButton, ActionButton, WidgetButton } from '../Generics/Button';
 import { TextField } from '../Generics/Input';
 
