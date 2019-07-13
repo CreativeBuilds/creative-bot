@@ -75,6 +75,12 @@ const List = ({
               updateNamePopup(list);
             }}
           />
+          <WidgetButton 
+            icon={<MdModeEdit />} 
+            stateTheme={stateTheme} 
+            onClick={() => {
+              updateNamePopup(list);
+            }}/>
         </div>
         <div className={styles.points}>{list.values.length}</div>
         <div className={styles.spacer} />
@@ -85,14 +91,20 @@ const List = ({
               updateListPopup(list);
             }}
           />
+          <WidgetButton 
+            icon={<MdRemoveRedEye />} 
+            stateTheme={stateTheme} 
+            onClick={() => {
+              updateListPopup(list);
+            }}/>
         </div>
         <div className={styles.modded}>
-          <MdDelete
-            className={styles.trash}
+          <WidgetButton 
+            icon={<MdDelete />} 
+            stateTheme={stateTheme} 
             onClick={() => {
               removeListPopup(list);
-            }}
-          />
+            }}/>
         </div>
       </div>
     </div>

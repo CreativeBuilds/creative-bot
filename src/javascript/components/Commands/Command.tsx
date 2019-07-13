@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 import { ToggleBox } from './ToggleBox';
 import { Checkbox } from '../Generics/Checkbox';
-import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { Button, DestructiveButton, ActionButton, WidgetButton } from '../Generics/Button';
 import { TextField, StepperField } from '../Generics/Input';
 
 import { MdModeEdit, MdEdit, MdDelete } from 'react-icons/md';
@@ -173,11 +173,12 @@ const Command = ({
       >
         <div className={styles.username}>
           {command.name}{' '}
-          <MdEdit
+          <WidgetButton 
+            icon={<MdModeEdit />} 
+            stateTheme={stateTheme} 
             onClick={() => {
               updateCommandPopup(command);
-            }}
-          />
+            }}/>
         </div>
         {/* <div className={styles.points}>{command.uses}</div> */}
         <div className={styles.spacer} />
@@ -205,12 +206,12 @@ const Command = ({
            }} />
         </div>
         <div className={styles.modded}>
-          <MdDelete
-            className={styles.trash}
+          <WidgetButton 
+            icon={<MdDelete />} 
+            stateTheme={stateTheme} 
             onClick={() => {
               removeCommandPopup(command);
-            }}
-          />
+            }}/>
         </div>
       </div>
     </div>
