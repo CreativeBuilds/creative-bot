@@ -4,14 +4,9 @@ import { theme, ThemeContext } from '../../helpers';
 import {
   MdSend,
   MdPerson,
-  MdMood,
   MdFace,
-  MdLocalMovies,
-  MdEvent,
-  MdFilterList,
   MdSettingsVoice,
   MdSettings,
-  MdRemoveRedEye,
   MdVisibility,
   MdVisibilityOff
 } from 'react-icons/md';
@@ -19,15 +14,27 @@ import {
 import { Message } from './Message';
 import { StickerPopup } from './StickerPopup';
 import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
-import { firebaseEmotes$, setRxEmotes } from '../../helpers/rxEmotes';
-import { Action } from 'rxjs/internal/scheduler/Action';
+import { firebaseEmotes$ } from '../../helpers/rxEmotes';
 import { remote } from 'electron';
 import { ChatFiltersPopup } from './ChatFiltersPopup';
 import { ChatTextToSpeechPopup } from './ChatTextToSpeechPopup';
 import { firebase } from '../../helpers/firebase';
 
-import { Button, DestructiveButton, ActionButton, SendButton, WidgetButton, LinkButton } from '../Generics/Button';
-import { TextField, EmailField, PasswordField, StepperField, MessageField } from '../Generics/Input';
+import {
+  Button,
+  DestructiveButton,
+  ActionButton,
+  SendButton,
+  WidgetButton,
+  LinkButton
+} from '../Generics/Button';
+import {
+  TextField,
+  EmailField,
+  PasswordField,
+  StepperField,
+  MessageField
+} from '../Generics/Input';
 
 import { isEmpty, isEqual } from 'lodash';
 
@@ -114,173 +121,185 @@ const AddAcceptFirebasePopup = ({
     <div style={stateTheme.popup.dialog.content}>
       <h1 style={{ marginBottom: '0px' }}>CreativeBot Sign-in</h1>
       <div style={{ width: '70%', minWidth: 'unset' }}>
-      <p
-        style={{
-          margin: 'auto',
-          paddingTop: '10px',
-          paddingBottom: '10px',
-          textAlign: 'center',
-          fontSize: '0.8em'
-        }}
-      >
-        Sign in to the cloud to save all commands/timers/etc plus some more
-        awesome features!
-      </p>
-      <React.Fragment>
-        <EmailField 
-              header={"Email"}
-              placeholderText={"Email"} 
-              stateTheme={stateTheme} 
-              style={{ marginBottom: '10px' }}
-              inputStyle={stateTheme.base.secondaryBackground}
-              onChange={e => {
-                validateEmail(e.target.value);
-              }}/>
-        {emailErr ? (
-          <div
-            style={{
-              paddingBottom: '10px',
-              color: theme.globals.destructive.backgroundColor
-            }}
-          >
-            {emailErr}
-          </div>
-        ) : null}
-      </React.Fragment>
-      <React.Fragment>
-        <PasswordField 
-              header={"Password"}
-              placeholderText={"Password"}
-              hasForgotLabel={!signUp && emailErr.length === 0 ? true : false} 
-              onForgotPassword={() => {
-                if (emailErr) {
-                  setEmailErr(
-                    'Cannot send password request to email with no user!'
-                  );
-                } else if (!validateStringForEmail(email)) {
-                  setEmailErr(
-                    'Cannot send password request to email with no user!'
-                  );
-                } else {
-                  firebase
-                    .auth()
-                    .sendPasswordResetEmail(email)
-                    .then(() => {
-                      setEmailErr('Check email for password reset link!');
-                    })
-                    .catch(e => {
-                      if (e.message) {
-                        setEmailErr(e.message);
-                      }
-                    });
-                }
-              }}
-              stateTheme={stateTheme} 
-              style={{ marginBottom: '10px' }}
-              inputStyle={stateTheme.base.secondaryBackground}
-              onChange={e => {
-                validatePassword(e.target.value);
-              }}/>
-        {passwordErr ? (
-          <div
-            style={{
-              paddingBottom: '10px',
-              color: theme.globals.destructive.backgroundColor
-            }}
-          >
-            {passwordErr}
-          </div>
-        ) : null}
-      </React.Fragment>
-      {signUp ? (
+        <p
+          style={{
+            margin: 'auto',
+            paddingTop: '10px',
+            paddingBottom: '10px',
+            textAlign: 'center',
+            fontSize: '0.8em'
+          }}
+        >
+          Sign in to the cloud to save all commands/timers/etc plus some more
+          awesome features!
+        </p>
         <React.Fragment>
-          <PasswordField 
-              header={"Confirm Password"}
-              placeholderText={"Confirm Password"}
-              stateTheme={stateTheme} 
-              style={{marginBottom: '10px' }}
-              inputStyle={stateTheme.base.secondaryBackground}
-              onChange={e => {
-                validateConfirmationPassword(e.target.value);
-              }}/>
-          {confErr ? (
+          <EmailField
+            header={'Email'}
+            placeholderText={'Email'}
+            stateTheme={stateTheme}
+            style={{ marginBottom: '10px' }}
+            inputStyle={stateTheme.base.secondaryBackground}
+            onChange={e => {
+              validateEmail(e.target.value);
+            }}
+          />
+          {emailErr ? (
             <div
               style={{
                 paddingBottom: '10px',
                 color: theme.globals.destructive.backgroundColor
               }}
             >
-              {confErr}
+              {emailErr}
             </div>
           ) : null}
         </React.Fragment>
-      ) : null}
-      {signUp ? (
-        <Button title={"Create Account"} 
-        isSubmit={true} 
-        stateTheme={stateTheme} 
-        isEnabled={
-          confErr.length === 0 &&
-          passwordErr.length === 0 &&
-          emailErr.length === 0
-            ? true
-            : false} 
-        onClick={() => {
-          SignUp(email, password)
-            .then(boop => {
-              closeCurrentPopup({
-                uid: boop.user.uid,
-                refreshToken: boop.user.refreshToken
-              });
-            })
-            .catch(e => {
-              if (e.message) {
-                setEmailErr(e.message);
+        <React.Fragment>
+          <PasswordField
+            header={'Password'}
+            placeholderText={'Password'}
+            hasForgotLabel={!signUp && emailErr.length === 0 ? true : false}
+            onForgotPassword={() => {
+              if (emailErr) {
+                setEmailErr(
+                  'Cannot send password request to email with no user!'
+                );
+              } else if (!validateStringForEmail(email)) {
+                setEmailErr(
+                  'Cannot send password request to email with no user!'
+                );
+              } else {
+                firebase
+                  .auth()
+                  .sendPasswordResetEmail(email)
+                  .then(() => {
+                    setEmailErr('Check email for password reset link!');
+                  })
+                  .catch(e => {
+                    if (e.message) {
+                      setEmailErr(e.message);
+                    }
+                  });
               }
-            });
-        }} />
-      ) : (
-        <Button title={"Login"} 
-        isSubmit={true} 
-        stateTheme={stateTheme}  
-        onClick={() => {
-          initLogin(email, password)
-            .then(boop => {
-              closeCurrentPopup({
-                uid: boop.user.uid,
-                refreshToken: boop.user.refreshToken
-              });
-            })
-            .catch(e => {
-              if (e.code.includes('wrong-password')) {
-                if (e.message) {
-                  setPasswordErr(`Invalid password.`);
-                }
-              } else if (e.code.includes('user-not-found')) {
-                setEmailErr(`User not found.`);
-              }
-            });
-        }} />
-      )}
-      <div style={{ display: 'flex', marginTop: '10px' }}>
+            }}
+            stateTheme={stateTheme}
+            style={{ marginBottom: '10px' }}
+            inputStyle={stateTheme.base.secondaryBackground}
+            onChange={e => {
+              validatePassword(e.target.value);
+            }}
+          />
+          {passwordErr ? (
+            <div
+              style={{
+                paddingBottom: '10px',
+                color: theme.globals.destructive.backgroundColor
+              }}
+            >
+              {passwordErr}
+            </div>
+          ) : null}
+        </React.Fragment>
         {signUp ? (
-          <LinkButton title={"Sign In"} 
-          isSubmit={true} 
-          stateTheme={stateTheme} 
-          buttonStyle={{ width: '100%' }} 
-          onClick={() => {
-            setSignUp(false);
-          }} />
-        ) : (
           <React.Fragment>
-            <LinkButton title={"Sign Up"} 
-              isSubmit={true} 
-              stateTheme={stateTheme} 
-              buttonStyle={{ width: '100%' }}  
+            <PasswordField
+              header={'Confirm Password'}
+              placeholderText={'Confirm Password'}
+              stateTheme={stateTheme}
+              style={{ marginBottom: '10px' }}
+              inputStyle={stateTheme.base.secondaryBackground}
+              onChange={e => {
+                validateConfirmationPassword(e.target.value);
+              }}
+            />
+            {confErr ? (
+              <div
+                style={{
+                  paddingBottom: '10px',
+                  color: theme.globals.destructive.backgroundColor
+                }}
+              >
+                {confErr}
+              </div>
+            ) : null}
+          </React.Fragment>
+        ) : null}
+        {signUp ? (
+          <Button
+            title={'Create Account'}
+            isSubmit={true}
+            stateTheme={stateTheme}
+            isEnabled={
+              confErr.length === 0 &&
+              passwordErr.length === 0 &&
+              emailErr.length === 0
+                ? true
+                : false
+            }
+            onClick={() => {
+              SignUp(email, password)
+                .then(boop => {
+                  closeCurrentPopup({
+                    uid: boop.user.uid,
+                    refreshToken: boop.user.refreshToken
+                  });
+                })
+                .catch(e => {
+                  if (e.message) {
+                    setEmailErr(e.message);
+                  }
+                });
+            }}
+          />
+        ) : (
+          <Button
+            title={'Login'}
+            isSubmit={true}
+            stateTheme={stateTheme}
+            onClick={() => {
+              initLogin(email, password)
+                .then(boop => {
+                  closeCurrentPopup({
+                    uid: boop.user.uid,
+                    refreshToken: boop.user.refreshToken
+                  });
+                })
+                .catch(e => {
+                  if (e.code.includes('wrong-password')) {
+                    if (e.message) {
+                      setPasswordErr(`Invalid password.`);
+                    }
+                  } else if (e.code.includes('user-not-found')) {
+                    setEmailErr(`User not found.`);
+                  }
+                });
+            }}
+          />
+        )}
+        <div style={{ display: 'flex', marginTop: '10px' }}>
+          {signUp ? (
+            <LinkButton
+              title={'Sign In'}
+              isSubmit={true}
+              stateTheme={stateTheme}
+              buttonStyle={{ width: '100%' }}
               onClick={() => {
-                setSignUp(true);
-              }} />
-            {/* <AdvancedDiv
+                setSignUp(false);
+              }}
+            />
+          ) : (
+            <React.Fragment>
+              <LinkButton
+                title={'Sign Up'}
+                isSubmit={true}
+                stateTheme={stateTheme}
+                buttonStyle={{ width: '100%' }}
+                onClick={() => {
+                  setSignUp(true);
+                }}
+              />
+              {/* <AdvancedDiv
               aStyle={{
                 flex: 1,
                 paddingLeft: '5px',
@@ -301,9 +320,9 @@ const AddAcceptFirebasePopup = ({
                 No thanks, I don't like awesome content
               </div>
             </AdvancedDiv> */}
-          </React.Fragment>
-        )}
-      </div>
+            </React.Fragment>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -403,9 +422,15 @@ const AddCommandPopup = ({
       >
         {helperText}
       </div>
-      <Button title={buttonText} isSubmit={true} isEnabled={error ? false : true} stateTheme={stateTheme} onClick={() => {
+      <Button
+        title={buttonText}
+        isSubmit={true}
+        isEnabled={error ? false : true}
+        stateTheme={stateTheme}
+        onClick={() => {
           verifySave();
-        }} />
+        }}
+      />
     </div>
   );
 };
@@ -471,16 +496,17 @@ const LoginWithDlivePopup = ({
             Sign-in With DLive
           </div>
         </AdvancedDiv>*/}
-        <ActionButton 
-        title={"Save"} 
-        stateTheme={stateTheme}  
-        onClick={e => {
-          // Need to create a popup that is oauth for dlive
-          ipcRenderer.send('oauthWindowStart');
-          ipcRenderer.once('newAuthKey', (event, key) => {
-            closeCurrentPopup(key);
-          });
-        }}/>
+        <ActionButton
+          title={'Save'}
+          stateTheme={stateTheme}
+          onClick={e => {
+            // Need to create a popup that is oauth for dlive
+            ipcRenderer.send('oauthWindowStart');
+            ipcRenderer.once('newAuthKey', (event, key) => {
+              closeCurrentPopup(key);
+            });
+          }}
+        />
       </div>
     </div>
   );
@@ -812,9 +838,9 @@ const Chat = ({ props }) => {
       >
         CHAT
         <div className={styles.rightContainer}>
-          <WidgetButton 
-            icon={<MdSettingsVoice />} 
-            stateTheme={stateTheme} 
+          <WidgetButton
+            icon={<MdSettingsVoice />}
+            stateTheme={stateTheme}
             onClick={() => {
               addPopup(
                 <ChatTextToSpeechPopup
@@ -824,19 +850,22 @@ const Chat = ({ props }) => {
                   closeCurrentPopup={closeCurrentPopup}
                 />
               );
-            }}/>
-          <WidgetButton 
-            icon={<MdSettings />} 
-            stateTheme={stateTheme} 
+            }}
+          />
+          <WidgetButton
+            icon={<MdSettings />}
+            stateTheme={stateTheme}
             onClick={() => {
               openChatFiltersPanel();
-            }}/>
-          <WidgetButton 
-            icon={<MdPerson />} 
-            stateTheme={stateTheme} 
+            }}
+          />
+          <WidgetButton
+            icon={<MdPerson />}
+            stateTheme={stateTheme}
             onClick={() => {
               openAccountsPannel();
-            }}/>
+            }}
+          />
           <div
             className={styles.viewers}
             onClick={() => {
@@ -880,25 +909,28 @@ const Chat = ({ props }) => {
       </div>
       <div style={stateTheme.base.secondaryBackground} className={styles.input}>
         {/* TODO change maxLength to be limitless and then send messages once every 2 seconds to get around chat slowmode */}
-        <MessageField 
-          placeholderText={"Type a Message..."} 
-          stateTheme={stateTheme} 
-          onKeyDown={onEnterPress} 
+        <MessageField
+          placeholderText={'Type a Message...'}
+          stateTheme={stateTheme}
+          onKeyDown={onEnterPress}
           onChange={e => {
             updateText(e);
-          }}/>
+          }}
+        />
         {/*<SendButton 
           icon={<MdLocalMovies />} 
           stateTheme={stateTheme} 
           onClick={openTidyClips} />*/}
-        <SendButton 
-          icon={<MdFace />} 
-          stateTheme={stateTheme} 
-          onClick={openStickerPanel}/>
-        <SendButton 
-          icon={<MdSend />} 
-          stateTheme={stateTheme} 
-          onClick={sendMessage}/>
+        <SendButton
+          icon={<MdFace />}
+          stateTheme={stateTheme}
+          onClick={openStickerPanel}
+        />
+        <SendButton
+          icon={<MdSend />}
+          stateTheme={stateTheme}
+          onClick={sendMessage}
+        />
       </div>
     </div>
   );

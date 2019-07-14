@@ -65,6 +65,7 @@ const exportBackupData = require('./helpers/exportBackupData');
 const importBackupData = require('./helpers/importBackupData');
 let { makeNewCommand, getBlockchainUsername } = require('./helpers');
 const { autoUpdater } = require('electron-updater');
+autoUpdater.allowPrerelease = true;
 require('./helpers/startTimers').run();
 
 const {
@@ -97,7 +98,13 @@ if (env === 'dev') {
 
 function createWindow() {
   // Create the browser window.
-  autoUpdater.checkForUpdatesAndNotify();
+  autoUpdater.on('update-available', () => {
+    autoUpdater.downloadUpdate();
+  });
+  autoUpdater.on('update-downloaded', () => {
+    autoUpdater.quitAndInstall(true, true);
+  });
+  autoUpdater.checkForUpdates();
   if (env === 'dev' || env === 'dev_watch') {
     win = new BrowserWindow({
       width: 1280,

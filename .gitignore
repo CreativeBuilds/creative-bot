@@ -10,3 +10,5 @@ electron-builder.json
 yarn-error.log
 *.log
 list.txt
+electron-builder.json.disabled
+*.disabled
