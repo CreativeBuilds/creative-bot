@@ -8,6 +8,7 @@ import { Quote } from './Quote';
 let { setRxQuotes, firebaseQuotes$ } = require('../../helpers/rxQuotes');
 
 import { TextField } from '../Generics/Input';
+import { WidgetButton } from '../Generics/Button';
 
 const { Sorting } = require('./Sorting');
 
@@ -66,6 +67,13 @@ const QuotesPage = ({ props }) => {
         className={styles.header}
       >
         QUOTES
+        <WidgetButton 
+          icon={<MdAddCircle />} 
+          style={stateTheme.button.widget.add}
+          stateTheme={stateTheme} 
+          onClick={() => {
+            addQuotePopup();
+          }}/>
         <TextField 
           placeholderText={"Search..."} 
           stateTheme={stateTheme} 
@@ -80,12 +88,6 @@ const QuotesPage = ({ props }) => {
           onChange={e => {
             setSearchQuoteName(e.target.value);
           }}/>
-        <MdAddCircle
-          className={styles.add_circle}
-          onClick={() => {
-            addQuotePopup();
-          }}
-        />
       </div>
       <div style={{}} className={styles.content}>
         {/* TODO ADD PAGINATION */}

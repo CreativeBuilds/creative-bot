@@ -5,14 +5,12 @@ import { ThemeContext, theme } from '../helpers';
 import { firebaseConfig$, setRxConfig } from '../helpers/rxConfig';
 
 import { Router } from './Router';
-import { TitleBar } from './TitleBar';
+import { TitleBar } from './Generics/TitleBar';
 import { Banner } from './Banner';
-import { ContextMenu, ContextItem } from './ContextMenu';
+import { ContextMenu, ContextItem } from './Generics/ContextMenu';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
-
-const styles: any = require('./Main.scss');
 
 // TODO move theme/style function to a different
 
@@ -55,14 +53,15 @@ const Main = ({ Config }: Main) => {
 
   return (
     <ThemeContext.Provider value={{ stateTheme, setStateTheme }}>
-      <div className={styles.appFrame}>
+      <div style={stateTheme.main.frame}>
         <TitleBar
           Config={config}
           addPopup={addPopup}
           closeCurrentPopup={closeCurrentPopup}
+          stateTheme={stateTheme}
         />
         <Banner />
-        <div className={styles.main} style={style().base.tertiaryBackground}>
+        <div style={Object.assign({}, style().base.tertiaryBackground, stateTheme.main)}>
           <Router getFuncs={getFuncs} />
         </div>
       </div>

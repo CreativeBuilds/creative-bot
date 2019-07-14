@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import { ToggleBox } from './ToggleBox';
 import { Checkbox } from '../Generics/Checkbox';
-import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { Button, DestructiveButton, ActionButton, WidgetButton } from '../Generics/Button';
 import { TextField } from '../Generics/Input';
 
 import { theme } from '../../helpers';
@@ -195,11 +194,12 @@ const Timer = ({
       <div className={styles.toggle_wrappers}>
         <div className={styles.username}>
           {timer.name}{' '}
-          <MdEdit
+          <WidgetButton 
+            icon={<MdModeEdit />} 
+            stateTheme={stateTheme} 
             onClick={() => {
               updateCommandPopup(timer);
-            }}
-          />
+            }}/>
         </div>
         <div className={styles.points}>{timer.seconds}</div>
         <div className={styles.points}>{timer.messages}</div>
@@ -219,12 +219,12 @@ const Timer = ({
            }} />
         </div>
         <div className={styles.modded}>
-          <MdDelete
-            className={styles.trash}
+          <WidgetButton 
+            icon={<MdDelete />} 
+            stateTheme={stateTheme} 
             onClick={() => {
               removeTimerPopup(timer);
-            }}
-          />
+            }}/>
         </div>
       </div>
     </div>

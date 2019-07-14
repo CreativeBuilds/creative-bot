@@ -13,6 +13,7 @@ const { Sorting } = require('./Sorting');
 
 import { TextField } from '../Generics/Input';
 import { MdSettings } from 'react-icons/md';
+import { WidgetButton } from '../Generics/Button';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');

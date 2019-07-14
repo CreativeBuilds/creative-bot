@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
-import { AdvancedDiv } from '../AdvancedDiv';
+import { AdvancedDiv } from './AdvancedDiv';
 import { theme, ThemeContext } from '../../helpers';
 import { MdSend, MdPerson, MdMood, MdFace, MdLocalMovies, MdEvent, MdFilterList } from 'react-icons/md';
 
@@ -125,4 +125,30 @@ const StepperField = ({value = 0, minValue = 0, maxValue = 0, width = null, head
     );
 }
 
-export {TextField, EmailField, PasswordField, StepperField}
+const MessageField = ({text = '', placeholderText = '', width = null, isEnabled = true, onChange = null, onKeyDown = null, onKeyUp = null, stateTheme, style = {}, inputStyle = {}}) => {
+    
+    const [isenabled, setIsEnabled] = useState(isEnabled);
+    const [textInput, setTextInput] = useState(text);
+
+    return (
+        <AdvancedDiv aStyle={Object.assign({}, 
+            Object.assign({}, style, 
+                stateTheme.input.message))}
+                hoverStyle={Object.assign({},
+                    theme.globals.accentBorderColor,
+                    stateTheme.input.message.hover
+                )}
+                style={ Object.assign({}, stateTheme.base.quinaryBackground, stateTheme.input.message.textField)}>
+            <input
+                placeholder={placeholderText}
+                defaultValue={text}
+                maxLength={280}
+                onChange={onChange}
+                onKeyDown={onKeyDown}
+                onKeyUp={onKeyUp}
+            />
+        </AdvancedDiv>
+    );
+}
+
+export {TextField, EmailField, PasswordField, StepperField, MessageField}

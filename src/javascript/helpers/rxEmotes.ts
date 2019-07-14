@@ -11,7 +11,7 @@ const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
 // const rxEmotes = new BehaviorSubject({});
-// ipcRenderer.send('getRxEmotes');
+//ipcRenderer.send('getRxEmotes');
 ipcRenderer.on('rxEmotes', (event, emotes) => {
   setRxEmotes(emotes);
 });
@@ -29,7 +29,7 @@ rxFirebaseuser
           .doc(user.uid)
           .collection('emotes')
       )
-        .pipe(tap(x => console.log(`TAP Emnotes: ${x}`)))
+        .pipe(tap(x => console.log(`TAP Emotes: ${x}`)))
         .pipe(
           map(arr =>
             arr.reduce((acc, emote: any) => {

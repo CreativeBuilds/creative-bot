@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-//import { ToggleBox } from './ToggleBox';
 import { UpdateQuotePopup } from './UpdateQuotePopup';
 import { RemoveQuotePopup } from './RemoveQuotePopup';
+
+import { WidgetButton } from '../Generics/Button';
 
 import { MdModeEdit, MdEdit, MdDelete, MdRemoveRedEye } from 'react-icons/md';
 let { setRxLists } = require('../../helpers/rxLists');
@@ -55,11 +56,12 @@ const Quote = ({
         )}>
             <div className={styles.toggle_wrappers}>
                 <div className={styles.id}>{quote.quoteId}{' '}
-                <MdEdit
+                <WidgetButton 
+                  icon={<MdModeEdit />} 
+                  stateTheme={stateTheme} 
                   onClick={() => {
                     updateQuotePopup(quote);
-                  }}
-                />
+                  }}/>
             </div>
             <div className={styles.quote}>{quote.quote}</div>
             <div className={styles.quoteBy}>{quote.quoteBy}</div>
@@ -67,12 +69,12 @@ const Quote = ({
             <div className={styles.date}>{quote.date}</div>
             <div className={styles.spacer} />
             <div className={styles.modded}>
-                    <MdDelete
-                        className={styles.trash}
-                        onClick={() => {
-                            removeQuotePopup(quote);
-                        }}
-                    />
+                    <WidgetButton 
+                      icon={<MdDelete />} 
+                      stateTheme={stateTheme} 
+                      onClick={() => {
+                        removeQuotePopup(quote);
+                      }}/>
                 </div>
             </div>
         </div>

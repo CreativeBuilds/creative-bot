@@ -11,6 +11,7 @@ let { setRxCommands } = require('../../helpers/rxCommands');
 
 import { Button } from '../Generics/Button';
 import { TextField } from '../Generics/Input';
+import { WidgetButton } from '../Generics/Button';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -158,7 +159,13 @@ const CommandsPage = ({ props }) => {
         className={styles.header}
       >
         COMMANDS
-
+        <WidgetButton 
+          icon={<MdAddCircle />} 
+          style={stateTheme.button.widget.add}
+          stateTheme={stateTheme} 
+          onClick={() => {
+            addCommandPopup();
+          }}/>
         <TextField 
           placeholderText={"Search..."} 
           stateTheme={stateTheme} 
@@ -173,12 +180,7 @@ const CommandsPage = ({ props }) => {
           onChange={e => {
             setSearchCommandName(e.target.value);
           }}/>
-        <MdAddCircle
-          className={styles.add_circle}
-          onClick={() => {
-            addCommandPopup();
-          }}
-        />
+
       </div>
       <div style={{}} className={styles.content}>
         {/* TODO ADD PAGINATION */}

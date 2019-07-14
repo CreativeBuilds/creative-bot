@@ -13,7 +13,6 @@ import { CommandsPage } from '../Commands';
 import { firebaseUsers$ } from '../../helpers/rxUsers';
 import { firebaseCommands$ } from '../../helpers/rxCommands';
 import { firebaseConfig$ } from '../../helpers/rxConfig';
-import { ConfigPage } from '../Config';
 import { firebaseTimers$ } from '../../helpers/rxTimers';
 import { TimersPage } from '../Timers';
 import { GiveawaysPage } from '../Giveaways';
@@ -353,16 +352,6 @@ class RouterWrapper extends Component<any, any> {
             }}
             Component={ListsPage}
           /> */}
-          <Route
-            url={url}
-            path={'/settings'}
-            componentProps={{
-              config: this.state.config,
-              addPopup: this.addPopup,
-              closeCurrentPopup: this.closeCurrentPopup
-            }}
-            Component={ConfigPage}
-          />
         </div>
       </React.Fragment>
     );

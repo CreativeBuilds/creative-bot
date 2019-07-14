@@ -7,9 +7,10 @@ const theme = {
       color: '#202225'
     },
     accentBorderColor: {
-      color: '#ffd300',
-      fill: '#ffd300',
       borderColor: '#ffd300'
+    },
+    accentFillColor: {
+      fill: '#ffd300'
     },
     accentHighlight: {
       highlightColor: '#ffd300',
@@ -23,9 +24,10 @@ const theme = {
       color: '#202225'
     },
     accentDarkBorderColor: {
-      color: '#b39400',
-      fill: '#b39400',
       borderColor: '#b39400'
+    },
+    accentDarkFillColor: {
+      fill: '#b39400'
     },
     accentDarkHighlight: {
       highlightColor: '#b39400',
@@ -270,7 +272,8 @@ const theme = {
           width: '25px',
           height: '25px',
           borderRadius: '50%',
-          transition: 'all 0.15s ease-in-out'
+          transition: 'all 0.15s ease-in-out',
+          cursor: 'pointer',
         },
         isOn: {
           'margin-left': '50px'
@@ -361,6 +364,20 @@ const theme = {
         submit: {
           'margin-bottom': '0px !important'
         },
+        link: {
+          backgroundColor: 'transparent',
+          'text-align': 'center',
+          'vertical-align': 'middle',
+          'justify-content': 'center',
+          'align-items': 'center',
+          border: '1.5px solid rgba(0,0,0,0)',
+          'border-radius': '5px',
+          height: '40px',
+          title: {
+            'margin-top': '10px',
+            'margin-bottom': '10px',
+          }
+        },
         disabled: {
           backgroundColor: '#191a1c',
           color: '#d0d0d0'
@@ -372,8 +389,94 @@ const theme = {
         }
       },
       sender: {
+        cursor: 'pointer',
+        'font-size': '2em',
+        width: '63px',
+        height: '100%',
+        display: 'flex',
+        flex: '1',
+        'justify-content': 'center',
+        'align-items': 'center',
+        'margin-left': '5px',
+        border: '2px solid rgba(0,0,0,0)',
+        'border-radius': '5px',
+        'box-sizing': 'border-box',
         disabled: {},
-        hover: {}
+        hover: {
+          borderWidth: '1.5px',
+          boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
+        }
+      },
+      widget: {
+        'margin-right': '5px',
+        display: 'inline-flex',
+        'justify-content': 'center',
+        'align-items': 'center',
+        transition: 'all 0.15s ease-in-out',
+        height: '100%',
+        'vertical-align': 'middle',
+        'margin-bottom': '2px',
+        hamburger: {
+          'font-size': '2.4em',
+          position: 'absolute',
+          top: '0',
+          left: '0',
+          'z-index': '1',
+          'margin-left': '5px',
+          display: 'inline',
+          'vertical-align': 'middle',
+          height: '44px',
+          'margin-bottom': '12px',
+          icon: {
+            position: 'absolute',
+            top: '0',
+            bottom: '0',
+            left: '0',
+            right: '0',
+            verticalAlign: 'middle',
+            marginTop: '3px',
+          }
+        },
+        closeMenu: {
+          'font-size': '2.4em',
+          position: 'absolute',
+          right: '0',
+          transition: 'all 0.15s',
+          icon: {
+            fontSize: '1em',
+            position: 'absolute',
+            right: '0',
+            top: '0',
+            marginTop: '6px',
+            transition: 'all 0.15s'
+          }
+        },
+        closePopup: {
+          position: 'absolute',
+          top: '10px',
+          right: '5px',
+          height: '32px',
+          width: '32px',
+          transition: 'all 0.15s',
+          icon: {
+            fontSize: '1.9em',
+            top: '0',
+            left: '0',
+            right: '0',
+            bottom: '0',
+            position: 'absolute',
+            transition: 'all 0.15s'
+          }
+        },
+        add: {
+          position: 'absolute',
+          top: '1px',
+          right: '160px',
+          'font-size': '25px',
+        },
+        hover: {
+
+        }
       }
     },
     input: {
@@ -402,7 +505,339 @@ const theme = {
         height: '20px',
         fontSize: '16px'
       },
-      message: {}
+      message: {
+        height: '100%',
+        'flex-direction': 'unset !important',
+        display: 'flex',
+        width: '100%',
+        border: '0px solid rgba(0,0,0,0)',
+        hover: {
+          border: '1.5px solid',
+          boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
+        },
+        textField: {
+          flex: '1',
+          'outline-width': '0',
+          outline: 'none',
+          resize: 'none',
+          border: '2px solid rgba(0,0,0,0)',
+          padding: '5px',
+          height: '100% !important',
+          width: '100% !important',
+          transition: 'all 0.15s ease-in-out',
+          'border-radius': '5px',
+          color: '#CCCCCC',
+          'font-size': '16px'
+        }
+      }
+    },
+    titleBar: {
+      display: 'table-row',
+      'min-width': '100%',
+      '-webkit-app-region': 'drag',
+      'user-select': 'none',
+      width: '100%',
+      windows: {
+        bar: {
+          width: '100%',
+          height: '30px',
+          display: 'block',
+          transition: 'all 0.15s ease-in-out',
+          iconContainer: {
+            display: 'table-column',
+            height: '30px',
+            width: '35px',
+            float: 'left',
+          },
+          contentContainer: {
+            display: 'inline-flex',
+            height: '30px',
+            width: 'calc(100% - (35px + 140px))',
+            float: 'left',
+          },
+          windowControlsContainer: {
+            display: 'flex',
+            'flex-grow': '0',
+            'flex-shrink': '0',
+            'text-align': 'center',
+            position: 'relative',
+            'z-index': '3000',
+            '-webkit-app-region': 'no-drag',
+            height: '100%',
+            width: 'auto',
+            'margin-left': 'auto',
+          },
+          icon: {
+            width: '18px',
+            margin: 'auto',
+            'margin-top': '6px',
+            display: 'block',
+          },
+          title: {
+            flex: '0 1 auto',
+            'font-size': '12px',
+            overflow: 'hidden',
+            'white-space': 'nowrap',
+            'text-overflow': 'ellipsis',
+            'margin-left': 'auto',
+            'margin-right': 'auto',
+            'line-height': '30px',
+            zoom: '1',
+            'font-family': 'Segoe WPC,Segoe UI,sans-serif',
+            transition: 'all 0.15s ease-in-out',
+          },
+          versionTag: {
+            'font-size': '12px',
+            height: '100%',
+            'line-height': '30px',
+            width: 'auto',
+            'font-family': 'Segoe WPC,Segoe UI,sans-serif',
+            'text-align': 'center',
+            float: 'right',
+            'padding-left': '5px',
+            'padding-right': '5px',
+            transition: 'all 0.15s ease-in-out',
+          },
+          actions: {
+            display: 'inline-block',
+            '-webkit-app-region': 'no-drag',
+            height: '30px',
+            width: '46px',
+            'box-sizing': 'border-box',
+            transition: 'all 0.15s ease-in-out',
+            hover: {
+              normal: { 
+                backgroundColor: '#565656',
+                filter: 'alpha(opacity=50)'
+              },
+              close: {
+                backgroundColor: '#dc143c',
+                color: '#CCCCCC',
+                fill: '#CCCCCC'
+              }
+            },
+            icon: {
+              height: '100%',
+              width: '100%',
+              '-webkit-mask-size': '23.1%',
+              position: 'relative',
+              svg: {
+                'vertical-align': 'middle',
+                'text-align': 'center',
+                position: 'absolute',
+                top: '25%',
+                right: '20%',
+                bottom: '50%',
+                left: '30%',
+                maximized: {
+                  width: '14px',
+                  top: '25%',
+                  right: '25%',
+                  bottom: '50%',
+                  left: '25%',
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    menuBar: {
+      display: 'contents',
+      margin: '0',
+      padding: '0',
+      height: '100%',
+      width: 'auto',
+      item: {
+        display: 'inline-block',
+        height: '100%',
+        container: {
+          display: 'block'
+        },
+        title: {
+          display: 'flow-root',
+          height: '30px',
+          width: 'auto',
+          'font-size': '12px',
+          'line-height': '30px',
+          '-webkit-app-region': 'no-drag',
+          'font-family': 'Segoe WPC,Segoe UI,sans-serif',
+          'text-align': 'center',
+          'box-sizing': 'border-box',
+          margin: '0',
+          'padding-left': '10px',
+          'padding-right': '10px',
+        },
+        hover: {
+          cursor: 'pointer',
+          backgroundColor: '#565656',
+          filter: 'alpha(opacity=50)',
+          color: '#CCCCCC',
+          fill: '#CCCCCC'
+        }
+      }
+    },
+    contextMenu: {
+      'list-style-type': 'none',
+      display: 'contents',
+      content: {
+        position: 'absolute',
+        'font-size': '12px',
+        'background-color': '#1f1f1f',
+        color: '#b4b4b4',
+        margin: '0',
+        'margin-top': '0px',
+        padding: '0',
+        width: 'auto',
+        'min-width': '200px',
+        'padding-top': '5px',
+        'padding-bottom': '5px',
+        'user-select': 'none',
+        boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)',
+        'z-index': '100000000000',
+        submenu: {
+          position: 'absolute',
+          right: 0,
+          'list-style-type': 'none',
+          display: 'contents',
+        }
+      },
+      item: {
+        display: 'flow-root',
+        height: 'auto',
+        container: {
+          display: 'flex',
+          height: '26px',
+          position: 'relative',
+          submenu: {
+            display: 'inline-block',
+            float: 'right',
+            position: 'absolute',
+            right: '0',
+            top: '0',
+          }
+        },
+        content: {
+          height: '26px',
+          'padding-left': '0px',
+          'padding-right': '15px',
+          width: '100%',
+          cursor: 'pointer', 
+          title: {
+            'padding-bottom': '5px',
+            'padding-top': '5px',
+            display: 'inline-block', 
+            height: 'auto',
+            float: 'left',
+            span: {
+              display: 'inline-block',
+              'vertical-align': 'middle',
+              'line-height': 'normal',
+            }
+          },
+          arrow: {
+            'padding-bottom': '5px',
+            'padding-top': '5px',
+            'margin-right': '10px',
+            'margin-left': '20px',
+            float: 'right',
+            display: 'inline-block', 
+            height: 'auto',
+            span: {
+              display: 'inline-block',
+              'vertical-align': 'middle',
+              'line-height': 'normal',
+            },
+            svg: {
+              color: 'darkgrey',
+              height: '18px',
+              width: '18px',
+              fill: 'darkgrey',
+              stroke: 'darkgrey',
+            }
+          },
+          shortcut: {
+            'padding-bottom': '5px',
+            'padding-top': '5px',
+            'margin-right': '10px',
+            'margin-left': '20px',
+            width: '34px',
+            display: 'table', 
+            height: 'auto',
+            float: 'right',
+            color: 'darkgrey',
+            span: {
+              display: 'inline-block',
+              'vertical-align': 'middle',
+              'line-height': 'normal',
+            }
+          },
+          iconContainer: {
+            'padding-bottom': '5px',
+            'padding-top': '5px',
+            'margin-right': '10px',
+            display: 'inline', 
+            height: 'auto',
+            width: '42px',
+            float: 'left',
+            icon: {
+              height: 'auto',
+              width: '16px',
+              float: 'right',
+              display: 'inline',
+              svg: {
+                'vertical-align': 'middle',
+                height: '16px',
+                width: '16px',
+              }
+            },
+            checkedIcon: {
+              'margin-left': '5px',
+              height: 'auto',
+              width: '12px',
+              'margin-right': '5px',
+              display: 'inline',
+              svg: {
+                'vertical-align': 'middle',
+                height: '12px',
+                width: '12px',
+              }
+            }
+          }
+        },
+        inactive: {
+          color: 'gray'
+        },
+        seperator: {
+          display: 'block',
+          height: '0.5px',
+          border: '0',
+          'border-top': '0.5px solid #616161',
+          padding: '0',
+        },
+        hover: {
+          color: 'black',
+          fill: 'black',
+          stroke: 'black',
+        }
+      }
+    },
+    main: {
+      width: '100%',
+      height: '100%',
+      display: 'table-cell',
+      position: 'inherit',
+      frame: {
+        display: 'table',
+        'min-height': '100%',
+        'min-width': '100%',
+        position: 'relative',
+      },
+      titleBar: {
+        display: 'table-row',
+        height: '30px',
+        'min-width': '100%',    
+      }
     },
     timeStamp: {
       color: '#AAAAAA'
@@ -627,7 +1062,8 @@ const theme = {
           width: '25px',
           height: '25px',
           borderRadius: '50%',
-          transition: 'all 0.15s ease-in-out'
+          transition: 'all 0.15s ease-in-out',
+          cursor: 'pointer',
         },
         isOn: {
           'margin-left': '50px'
@@ -688,7 +1124,6 @@ const theme = {
         boxShadow: '1px 1px 1px #000000, 0px 0px 1px #0d0d0d'
       }
     },
-    seperator: {},
     cell: {
       normal: {
         backgroundColor: '#ffffff',
@@ -721,6 +1156,20 @@ const theme = {
           width: 'calc(70% - 9px)',
           'margin-bottom': '0px'
         },
+        link: {
+          backgroundColor: 'transparent',
+          'text-align': 'center',
+          'vertical-align': 'middle',
+          'justify-content': 'center',
+          'align-items': 'center',
+          border: '1.5px solid rgba(0,0,0,0)',
+          'border-radius': '5px',
+          height: '40px',
+          title: {
+            'margin-top': '10px',
+            'margin-bottom': '10px',
+          }
+        },
         disabled: {
           backgroundColor: '#dddddd',
           color: '#202225'
@@ -729,11 +1178,98 @@ const theme = {
           cursor: 'pointer',
           border: '1.5px solid',
           boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
+          
         }
       },
       sender: {
+        cursor: 'pointer',
+        'font-size': '2em',
+        width: '63px',
+        height: '100%',
+        display: 'flex',
+        flex: '1',
+        'justify-content': 'center',
+        'align-items': 'center',
+        'margin-left': '5px',
+        border: '2px solid rgba(0,0,0,0)',
+        'border-radius': '5px',
+        'box-sizing': 'border-box',
         disabled: {},
-        hover: {}
+        hover: {
+          borderWidth: '1.5px',
+          boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
+        }
+      },
+      widget: {
+        'margin-right': '5px',
+        display: 'inline-flex',
+        'justify-content': 'center',
+        'align-items': 'center',
+        transition: 'all 0.15s ease-in-out',
+        height: '100%',
+        'vertical-align': 'middle',
+        'margin-bottom': '2px',
+        hamburger: {
+          'font-size': '2.4em',
+          position: 'absolute',
+          top: '0',
+          left: '0',
+          'z-index': '1',
+          'margin-left': '5px',
+          display: 'inline',
+          'vertical-align': 'middle',
+          height: '44px',
+          'margin-bottom': '12px',
+          icon: {
+            position: 'absolute',
+            top: '0',
+            bottom: '0',
+            left: '0',
+            right: '0',
+            verticalAlign: 'middle',
+            marginTop: '3px',
+          }
+        },
+        closeMenu: {
+          'font-size': '2.4em',
+          position: 'absolute',
+          right: '0',
+          transition: 'all 0.15s',
+          icon: {
+            fontSize: '1em',
+            position: 'absolute',
+            right: '0',
+            top: '0',
+            marginTop: '6px',
+            transition: 'all 0.15s'
+          }
+        },
+        closePopup: {
+          position: 'absolute',
+          top: '10px',
+          right: '5px',
+          height: '32px',
+          width: '32px',
+          transition: 'all 0.15s',
+          icon: {
+            fontSize: '1.9em',
+            top: '0',
+            left: '0',
+            right: '0',
+            bottom: '0',
+            position: 'absolute',
+            transition: 'all 0.15s'
+          }
+        },
+        add: {
+          position: 'absolute',
+          top: '1px',
+          right: '160px',
+          'font-size': '25px',
+        },
+        hover: {
+
+        }
       }
     },
     input: {
@@ -762,7 +1298,338 @@ const theme = {
         height: '20px',
         fontSize: '16px'
       },
-      message: {}
+      message: {
+        height: '100%',
+        'flex-direction': 'unset !important',
+        display: 'flex',
+        width: '100%',
+        border: '0px solid rgba(0,0,0,0)',
+        hover: {
+          cursor: 'pointer',
+          border: '1.5px solid',
+          boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
+        },
+        textField: {
+          flex: '1',
+          'outline-width': '0',
+          outline: 'none',
+          resize: 'none',
+          border: '2px solid rgba(0,0,0,0)',
+          padding: '5px',
+          height: '100% !important',
+          width: '100% !important',
+          transition: 'all 0.15s ease-in-out',
+          'border-radius': '5px',
+          color: '#333333',
+          'font-size': '16px'
+        }
+      }
+    },
+    titleBar: {
+      display: 'table-row',
+      'min-width': '100%',
+      '-webkit-app-region': 'drag',
+      'user-select': 'none',
+      width: '100%',
+      windows: {
+        bar: {
+          width: '100%',
+          height: '30px',
+          display: 'block',
+          transition: 'all 0.15s ease-in-out',
+          iconContainer: {
+            display: 'table-column',
+            height: '30px',
+            width: '35px',
+            float: 'left',
+          },
+          contentContainer: {
+            display: 'inline-flex',
+            height: '30px',
+            width: 'calc(100% - (35px + 140px))',
+            float: 'left',
+          },
+          windowControlsContainer: {
+            display: 'flex',
+            'flex-grow': '0',
+            'flex-shrink': '0',
+            'text-align': 'center',
+            position: 'relative',
+            'z-index': '3000',
+            '-webkit-app-region': 'no-drag',
+            height: '100%',
+            width: 'auto',
+            'margin-left': 'auto',
+          },
+          icon: {
+            width: '18px',
+            margin: 'auto',
+            'margin-top': '6px',
+            display: 'block',
+          },
+          title: {
+            flex: '0 1 auto',
+            'font-size': '12px',
+            overflow: 'hidden',
+            'white-space': 'nowrap',
+            'text-overflow': 'ellipsis',
+            'margin-left': 'auto',
+            'margin-right': 'auto',
+            'line-height': '30px',
+            zoom: '1',
+            'font-family': 'Segoe WPC,Segoe UI,sans-serif',
+            transition: 'all 0.15s ease-in-out',
+          },
+          versionTag: {
+            'font-size': '12px',
+            height: '100%',
+            'line-height': '30px',
+            width: 'auto',
+            'font-family': 'Segoe WPC,Segoe UI,sans-serif',
+            'text-align': 'center',
+            float: 'right',
+            'padding-left': '5px',
+            'padding-right': '5px',
+            transition: 'all 0.15s ease-in-out',
+          },
+          actions: {
+            display: 'inline-block',
+            '-webkit-app-region': 'no-drag',
+            height: '30px',
+            width: '46px',
+            'box-sizing': 'border-box',
+            transition: 'all 0.15s ease-in-out',
+            hover: {
+              normal: { 
+                backgroundColor: '#565656',
+                filter: 'alpha(opacity=50)'
+              },
+              close: {
+                backgroundColor: '#dc143c',
+                color: '#CCCCCC',
+                fill: '#CCCCCC'
+              }
+            },
+            icon: {
+              height: '100%',
+              width: '100%',
+              '-webkit-mask-size': '23.1%',
+              position: 'relative',
+              svg: {
+                'vertical-align': 'middle',
+                'text-align': 'center',
+                position: 'absolute',
+                top: '25%',
+                right: '20%',
+                bottom: '50%',
+                left: '30%',
+                maximized: {
+                  width: '14px',
+                  top: '25%',
+                  right: '25%',
+                  bottom: '50%',
+                  left: '25%',
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    menuBar: {
+      display: 'contents',
+      margin: '0',
+      padding: '0',
+      height: '100%',
+      width: 'auto',
+      item: {
+        display: 'inline-block',
+        height: '100%',
+        container: {
+          display: 'block'
+        },
+        title: {
+          display: 'flow-root',
+          height: '30px',
+          width: 'auto',
+          'font-size': '12px',
+          'line-height': '30px',
+          '-webkit-app-region': 'no-drag',
+          'font-family': 'Segoe WPC,Segoe UI,sans-serif',
+          'text-align': 'center',
+          'box-sizing': 'border-box',
+          margin: '0',
+          'padding-left': '10px',
+          'padding-right': '10px',
+        },
+        hover: {
+          cursor: 'pointer',
+          backgroundColor: '#565656',
+          filter: 'alpha(opacity=50)',
+          color: '#CCCCCC',
+          fill: '#CCCCCC'
+        }
+      }
+    },
+    contextMenu: {
+      'list-style-type': 'none',
+      display: 'contents',
+      content: {
+        position: 'absolute',
+        'font-size': '12px',
+        'background-color': '#1f1f1f',
+        color: '#b4b4b4',
+        margin: '0',
+        'margin-top': '0px',
+        padding: '0',
+        width: 'auto',
+        'min-width': '200px',
+        'padding-top': '5px',
+        'padding-bottom': '5px',
+        'user-select': 'none',
+        boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)',
+        'z-index': '100000000000',
+        submenu: {
+          position: 'absolute',
+          right: 0,
+          'list-style-type': 'none',
+          display: 'contents',
+        }
+      },
+      item: {
+        display: 'flow-root',
+        height: 'auto',
+        container: {
+          display: 'flex',
+          height: '26px',
+          position: 'relative',
+          submenu: {
+            display: 'inline-block',
+            float: 'right',
+            position: 'absolute',
+            right: '0',
+            top: '0',
+          }
+
+        },
+        content: {
+          height: '26px',
+          'padding-left': '0px',
+          'padding-right': '15px',
+          width: '100%',
+          cursor: 'pointer', 
+          title: {
+            'padding-bottom': '5px',
+            'padding-top': '5px',
+            display: 'inline-block', 
+            height: 'auto',
+            float: 'left',
+            span: {
+              display: 'inline-block',
+              'vertical-align': 'middle',
+              'line-height': 'normal',
+            }
+          },
+          arrow: {
+            'padding-bottom': '5px',
+            'padding-top': '5px',
+            'margin-right': '10px',
+            'margin-left': '20px',
+            float: 'right',
+            display: 'inline-block', 
+            height: 'auto',
+            span: {
+              display: 'inline-block',
+              'vertical-align': 'middle',
+              'line-height': 'normal',
+            },
+            svg: {
+              color: 'darkgrey',
+              height: '18px',
+              width: '18px',
+              fill: 'darkgrey',
+              stroke: 'darkgrey',
+            }
+          },
+          shortcut: {
+            'padding-bottom': '5px',
+            'padding-top': '5px',
+            'margin-right': '10px',
+            'margin-left': '20px',
+            width: '34px',
+            display: 'table', 
+            height: 'auto',
+            float: 'right',
+            color: 'darkgrey',
+            span: {
+              display: 'inline-block',
+              'vertical-align': 'middle',
+              'line-height': 'normal',
+            }
+          },
+          iconContainer: {
+            'padding-bottom': '5px',
+            'padding-top': '5px',
+            'margin-right': '10px',
+            display: 'inline', 
+            height: 'auto',
+            width: '36px',
+            float: 'left',
+            icon: {
+              height: 'auto',
+              width: '16px',
+              float: 'right',
+              svg: {
+                'vertical-align': 'middle',
+                height: '16px',
+                width: '16px',
+              }
+            },
+            checkedIcon: {
+              height: 'auto',
+              width: '12px',
+              'margin-right': '5px',
+              svg: {
+                'vertical-align': 'middle',
+                height: '12px',
+                width: '12px',
+              }
+            }
+          }
+        },
+        inactive: {
+          color: 'gray'
+        },
+        seperator: {
+          display: 'block',
+          height: '0.5px',
+          border: '0',
+          'border-top': '0.5px solid #616161',
+          padding: '0',
+        },
+        hover: {
+          color: 'black',
+          fill: 'black',
+          stroke: 'black',
+        }
+      }
+    },
+    main: {
+      width: '100%',
+      height: '100%',
+      display: 'table-cell',
+      position: 'inherit',
+      frame: {
+        display: 'table',
+        'min-height': '100%',
+        'min-width': '100%',
+        position: 'relative',
+      },
+      titleBar: {
+        display: 'table-row',
+        height: '30px',
+        'min-width': '100%',    
+      }
     },
     timeStamp: {
       color: '#555555'

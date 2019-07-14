@@ -11,7 +11,6 @@ import { SegmentControl, SegmentControlSource } from '../SegmentControl/index';
 import { Toggle, ToggleType } from '../Generics/Toggle';
 import { Panel } from '../Generics/Panel';
 import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
-import { AdvancedDiv } from '../AdvancedDiv';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
