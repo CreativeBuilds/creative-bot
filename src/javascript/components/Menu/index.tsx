@@ -5,6 +5,8 @@ import { ThemeContext, theme } from '../../helpers';
 
 import { firebase } from '../../helpers/firebase';
 
+import { WidgetButton } from '../Generics/Button';
+
 import { Li } from './li';
 import { firebaseConfig$ } from '../../helpers/rxConfig';
 
@@ -35,11 +37,13 @@ const Menu = props => {
         )}
         className={`${styles.menu_popout} ${isOpen ? styles.menu_toggled : ''}`}
       >
-        <MdClose
-          onClick={() => {
-            setIsOpen(false);
-          }}
-        />
+        <WidgetButton 
+        icon={<MdClose style={stateTheme.button.widget.closeMenu.icon}/>} 
+        stateTheme={stateTheme}
+        style={stateTheme.button.widget.closeMenu} 
+        onClick={() => {
+          setIsOpen(false);
+        }}/>
         <ul>
           <Li
             style={Object.assign(
@@ -183,15 +187,13 @@ const Menu = props => {
           }
         </ul>
       </div>
-      <div
-        className={styles.hamburger}
-        style={stateTheme.base.quinaryForeground}
+      <WidgetButton 
+        icon={<MdMenu style={stateTheme.button.widget.hamburger.icon}/>} 
+        stateTheme={stateTheme} 
+        style={stateTheme.button.widget.hamburger}
         onClick={() => {
           setIsOpen(true);
-        }}
-      >
-        <MdMenu />
-      </div>
+        }}/>
     </React.Fragment>
   );
 };

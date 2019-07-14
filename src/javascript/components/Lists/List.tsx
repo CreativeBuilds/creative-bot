@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import { ToggleBox } from './ToggleBox';
-
 import { MdModeEdit, MdEdit, MdDelete, MdRemoveRedEye } from 'react-icons/md';
 let { setRxLists } = require('../../helpers/rxLists');
 import { NamePopup } from './NamePopup';
 import { ViewListPopup } from './ViewListPopup';
 import { RemoveListPopup } from './RemoveListPopup';
+
+import { WidgetButton } from '../Generics/Button';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -75,24 +75,30 @@ const List = ({
               updateNamePopup(list);
             }}
           />
+          <WidgetButton 
+            icon={<MdModeEdit />} 
+            stateTheme={stateTheme} 
+            onClick={() => {
+              updateNamePopup(list);
+            }}/>
         </div>
         <div className={styles.points}>{list.values.length}</div>
         <div className={styles.spacer} />
         <div className={styles.modded}>
-          <MdRemoveRedEye
-            style={{ strokeWidth: '0px' }}
+          <WidgetButton 
+            icon={<MdRemoveRedEye />} 
+            stateTheme={stateTheme} 
             onClick={() => {
               updateListPopup(list);
-            }}
-          />
+            }}/>
         </div>
         <div className={styles.modded}>
-          <MdDelete
-            className={styles.trash}
+          <WidgetButton 
+            icon={<MdDelete />} 
+            stateTheme={stateTheme} 
             onClick={() => {
               removeListPopup(list);
-            }}
-          />
+            }}/>
         </div>
       </div>
     </div>

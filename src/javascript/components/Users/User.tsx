@@ -1,9 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import { ModBox } from './ModBox';
-
-import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { Button, DestructiveButton, ActionButton, WidgetButton } from '../Generics/Button';
 import { TextField } from '../Generics/Input';
 
 import { MdModeEdit } from 'react-icons/md';
@@ -110,11 +108,12 @@ const User = ({
         <div className={styles.username}>{User.dliveUsername}</div>
         <div className={styles.points}>
           {User.points}
-          <MdModeEdit
+          <WidgetButton 
+            icon={<MdModeEdit />} 
+            stateTheme={stateTheme} 
             onClick={() => {
               updateUserPointsPopup(User);
-            }}
-          />
+            }}/>
         </div>
         <div className={styles.points}>
           {User.lino ? Math.floor(User.lino / 10) / 100 : 0}

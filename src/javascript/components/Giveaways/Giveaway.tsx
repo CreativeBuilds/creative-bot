@@ -10,7 +10,7 @@ import { firebaseGiveaways$ } from '../../helpers/rxGiveaways';
 import { first } from 'rxjs/operators';
 let { setRxGiveaways } = require('../../helpers/rxGiveaways');
 
-import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { Button, DestructiveButton, ActionButton, WidgetButton } from '../Generics/Button';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -179,12 +179,12 @@ const Giveaway = ({
           </div>
         </div>
         <div className={styles.modded}>
-          <MdDelete
-            className={styles.trash}
+          <WidgetButton 
+            icon={<MdDelete />} 
+            stateTheme={stateTheme} 
             onClick={() => {
               removeGiveawayPopup(giveaway);
-            }}
-          />
+            }}/>
         </div>
       </div>
     </div>
