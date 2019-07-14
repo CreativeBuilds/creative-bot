@@ -903,28 +903,30 @@ const Chat = ({ props }) => {
         </div>
       </div>
       <div style={{}} className={styles.content} id='messages'>
-        {Messages.map((message, nth) => {
-          if (
-            !message.content ||
-            (message.content ? message.content.length === 0 : true)
-          )
-            return null;
-          return (
-            <Message
-              addPopup={addPopup}
-              Config={config}
-              styles={styles}
-              message={message}
-              closeCurrentPopup={closeCurrentPopup}
-              stateTheme={stateTheme}
-              nth={nth}
-              ownerName={(config.streamerDisplayName
-                ? config.streamerDisplayName
-                : ''
-              ).toLowerCase()}
-            />
-          );
-        })}
+        {(Messages.length > 100 ? Messages.slice(-100) : Messages).map(
+          (message, nth) => {
+            if (
+              !message.content ||
+              (message.content ? message.content.length === 0 : true)
+            )
+              return null;
+            return (
+              <Message
+                addPopup={addPopup}
+                Config={config}
+                styles={styles}
+                message={message}
+                closeCurrentPopup={closeCurrentPopup}
+                stateTheme={stateTheme}
+                nth={nth}
+                ownerName={(config.streamerDisplayName
+                  ? config.streamerDisplayName
+                  : ''
+                ).toLowerCase()}
+              />
+            );
+          }
+        )}
         <div id={'bottomOfMessages'} />
         {/* This is for the actual chat messages */}
       </div>

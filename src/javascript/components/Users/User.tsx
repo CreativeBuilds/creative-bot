@@ -30,37 +30,43 @@ const Popup = ({ user, styles, closeCurrentPopup, stateTheme }) => {
           ? `'`
           : `'s`}{' '}
         Points
-        </h2>
+      </h2>
       <div style={{ width: '70%', minWidth: 'unset' }}>
-        <TextField 
+        <TextField
           text={points}
-          placeholderText={"Points"} 
+          placeholderText={'Points'}
           header={
-          <div>
-            {user.dliveUsername ? user.dliveUsername : user.dliveUsername}
-            {(user.dliveUsername ? user.dliveUsername : user.dliveUsername)[
-              user.dliveUsername.length - 1
-            ].toLowerCase() === 's'
-              ? `'`
-              : `'s`}
-            {' points'}
-          </div>
+            <div>
+              {user.dliveUsername ? user.dliveUsername : user.dliveUsername}
+              {(user.dliveUsername ? user.dliveUsername : user.dliveUsername)[
+                user.dliveUsername.length - 1
+              ].toLowerCase() === 's'
+                ? `'`
+                : `'s`}
+              {' points'}
+            </div>
           }
-          stateTheme={stateTheme} 
+          stateTheme={stateTheme}
           width={'100%'}
-          inputStyle={Object.assign({}, {'margin-bottom': '10px'},stateTheme.base.secondaryBackground)}
+          inputStyle={Object.assign(
+            {},
+            { 'margin-bottom': '10px' },
+            stateTheme.base.secondaryBackground
+          )}
           onChange={e => {
             setPoints(e.target.value);
-          }}/>
-        <Button 
-          title={"Save"} 
-          isSubmit={true} 
-          stateTheme={stateTheme}  
+          }}
+        />
+        <Button
+          title={'Save'}
+          isSubmit={true}
+          stateTheme={stateTheme}
           onClick={() => {
-              if (isNaN(Number(points))) return;
-              saveToDB(Number(points));
-              closeCurrentPopup();
-            }} />
+            if (isNaN(Number(points))) return;
+            saveToDB(Number(points));
+            closeCurrentPopup();
+          }}
+        />
       </div>
     </div>
   );
@@ -68,6 +74,7 @@ const Popup = ({ user, styles, closeCurrentPopup, stateTheme }) => {
 
 const User = ({
   styles,
+  style,
   User,
   nth,
   stateTheme,
@@ -91,7 +98,8 @@ const User = ({
       style={Object.assign(
         {},
         stateTheme.cell.normal,
-        nth % 2 ? stateTheme.cell.alternate : { }
+        nth % 2 ? stateTheme.cell.alternate : {},
+        style
       )}
     >
       <div className={styles.image_container}>

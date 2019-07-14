@@ -9,6 +9,21 @@
   flex-direction: column;
 }
 
+.events,
+.viewers {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.15s ease-in-out;
+  height: 100%;
+  vertical-align: middle;
+  margin-bottom: 3px;
+  padding-left: 10px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 .content {
   flex: 1;
   overflow-y: auto;
@@ -92,10 +107,10 @@
 
 .user {
   width: calc(100% - 10px);
-  min-height: 24px;
-  padding: 5px;
+  min-height: 45px;
+  padding-left: 5px;
+  padding-right: 5px;
   text-overflow: wrap;
-  margin-bottom: 5px;
   display: flex;
   justify-content: center;
   align-items: center;

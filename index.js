@@ -98,13 +98,7 @@ if (env === 'dev') {
 
 function createWindow() {
   // Create the browser window.
-  autoUpdater.on('update-available', () => {
-    autoUpdater.downloadUpdate();
-  });
-  autoUpdater.on('update-downloaded', () => {
-    autoUpdater.quitAndInstall(true, true);
-  });
-  autoUpdater.checkForUpdates();
+
   if (env === 'dev' || env === 'dev_watch') {
     win = new BrowserWindow({
       width: 1280,
@@ -115,6 +109,14 @@ function createWindow() {
   } else {
     win = new BrowserWindow({ width: 1280, height: 720, frame: false });
   }
+  autoUpdater.on('update-available', () => {
+    autoUpdater.downloadUpdate();
+  });
+  autoUpdater.on('update-downloaded', () => {
+    // autoUpdater.quitAndInstall(true, true);
+    win.webContents.send('new-update');
+  });
+  autoUpdater.checkForUpdates();
 
   // and load the index.html of the app.
   if (env === 'dev_watch') {
@@ -305,12 +307,12 @@ function createWindow() {
   let users = {};
 
   setRxUsers.pipe(skip(1)).subscribe(users => {
-    console.log('GOT DA USERS', users);
     win.webContents.send('rxUsers', users);
   });
 
   ipcMain.on('editpoints', (event, { username, points }) => {
     let Users = Object.assign({}, users);
+    if (!Users[username]) return;
     Users[username].points = points;
     setRxUsers.next(Users);
   });

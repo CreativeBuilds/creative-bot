@@ -26,6 +26,8 @@ import { ListsPage } from '../Lists';
 import { first, filter } from 'rxjs/operators';
 
 import { isEmpty } from 'lodash';
+import { ActionButton } from '../Generics/Button';
+import { useContext } from 'react';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -33,6 +35,44 @@ const { ipcRenderer } = Window.require('electron');
 const RouteContext: any = React.createContext({ currentUrl: '/' });
 
 const styles: any = require('./Route.scss');
+
+const UpdatePopup = props => {
+  const { stateTheme } = useContext(ThemeContext);
+
+  return (
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column'
+      }}
+    >
+      <h2>New Update Downloaded!</h2>
+      <div
+        style={{
+          flex: 1,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+          width: '80%',
+          marginBottom: '10px'
+        }}
+      >
+        A new update has been downloaded with awesome new features! 😎 The bot
+        will now restart...
+      </div>
+      <ActionButton
+        title={'Restart'}
+        stateTheme={stateTheme}
+        onClick={() => {
+          ipcRenderer.send('shutdown');
+        }}
+      />
+    </div>
+  );
+};
 
 class RouterWrapper extends Component<any, any> {
   constructor(props) {
@@ -176,6 +216,15 @@ class RouterWrapper extends Component<any, any> {
     });
     ipcRenderer.on('livestreamObject', (event, livestream) => {
       this.setState({ livestream });
+    });
+
+    ipcRenderer.on('new-update', event => {
+      console.log('GOT UPDATE');
+      this.addPopup(
+        <UpdatePopup closeCurrentPopup={this.closeCurrentPopup} />,
+        false,
+        true
+      );
     });
 
     firebaseConfig$.subscribe(Config => {

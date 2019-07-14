@@ -30,7 +30,12 @@ const Sorting = ({
   };
 
   return (
-    <div className={styles.user} style={stateTheme.base.quinaryBackground}>
+    <div
+      className={styles.user}
+      style={Object.assign({}, stateTheme.base.quinaryBackground, {
+        marginBottom: '5px'
+      })}
+    >
       <div className={styles.image_container}>
         <img
           src={

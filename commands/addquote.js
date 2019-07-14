@@ -1,6 +1,6 @@
 let rxQuotes = require('./../helpers/rxQuotes.js');
 const { first } = require('rxjs/operators');
- 
+
 var _ = require('lodash');
 
 const run = ({ message, args }) => {
@@ -39,7 +39,7 @@ const run = ({ message, args }) => {
               delete Quotes['quotes'];
               let keys = Object.keys(Quotes);
               let key = keys[keys.length - 1];
-              console.log('all keys', keys, 'last key', key);
+              // console.log('all keys', keys, 'last key', key);
               let keepGoing = num => {
                 if (!Quotes[num]) return num;
                 return keepGoing(num + 1);
