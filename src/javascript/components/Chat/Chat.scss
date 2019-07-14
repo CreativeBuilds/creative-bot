@@ -18,20 +18,23 @@
     position: relative;
     height: 64px;
   }
-  
-  svg { 
-    height: 64px; 
-    width: 64px; 
+
+  svg {
+    height: 64px;
+    width: 64px;
     left: 0;
     right: 0;
     position: absolute;
   }
 
-  svg, p, .dragDropMessage {  
+  svg,
+  p,
+  .dragDropMessage {
     text-align: center;
     margin: auto;
   }
-  p, .dragDropMessage { 
+  p,
+  .dragDropMessage {
     word-wrap: break-word;
   }
 }
@@ -70,9 +73,9 @@
     margin-left: 0px;
   }
 
-  p { 
+  p {
     text-align: center;
-    margin-top: 0px; 
+    margin-top: 0px;
   }
 
   .requiredText {

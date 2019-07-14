@@ -168,7 +168,8 @@ const ChatFiltersPopup = ({
           }}
           stateTheme={stateTheme}
         />
-        <StepperField 
+        <i>Points settings have moved to the Users page</i>
+        {/* <StepperField 
           value={payoutAmount} 
           minValue={0} 
           header={"Points Per Minute"}
@@ -183,7 +184,7 @@ const ChatFiltersPopup = ({
           width={'100%'}
           inputStyle={stateTheme.base.tertiaryBackground} 
           stateTheme={stateTheme} 
-          onChange={e => setPayoutRate(Number(e.target.value))}/>
+          onChange={e => setPayoutRate(Number(e.target.value))}/> */}
         <Panel
           header='Timestamp Filters'
           hasHeader={true}
@@ -215,9 +216,14 @@ const ChatFiltersPopup = ({
           }
         />
       </div>
-      <Button title={"Close"} isSubmit={true} stateTheme={stateTheme} onClick={() => {
+      <Button
+        title={'Close'}
+        isSubmit={true}
+        stateTheme={stateTheme}
+        onClick={() => {
           closeCurrentPopup();
-        }} />
+        }}
+      />
     </div>
   );
 };

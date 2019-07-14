@@ -76,10 +76,13 @@
       flex: 2;
     }
     &.username {
-      width: 110px;
+      width: 170px;
       text-overflow: ellipsis;
+      text-align: left;
       overflow: hidden;
       white-space: nowrap;
+      text-align: left;
+      justify-content: left;
     }
     &.points {
       width: 100px;

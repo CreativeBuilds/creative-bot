@@ -8,7 +8,9 @@ import {
   MdSettingsVoice,
   MdSettings,
   MdVisibility,
-  MdVisibilityOff
+  MdVisibilityOff,
+  MdChatBubble,
+  MdChat
 } from 'react-icons/md';
 
 import { Message } from './Message';
@@ -47,6 +49,7 @@ import { filter, distinctUntilChanged, first } from 'rxjs/operators';
 import { SetupOptionsPopup } from './SetupOptionsPopup';
 import { SetupAsExistingUserPopup } from './SetupAsExistingUserPopup';
 import { AccountsPopup } from './AccountsPopup';
+import { ChatEventsPopup } from './ChatEventsPopup';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -631,6 +634,18 @@ const Chat = ({ props }) => {
       true
     );
   };
+  const openChatEventsPannel = () => {
+    addPopup(
+      <ChatEventsPopup
+        stateTheme={stateTheme}
+        styles={styles}
+        Config={Object.assign({}, config)}
+        closeCurrentPopup={closeCurrentPopup}
+      />,
+      false,
+      true
+    );
+  };
 
   useEffect(() => {
     if (isScrolledUp) return;
@@ -864,6 +879,13 @@ const Chat = ({ props }) => {
             stateTheme={stateTheme}
             onClick={() => {
               openAccountsPannel();
+            }}
+          />
+          <WidgetButton
+            icon={<MdChat />}
+            stateTheme={stateTheme}
+            onClick={() => {
+              openChatEventsPannel();
             }}
           />
           <div

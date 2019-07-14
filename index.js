@@ -847,7 +847,81 @@ function createWindow() {
     });
   };
 
-  const onNewMsg = (message, streamerDisplayName) => {
+  const replies = (message, config) => {
+    let reply;
+    rxConfig.pipe(first()).subscribe(config => {
+      let eventConfig = Object.assign(
+        {},
+        {
+          enableEventMessages: true,
+          onFollow: 'Thank you for the follow $USER!',
+          onSub: 'Thank you for subscribing, $USER!',
+          onGiftedSub: 'Thank you for gifting a sub, $USER!',
+          onLemon: '',
+          onIcecream: "I'm gonna get a brainfreeze because of you $USER!",
+          onDiamond: 'Ooo shiny 💎 thank you, $USER!',
+          onNinja: '*smoke bomb* Thanks for that Ninjaghini $USER!',
+          onNinjet: "Holy smokes! You're the best $USER! 😲"
+        },
+        config.eventConfig
+      );
+      if (message.type === 'Follow') {
+        reply = eventConfig.onFollow.replace(
+          '$USER',
+          message.sender.dliveUsername
+        );
+      } else if (message.type === 'Subscription') {
+        reply = eventConfig.onSub.replace(
+          '$USER',
+          message.sender.dliveUsername
+        );
+      } else if (message.type === 'GiftSub') {
+        reply = eventConfig.onGiftedSub.replace(
+          '$USER',
+          message.sender.dliveUsername
+        );
+      } else if (message.type === 'Gift') {
+        let type = message.gift;
+        if (type === 'LEMON') {
+          reply = eventConfig.onLemon.replace(
+            '$USER',
+            message.sender.dliveUsername
+          );
+        } else if (type === 'ICE_CREAM') {
+          reply = eventConfig.onIcecream.replace(
+            '$USER',
+            message.sender.dliveUsername
+          );
+        } else if (type === 'DIAMOND') {
+          reply = eventConfig.onDiamond.replace(
+            '$USER',
+            message.sender.dliveUsername
+          );
+        } else if (type === 'NINJAGHINI') {
+          reply = eventConfig.onNinja.replace(
+            '$USER',
+            message.sender.dliveUsername
+          );
+        } else if (type === 'NINJET') {
+          reply = eventConfig.onNinjet.replace(
+            '$USER',
+            message.sender.dliveUsername
+          );
+        }
+      }
+      if (!reply) return;
+      rxDlive
+        .pipe(
+          filter(x => !!x),
+          first()
+        )
+        .subscribe(dlive => {
+          dlive.sendMessage(reply, config.streamerDisplayName);
+        });
+    });
+  };
+
+  const onNewMsg = (message, streamerDisplayName, config) => {
     if (message.type === 'Follow') {
       wss.broadcast(
         JSON.stringify({
@@ -942,8 +1016,53 @@ function createWindow() {
     );
     textMessage(message, streamerDisplayName);
     keepActive(message);
+    replies(message, config);
     win.webContents.send('newmessage', { message });
     let content = message.content;
+    if (message.type === 'Gift') {
+      console.log('____ NEW GIFT ____');
+      rxUsers.pipe(first()).subscribe(users => {
+        console.log('GOT USERS');
+        let user = Object.assign({}, users[message.sender.blockchainUsername]);
+        if (Object.keys(user).length === 0)
+          return console.log('USER NOT FOUND');
+        rxConfig
+          .pipe(
+            filter(x => !!x.authKey),
+            first()
+          )
+          .subscribe(config => {
+            console.log('GOT CONFIG!');
+            let donationSettings = Object.assign(
+              {},
+              {
+                diamond: 100,
+                icecream: 10,
+                lemons: 1,
+                ninja: 1000,
+                ninjet: 10000
+              },
+              config.donationSettings
+            );
+            let amount =
+              message.gift === 'LEMON'
+                ? donationSettings.lemons
+                : message.gift === 'ICE_CREAM'
+                ? donationSettings.icecream
+                : message.gift === 'DIAMOND'
+                ? donationSettings.diamond
+                : message.gift === 'NINJAGHINI'
+                ? donationSettings.ninja
+                : message.gift === 'NINJET'
+                ? donationSettings.ninjet
+                : 1 * parseInt(message.amount);
+            user.points += amount;
+            let wrapper = {};
+            wrapper[message.sender.blockchainUsername] = user;
+            setRxUsers.next(Object.assign({}, users, wrapper));
+          });
+      });
+    }
     if (message.type === 'Message') {
       console.log(
         'NEW MSG FROM:',
@@ -1038,7 +1157,7 @@ function createWindow() {
           console.log('GOT DLIVE');
           dlive.listenToChat(config.streamerDisplayName).then(messages => {
             messages.subscribe(message => {
-              onNewMsg(message, config.streamerDisplayName);
+              onNewMsg(message, config.streamerDisplayName, config);
             });
           });
           dlive.getChannel(config.streamerDisplayName).then(channel => {

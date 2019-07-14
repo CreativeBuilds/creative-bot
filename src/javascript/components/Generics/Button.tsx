@@ -148,14 +148,12 @@ const SendButton = ({
   stateTheme,
   buttonStyle = {}
 }) => {
-  const [isenabled, setIsEnabled] = useState(isEnabled);
-
   return (
     <AdvancedDiv
       style={Object.assign(
         {},
-        !isenabled ? stateTheme.button.normal.disabled : null,
-          Object.assign(
+        !isEnabled ? stateTheme.button.normal.disabled : null,
+        Object.assign(
           {},
           Object.assign({}, stateTheme.base.quinaryBackground, {
             borderColor: 'transparent'
@@ -173,9 +171,7 @@ const SendButton = ({
       isButton={true}
       aStyle={buttonStyle}
     >
-        <div onClick={onClick}>
-          {icon}
-        </div>
+      <div onClick={onClick}>{icon}</div>
     </AdvancedDiv>
   );
 };
@@ -194,10 +190,7 @@ const WidgetButton = ({
       style={Object.assign(
         {},
         !isenabled ? stateTheme.button.normal.disabled : null,
-          Object.assign(
-          {},
-          stateTheme.button.widget
-        )
+        Object.assign({}, stateTheme.button.widget)
       )}
       hoverStyle={Object.assign(
         {},
@@ -207,9 +200,7 @@ const WidgetButton = ({
       isButton={true}
       aStyle={Object.assign({}, stateTheme.button.widget, style)}
     >
-        <div onClick={onClick}>
-            {icon}
-          </div>
+      <div onClick={onClick}>{icon}</div>
     </AdvancedDiv>
   );
 };
@@ -257,4 +248,11 @@ const LinkButton = ({
   );
 };
 
-export { Button, DestructiveButton, ActionButton, SendButton, WidgetButton, LinkButton };
+export {
+  Button,
+  DestructiveButton,
+  ActionButton,
+  SendButton,
+  WidgetButton,
+  LinkButton
+};

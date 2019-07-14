@@ -179,6 +179,38 @@ class RouterWrapper extends Component<any, any> {
           filter(x => !isEmpty(x))
         )
         .subscribe((config: any) => {
+          console.log('GOT DONATION', message);
+          firebaseUsers$.pipe(first()).subscribe(users => {
+            let user = Object.assign(
+              {},
+              users[message.sender.blockchainUsername]
+            );
+            if (Object.keys(user).length === 0) return;
+            let donationSettings = Object.assign(
+              {},
+              {
+                diamond: 100,
+                icecream: 10,
+                lemons: 1,
+                ninja: 1000,
+                ninjet: 10000
+              },
+              config.donationSettings
+            );
+            let amount =
+              message.gift === 'LEMON'
+                ? donationSettings.lemons
+                : message.gift === 'ICE_CREAM'
+                ? donationSettings.icecream
+                : message.gift === 'DIAMOND'
+                ? donationSettings.diamond
+                : message.gift === 'NINJAGHINI'
+                ? donationSettings.ninja
+                : message.gift === 'NINJET'
+                ? donationSettings.ninjet
+                : 1 * parseInt(message.amount);
+            console.log('AMOUNT', amount);
+          });
           if (config.hasTTSDonations) {
             newSound(message, config);
           }
@@ -218,7 +250,6 @@ class RouterWrapper extends Component<any, any> {
     });
 
     ipcRenderer.on('new-update', event => {
-      console.log('GOT UPDATE');
       this.addPopup(
         <UpdatePopup closeCurrentPopup={this.closeCurrentPopup} />,
         false,

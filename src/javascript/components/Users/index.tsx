@@ -14,14 +14,368 @@ const { Sorting } = require('./Sorting');
 import { TextField } from '../Generics/Input';
 import { MdSettings } from 'react-icons/md';
 import { WidgetButton } from '../Generics/Button';
+import { Panel } from '../Generics/Panel';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
 const styles: any = require('./Users.scss');
 
+let timeoutPoints;
+let timeoutTimer;
+let timeoutLemons;
+let timeoutIcecream;
+let timeoutDiamond;
+let timeoutNinja;
+let timeoutNinjet;
+
 const SettingsPopup = ({ stateTheme, styles, Config, closeCurrentPopup }) => {
-  return <div>Speggat</div>;
+  const [pointsText, setPointsText] = useState('');
+  const [pointsTimerText, setPointsTimerText] = useState('');
+  const [lemonsText, setLemonsText] = useState('');
+  const [icecreamText, setIcecreamText] = useState('');
+  const [diamondsText, setDiamondsText] = useState('');
+  const [ninjaText, setNinjaText] = useState('');
+  const [ninjetText, setNinjetText] = useState('');
+
+  useEffect(() => {
+    let listener = firebaseConfig$
+      .pipe(filter(x => !x.first))
+      .subscribe((config: any) => {
+        setPointsText(config.points || 5);
+        setPointsTimerText(((config.pointsTimer || 300) / 60).toString());
+        setLemonsText(
+          Object.assign({}, { lemons: 1 }, config.donationSettings).lemons
+        );
+        setIcecreamText(
+          Object.assign({ icecream: 10 }, config.donationSettings).icecream
+        );
+        setDiamondsText(
+          Object.assign({ diamond: 100 }, config.donationSettings).diamond
+        );
+        setNinjaText(
+          Object.assign({ ninja: 1000 }, config.donationSettings).ninja
+        );
+        setNinjetText(
+          Object.assign({ ninjet: 10000 }, config.donationSettings).ninjet
+        );
+      });
+    return () => {
+      listener.unsubscribe();
+    };
+  }, []);
+
+  let updatePoints = val => {
+    let num = parseInt(val);
+    if (isNaN(num)) return;
+    if (num < 0) return setPointsTimerText('');
+    setPointsTimerText(val);
+    if (timeoutPoints) {
+      clearTimeout(timeoutPoints);
+    }
+    timeoutPoints = setTimeout(() => {
+      firebaseConfig$
+        .pipe(
+          filter(x => !x.first),
+          first()
+        )
+        .subscribe(config => {
+          let Config = Object.assign({}, config, { points: num });
+          setRxConfig(Config);
+        });
+    }, 1500);
+  };
+
+  let updatePointsTimer = val => {
+    let num = parseInt(val);
+    if (isNaN(num)) return;
+    if (num < 1) return setPointsTimerText(val);
+
+    setPointsTimerText(val);
+    if (timeoutTimer) {
+      clearTimeout(timeoutTimer);
+    }
+    timeoutTimer = setTimeout(() => {
+      firebaseConfig$
+        .pipe(
+          filter(x => !x.first),
+          first()
+        )
+        .subscribe(config => {
+          let Config = Object.assign({}, config, { pointsTimer: num * 60 });
+          setRxConfig(Config);
+        });
+    }, 1500);
+  };
+
+  let updateLemons = val => {
+    let num = parseInt(val);
+    if (isNaN(num)) return;
+    if (num < 0) return setLemonsText(val);
+
+    setLemonsText(val);
+    if (timeoutLemons) {
+      clearTimeout(timeoutLemons);
+    }
+    timeoutLemons = setTimeout(() => {
+      firebaseConfig$
+        .pipe(
+          filter(x => !x.first),
+          first()
+        )
+        .subscribe((config: any) => {
+          let Config = Object.assign({}, config, {
+            donationSettings: Object.assign({}, config.donationSettings, {
+              lemons: num
+            })
+          });
+          setRxConfig(Config);
+        });
+    }, 1500);
+  };
+
+  let updateIcecream = val => {
+    let num = parseInt(val);
+    if (isNaN(num)) return;
+    if (num < 0) return setIcecreamText(val);
+
+    setIcecreamText(val);
+    if (timeoutIcecream) {
+      clearTimeout(timeoutIcecream);
+    }
+    timeoutIcecream = setTimeout(() => {
+      firebaseConfig$
+        .pipe(
+          filter(x => !x.first),
+          first()
+        )
+        .subscribe((config: any) => {
+          let Config = Object.assign({}, config, {
+            donationSettings: Object.assign({}, config.donationSettings, {
+              icecream: num
+            })
+          });
+          setRxConfig(Config);
+        });
+    }, 1500);
+  };
+
+  let updateDiamond = val => {
+    let num = parseInt(val);
+    if (isNaN(num)) return;
+    if (num < 0) return setDiamondsText(val);
+
+    setDiamondsText(val);
+    if (timeoutDiamond) {
+      clearTimeout(timeoutDiamond);
+    }
+    timeoutDiamond = setTimeout(() => {
+      firebaseConfig$
+        .pipe(
+          filter(x => !x.first),
+          first()
+        )
+        .subscribe((config: any) => {
+          let Config = Object.assign({}, config, {
+            donationSettings: Object.assign({}, config.donationSettings, {
+              diamond: num
+            })
+          });
+          setRxConfig(Config);
+        });
+    }, 1500);
+  };
+
+  let updateNinja = val => {
+    let num = parseInt(val);
+    if (isNaN(num)) return;
+    if (num < 0) return setNinjaText(val);
+
+    setNinjaText(val);
+    if (timeoutNinja) {
+      clearTimeout(timeoutNinja);
+    }
+    timeoutNinja = setTimeout(() => {
+      firebaseConfig$
+        .pipe(
+          filter(x => !x.first),
+          first()
+        )
+        .subscribe((config: any) => {
+          let Config = Object.assign({}, config, {
+            donationSettings: Object.assign({}, config.donationSettings, {
+              ninja: num
+            })
+          });
+          setRxConfig(Config);
+        });
+    }, 1500);
+  };
+
+  let updateNinjet = val => {
+    let num = parseInt(val);
+    if (isNaN(num)) return;
+    if (num < 0) return setNinjetText(val);
+
+    setNinjetText(val);
+    if (timeoutNinjet) {
+      clearTimeout(timeoutNinjet);
+    }
+    timeoutNinjet = setTimeout(() => {
+      firebaseConfig$
+        .pipe(
+          filter(x => !x.first),
+          first()
+        )
+        .subscribe((config: any) => {
+          let Config = Object.assign({}, config, {
+            donationSettings: Object.assign({}, config.donationSettings, {
+              ninjet: num
+            })
+          });
+          setRxConfig(Config);
+        });
+    }, 1500);
+  };
+
+  return (
+    <div className={`${styles.popup}`}>
+      <h2 style={{ marginTop: '0px' }}>User Settings</h2>
+      <Panel
+        header='Points'
+        hasHeader={true}
+        style={stateTheme.base.tertiaryBackground}
+        stateTheme={stateTheme}
+        content={
+          <div>
+            <TextField
+              header={`Payout Rate in Minutes`}
+              placeholderText={`Input rate...`}
+              stateTheme={stateTheme}
+              width={'100%'}
+              text={pointsTimerText}
+              inputStyle={stateTheme.base.secondaryBackground}
+              onChange={e => {
+                if (!isNaN(Number(e.target.value)) || e.target.value === '')
+                  updatePointsTimer(e.target.value);
+              }}
+            />
+            <TextField
+              header={`Base Points Per Payout`}
+              placeholderText={`Input points per payout...`}
+              stateTheme={stateTheme}
+              width={'100%'}
+              inputStyle={stateTheme.base.secondaryBackground}
+              text={pointsText}
+              onChange={e => {
+                if (!isNaN(Number(e.target.value)) || e.target.value === '')
+                  updatePoints(e.target.value);
+              }}
+            />
+            <i>
+              Users who chat every {pointsTimerText} minute
+              {parseInt(pointsTimerText) === 1 ? '' : 's'} will receive{' '}
+              {pointsText} point{parseInt(pointsText) === 1 ? '' : 's'}!
+            </i>
+          </div>
+        }
+      />
+      <Panel
+        header='Donations'
+        hasHeader={true}
+        style={Object.assign(
+          {},
+          { marginTop: '10px' },
+          stateTheme.base.tertiaryBackground
+        )}
+        stateTheme={stateTheme}
+        content={
+          <div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <TextField
+                header={`Points per lemon`}
+                placeholderText={`Input points per Lemon...`}
+                stateTheme={stateTheme}
+                width={'48%'}
+                inputStyle={stateTheme.base.secondaryBackground}
+                text={lemonsText}
+                style={{ flex: 1, paddingRight: '5px' }}
+                onChange={e => {
+                  if (!isNaN(Number(e.target.value)) || e.target.value === '')
+                    updateLemons(e.target.value);
+                }}
+              />
+              <TextField
+                header={`Points per Ice Cream`}
+                placeholderText={`Input points per Ice Cream...`}
+                stateTheme={stateTheme}
+                width={'48%'}
+                inputStyle={stateTheme.base.secondaryBackground}
+                text={icecreamText}
+                style={{ flex: 1, paddingLeft: '5px' }}
+                onChange={e => {
+                  if (!isNaN(Number(e.target.value)) || e.target.value === '')
+                    updateIcecream(e.target.value);
+                }}
+              />
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center'
+              }}
+            >
+              <TextField
+                header={`Points per Diamond`}
+                placeholderText={`Input points per Diamond...`}
+                stateTheme={stateTheme}
+                width={'48%'}
+                style={{ flex: 1, paddingRight: '5px' }}
+                inputStyle={stateTheme.base.secondaryBackground}
+                text={diamondsText}
+                onChange={e => {
+                  if (!isNaN(Number(e.target.value)) || e.target.value === '')
+                    updateDiamond(e.target.value);
+                }}
+              />
+              <TextField
+                header={`Points per Ninjaghini`}
+                width={'48%'}
+                placeholderText={`Input points per Ninjaghini...`}
+                stateTheme={stateTheme}
+                style={{ flex: 1, paddingLeft: '5px' }}
+                inputStyle={stateTheme.base.secondaryBackground}
+                text={ninjaText}
+                onChange={e => {
+                  if (!isNaN(Number(e.target.value)) || e.target.value === '')
+                    updateNinja(e.target.value);
+                }}
+              />
+            </div>
+            <TextField
+              header={`Points per Ninjet`}
+              placeholderText={`Input points per Ninjet...`}
+              stateTheme={stateTheme}
+              width={'100%'}
+              inputStyle={stateTheme.base.secondaryBackground}
+              text={ninjetText}
+              onChange={e => {
+                if (!isNaN(Number(e.target.value)) || e.target.value === '')
+                  updateNinjet(e.target.value);
+              }}
+            />
+          </div>
+        }
+      />
+    </div>
+  );
 };
 
 const UsersPage = ({ props }) => {
