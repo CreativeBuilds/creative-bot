@@ -11,7 +11,7 @@ import { isEmpty, isEqual } from 'lodash';
 const { User } = require('./User');
 const { Sorting } = require('./Sorting');
 
-import { TextField } from '../Generics/Input';
+import { TextField, SearchField } from '../Generics/Input';
 import { MdSettings } from 'react-icons/md';
 import { WidgetButton } from '../Generics/Button';
 import { Panel } from '../Generics/Panel';
@@ -440,8 +440,9 @@ const UsersPage = ({ props }) => {
             display: 'flex'
           }}
         >
-          <TextField
+          <SearchField
             placeholderText={'Search...'}
+            text={""}
             stateTheme={stateTheme}
             width={'150px'}
             style={{ 'overflow-y': 'hidden', 'overflow-x': 'auto' }}

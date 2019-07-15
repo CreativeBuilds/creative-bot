@@ -7,7 +7,7 @@ import { MdAddCircle } from 'react-icons/md';
 import { Quote } from './Quote';
 let { setRxQuotes, firebaseQuotes$ } = require('../../helpers/rxQuotes');
 
-import { TextField } from '../Generics/Input';
+import { TextField, SearchField } from '../Generics/Input';
 import { WidgetButton } from '../Generics/Button';
 
 const { Sorting } = require('./Sorting');
@@ -74,7 +74,7 @@ const QuotesPage = ({ props }) => {
           onClick={() => {
             addQuotePopup();
           }}/>
-        <TextField 
+        <SearchField
           placeholderText={"Search..."} 
           stateTheme={stateTheme} 
           width={'150px'}

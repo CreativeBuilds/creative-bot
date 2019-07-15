@@ -10,7 +10,7 @@ const { Sorting } = require('./Sorting');
 let { setRxCommands } = require('../../helpers/rxCommands');
 
 import { Button } from '../Generics/Button';
-import { TextField } from '../Generics/Input';
+import { TextField, SearchField } from '../Generics/Input';
 import { WidgetButton } from '../Generics/Button';
 
 const Window: any = window;
@@ -166,7 +166,7 @@ const CommandsPage = ({ props }) => {
           onClick={() => {
             addCommandPopup();
           }}/>
-        <TextField 
+        <SearchField
           placeholderText={"Search..."} 
           stateTheme={stateTheme} 
           width={'150px'}

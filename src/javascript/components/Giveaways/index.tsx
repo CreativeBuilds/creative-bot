@@ -10,7 +10,7 @@ const { Sorting } = require('./Sorting');
 let { setRxGiveaways } = require('../../helpers/rxGiveaways');
 
 import { Button, DestructiveButton, ActionButton, WidgetButton } from '../Generics/Button';
-import { TextField } from '../Generics/Input';
+import { TextField, SearchField } from '../Generics/Input';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -190,7 +190,7 @@ const GiveawaysPage = ({ props }) => {
           onClick={() => {
             addGiveawayPopup();
           }}/>
-        <TextField 
+        <SearchField
           placeholderText={"Search..."} 
           stateTheme={stateTheme} 
           width={'150px'}

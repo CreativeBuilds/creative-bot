@@ -8,7 +8,7 @@ const { Sorting } = require('./Sorting');
 let { setRxTimers } = require('../../helpers/rxTimers');
 
 import { Button, DestructiveButton, ActionButton, WidgetButton } from '../Generics/Button';
-import { TextField } from '../Generics/Input';
+import { TextField, SearchField } from '../Generics/Input';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -141,7 +141,7 @@ const TimersPage = ({ props }) => {
           onClick={() => {
             addCommandPopup();
           }}/>
-        <TextField 
+        <SearchField
           placeholderText={"Search..."} 
           stateTheme={stateTheme} 
           width={'150px'}
