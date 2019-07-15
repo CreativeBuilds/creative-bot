@@ -18,7 +18,7 @@ import {
   WidgetButton,
   SendButton
 } from '../Generics/Button';
-import { TextFieldHotFix, StepperField } from '../Generics/Input';
+import { TextField, StepperField } from '../Generics/Input';
 import { GoNoNewline } from 'react-icons/go';
 import { first } from 'rxjs/operators';
 
@@ -242,7 +242,7 @@ const ChatEventsPopup = ({
                   }}
                 >
                   <div style={{ flex: 1 }}>
-                    <TextFieldHotFix
+                    <TextField
                       header={'On Follow'}
                       placeholderText='No message...'
                       stateTheme={stateTheme}
@@ -275,7 +275,7 @@ const ChatEventsPopup = ({
                   }}
                 >
                   <div style={{ flex: 1 }}>
-                    <TextFieldHotFix
+                    <TextField
                       header={'On Sub'}
                       placeholderText='No message...'
                       stateTheme={stateTheme}
@@ -310,7 +310,7 @@ const ChatEventsPopup = ({
                   }}
                 >
                   <div style={{ flex: 1 }}>
-                    <TextFieldHotFix
+                    <TextField
                       header={'On Gift Sub'}
                       placeholderText='No message...'
                       stateTheme={stateTheme}
@@ -363,7 +363,7 @@ const ChatEventsPopup = ({
                   }}
                 >
                   <div style={{ flex: 1 }}>
-                    <TextFieldHotFix
+                    <TextField
                       placeholderText='No message...'
                       header={'Lemon'}
                       stateTheme={stateTheme}
@@ -397,7 +397,7 @@ const ChatEventsPopup = ({
                   }}
                 >
                   <div style={{ flex: 1 }}>
-                    <TextFieldHotFix
+                    <TextField
                       header={'Icecream'}
                       placeholderText='No message...'
                       text={onIcecream}
@@ -430,7 +430,7 @@ const ChatEventsPopup = ({
                   }}
                 >
                   <div style={{ flex: 1 }}>
-                    <TextFieldHotFix
+                    <TextField
                       header={'Diamond'}
                       placeholderText='No message...'
                       text={onDiamond}
@@ -463,7 +463,7 @@ const ChatEventsPopup = ({
                   }}
                 >
                   <div style={{ flex: 1 }}>
-                    <TextFieldHotFix
+                    <TextField
                       header={'Ninjaghini'}
                       placeholderText='No message...'
                       text={onNinja}
@@ -496,7 +496,7 @@ const ChatEventsPopup = ({
                   }}
                 >
                   <div style={{ flex: 1 }}>
-                    <TextFieldHotFix
+                    <TextField
                       header={'Ninjet'}
                       placeholderText='No message...'
                       text={onNinjet}

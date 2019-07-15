@@ -25,8 +25,6 @@ const TextField = ({
   style = {},
   inputStyle = {}
 }) => {
-  const [isenabled, setIsEnabled] = useState(isEnabled);
-  // const [textInput, setTextInput] = useState(text);
 
   return (
     <div
@@ -42,47 +40,7 @@ const TextField = ({
       <input
         type={'text'}
         placeholder={placeholderText}
-        value={text}
-        style={Object.assign({}, inputStyle, stateTheme.input.text)}
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-        onKeyUp={onKeyUp}
-      />
-    </div>
-  );
-};
-
-const TextFieldHotFix = ({
-  text = '',
-  placeholderText = '',
-  width = null,
-  header = null,
-  isEnabled = true,
-  onChange = e => {},
-  onKeyDown = e => {},
-  onKeyUp = e => {},
-  stateTheme,
-  style = {},
-  inputStyle = {}
-}) => {
-  const [isenabled, setIsEnabled] = useState(isEnabled);
-  // const [textInput, setTextInput] = useState(text);
-
-  return (
-    <div
-      style={Object.assign(
-        {},
-        Object.assign({}, width != null ? { width: width } : null, style),
-        stateTheme.input.container
-      )}
-    >
-      {header != null ? (
-        <div style={stateTheme.input.header}>{header}</div>
-      ) : null}
-      <input
-        type={'text'}
-        placeholder={placeholderText}
-        value={text}
+        defaultValue={text}
         style={Object.assign({}, inputStyle, stateTheme.input.text)}
         onChange={onChange}
         onKeyDown={onKeyDown}
@@ -105,8 +63,6 @@ const EmailField = ({
   style = {},
   inputStyle = {}
 }) => {
-  const [isenabled, setIsEnabled] = useState(isEnabled);
-  const [textInput, setTextInput] = useState(text);
 
   return (
     <div
@@ -122,7 +78,7 @@ const EmailField = ({
       <input
         type={'email'}
         placeholder={placeholderText}
-        defaultValue={textInput}
+        defaultValue={text}
         style={Object.assign({}, inputStyle, stateTheme.input.text)}
         onChange={onChange}
         onKeyDown={onKeyDown}
@@ -147,8 +103,6 @@ const PasswordField = ({
   style = {},
   inputStyle = {}
 }) => {
-  const [isenabled, setIsEnabled] = useState(isEnabled);
-  const [textInput, setTextInput] = useState(text);
 
   return (
     <div
@@ -177,7 +131,7 @@ const PasswordField = ({
       <input
         type={'password'}
         placeholder={placeholderText}
-        defaultValue={textInput}
+        defaultValue={text}
         style={Object.assign({}, inputStyle, stateTheme.input.text)}
         onChange={onChange}
         onKeyDown={onKeyDown}
@@ -201,8 +155,6 @@ const StepperField = ({
   style = {},
   inputStyle = {}
 }) => {
-  const [isenabled, setIsEnabled] = useState(isEnabled);
-  const [valueInput, setTextInput] = useState(value);
 
   return (
     <div
@@ -275,7 +227,6 @@ const MessageField = ({
 
 export {
   TextField,
-  TextFieldHotFix,
   EmailField,
   PasswordField,
   StepperField,
