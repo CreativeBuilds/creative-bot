@@ -374,9 +374,6 @@ const ChatEventsPopup = ({
                         console.log('UPDATING LEMON', e.target.value);
                         updateLemon(e.target.value);
                       }}
-                      onFocus= {e => {
-                        e.target.value = '';
-                      }}
                     />
                   </div>
                   <SendButton

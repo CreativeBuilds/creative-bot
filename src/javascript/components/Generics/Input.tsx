@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
+
+var Mousetrap = require('mousetrap');
+
 import { AdvancedDiv } from './AdvancedDiv';
 import { theme, ThemeContext } from '../../helpers';
 import {
@@ -20,6 +23,7 @@ const TextField = ({
   isEnabled = true,
   onChange = null,
   onFocus = null,
+  onBlur = null,
   onKeyDown = null,
   onKeyUp = null,
   stateTheme,
@@ -41,11 +45,11 @@ const TextField = ({
       <input
         type={'text'}
         placeholder={placeholderText}
-        value={text != null ? text : null}
-        defaultValue={text == null ? text : null}
+        defaultValue={text}
         style={Object.assign({}, inputStyle, stateTheme.input.text)}
         onChange={onChange}
         onFocus={onFocus}
+        onBlur={onBlur}
         onKeyDown={onKeyDown}
         onKeyUp={onKeyUp}
       />
@@ -61,6 +65,7 @@ const EmailField = ({
   isEnabled = true,
   onChange = null,
   onFocus = null,
+  onBlur = null,
   onKeyDown = null,
   onKeyUp = null,
   stateTheme,
@@ -82,11 +87,11 @@ const EmailField = ({
       <input
         type={'email'}
         placeholder={placeholderText}
-        value={text != null ? text : null}
-        defaultValue={text == null ? text : null}
+        defaultValue={text}
         style={Object.assign({}, inputStyle, stateTheme.input.text)}
         onChange={onChange}
         onFocus={onFocus}
+        onBlur={onBlur}
         onKeyDown={onKeyDown}
         onKeyUp={onKeyUp}
       />
@@ -103,6 +108,7 @@ const PasswordField = ({
   hasForgotLabel = false,
   onChange = null,
   onFocus = null,
+  onBlur = null,
   onKeyDown = null,
   onKeyUp = null,
   onForgotPassword = null,
@@ -138,11 +144,11 @@ const PasswordField = ({
       <input
         type={'password'}
         placeholder={placeholderText}
-        value={text != null ? text : null}
-        defaultValue={text == null ? text : null}
+        defaultValue={text}
         style={Object.assign({}, inputStyle, stateTheme.input.text)}
         onChange={onChange}
         onFocus={onFocus}
+        onBlur={onBlur}
         onKeyDown={onKeyDown}
         onKeyUp={onKeyUp}
       />
@@ -159,6 +165,7 @@ const StepperField = ({
   isEnabled = true,
   onChange = null,
   onFocus = null,
+  onBlur = null,
   onKeyDown = null,
   onKeyUp = null,
   stateTheme,
@@ -185,6 +192,7 @@ const StepperField = ({
         max={maxValue != 0 ? maxValue : null}
         onChange={onChange}
         onFocus={onFocus}
+        onBlur={onBlur}
         onKeyDown={onKeyDown}
         onKeyUp={onKeyUp}
       />
@@ -199,6 +207,7 @@ const MessageField = ({
   isEnabled = true,
   onChange = null,
   onFocus = null,
+  onBlur = null,
   onKeyDown = null,
   onKeyUp = null,
   stateTheme,
@@ -227,11 +236,11 @@ const MessageField = ({
     >
       <input
         placeholder={placeholderText}
-        value={text != null ? text : null}
-        defaultValue={text == null ? text : null}
+        defaultValue={text}
         maxLength={280}
         onChange={onChange}
         onFocus={onFocus}
+        onBlur={onBlur}
         onKeyDown={onKeyDown}
         onKeyUp={onKeyUp}
       />
@@ -247,6 +256,7 @@ const SearchField = ({
   isEnabled = true,
   onChange = null,
   onFocus = null,
+  onBlur = null,
   onKeyDown = null,
   onKeyUp = null,
   stateTheme,
@@ -272,6 +282,7 @@ const SearchField = ({
         style={Object.assign({}, inputStyle, stateTheme.input.text)}
         onChange={onChange}
         onFocus={onFocus}
+        onBlur={onBlur}
         onKeyDown={onKeyDown}
         onKeyUp={onKeyUp}
       />

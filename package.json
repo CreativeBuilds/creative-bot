@@ -34,6 +34,7 @@
     "lino-js": "^1.0.19",
     "lodash": "^4.17.14",
     "moment": "^2.24.0",
+    "mousetrap": "^1.6.3",
     "open": "^6.4.0",
     "queueing-subject": "^0.3.3",
     "rc-slider": "^8.6.13",
