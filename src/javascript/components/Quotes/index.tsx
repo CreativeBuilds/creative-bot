@@ -9,6 +9,7 @@ let { setRxQuotes, firebaseQuotes$ } = require('../../helpers/rxQuotes');
 
 import { TextField, SearchField } from '../Generics/Input';
 import { WidgetButton } from '../Generics/Button';
+import { Page, PageHeader, PageBody } from '../Generics/Common';
 
 const { Sorting } = require('./Sorting');
 
@@ -57,15 +58,10 @@ const QuotesPage = ({ props }) => {
     );
   };
   return (
-    <div style={stateTheme.base.tertiaryBackground} className={styles.Points}>
-      <div
-        style={Object.assign(
-          {},
-          stateTheme.toolBar,
-          stateTheme.base.quinaryForeground
-        )}
-        className={styles.header}
-      >
+    <Page stateTheme={stateTheme} style={stateTheme.base.tertiaryBackground}>
+      <PageHeader
+        style={stateTheme.base.quinaryForeground}
+        stateTheme={stateTheme}>
         QUOTES
         <WidgetButton 
           icon={<MdAddCircle />} 
@@ -88,8 +84,8 @@ const QuotesPage = ({ props }) => {
           onChange={e => {
             setSearchQuoteName(e.target.value);
           }}/>
-      </div>
-      <div style={{}} className={styles.content}>
+      </PageHeader>
+      <PageBody stateTheme={stateTheme}>
         {/* TODO ADD PAGINATION */}
         <Sorting
           toggle={toggle}
@@ -114,8 +110,8 @@ const QuotesPage = ({ props }) => {
             />
           );
         })}
-      </div>
-    </div>
+      </PageBody>
+    </Page>
   );
 };
 

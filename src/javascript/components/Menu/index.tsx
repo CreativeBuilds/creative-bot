@@ -52,7 +52,7 @@ const Menu = props => {
             style={Object.assign(
               {},
               Object.assign({},
-              stateTheme.toolBar,
+              stateTheme.page.header,
               stateTheme.base.quaternaryForeground
               ),
               Object.assign({},

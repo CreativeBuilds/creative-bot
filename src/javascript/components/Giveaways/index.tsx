@@ -11,6 +11,7 @@ let { setRxGiveaways } = require('../../helpers/rxGiveaways');
 
 import { Button, DestructiveButton, ActionButton, WidgetButton } from '../Generics/Button';
 import { TextField, SearchField } from '../Generics/Input';
+import { Page, PageHeader, PageBody } from '../Generics/Common';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -173,15 +174,10 @@ const GiveawaysPage = ({ props }) => {
   };
 
   return (
-    <div style={stateTheme.base.tertiaryBackground} className={styles.Points}>
-      <div
-        style={Object.assign(
-          {},
-          stateTheme.toolBar,
-          stateTheme.base.quinaryForeground
-        )}
-        className={styles.header}
-      >
+    <Page stateTheme={stateTheme} style={stateTheme.base.tertiaryBackground}>
+      <PageHeader
+        style={stateTheme.base.quinaryForeground}
+        stateTheme={stateTheme}>
         GIVEAWAYS
         <WidgetButton 
           icon={<MdAddCircle />} 
@@ -204,8 +200,8 @@ const GiveawaysPage = ({ props }) => {
           onChange={e => {
             setSearchGiveawayName(e.target.value);
           }}/>
-      </div>
-      <div style={{}} className={styles.content}>
+      </PageHeader>
+      <PageBody stateTheme={stateTheme}>
         <Sorting
           toggle={toggle}
           setToggle={setToggle}
@@ -227,8 +223,8 @@ const GiveawaysPage = ({ props }) => {
             />
           );
         })}
-      </div>
-    </div>
+      </PageBody>
+    </Page>
   );
 };
 

@@ -15,6 +15,7 @@ import { TextField, SearchField } from '../Generics/Input';
 import { MdSettings } from 'react-icons/md';
 import { WidgetButton } from '../Generics/Button';
 import { Panel } from '../Generics/Panel';
+import { Page, PageHeader, PageBody } from '../Generics/Common';
 
 const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
@@ -428,15 +429,10 @@ const UsersPage = ({ props }) => {
   };
 
   return (
-    <div style={stateTheme.base.tertiaryBackground} className={styles.Points}>
-      <div
-        style={Object.assign(
-          {},
-          stateTheme.toolBar,
-          stateTheme.base.quinaryForeground
-        )}
-        className={styles.header}
-      >
+    <Page stateTheme={stateTheme} style={stateTheme.base.tertiaryBackground}>
+      <PageHeader
+        style={stateTheme.base.quinaryForeground}
+        stateTheme={stateTheme}>
         USERS
         <div
           style={{
@@ -465,8 +461,8 @@ const UsersPage = ({ props }) => {
             <MdSettings />
           </div>
         </div>
-      </div>
-      <div style={{ overflow: 'hidden' }} className={styles.content}>
+      </PageHeader>
+      <PageBody stateTheme={stateTheme} style={{ overflow: 'hidden' }}>
         {/* TODO ADD PAGINATION */}
         <Sorting
           toggle={toggle}
@@ -504,8 +500,8 @@ const UsersPage = ({ props }) => {
             );
           }}
         </AutoSizer>
-      </div>
-    </div>
+      </PageBody>
+    </Page>
   );
 };
 

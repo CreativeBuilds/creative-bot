@@ -345,10 +345,6 @@ const theme = {
         color: '#F1F1F1'
       }
     },
-    toolBar: {
-      'border-bottom': '4px solid #202225',
-      'font-size': '30px'
-    },
     button: {
       normal: {
         height: '25px',
@@ -878,6 +874,30 @@ const theme = {
       display: 'flex',
       border: '5px solid rgba(0, 0, 0, 0)',
     },
+    page: {
+      width: '100%',
+      height: '100%',
+      'min-width': '275px',
+      display: 'flex',
+      'align-items': 'center',
+      'flex-direction': 'column',
+      header: {
+        height: '44px',
+        width: '100%',
+        display: 'flex',
+        'justify-content': 'center',
+        'align-items': 'center',
+        'border-bottom': '4px solid #202225',
+         'font-size': '30px',
+         position: 'relative',
+      },
+      content: {
+        flex: '1',
+        'overflow-y': 'auto',
+        width: 'calc(100% - 10px)',
+        padding: '5px',
+      }
+    },
     timeStamp: {
       color: '#AAAAAA'
     },
@@ -1172,10 +1192,6 @@ const theme = {
         backgroundColor: '#eeeeee',
         color: '#202225'
       }
-    },
-    toolBar: {
-      'border-bottom': '4px solid #cccccc',
-      'font-size': '30px'
     },
     button: {
       normal: {
@@ -1708,6 +1724,30 @@ const theme = {
       height: '48px',
       display: 'flex',
       border: '5px solid rgba(0, 0, 0, 0)',
+    },
+    page: {
+      width: '100%',
+      height: '100%',
+      'min-width': '275px',
+      display: 'flex',
+      'align-items': 'center',
+      'flex-direction': 'column',
+      header: {
+        height: '44px',
+        width: '100%',
+        display: 'flex',
+        'justify-content': 'center',
+        'align-items': 'center',
+        'border-bottom': '4px solid #cccccc',
+        'font-size': '30px',
+        position: 'relative',
+      },
+      content: {
+        flex: '1',
+        'overflow-y': 'auto',
+        width: 'calc(100% - 10px)',
+        padding: '5px',
+      }
     },
     timeStamp: {
       color: '#555555'

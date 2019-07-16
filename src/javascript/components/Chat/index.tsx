@@ -37,6 +37,7 @@ import {
   StepperField,
   MessageField
 } from '../Generics/Input';
+import { Page, PageHeader, PageBody } from '../Generics/Common';
 
 import { isEmpty, isEqual } from 'lodash';
 
@@ -46,10 +47,9 @@ import {
   rxFirebaseuser
 } from '../../helpers/firebase';
 import { filter, distinctUntilChanged, first } from 'rxjs/operators';
-import { SetupOptionsPopup } from './SetupOptionsPopup';
-import { SetupAsExistingUserPopup } from './SetupAsExistingUserPopup';
 import { AccountsPopup } from './AccountsPopup';
 import { ChatEventsPopup } from './ChatEventsPopup';
+import { from } from 'rxjs';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -842,15 +842,10 @@ const Chat = ({ props }) => {
   }, [config]);
 
   return (
-    <div style={stateTheme.base.tertiaryBackground} className={styles.Chat}>
-      <div
-        style={Object.assign(
-          {},
-          stateTheme.toolBar,
-          stateTheme.base.quinaryForeground
-        )}
-        className={styles.header}
-      >
+    <Page stateTheme={stateTheme} style={stateTheme.base.tertiaryBackground}>
+      <PageHeader
+        style={stateTheme.base.quinaryForeground}
+        stateTheme={stateTheme}>
         CHAT
         <div className={styles.rightContainer}>
           <WidgetButton
@@ -902,8 +897,8 @@ const Chat = ({ props }) => {
             <span> {viewersToggle ? viewers : null}</span>
           </div>
         </div>
-      </div>
-      <div style={{}} className={styles.content} id='messages'>
+      </PageHeader>
+      <PageBody stateTheme={stateTheme} id='messages'>
         {(Messages.length > 100 ? Messages.slice(-100) : Messages).map(
           (message, nth) => {
             if (
@@ -930,7 +925,7 @@ const Chat = ({ props }) => {
         )}
         <div id={'bottomOfMessages'} />
         {/* This is for the actual chat messages */}
-      </div>
+      </PageBody>
       <div style={Object.assign({}, stateTheme.base.secondaryBackground, stateTheme.messageBar)}>
         {/* TODO change maxLength to be limitless and then send messages once every 2 seconds to get around chat slowmode */}
         <MessageField
@@ -956,7 +951,7 @@ const Chat = ({ props }) => {
           onClick={sendMessage}
         />
       </div>
-    </div>
+    </Page>
   );
 };
 

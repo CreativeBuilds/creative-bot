@@ -9,6 +9,7 @@ let { setRxLists } = require('../../helpers/rxLists');
 import { AddListPopup } from './AddListPopup';
 
 import { TextField, SearchField } from '../Generics/Input';
+import { Page, PageHeader, PageBody } from '../Generics/Common';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -47,8 +48,10 @@ const ListsPage = ({ props }) => {
   };
 
   return (
-    <div style={stateTheme.base.tertiaryBackground} className={styles.Points}>
-      <div style={Object.assign({}, stateTheme.toolBar, stateTheme.base.quinaryForeground)} className={styles.header}>
+    <Page stateTheme={stateTheme} style={stateTheme.base.tertiaryBackground}>
+      <PageHeader
+        style={stateTheme.base.quinaryForeground}
+        stateTheme={stateTheme}>
         LISTS
         <SearchField
           placeholderText={"Search..."} 
@@ -70,8 +73,8 @@ const ListsPage = ({ props }) => {
             addListPopup();
           }}
         />
-      </div>
-      <div style={{}} className={styles.content}>
+      </PageHeader>
+      <PageBody stateTheme={stateTheme}>
         {/* TODO ADD PAGINATION */}
         <Sorting
           toggle={toggle}
@@ -94,8 +97,8 @@ const ListsPage = ({ props }) => {
             />
           );
         })}
-      </div>
-    </div>
+      </PageBody>
+    </Page>
   );
 };
 

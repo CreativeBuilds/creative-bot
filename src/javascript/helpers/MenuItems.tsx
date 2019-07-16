@@ -5,8 +5,6 @@ import { ContextItem } from '../components/Generics/ContextMenu';
 
 import { firebaseConfig$, setRxConfig } from './rxConfig';
 
-import { SetupAsExistingUserPopup } from '../components/Chat/SetupAsExistingUserPopup';
-
 const { ipcRenderer, shell, remote, webFrame } = require('electron');
 const { dialog, BrowserWindow, app } = remote;
 var path = require('path');
