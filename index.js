@@ -865,6 +865,7 @@ function createWindow() {
         },
         config.eventConfig
       );
+      if (!eventConfig.enableEventMessages) return;
       if (message.type === 'Follow') {
         reply = eventConfig.onFollow.replace(
           '$USER',

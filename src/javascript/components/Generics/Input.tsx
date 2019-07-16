@@ -42,7 +42,8 @@ const TextField = ({
       <input
         type={'text'}
         placeholder={placeholderText}
-        value={text}
+        value={text.length > 0 ? text : null}
+        defaultValue={text.length === 0 ? text : null}
         style={Object.assign({}, inputStyle, stateTheme.input.text)}
         onChange={onChange}
         onKeyDown={onKeyDown}
