@@ -26,8 +26,11 @@ const TextField = ({
   inputStyle = {}
 }) => {
   const [isenabled, setIsEnabled] = useState(isEnabled);
-  // const [textInput, setTextInput] = useState(text);
+  const [textInput, setTextInput] = useState(text);
 
+  useEffect(() => {
+    setTextInput(text);
+  }, [text]);
   return (
     <div
       style={Object.assign(
@@ -42,10 +45,14 @@ const TextField = ({
       <input
         type={'text'}
         placeholder={placeholderText}
-        value={text.length > 0 ? text : null}
-        defaultValue={text.length === 0 ? text : null}
+        value={textInput}
         style={Object.assign({}, inputStyle, stateTheme.input.text)}
-        onChange={onChange}
+        onChange={e => {
+          if (!text) {
+            setTextInput(e.target.value);
+          }
+          (onChange ? onChange : () => {})(e);
+        }}
         onKeyDown={onKeyDown}
         onKeyUp={onKeyUp}
       />
