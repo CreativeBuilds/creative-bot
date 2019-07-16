@@ -9,7 +9,15 @@ const debug = require('electron-debug');
 debug({ showDevTools: false, isEnabled: true });
 const fs = require('fs');
 const path = require('path');
-const { distinctUntilChanged, filter, first, skip } = require('rxjs/operators');
+const { isEmpty } = require('lodash');
+const { BehaviorSubject, timer } = require('rxjs');
+const {
+  distinctUntilChanged,
+  filter,
+  first,
+  skip,
+  debounce
+} = require('rxjs/operators');
 const _ = require('lodash');
 
 const express = require('express');
@@ -847,13 +855,52 @@ function createWindow() {
     });
   };
 
+  const rxLemons = new BehaviorSubject(null);
+  const rxIcecreams = new BehaviorSubject(null);
+  const rxDiamonds = new BehaviorSubject(null);
+  const rxNinjaghini = new BehaviorSubject(null);
+  const rxNinjet = new BehaviorSubject(null);
+
+  const sendMessageToDlive = ({ reply, config }) => {
+    rxDlive
+      .pipe(
+        filter(x => !!x),
+        first()
+      )
+      .subscribe(dlive => {
+        dlive.sendMessage(reply, config.streamerDisplayName);
+      });
+  };
+
+  rxLemons
+    .pipe(filter(x => !isEmpty(x)))
+    .pipe(debounce(() => timer(1000)))
+    .subscribe(sendMessageToDlive);
+  rxIcecreams
+    .pipe(filter(x => !isEmpty(x)))
+    .pipe(debounce(() => timer(1000)))
+    .subscribe(sendMessageToDlive);
+  rxDiamonds
+    .pipe(filter(x => !isEmpty(x)))
+    .pipe(debounce(() => timer(1000)))
+    .subscribe(sendMessageToDlive);
+  rxNinjaghini
+    .pipe(filter(x => !isEmpty(x)))
+    .pipe(debounce(() => timer(1000)))
+    .subscribe(sendMessageToDlive);
+  rxNinjet
+    .pipe(filter(x => !isEmpty(x)))
+    .pipe(debounce(() => timer(1000)))
+    .subscribe(sendMessageToDlive);
+
   const replies = (message, config) => {
     let reply;
     rxConfig.pipe(first()).subscribe(config => {
       let eventConfig = Object.assign(
         {},
         {
-          enableEventMessages: true,
+          enableEventMessages: false,
+          enableDebounceEvents: true,
           onFollow: 'Thank you for the follow $USER!',
           onSub: 'Thank you for subscribing, $USER!',
           onGiftedSub: 'Thank you for gifting a sub, $USER!',
@@ -888,37 +935,40 @@ function createWindow() {
             '$USER',
             message.sender.dliveUsername
           );
+          if (eventConfig.enableDebounceEvents)
+            return rxLemons.next({ reply, config });
         } else if (type === 'ICE_CREAM') {
           reply = eventConfig.onIcecream.replace(
             '$USER',
             message.sender.dliveUsername
           );
+          if (eventConfig.enableDebounceEvents)
+            return rxIcecreams.next({ reply, config });
         } else if (type === 'DIAMOND') {
           reply = eventConfig.onDiamond.replace(
             '$USER',
             message.sender.dliveUsername
           );
+          if (eventConfig.enableDebounceEvents)
+            return rxDiamonds.next({ reply, config });
         } else if (type === 'NINJAGHINI') {
           reply = eventConfig.onNinja.replace(
             '$USER',
             message.sender.dliveUsername
           );
+          if (eventConfig.enableDebounceEvents)
+            return rxNinjaghini.next({ reply, config });
         } else if (type === 'NINJET') {
           reply = eventConfig.onNinjet.replace(
             '$USER',
             message.sender.dliveUsername
           );
+          if (eventConfig.enableDebounceEvents)
+            return rxNinjet.next({ reply, config });
         }
       }
       if (!reply) return;
-      rxDlive
-        .pipe(
-          filter(x => !!x),
-          first()
-        )
-        .subscribe(dlive => {
-          dlive.sendMessage(reply, config.streamerDisplayName);
-        });
+      sendMessageToDlive({ reply, config });
     });
   };
 

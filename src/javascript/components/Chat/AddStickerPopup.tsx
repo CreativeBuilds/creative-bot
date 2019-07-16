@@ -112,21 +112,27 @@ const AddStickerPopup = ({
         </div>
       </div>
       <div className={styles.buttonstack}>
-        <Button title={"Send Sticker"} 
-        isSubmit={true} 
-        stateTheme={stateTheme}
-        buttonStyle={{width: '-webkit-fill-available'}}
-        onClick={() => {
-          sendMessage();
-          }}/>
-        <Button title={"Add Sticker"} 
-        isSubmit={true} 
-        stateTheme={stateTheme} 
-        buttonStyle={{width: '-webkit-fill-available',
-        'margin-left': '10px'}} 
-        onClick={() => {
-          save();
-        }} />
+        <Button
+          title={'Send Sticker'}
+          isSubmit={true}
+          stateTheme={stateTheme}
+          buttonStyle={{ width: '-webkit-fill-available' }}
+          onClick={() => {
+            sendMessage();
+          }}
+        />
+        <Button
+          title={'Add Sticker'}
+          isSubmit={true}
+          stateTheme={stateTheme}
+          buttonStyle={{
+            width: '-webkit-fill-available',
+            'margin-left': '10px'
+          }}
+          onClick={() => {
+            save();
+          }}
+        />
       </div>
     </div>
   );

@@ -71,11 +71,9 @@ const ChatTextToSpeechPopup = ({
       tConfig[id] = !hasTTSDonations;
       setHasTTSDonations(tConfig[id]);
     } else {
-      console.log('SETTING CONFIG', id, 'TO', value);
       tConfig[id] = value;
     }
     timeout = setTimeout(() => {
-      console.log('THIS CONFIG IS GETTING SET', tConfig);
       setRxConfig(tConfig);
     }, 500);
   };
@@ -100,7 +98,6 @@ const ChatTextToSpeechPopup = ({
           maxValue={100}
           hasHeader={true}
           onValueChanged={value => {
-            console.log('AMP CHANGED');
             setTTSAmplitude(value);
             saveToDB('tts_Amplitude', value);
           }}
@@ -134,11 +131,12 @@ const ChatTextToSpeechPopup = ({
         {/*<Slider header="Word Gap" val={ttsWordGap} valType={"ms"} maxValue={100} hasHeader={true} onChange={(e, value) => {setTTSWordGap(value); saveToDB("tts_WordGap", value);}} style={styles}/>*/}
       </div>
       <div className={styles.buttonstack}>
-        <Button title={"Test TTS"} 
-        isSubmit={true} 
-        stateTheme={stateTheme}
-        buttonStyle={{width: '-webkit-fill-available'}}
-        onClick={() => {
+        <Button
+          title={'Test TTS'}
+          isSubmit={true}
+          stateTheme={stateTheme}
+          buttonStyle={{ width: '-webkit-fill-available' }}
+          onClick={() => {
             var utter = new SpeechSynthesisUtterance();
             utter.text = 'I scream, you scream, we all scream for ice cream';
             utter.volume = config.tts_Amplitude / 100;
@@ -146,15 +144,20 @@ const ChatTextToSpeechPopup = ({
             utter.rate = config.tts_Speed / 100;
             utter.onend = () => {};
             speechSynthesis.speak(utter);
-          }}/>
-        <Button title={"Close"} 
-        isSubmit={true} 
-        stateTheme={stateTheme} 
-        buttonStyle={{width: '-webkit-fill-available',
-        'margin-left': '10px'}} 
-        onClick={() => {
-          closeCurrentPopup();
-        }} />
+          }}
+        />
+        <Button
+          title={'Close'}
+          isSubmit={true}
+          stateTheme={stateTheme}
+          buttonStyle={{
+            width: '-webkit-fill-available',
+            'margin-left': '10px'
+          }}
+          onClick={() => {
+            closeCurrentPopup();
+          }}
+        />
       </div>
     </div>
   );

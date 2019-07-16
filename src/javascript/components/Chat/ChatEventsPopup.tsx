@@ -53,7 +53,8 @@ const ChatEventsPopup = ({
   closeCurrentPopup
 }: popup) => {
   const [config, setConfig] = useState(Config);
-  const [enableEventMessages, setEnableEventMessages] = useState(true);
+  const [enableEventMessages, setEnableEventMessages] = useState(false);
+  const [enableDebounceEvents, setEnableDebounceEvents] = useState(true);
 
   const [onFollow, setOnFollow] = useState('');
   const [onSub, setOnSub] = useState('');
@@ -71,7 +72,8 @@ const ChatEventsPopup = ({
       let eventConfig = Object.assign(
         {},
         {
-          enableEventMessages: true,
+          enableEventMessages: false,
+          enableDebounceEvents: true,
           onFollow: 'Thank you for the follow $USER!',
           onSub: 'Thank you for subscribing, $USER!',
           onGiftedSub: 'Thank you for gifting a sub, $USER!',
@@ -85,6 +87,7 @@ const ChatEventsPopup = ({
       );
       setConfig(data);
       setEnableEventMessages(eventConfig.enableEventMessages);
+      setEnableDebounceEvents(eventConfig.enableDebounceEvents);
       setOnFollow(eventConfig.onFollow);
       setOnSub(eventConfig.onSub);
       setOnGiftedSub(eventConfig.onGiftedSub);
@@ -102,6 +105,12 @@ const ChatEventsPopup = ({
   let updateEnableEvents = bool => {
     let tConfig = Object.assign({}, config.eventConfig);
     tConfig.enableEventMessages = !bool;
+    setRxConfig(Object.assign({}, config, { eventConfig: tConfig }));
+  };
+
+  let updateDebounceEvents = bool => {
+    let tConfig = Object.assign({}, config.eventConfig);
+    tConfig.enableDebounceEvents = !bool;
     setRxConfig(Object.assign({}, config, { eventConfig: tConfig }));
   };
 
@@ -147,16 +156,13 @@ const ChatEventsPopup = ({
   let updateLemon = val => {
     if (val.length > 500) return;
     if (lemonTimeout) {
-      console.log('there is a timeout right now', 750);
       clearTimeout(lemonTimeout);
     }
     setOnLemon(val);
     lemonTimeout = setTimeout(() => {
-      console.log('excuting rxConfig set');
       let tConfig = Object.assign({}, config.eventConfig);
       tConfig.onLemon = val;
       setRxConfig(Object.assign({}, config, { eventConfig: tConfig }));
-      console.log('done');
     }, 750);
   };
 
@@ -226,6 +232,7 @@ const ChatEventsPopup = ({
           }}
           stateTheme={stateTheme}
         />
+
         <Panel
           header={enableEventMessages ? null : 'Event Messages Disabled'}
           hasHeader={!enableEventMessages}
@@ -355,6 +362,16 @@ const ChatEventsPopup = ({
           content={
             enableEventMessages ? (
               <div>
+                <Toggle
+                  header='Spam Filter'
+                  type={ToggleType.stretched}
+                  isEnabled={true}
+                  isOn={enableDebounceEvents}
+                  onClick={() => {
+                    updateDebounceEvents(enableDebounceEvents);
+                  }}
+                  stateTheme={stateTheme}
+                />
                 <div
                   style={{
                     display: 'flex',
@@ -371,7 +388,6 @@ const ChatEventsPopup = ({
                       width={'100%'}
                       inputStyle={stateTheme.base.secondaryBackground}
                       onChange={e => {
-                        console.log('UPDATING LEMON', e.target.value);
                         updateLemon(e.target.value);
                       }}
                     />

@@ -5,15 +5,6 @@ var Mousetrap = require('mousetrap');
 
 import { AdvancedDiv } from './AdvancedDiv';
 import { theme, ThemeContext } from '../../helpers';
-import {
-  MdSend,
-  MdPerson,
-  MdMood,
-  MdFace,
-  MdLocalMovies,
-  MdEvent,
-  MdFilterList
-} from 'react-icons/md';
 
 const TextField = ({
   text = '',
@@ -82,7 +73,6 @@ const EmailField = ({
   style = {},
   inputStyle = {}
 }) => {
-
   const [isenabled, setIsEnabled] = useState(isEnabled);
   const [textInput, setTextInput] = useState(text);
 
@@ -197,7 +187,6 @@ const StepperField = ({
   style = {},
   inputStyle = {}
 }) => {
-
   return (
     <div
       style={Object.assign(
@@ -241,6 +230,10 @@ const MessageField = ({
 }) => {
   const [isenabled, setIsEnabled] = useState(isEnabled);
   const [textInput, setTextInput] = useState(text);
+
+  useEffect(() => {
+    setTextInput(text);
+  }, [text]);
 
   return (
     <AdvancedDiv
@@ -309,7 +302,7 @@ const SearchField = ({
         <div style={stateTheme.input.header}>{header}</div>
       ) : null}
       <input
-        type={'search'}
+        type={'text'}
         placeholder={placeholderText}
         value={textInput}
         style={Object.assign({}, inputStyle, stateTheme.input.text)}

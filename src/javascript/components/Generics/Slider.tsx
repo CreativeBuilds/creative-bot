@@ -20,38 +20,56 @@ const RangeSlider = ({
   const [Value, setValue] = useState<number>(val);
   const [isChanging, setIsChanging] = useState<Boolean>(false);
   return (
-      <div style={Object.assign({}, style, stateTheme.slider)}>
-        {hasHeader ? (
-          <div style={Object.assign({}, stateTheme.slider.headerContainer)}>
-            <div style={Object.assign({}, stateTheme.slider.headerContainer.header)}>{header}</div>
-            <div style={Object.assign({}, stateTheme.slider.headerContainer.value)}>
-              {Value}
-              {valType}
-            </div>
+    <div style={Object.assign({}, style, stateTheme.slider)}>
+      {hasHeader ? (
+        <div style={Object.assign({}, stateTheme.slider.headerContainer)}>
+          <div
+            style={Object.assign({}, stateTheme.slider.headerContainer.header)}
+          >
+            {header}
           </div>
-        ) : null}
-        <Slider 
-          style={stateTheme.slider.input}
-          defaultValue={val} 
-          min={minValue} 
-          max={maxValue} 
-          onChange={(value) => {
-            setValue(Number(value));
-            if (onChange != null) {
-              onChange(Number(value));
-            }
-          }} 
-          onAfterChange={(value) => {
-            console.log(value);
-            setValue(Number(value)); 
-            if (onValueChanged != null) {
-              onValueChanged(Number(value));
-            }
-          }} 
-          trackStyle={Object.assign({}, theme.globals.accentDarkBackground, stateTheme.slider.track)}
-          railStyle={Object.assign({}, stateTheme.base.background, stateTheme.slider.rail)}
-          handleStyle={Object.assign({}, theme.globals.accentBackground ,stateTheme.slider.thumb)}/>
-      </div>
+          <div
+            style={Object.assign({}, stateTheme.slider.headerContainer.value)}
+          >
+            {Value}
+            {valType}
+          </div>
+        </div>
+      ) : null}
+      <Slider
+        style={stateTheme.slider.input}
+        defaultValue={val}
+        min={minValue}
+        max={maxValue}
+        onChange={value => {
+          setValue(Number(value));
+          if (onChange != null) {
+            onChange(Number(value));
+          }
+        }}
+        onAfterChange={value => {
+          setValue(Number(value));
+          if (onValueChanged != null) {
+            onValueChanged(Number(value));
+          }
+        }}
+        trackStyle={Object.assign(
+          {},
+          theme.globals.accentDarkBackground,
+          stateTheme.slider.track
+        )}
+        railStyle={Object.assign(
+          {},
+          stateTheme.base.background,
+          stateTheme.slider.rail
+        )}
+        handleStyle={Object.assign(
+          {},
+          theme.globals.accentBackground,
+          stateTheme.slider.thumb
+        )}
+      />
+    </div>
   );
 };
 

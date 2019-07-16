@@ -31,34 +31,40 @@ const Menu = props => {
       <div
         style={Object.assign(
           {},
-          Object.assign({},
-          stateTheme.base.tertiaryBackground,
-          stateTheme.base.quinaryForeground
+          Object.assign(
+            {},
+            stateTheme.base.tertiaryBackground,
+            stateTheme.base.quinaryForeground
           ),
-          Object.assign({}, 
-            isOpen ? stateTheme.menu.toggled : stateTheme.menu.popout, 
+          Object.assign(
+            {},
+            isOpen ? stateTheme.menu.toggled : stateTheme.menu.popout,
             stateTheme.menu
-            )
-        )}>
-        <WidgetButton 
-        icon={<MdClose style={stateTheme.button.widget.closeMenu.icon}/>} 
-        stateTheme={stateTheme}
-        style={stateTheme.button.widget.closeMenu} 
-        onClick={() => {
-          setIsOpen(false);
-        }}/>
+          )
+        )}
+      >
+        <WidgetButton
+          icon={<MdClose style={stateTheme.button.widget.closeMenu.icon} />}
+          stateTheme={stateTheme}
+          style={stateTheme.button.widget.closeMenu}
+          onClick={() => {
+            setIsOpen(false);
+          }}
+        />
         <ul style={stateTheme.menu.ul}>
           <Li
             style={Object.assign(
               {},
-              Object.assign({},
-              stateTheme.page.header,
-              stateTheme.base.quaternaryForeground
+              Object.assign(
+                {},
+                stateTheme.page.header,
+                stateTheme.base.quaternaryForeground
               ),
-              Object.assign({},
+              Object.assign(
+                {},
                 stateTheme.menu.item.header,
                 stateTheme.menu.item
-                )
+              )
             )}
           >
             MENU
@@ -67,6 +73,7 @@ const Menu = props => {
             style={stateTheme.menu.item}
             hoverStyle={Object.assign(
               {},
+              { cursor: 'pointer' },
               stateTheme.base.secondaryBackground,
               theme.globals.accentForeground
             )}
@@ -81,6 +88,7 @@ const Menu = props => {
             style={stateTheme.menu.item}
             hoverStyle={Object.assign(
               {},
+              { cursor: 'pointer' },
               stateTheme.base.secondaryBackground,
               theme.globals.accentForeground
             )}
@@ -95,6 +103,7 @@ const Menu = props => {
             style={stateTheme.menu.item}
             hoverStyle={Object.assign(
               {},
+              { cursor: 'pointer' },
               stateTheme.base.secondaryBackground,
               theme.globals.accentForeground
             )}
@@ -109,6 +118,7 @@ const Menu = props => {
             style={stateTheme.menu.item}
             hoverStyle={Object.assign(
               {},
+              { cursor: 'pointer' },
               stateTheme.base.secondaryBackground,
               theme.globals.accentForeground
             )}
@@ -123,6 +133,7 @@ const Menu = props => {
             style={stateTheme.menu.item}
             hoverStyle={Object.assign(
               {},
+              { cursor: 'pointer' },
               stateTheme.base.secondaryBackground,
               theme.globals.accentForeground
             )}
@@ -137,6 +148,7 @@ const Menu = props => {
             style={stateTheme.menu.item}
             hoverStyle={Object.assign(
               {},
+              { cursor: 'pointer' },
               stateTheme.base.secondaryBackground,
               theme.globals.accentForeground
             )}
@@ -173,9 +185,10 @@ const Menu = props => {
           </Li> */}
           {
             <Li
-            style={stateTheme.menu.item}
+              style={stateTheme.menu.item}
               hoverStyle={Object.assign(
                 {},
+                { cursor: 'pointer' },
                 stateTheme.base.secondaryBackground,
                 theme.globals.accentForeground
               )}
@@ -196,13 +209,14 @@ const Menu = props => {
           }
         </ul>
       </div>
-      <WidgetButton 
-        icon={<MdMenu style={stateTheme.button.widget.hamburger.icon}/>} 
-        stateTheme={stateTheme} 
+      <WidgetButton
+        icon={<MdMenu style={stateTheme.button.widget.hamburger.icon} />}
+        stateTheme={stateTheme}
         style={stateTheme.button.widget.hamburger}
         onClick={() => {
           setIsOpen(true);
-        }}/>
+        }}
+      />
     </React.Fragment>
   );
 };

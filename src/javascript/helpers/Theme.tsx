@@ -273,7 +273,7 @@ const theme = {
           height: '25px',
           borderRadius: '50%',
           transition: 'all 0.15s ease-in-out',
-          cursor: 'pointer',
+          cursor: 'pointer'
         },
         isOn: {
           'margin-left': '50px'
@@ -371,7 +371,7 @@ const theme = {
           height: '40px',
           title: {
             'margin-top': '10px',
-            'margin-bottom': '10px',
+            'margin-bottom': '10px'
           }
         },
         disabled: {
@@ -430,7 +430,7 @@ const theme = {
             left: '0',
             right: '0',
             verticalAlign: 'middle',
-            marginTop: '3px',
+            marginTop: '3px'
           }
         },
         closeMenu: {
@@ -438,6 +438,7 @@ const theme = {
           position: 'absolute',
           right: '0',
           transition: 'all 0.15s',
+          zIndex: '9',
           icon: {
             fontSize: '1em',
             position: 'absolute',
@@ -468,11 +469,9 @@ const theme = {
           position: 'absolute',
           top: '1px',
           right: '160px',
-          'font-size': '25px',
+          'font-size': '25px'
         },
-        hover: {
-
-        }
+        hover: {}
       }
     },
     input: {
@@ -543,13 +542,13 @@ const theme = {
             display: 'table-column',
             height: '30px',
             width: '35px',
-            float: 'left',
+            float: 'left'
           },
           contentContainer: {
             display: 'inline-flex',
             height: '30px',
             width: 'calc(100% - (35px + 140px))',
-            float: 'left',
+            float: 'left'
           },
           windowControlsContainer: {
             display: 'flex',
@@ -561,13 +560,13 @@ const theme = {
             '-webkit-app-region': 'no-drag',
             height: '100%',
             width: 'auto',
-            'margin-left': 'auto',
+            'margin-left': 'auto'
           },
           icon: {
             width: '18px',
             margin: 'auto',
             'margin-top': '6px',
-            display: 'block',
+            display: 'block'
           },
           title: {
             flex: '0 1 auto',
@@ -580,7 +579,7 @@ const theme = {
             'line-height': '30px',
             zoom: '1',
             'font-family': 'Segoe WPC,Segoe UI,sans-serif',
-            transition: 'all 0.15s ease-in-out',
+            transition: 'all 0.15s ease-in-out'
           },
           versionTag: {
             'font-size': '12px',
@@ -592,7 +591,7 @@ const theme = {
             float: 'right',
             'padding-left': '5px',
             'padding-right': '5px',
-            transition: 'all 0.15s ease-in-out',
+            transition: 'all 0.15s ease-in-out'
           },
           actions: {
             display: 'inline-block',
@@ -602,7 +601,7 @@ const theme = {
             'box-sizing': 'border-box',
             transition: 'all 0.15s ease-in-out',
             hover: {
-              normal: { 
+              normal: {
                 backgroundColor: '#565656',
                 filter: 'alpha(opacity=50)'
               },
@@ -630,7 +629,7 @@ const theme = {
                   top: '25%',
                   right: '25%',
                   bottom: '50%',
-                  left: '25%',
+                  left: '25%'
                 }
               }
             }
@@ -662,7 +661,7 @@ const theme = {
           'box-sizing': 'border-box',
           margin: '0',
           'padding-left': '10px',
-          'padding-right': '10px',
+          'padding-right': '10px'
         },
         hover: {
           cursor: 'pointer',
@@ -695,7 +694,7 @@ const theme = {
           position: 'absolute',
           right: 0,
           'list-style-type': 'none',
-          display: 'contents',
+          display: 'contents'
         }
       },
       item: {
@@ -710,7 +709,7 @@ const theme = {
             float: 'right',
             position: 'absolute',
             right: '0',
-            top: '0',
+            top: '0'
           }
         },
         content: {
@@ -718,17 +717,17 @@ const theme = {
           'padding-left': '0px',
           'padding-right': '15px',
           width: '100%',
-          cursor: 'pointer', 
+          cursor: 'pointer',
           title: {
             'padding-bottom': '5px',
             'padding-top': '5px',
-            display: 'inline-block', 
+            display: 'inline-block',
             height: 'auto',
             float: 'left',
             span: {
               display: 'inline-block',
               'vertical-align': 'middle',
-              'line-height': 'normal',
+              'line-height': 'normal'
             }
           },
           arrow: {
@@ -737,19 +736,19 @@ const theme = {
             'margin-right': '10px',
             'margin-left': '20px',
             float: 'right',
-            display: 'inline-block', 
+            display: 'inline-block',
             height: 'auto',
             span: {
               display: 'inline-block',
               'vertical-align': 'middle',
-              'line-height': 'normal',
+              'line-height': 'normal'
             },
             svg: {
               color: 'darkgrey',
               height: '18px',
               width: '18px',
               fill: 'darkgrey',
-              stroke: 'darkgrey',
+              stroke: 'darkgrey'
             }
           },
           shortcut: {
@@ -758,21 +757,21 @@ const theme = {
             'margin-right': '10px',
             'margin-left': '20px',
             width: '34px',
-            display: 'table', 
+            display: 'table',
             height: 'auto',
             float: 'right',
             color: 'darkgrey',
             span: {
               display: 'inline-block',
               'vertical-align': 'middle',
-              'line-height': 'normal',
+              'line-height': 'normal'
             }
           },
           iconContainer: {
             'padding-bottom': '5px',
             'padding-top': '5px',
             'margin-right': '10px',
-            display: 'inline', 
+            display: 'inline',
             height: 'auto',
             width: '42px',
             float: 'left',
@@ -784,7 +783,7 @@ const theme = {
               svg: {
                 'vertical-align': 'middle',
                 height: '16px',
-                width: '16px',
+                width: '16px'
               }
             },
             checkedIcon: {
@@ -796,7 +795,7 @@ const theme = {
               svg: {
                 'vertical-align': 'middle',
                 height: '12px',
-                width: '12px',
+                width: '12px'
               }
             }
           }
@@ -809,12 +808,12 @@ const theme = {
           height: '0.5px',
           border: '0',
           'border-top': '0.5px solid #616161',
-          padding: '0',
+          padding: '0'
         },
         hover: {
           color: 'black',
           fill: 'black',
-          stroke: 'black',
+          stroke: 'black'
         }
       }
     },
@@ -827,12 +826,75 @@ const theme = {
         display: 'table',
         'min-height': '100%',
         'min-width': '100%',
-        position: 'relative',
+        position: 'relative'
       },
       titleBar: {
         display: 'table-row',
         height: '30px',
-        'min-width': '100%',    
+        'min-width': '100%'
+      }
+    },
+    menu: {
+      width: '250px',
+      height: '100vh',
+      position: 'absolute',
+      transition: 'all 0.5s',
+      top: '0',
+      'z-index': '9999999',
+      'list-style-type': 'none',
+      popout: {
+        left: '-250px'
+      },
+      toggled: {
+        left: '0',
+        'box-shadow': '5px 5px 5px rgba(0, 0, 0, 0.5)'
+      },
+      ul: {
+        'list-style-type': 'none',
+        padding: '0px',
+        margin: '0px'
+      },
+      item: {
+        header: {
+          'font-size': '24px'
+        },
+        padding: '0px',
+        margin: '0px',
+        'font-size': '20px',
+        display: 'flex',
+        'justify-content': 'center',
+        'align-items': 'center',
+        height: '48px'
+      }
+    },
+    messageBar: {
+      width: 'calc(100% - 10px)',
+      height: '48px',
+      display: 'flex',
+      border: '5px solid rgba(0, 0, 0, 0)'
+    },
+    page: {
+      width: '100%',
+      height: '100%',
+      'min-width': '275px',
+      display: 'flex',
+      'align-items': 'center',
+      'flex-direction': 'column',
+      header: {
+        height: '44px',
+        width: '100%',
+        display: 'flex',
+        'justify-content': 'center',
+        'align-items': 'center',
+        'border-bottom': '4px solid #202225',
+        'font-size': '30px',
+        position: 'relative'
+      },
+      content: {
+        flex: '1',
+        'overflow-y': 'auto',
+        width: 'calc(100% - 10px)',
+        padding: '5px'
       }
     },
     menu: {
@@ -1122,7 +1184,7 @@ const theme = {
           height: '25px',
           borderRadius: '50%',
           transition: 'all 0.15s ease-in-out',
-          cursor: 'pointer',
+          cursor: 'pointer'
         },
         isOn: {
           'margin-left': '50px'
@@ -1222,7 +1284,7 @@ const theme = {
           height: '40px',
           title: {
             'margin-top': '10px',
-            'margin-bottom': '10px',
+            'margin-bottom': '10px'
           }
         },
         disabled: {
@@ -1233,7 +1295,6 @@ const theme = {
           cursor: 'pointer',
           border: '1.5px solid',
           boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
-          
         }
       },
       sender: {
@@ -1282,13 +1343,14 @@ const theme = {
             left: '0',
             right: '0',
             verticalAlign: 'middle',
-            marginTop: '3px',
+            marginTop: '3px'
           }
         },
         closeMenu: {
           'font-size': '2.4em',
           position: 'absolute',
           right: '0',
+          zIndex: '9',
           transition: 'all 0.15s',
           icon: {
             fontSize: '1em',
@@ -1320,11 +1382,9 @@ const theme = {
           position: 'absolute',
           top: '1px',
           right: '160px',
-          'font-size': '25px',
+          'font-size': '25px'
         },
-        hover: {
-
-        }
+        hover: {}
       }
     },
     input: {
@@ -1396,13 +1456,13 @@ const theme = {
             display: 'table-column',
             height: '30px',
             width: '35px',
-            float: 'left',
+            float: 'left'
           },
           contentContainer: {
             display: 'inline-flex',
             height: '30px',
             width: 'calc(100% - (35px + 140px))',
-            float: 'left',
+            float: 'left'
           },
           windowControlsContainer: {
             display: 'flex',
@@ -1414,13 +1474,13 @@ const theme = {
             '-webkit-app-region': 'no-drag',
             height: '100%',
             width: 'auto',
-            'margin-left': 'auto',
+            'margin-left': 'auto'
           },
           icon: {
             width: '18px',
             margin: 'auto',
             'margin-top': '6px',
-            display: 'block',
+            display: 'block'
           },
           title: {
             flex: '0 1 auto',
@@ -1433,7 +1493,7 @@ const theme = {
             'line-height': '30px',
             zoom: '1',
             'font-family': 'Segoe WPC,Segoe UI,sans-serif',
-            transition: 'all 0.15s ease-in-out',
+            transition: 'all 0.15s ease-in-out'
           },
           versionTag: {
             'font-size': '12px',
@@ -1445,7 +1505,7 @@ const theme = {
             float: 'right',
             'padding-left': '5px',
             'padding-right': '5px',
-            transition: 'all 0.15s ease-in-out',
+            transition: 'all 0.15s ease-in-out'
           },
           actions: {
             display: 'inline-block',
@@ -1455,7 +1515,7 @@ const theme = {
             'box-sizing': 'border-box',
             transition: 'all 0.15s ease-in-out',
             hover: {
-              normal: { 
+              normal: {
                 backgroundColor: '#565656',
                 filter: 'alpha(opacity=50)'
               },
@@ -1483,7 +1543,7 @@ const theme = {
                   top: '25%',
                   right: '25%',
                   bottom: '50%',
-                  left: '25%',
+                  left: '25%'
                 }
               }
             }
@@ -1515,7 +1575,7 @@ const theme = {
           'box-sizing': 'border-box',
           margin: '0',
           'padding-left': '10px',
-          'padding-right': '10px',
+          'padding-right': '10px'
         },
         hover: {
           cursor: 'pointer',
@@ -1548,7 +1608,7 @@ const theme = {
           position: 'absolute',
           right: 0,
           'list-style-type': 'none',
-          display: 'contents',
+          display: 'contents'
         }
       },
       item: {
@@ -1563,26 +1623,25 @@ const theme = {
             float: 'right',
             position: 'absolute',
             right: '0',
-            top: '0',
+            top: '0'
           }
-
         },
         content: {
           height: '26px',
           'padding-left': '0px',
           'padding-right': '15px',
           width: '100%',
-          cursor: 'pointer', 
+          cursor: 'pointer',
           title: {
             'padding-bottom': '5px',
             'padding-top': '5px',
-            display: 'inline-block', 
+            display: 'inline-block',
             height: 'auto',
             float: 'left',
             span: {
               display: 'inline-block',
               'vertical-align': 'middle',
-              'line-height': 'normal',
+              'line-height': 'normal'
             }
           },
           arrow: {
@@ -1591,19 +1650,19 @@ const theme = {
             'margin-right': '10px',
             'margin-left': '20px',
             float: 'right',
-            display: 'inline-block', 
+            display: 'inline-block',
             height: 'auto',
             span: {
               display: 'inline-block',
               'vertical-align': 'middle',
-              'line-height': 'normal',
+              'line-height': 'normal'
             },
             svg: {
               color: 'darkgrey',
               height: '18px',
               width: '18px',
               fill: 'darkgrey',
-              stroke: 'darkgrey',
+              stroke: 'darkgrey'
             }
           },
           shortcut: {
@@ -1612,21 +1671,21 @@ const theme = {
             'margin-right': '10px',
             'margin-left': '20px',
             width: '34px',
-            display: 'table', 
+            display: 'table',
             height: 'auto',
             float: 'right',
             color: 'darkgrey',
             span: {
               display: 'inline-block',
               'vertical-align': 'middle',
-              'line-height': 'normal',
+              'line-height': 'normal'
             }
           },
           iconContainer: {
             'padding-bottom': '5px',
             'padding-top': '5px',
             'margin-right': '10px',
-            display: 'inline', 
+            display: 'inline',
             height: 'auto',
             width: '36px',
             float: 'left',
@@ -1637,7 +1696,7 @@ const theme = {
               svg: {
                 'vertical-align': 'middle',
                 height: '16px',
-                width: '16px',
+                width: '16px'
               }
             },
             checkedIcon: {
@@ -1647,7 +1706,7 @@ const theme = {
               svg: {
                 'vertical-align': 'middle',
                 height: '12px',
-                width: '12px',
+                width: '12px'
               }
             }
           }
@@ -1660,12 +1719,12 @@ const theme = {
           height: '0.5px',
           border: '0',
           'border-top': '0.5px solid #616161',
-          padding: '0',
+          padding: '0'
         },
         hover: {
           color: 'black',
           fill: 'black',
-          stroke: 'black',
+          stroke: 'black'
         }
       }
     },
@@ -1678,12 +1737,75 @@ const theme = {
         display: 'table',
         'min-height': '100%',
         'min-width': '100%',
-        position: 'relative',
+        position: 'relative'
       },
       titleBar: {
         display: 'table-row',
         height: '30px',
-        'min-width': '100%',    
+        'min-width': '100%'
+      }
+    },
+    menu: {
+      width: '250px',
+      height: '100vh',
+      position: 'absolute',
+      transition: 'all 0.5s',
+      top: '0',
+      'z-index': '9999999',
+      'list-style-type': 'none',
+      popout: {
+        left: '-250px'
+      },
+      toggled: {
+        left: '0',
+        'box-shadow': '5px 5px 5px rgba(0, 0, 0, 0.5)'
+      },
+      ul: {
+        'list-style-type': 'none',
+        padding: '0px',
+        margin: '0px'
+      },
+      item: {
+        header: {
+          'font-size': '24px'
+        },
+        padding: '0px',
+        margin: '0px',
+        'font-size': '20px',
+        display: 'flex',
+        'justify-content': 'center',
+        'align-items': 'center',
+        height: '48px'
+      }
+    },
+    messageBar: {
+      width: 'calc(100% - 10px)',
+      height: '48px',
+      display: 'flex',
+      border: '5px solid rgba(0, 0, 0, 0)'
+    },
+    page: {
+      width: '100%',
+      height: '100%',
+      'min-width': '275px',
+      display: 'flex',
+      'align-items': 'center',
+      'flex-direction': 'column',
+      header: {
+        height: '44px',
+        width: '100%',
+        display: 'flex',
+        'justify-content': 'center',
+        'align-items': 'center',
+        'border-bottom': '4px solid #cccccc',
+        'font-size': '30px',
+        position: 'relative'
+      },
+      content: {
+        flex: '1',
+        'overflow-y': 'auto',
+        width: 'calc(100% - 10px)',
+        padding: '5px'
       }
     },
     menu: {
