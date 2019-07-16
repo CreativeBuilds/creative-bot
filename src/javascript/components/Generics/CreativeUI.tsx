@@ -57,6 +57,7 @@ export {
     MessageField,
     SearchField,
     MenuBar,
+    MenuItem,
     Panel,
     Popup,
     RangeSlider,
