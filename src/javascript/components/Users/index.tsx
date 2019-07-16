@@ -30,13 +30,13 @@ let timeoutNinja;
 let timeoutNinjet;
 
 const SettingsPopup = ({ stateTheme, styles, Config, closeCurrentPopup }) => {
-  const [pointsText, setPointsText] = useState('');
-  const [pointsTimerText, setPointsTimerText] = useState('');
-  const [lemonsText, setLemonsText] = useState('');
-  const [icecreamText, setIcecreamText] = useState('');
-  const [diamondsText, setDiamondsText] = useState('');
-  const [ninjaText, setNinjaText] = useState('');
-  const [ninjetText, setNinjetText] = useState('');
+  const [pointsText, setPointsText] = useState('loading');
+  const [pointsTimerText, setPointsTimerText] = useState('loading');
+  const [lemonsText, setLemonsText] = useState('loading');
+  const [icecreamText, setIcecreamText] = useState('loading');
+  const [diamondsText, setDiamondsText] = useState('loading');
+  const [ninjaText, setNinjaText] = useState('loading');
+  const [ninjetText, setNinjetText] = useState('loading');
 
   useEffect(() => {
     let listener = firebaseConfig$
@@ -44,6 +44,7 @@ const SettingsPopup = ({ stateTheme, styles, Config, closeCurrentPopup }) => {
       .subscribe((config: any) => {
         setPointsText(config.points || 5);
         setPointsTimerText(((config.pointsTimer || 300) / 60).toString());
+        console.log(config.donationSettings, 'DONATION SETTINGS!');
         setLemonsText(
           Object.assign({}, { lemons: 1 }, config.donationSettings).lemons
         );
@@ -64,6 +65,10 @@ const SettingsPopup = ({ stateTheme, styles, Config, closeCurrentPopup }) => {
       listener.unsubscribe();
     };
   }, []);
+
+  useEffect(() => {
+    console.log('LEMONS TEXT UPDATED', lemonsText);
+  }, [lemonsText]);
 
   let updatePoints = val => {
     let num = parseInt(val);

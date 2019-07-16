@@ -30,7 +30,12 @@ const TextField = ({
   style = {},
   inputStyle = {}
 }) => {
+  const [isenabled, setIsEnabled] = useState(isEnabled);
+  const [textInput, setTextInput] = useState(text);
 
+  useEffect(() => {
+    setTextInput(text);
+  }, [text]);
   return (
     <div
       style={Object.assign(
@@ -45,11 +50,14 @@ const TextField = ({
       <input
         type={'text'}
         placeholder={placeholderText}
-        defaultValue={text}
+        value={textInput}
         style={Object.assign({}, inputStyle, stateTheme.input.text)}
-        onChange={onChange}
-        onFocus={onFocus}
-        onBlur={onBlur}
+        onChange={e => {
+          if (!text) {
+            setTextInput(e.target.value);
+          }
+          (onChange ? onChange : () => {})(e);
+        }}
         onKeyDown={onKeyDown}
         onKeyUp={onKeyUp}
       />
