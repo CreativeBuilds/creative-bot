@@ -58,6 +58,8 @@ const TextField = ({
           }
           (onChange ? onChange : () => {})(e);
         }}
+        onFocus={onFocus}
+        onBlur={onBlur}
         onKeyDown={onKeyDown}
         onKeyUp={onKeyUp}
       />
@@ -81,6 +83,9 @@ const EmailField = ({
   inputStyle = {}
 }) => {
 
+  const [isenabled, setIsEnabled] = useState(isEnabled);
+  const [textInput, setTextInput] = useState(text);
+
   return (
     <div
       style={Object.assign(
@@ -95,9 +100,14 @@ const EmailField = ({
       <input
         type={'email'}
         placeholder={placeholderText}
-        defaultValue={text}
+        value={textInput}
         style={Object.assign({}, inputStyle, stateTheme.input.text)}
-        onChange={onChange}
+        onChange={e => {
+          if (!text) {
+            setTextInput(e.target.value);
+          }
+          (onChange ? onChange : () => {})(e);
+        }}
         onFocus={onFocus}
         onBlur={onBlur}
         onKeyDown={onKeyDown}
@@ -124,6 +134,8 @@ const PasswordField = ({
   style = {},
   inputStyle = {}
 }) => {
+  const [isenabled, setIsEnabled] = useState(isEnabled);
+  const [textInput, setTextInput] = useState(text);
 
   return (
     <div
@@ -152,9 +164,14 @@ const PasswordField = ({
       <input
         type={'password'}
         placeholder={placeholderText}
-        defaultValue={text}
+        value={textInput}
         style={Object.assign({}, inputStyle, stateTheme.input.text)}
-        onChange={onChange}
+        onChange={e => {
+          if (!text) {
+            setTextInput(e.target.value);
+          }
+          (onChange ? onChange : () => {})(e);
+        }}
         onFocus={onFocus}
         onBlur={onBlur}
         onKeyDown={onKeyDown}
@@ -244,9 +261,15 @@ const MessageField = ({
     >
       <input
         placeholder={placeholderText}
-        defaultValue={text}
+        value={textInput}
         maxLength={280}
-        onChange={onChange}
+        style={Object.assign({}, inputStyle, stateTheme.input.text)}
+        onChange={e => {
+          if (!text) {
+            setTextInput(e.target.value);
+          }
+          (onChange ? onChange : () => {})(e);
+        }}
         onFocus={onFocus}
         onBlur={onBlur}
         onKeyDown={onKeyDown}
@@ -271,6 +294,8 @@ const SearchField = ({
   style = {},
   inputStyle = {}
 }) => {
+  const [isenabled, setIsEnabled] = useState(isEnabled);
+  const [textInput, setTextInput] = useState(text);
 
   return (
     <div
@@ -286,9 +311,14 @@ const SearchField = ({
       <input
         type={'search'}
         placeholder={placeholderText}
-        defaultValue={text}
+        value={textInput}
         style={Object.assign({}, inputStyle, stateTheme.input.text)}
-        onChange={onChange}
+        onChange={e => {
+          if (!text) {
+            setTextInput(e.target.value);
+          }
+          (onChange ? onChange : () => {})(e);
+        }}
         onFocus={onFocus}
         onBlur={onBlur}
         onKeyDown={onKeyDown}

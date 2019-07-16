@@ -10,7 +10,6 @@ import { WidgetButton } from '../Generics/Button';
 import { Li } from './li';
 import { firebaseConfig$ } from '../../helpers/rxConfig';
 
-const styles: any = require('./Menu.scss');
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
 
@@ -32,11 +31,15 @@ const Menu = props => {
       <div
         style={Object.assign(
           {},
+          Object.assign({},
           stateTheme.base.tertiaryBackground,
           stateTheme.base.quinaryForeground
-        )}
-        className={`${styles.menu_popout} ${isOpen ? styles.menu_toggled : ''}`}
-      >
+          ),
+          Object.assign({}, 
+            isOpen ? stateTheme.menu.toggled : stateTheme.menu.popout, 
+            stateTheme.menu
+            )
+        )}>
         <WidgetButton 
         icon={<MdClose style={stateTheme.button.widget.closeMenu.icon}/>} 
         stateTheme={stateTheme}
@@ -44,18 +47,24 @@ const Menu = props => {
         onClick={() => {
           setIsOpen(false);
         }}/>
-        <ul>
+        <ul style={stateTheme.menu.ul}>
           <Li
             style={Object.assign(
               {},
+              Object.assign({},
               stateTheme.toolBar,
               stateTheme.base.quaternaryForeground
+              ),
+              Object.assign({},
+                stateTheme.menu.item.header,
+                stateTheme.menu.item
+                )
             )}
           >
             MENU
           </Li>
           <Li
-            style={{}}
+            style={stateTheme.menu.item}
             hoverStyle={Object.assign(
               {},
               stateTheme.base.secondaryBackground,
@@ -69,7 +78,7 @@ const Menu = props => {
             CHAT
           </Li>
           <Li
-            style={{}}
+            style={stateTheme.menu.item}
             hoverStyle={Object.assign(
               {},
               stateTheme.base.secondaryBackground,
@@ -83,7 +92,7 @@ const Menu = props => {
             USERS
           </Li>
           <Li
-            style={{}}
+            style={stateTheme.menu.item}
             hoverStyle={Object.assign(
               {},
               stateTheme.base.secondaryBackground,
@@ -97,7 +106,7 @@ const Menu = props => {
             GIVEAWAYS
           </Li>
           <Li
-            style={{}}
+            style={stateTheme.menu.item}
             hoverStyle={Object.assign(
               {},
               stateTheme.base.secondaryBackground,
@@ -111,7 +120,7 @@ const Menu = props => {
             COMMANDS
           </Li>
           <Li
-            style={{}}
+            style={stateTheme.menu.item}
             hoverStyle={Object.assign(
               {},
               stateTheme.base.secondaryBackground,
@@ -125,7 +134,7 @@ const Menu = props => {
             TIMERS
           </Li>
           <Li
-            style={{}}
+            style={stateTheme.menu.item}
             hoverStyle={Object.assign(
               {},
               stateTheme.base.secondaryBackground,
@@ -164,7 +173,7 @@ const Menu = props => {
           </Li> */}
           {
             <Li
-              style={{}}
+            style={stateTheme.menu.item}
               hoverStyle={Object.assign(
                 {},
                 stateTheme.base.secondaryBackground,

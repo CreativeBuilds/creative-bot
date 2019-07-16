@@ -931,7 +931,7 @@ const Chat = ({ props }) => {
         <div id={'bottomOfMessages'} />
         {/* This is for the actual chat messages */}
       </div>
-      <div style={stateTheme.base.secondaryBackground} className={styles.input}>
+      <div style={Object.assign({}, stateTheme.base.secondaryBackground, stateTheme.messageBar)}>
         {/* TODO change maxLength to be limitless and then send messages once every 2 seconds to get around chat slowmode */}
         <MessageField
           placeholderText={'Type a Message...'}
