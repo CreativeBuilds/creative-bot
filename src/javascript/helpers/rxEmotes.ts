@@ -57,7 +57,7 @@ export const setRxEmotes = emotes => {
       firebaseEmotes$
         .pipe(
           first(),
-          filter(x => !isEmpty(x))
+          filter(x => !!x)
         )
         .subscribe(firebaseEmotes => {
           let newEmotesIncoming = differenceWith(

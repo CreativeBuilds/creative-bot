@@ -331,7 +331,7 @@ const Message = ({
             {!hasStickersAsText ? (
               message.content ? (
                 <MessageContent
-                  styles={styles}
+                  styles={Object.assign({}, { minHeight: '90px' }, styles)}
                   message={message}
                   src={getSticker(message.content)}
                   onClick={addSticker}

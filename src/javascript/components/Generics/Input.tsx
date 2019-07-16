@@ -2,15 +2,6 @@ import * as React from 'react';
 import { useContext, Component, useState, useEffect } from 'react';
 import { AdvancedDiv } from './AdvancedDiv';
 import { theme, ThemeContext } from '../../helpers';
-import {
-  MdSend,
-  MdPerson,
-  MdMood,
-  MdFace,
-  MdLocalMovies,
-  MdEvent,
-  MdFilterList
-} from 'react-icons/md';
 
 const TextField = ({
   text = '',
@@ -209,9 +200,6 @@ const StepperField = ({
   style = {},
   inputStyle = {}
 }) => {
-  const [isenabled, setIsEnabled] = useState(isEnabled);
-  const [valueInput, setTextInput] = useState(value);
-
   return (
     <div
       style={Object.assign(
@@ -252,6 +240,10 @@ const MessageField = ({
   const [isenabled, setIsEnabled] = useState(isEnabled);
   const [textInput, setTextInput] = useState(text);
 
+  useEffect(() => {
+    setTextInput(text);
+  }, [text]);
+
   return (
     <AdvancedDiv
       aStyle={Object.assign(
@@ -278,6 +270,55 @@ const MessageField = ({
         onKeyUp={onKeyUp}
       />
     </AdvancedDiv>
+  );
+};
+
+const SearchField = ({
+  text = '',
+  placeholderText = '',
+  width = null,
+  header = null,
+  isEnabled = true,
+  onChange = null,
+  onFocus = null,
+  onBlur = null,
+  onKeyDown = null,
+  onKeyUp = null,
+  stateTheme,
+  style = {},
+  inputStyle = {}
+}) => {
+  const [isenabled, setIsEnabled] = useState(isEnabled);
+  const [textInput, setTextInput] = useState(text);
+
+  return (
+    <div
+      style={Object.assign(
+        {},
+        Object.assign({}, width != null ? { width: width } : null, style),
+        stateTheme.input.container
+      )}
+    >
+      {header != null ? (
+        <div style={stateTheme.input.header}>{header}</div>
+      ) : null}
+      <input
+        type={'text'}
+        placeholder={placeholderText}
+        value={textInput}
+        style={Object.assign({}, inputStyle, stateTheme.input.text)}
+        onChange={e => {
+          if (!text) {
+            setTextInput(e.target.value);
+          }
+          (onChange ? onChange : () => {})(e);
+        }}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        onKeyDown={onKeyDown}
+        onKeyUp={onKeyUp}
+      />
+    </div>
   );
 };
 

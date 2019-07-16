@@ -10,7 +10,8 @@ import {
   MdVisibility,
   MdVisibilityOff,
   MdChatBubble,
-  MdChat
+  MdChat,
+  MdArrowDownward
 } from 'react-icons/md';
 
 import { Message } from './Message';
@@ -50,6 +51,8 @@ import { SetupOptionsPopup } from './SetupOptionsPopup';
 import { SetupAsExistingUserPopup } from './SetupAsExistingUserPopup';
 import { AccountsPopup } from './AccountsPopup';
 import { ChatEventsPopup } from './ChatEventsPopup';
+import { from } from 'rxjs';
+import { AdvancedDiv } from '../Generics/CreativeUI';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -842,14 +845,10 @@ const Chat = ({ props }) => {
   }, [config]);
 
   return (
-    <div style={stateTheme.base.tertiaryBackground} className={styles.Chat}>
-      <div
-        style={Object.assign(
-          {},
-          stateTheme.toolBar,
-          stateTheme.base.quinaryForeground
-        )}
-        className={styles.header}
+    <Page stateTheme={stateTheme} style={stateTheme.base.tertiaryBackground}>
+      <PageHeader
+        style={stateTheme.base.quinaryForeground}
+        stateTheme={stateTheme}
       >
         CHAT
         <div className={styles.rightContainer}>
@@ -928,17 +927,68 @@ const Chat = ({ props }) => {
             );
           }
         )}
+        {isScrolledUp ? (
+          <div
+            style={{
+              zIndex: 9,
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              position: 'absolute',
+              bottom: '70px',
+              left: '0px'
+            }}
+          >
+            <AdvancedDiv
+              style={Object.assign(
+                {},
+                {
+                  width: '40px',
+                  height: '40px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  fontSize: '30px',
+                  borderRadius: '50%'
+                },
+                stateTheme.base.tertiaryBackground
+              )}
+              hoverStyle={Object.assign({}, theme.globals.accentBackground, {
+                cursor: 'pointer'
+              })}
+            >
+              <div
+                onClick={() => {
+                  document.getElementById('bottomOfMessages').scrollIntoView();
+                }}
+                style={{
+                  color: `${theme.globals.accentBackground.color} !important`
+                }}
+              >
+                <MdArrowDownward />
+              </div>
+            </AdvancedDiv>
+          </div>
+        ) : null}
         <div id={'bottomOfMessages'} />
         {/* This is for the actual chat messages */}
-      </div>
-      <div style={stateTheme.base.secondaryBackground} className={styles.input}>
+      </PageBody>
+      <div
+        style={Object.assign(
+          {},
+          stateTheme.base.secondaryBackground,
+          stateTheme.messageBar
+        )}
+      >
         {/* TODO change maxLength to be limitless and then send messages once every 2 seconds to get around chat slowmode */}
         <MessageField
           placeholderText={'Type a Message...'}
+          text={text}
           stateTheme={stateTheme}
           onKeyDown={onEnterPress}
           onChange={e => {
-            updateText(e);
+            setText(e.target.value);
           }}
         />
         {/*<SendButton 
