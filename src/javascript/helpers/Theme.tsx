@@ -897,69 +897,6 @@ const theme = {
         padding: '5px'
       }
     },
-    menu: {
-      width: '250px',
-      height: '100vh',
-      position: 'absolute',
-      transition: 'all 0.5s',
-      top: '0',
-      'z-index': '9999999',
-      'list-style-type': 'none',
-      popout: {
-        left: '-250px',
-      },
-      toggled: {
-        left: '0',
-        'box-shadow': '5px 5px 5px rgba(0, 0, 0, 0.5)',
-      },
-      ul: {
-        'list-style-type': 'none',
-        padding: '0px',
-        margin: '0px'
-      },
-      item: {
-        header: {
-          'font-size': '24px',
-        },
-        padding: '0px',
-        margin: '0px',
-        'font-size': '20px',
-        display: 'flex',
-        'justify-content': 'center',
-        'align-items': 'center',
-        height: '48px',
-      }
-    },
-    messageBar: {
-      width: 'calc(100% - 10px)',
-      height: '48px',
-      display: 'flex',
-      border: '5px solid rgba(0, 0, 0, 0)',
-    },
-    page: {
-      width: '100%',
-      height: '100%',
-      'min-width': '275px',
-      display: 'flex',
-      'align-items': 'center',
-      'flex-direction': 'column',
-      header: {
-        height: '44px',
-        width: '100%',
-        display: 'flex',
-        'justify-content': 'center',
-        'align-items': 'center',
-        'border-bottom': '4px solid #202225',
-         'font-size': '30px',
-         position: 'relative',
-      },
-      content: {
-        flex: '1',
-        'overflow-y': 'auto',
-        width: 'calc(100% - 10px)',
-        padding: '5px',
-      }
-    },
     timeStamp: {
       color: '#AAAAAA'
     },
@@ -1806,69 +1743,6 @@ const theme = {
         'overflow-y': 'auto',
         width: 'calc(100% - 10px)',
         padding: '5px'
-      }
-    },
-    menu: {
-      width: '250px',
-      height: '100vh',
-      position: 'absolute',
-      transition: 'all 0.5s',
-      top: '0',
-      'z-index': '9999999',
-      'list-style-type': 'none',
-      popout: {
-        left: '-250px',
-      },
-      toggled: {
-        left: '0',
-        'box-shadow': '5px 5px 5px rgba(0, 0, 0, 0.5)',
-      },
-      ul: {
-        'list-style-type': 'none',
-        padding: '0px',
-        margin: '0px'
-      },
-      item: {
-        header: {
-          'font-size': '24px',
-        },
-        padding: '0px',
-        margin: '0px',
-        'font-size': '20px',
-        display: 'flex',
-        'justify-content': 'center',
-        'align-items': 'center',
-        height: '48px',
-      }
-    },
-    messageBar: {
-      width: 'calc(100% - 10px)',
-      height: '48px',
-      display: 'flex',
-      border: '5px solid rgba(0, 0, 0, 0)',
-    },
-    page: {
-      width: '100%',
-      height: '100%',
-      'min-width': '275px',
-      display: 'flex',
-      'align-items': 'center',
-      'flex-direction': 'column',
-      header: {
-        height: '44px',
-        width: '100%',
-        display: 'flex',
-        'justify-content': 'center',
-        'align-items': 'center',
-        'border-bottom': '4px solid #cccccc',
-        'font-size': '30px',
-        position: 'relative',
-      },
-      content: {
-        flex: '1',
-        'overflow-y': 'auto',
-        width: 'calc(100% - 10px)',
-        padding: '5px',
       }
     },
     timeStamp: {
