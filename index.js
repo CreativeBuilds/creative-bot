@@ -69,8 +69,6 @@ const getCustomVariables = require('./helpers/getCustomVariables');
 const parseReply = require('./helpers/parseReply');
 rxCommands.subscribe(commands => (Commands = commands));
 const rxTimers = require('./helpers/rxTimers');
-const exportBackupData = require('./helpers/exportBackupData');
-const importBackupData = require('./helpers/importBackupData');
 let { makeNewCommand, getBlockchainUsername } = require('./helpers');
 const { autoUpdater } = require('electron-updater');
 autoUpdater.allowPrerelease = true;
@@ -373,28 +371,28 @@ function createWindow() {
     process.exit();
   });
 
-  ipcMain.on('backup-data', (event, dir) => {
-    var dateObj = new Date();
-    var date =
-      String(dateObj.getDay()) +
-      '_' +
-      String(dateObj.getMonth()) +
-      '_' +
-      String(dateObj.getFullYear());
-    var time =
-      String(dateObj.getHours()).padStart(2, '0') +
-      '_' +
-      String(dateObj.getMinutes()).padStart(2, '0') +
-      '_' +
-      String(dateObj.getSeconds()).padStart(2, '0');
-    var source = storage.getDefaultDataPath();
-    exportBackupData(source, dir, 'creativebot_backup_' + date + '_' + time);
-  });
+  // ipcMain.on('backup-data', (event, dir) => {
+  //   var dateObj = new Date();
+  //   var date =
+  //     String(dateObj.getDay()) +
+  //     '_' +
+  //     String(dateObj.getMonth()) +
+  //     '_' +
+  //     String(dateObj.getFullYear());
+  //   var time =
+  //     String(dateObj.getHours()).padStart(2, '0') +
+  //     '_' +
+  //     String(dateObj.getMinutes()).padStart(2, '0') +
+  //     '_' +
+  //     String(dateObj.getSeconds()).padStart(2, '0');
+  //   var source = storage.getDefaultDataPath();
+  //   exportBackupData(source, dir, 'creativebot_backup_' + date + '_' + time);
+  // });
 
-  ipcMain.on('import-backup-data', (event, source) => {
-    var dir = storage.getDefaultDataPath();
-    importBackupData(path.resolve(source), path.resolve(dir));
-  });
+  // ipcMain.on('import-backup-data', (event, source) => {
+  //   var dir = storage.getDefaultDataPath();
+  //   importBackupData(path.resolve(source), path.resolve(dir));
+  // });
 
   ipcMain.on('triggerBannerMessage', (event, bannerMessage) => {
     event.sender.send('show-bannermessage', [bannerMessage]);
