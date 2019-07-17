@@ -249,13 +249,13 @@ class RouterWrapper extends Component<any, any> {
       this.setState({ livestream });
     });
 
-    ipcRenderer.on('new-update', event => {
-      this.addPopup(
-        <UpdatePopup closeCurrentPopup={this.closeCurrentPopup} />,
-        false,
-        true
-      );
-    });
+    // ipcRenderer.on('new-update', event => {
+    //   this.addPopup(
+    //     <UpdatePopup closeCurrentPopup={this.closeCurrentPopup} />,
+    //     false,
+    //     true
+    //   );
+    // });
 
     firebaseConfig$.subscribe(Config => {
       this.setState({ config: Config });
