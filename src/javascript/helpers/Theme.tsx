@@ -10,7 +10,9 @@ const theme = {
       borderColor: '#ffd300'
     },
     accentFillColor: {
-      fill: '#ffd300'
+      fill: '#ffd300',
+      stroke: '#ffd300',
+      color: '#ffd300'
     },
     accentHighlight: {
       highlightColor: '#ffd300',

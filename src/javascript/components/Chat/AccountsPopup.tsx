@@ -57,15 +57,7 @@ const AccountsPopup = ({
   return (
     <div style={stateTheme.popup.dialog.content}>
       <h2>Account Settings</h2>
-      <div
-        style={{
-          flex: 1,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column'
-        }}
-      >
+      <div style={stateTheme.popup.dialog.content.seventyWidth} >
         {!!config.authKey ? (
           <DestructiveButton 
             title={"Reconnect Bot Account"} 
@@ -94,24 +86,27 @@ const AccountsPopup = ({
               closeCurrentPopup();
             }} />
         ) : null}
+        <div style={stateTheme.popup.dialog.buttonStack}>
+          <Button 
+          title={"Close"} 
+          isSubmit={true} 
+          buttonStyle={{ width: '100%'}}
+          stateTheme={stateTheme}  
+          onClick={() => {
+              // Check to see if a change has happened
+              if (needRestart()) {
+                saveToDB(config);
+                setTimeout(() => {
+                  ipcRenderer.send('shutdown');
+                }, 250);
+              }
+              closeCurrentPopup();
+            }} />
+        {needRestart() ? (
+          <i style={{ marginTop: '5px' }}>Bot will need to be restarted...</i>
+        ) : null}
+        </div>
       </div>
-      <Button 
-        title={"Close"} 
-        isSubmit={true} 
-        stateTheme={stateTheme}  
-        onClick={() => {
-            // Check to see if a change has happened
-            if (needRestart()) {
-              saveToDB(config);
-              setTimeout(() => {
-                ipcRenderer.send('shutdown');
-              }, 250);
-            }
-            closeCurrentPopup();
-          }} />
-      {needRestart() ? (
-        <i style={{ marginTop: '5px' }}>Bot will need to be restarted...</i>
-      ) : null}
     </div>
   );
 };

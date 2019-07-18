@@ -266,13 +266,14 @@ const ChatEventsPopup = ({
                     </div>
                     <IconButton
                       icon={
-                        <MdPlayArrow style={{ height: '25px', width: '25px' }} />
+                        <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
                       }
                       stateTheme={stateTheme}
                       buttonStyle={{
-                        marginTop: '21px',
+                        marginTop: '30px',
                         marginBottom: '10px',
-                        maxHeight: '30px'
+                        maxHeight: '30px',
+                        height: '30px',
                       }}
                       onClick={() => {}}
                     />
@@ -301,13 +302,14 @@ const ChatEventsPopup = ({
                     </div>
                     <IconButton
                       icon={
-                        <MdPlayArrow style={{ height: '25px', width: '25px' }} />
+                        <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
                       }
                       stateTheme={stateTheme}
                       buttonStyle={{
-                        marginTop: '21px',
+                        marginTop: '30px',
                         marginBottom: '10px',
-                        maxHeight: '30px'
+                        maxHeight: '30px',
+                        height: '30px',
                       }}
                       onClick={() => {}}
                     />
@@ -334,13 +336,14 @@ const ChatEventsPopup = ({
                     </div>
                     <IconButton
                       icon={
-                        <MdPlayArrow style={{ height: '25px', width: '25px' }} />
+                        <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
                       }
                       stateTheme={stateTheme}
                       buttonStyle={{
-                        marginTop: '21px',
+                        marginTop: '30px',
                         marginBottom: '10px',
-                        maxHeight: '30px'
+                        maxHeight: '30px',
+                        height: '30px',
                       }}
                       onClick={() => {}}
                     />
@@ -397,13 +400,14 @@ const ChatEventsPopup = ({
                     </div>
                     <IconButton
                       icon={
-                        <MdPlayArrow style={{ height: '25px', width: '25px' }} />
+                        <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
                       }
                       stateTheme={stateTheme}
                       buttonStyle={{
-                        marginTop: '21px',
+                        marginTop: '30px',
                         marginBottom: '10px',
-                        maxHeight: '30px'
+                        maxHeight: '30px',
+                        height: '30px',
                       }}
                       onClick={() => {}}
                     />
@@ -430,13 +434,14 @@ const ChatEventsPopup = ({
                     </div>
                     <IconButton
                       icon={
-                        <MdPlayArrow style={{ height: '25px', width: '25px' }} />
+                        <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
                       }
                       stateTheme={stateTheme}
                       buttonStyle={{
-                        marginTop: '21px',
+                        marginTop: '30px',
                         marginBottom: '10px',
-                        maxHeight: '30px'
+                        maxHeight: '30px',
+                        height: '30px',
                       }}
                       onClick={() => {}}
                     />
@@ -463,13 +468,14 @@ const ChatEventsPopup = ({
                     </div>
                     <IconButton
                       icon={
-                        <MdPlayArrow style={{ height: '25px', width: '25px' }} />
+                        <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
                       }
                       stateTheme={stateTheme}
                       buttonStyle={{
-                        marginTop: '21px',
+                        marginTop: '30px',
                         marginBottom: '10px',
-                        maxHeight: '30px'
+                        maxHeight: '30px',
+                        height: '30px',
                       }}
                       onClick={() => {}}
                     />
@@ -496,13 +502,14 @@ const ChatEventsPopup = ({
                     </div>
                     <IconButton
                       icon={
-                        <MdPlayArrow style={{ height: '25px', width: '25px' }} />
+                        <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
                       }
                       stateTheme={stateTheme}
                       buttonStyle={{
-                        marginTop: '21px',
+                        marginTop: '30px',
                         marginBottom: '10px',
-                        maxHeight: '30px'
+                        maxHeight: '30px',
+                        height: '30px',
                       }}
                       onClick={() => {}}
                     />
@@ -529,13 +536,14 @@ const ChatEventsPopup = ({
                     </div>
                     <IconButton
                       icon={
-                        <MdPlayArrow style={{ height: '25px', width: '25px' }} />
+                        <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
                       }
                       stateTheme={stateTheme}
                       buttonStyle={{
-                        marginTop: '21px',
+                        marginTop: '30px',
                         marginBottom: '10px',
-                        maxHeight: '30px'
+                        maxHeight: '30px',
+                        height: '30px',
                       }}
                       onClick={() => {}}
                     />

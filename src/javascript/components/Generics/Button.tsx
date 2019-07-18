@@ -146,6 +146,7 @@ const IconButton = ({
   isEnabled = true,
   onClick = null,
   stateTheme,
+  style = {},
   buttonStyle = {}
 }) => {
   return (
@@ -155,23 +156,25 @@ const IconButton = ({
         !isEnabled ? stateTheme.button.normal.disabled : null,
         Object.assign(
           {},
+          Object.assign({}, stateTheme.button.sender, style),
           Object.assign({}, stateTheme.base.quinaryBackground, {
             borderColor: 'transparent'
-          }),
-          stateTheme.button.sender
+          })
         )
       )}
       hoverStyle={Object.assign(
         {},
         Object.assign({}, theme.globals.accentFillColor, {
-          borderColor: theme.globals.accentBorderColor.borderColor
+          borderColor: theme.globals.accentBorderColor.borderColor,
+          fill: theme.globals.accentBackground.backgroundColor 
         }),
         stateTheme.button.sender.hover
       )}
       isButton={true}
       aStyle={buttonStyle}
+      onClick={onClick}
     >
-      <div onClick={onClick}>{icon}</div>
+      {icon}
     </AdvancedDiv>
   );
 };
@@ -196,7 +199,9 @@ const WidgetButton = ({
       )}
       hoverStyle={Object.assign(
         {},
-        { cursor: 'pointer' },
+        { 
+          cursor: 'pointer'
+        },
         theme.globals.accentFillColor
       )}
       isButton={true}

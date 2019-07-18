@@ -987,11 +987,25 @@ const Chat = ({ props }) => {
           onClick={openTidyClips} />*/}
         <IconButton
           icon={<MdFace />}
+          style={{ 
+            padding: '5px'  
+          }}
+          buttonStyle={{
+            maxHeight: '48px',
+            height: '48px'
+          }}
           stateTheme={stateTheme}
           onClick={openStickerPanel}
         />
         <IconButton
           icon={<MdSend />}
+          style={{ 
+            padding: '5px'  
+          }}
+          buttonStyle={{
+            maxHeight: '48px',
+            height: '48px'
+          }}
           stateTheme={stateTheme}
           onClick={sendMessage}
         />

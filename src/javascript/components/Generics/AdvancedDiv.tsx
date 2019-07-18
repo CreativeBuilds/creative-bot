@@ -10,6 +10,7 @@ interface IProps {
   hoverStyle?: {};
   isButton?: Boolean;
   buttonStyle?: {};
+  onClick?: () => VoidFunction;
   children: any;
 }
 
@@ -20,7 +21,8 @@ export const AdvancedDiv = (props: IProps) => {
     className = '',
     hoverClassName = '',
     style = {},
-    hoverStyle = {}
+    hoverStyle = {},
+    onClick = null
   } = props;
   const [hover, setHover] = useState(false);
 
@@ -39,6 +41,7 @@ export const AdvancedDiv = (props: IProps) => {
       }}
       style={aStyle}
       className={aClassName}
+      onClick={onClick}
     >
       {React.cloneElement(props.children, {
         isHovering: hover,
