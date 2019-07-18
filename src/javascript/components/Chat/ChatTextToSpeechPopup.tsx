@@ -17,9 +17,6 @@ import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
 
-const styles: any = require('./Chat.scss');
-const segStyles: any = require('../SegmentControl/SegmentControl.scss');
-
 interface popup {
   styles: any;
   stateTheme: any;
@@ -79,9 +76,9 @@ const ChatTextToSpeechPopup = ({
   };
 
   return (
-    <div className={`${styles.popup}`}>
+    <div style={stateTheme.popup.dialog.content}>
       <h2>Text To Speech Settings</h2>
-      <div className={`${styles.chatFilterPopup}`}>
+      <div style={stateTheme.popup.dialog.content.seventyWidth}>
         <Toggle
           header='Enable TTS on Donations'
           type={ToggleType.stretched}
@@ -130,7 +127,7 @@ const ChatTextToSpeechPopup = ({
         />
         {/*<Slider header="Word Gap" val={ttsWordGap} valType={"ms"} maxValue={100} hasHeader={true} onChange={(e, value) => {setTTSWordGap(value); saveToDB("tts_WordGap", value);}} style={styles}/>*/}
       </div>
-      <div className={styles.buttonstack}>
+      <div style={stateTheme.popup.dialog.buttonStack}>
         <Button
           title={'Test TTS'}
           isSubmit={true}

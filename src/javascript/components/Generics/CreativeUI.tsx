@@ -3,7 +3,7 @@ import {
     Button,
     DestructiveButton,
     ActionButton,
-    SendButton,
+    IconButton,
     WidgetButton,
     LinkButton
   } from "./Button";
@@ -31,16 +31,20 @@ import {
     } from './MenuBar';
 import { Panel } from './Panel';
 import { Popup } from './Popup';
+import { ScrollView } from './ScrollView'
 import { RangeSlider } from './Slider';
 import { TitleBar } from './TitleBar';
-import { Toggle } from './Toggle';
+import { 
+    Toggle,
+    ToggleType 
+    } from './Toggle';
 
 export {
     AdvancedDiv,
     Button,
     DestructiveButton,
     ActionButton,
-    SendButton,
+    IconButton,
     WidgetButton,
     LinkButton,
     Checkbox,
@@ -60,7 +64,9 @@ export {
     MenuItem,
     Panel,
     Popup,
+    ScrollView,
     RangeSlider,
     TitleBar,
-    Toggle
+    Toggle,
+    ToggleType
 };

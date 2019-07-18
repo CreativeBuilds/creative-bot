@@ -157,7 +157,7 @@ const StickerPopup = ({
   };
 
   return (
-    <div className={styles.popup}>
+    <div style={stateTheme.popup.dialog.content}>
       <h2>Stickers</h2>
       <div className={`${styles.stickersPopup}`}>
         <div className={segStyles.segmentControl}>

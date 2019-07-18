@@ -55,7 +55,7 @@ const AccountsPopup = ({
   };
 
   return (
-    <div className={`${styles.popup}`}>
+    <div style={stateTheme.popup.dialog.content}>
       <h2>Account Settings</h2>
       <div
         style={{

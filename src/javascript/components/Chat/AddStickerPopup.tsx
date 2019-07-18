@@ -98,9 +98,9 @@ const AddStickerPopup = ({
   };
 
   return (
-    <div className={`${styles.popup}`}>
+    <div style={stateTheme.popup.dialog.content}>
       <h2>Add Sticker</h2>
-      <div className={`${styles.stickersPopup}`}>
+      <div style={stateTheme.popup.dialog.content.fullWidth}>
         <div>
           <div className={styles.sticker_container}>
             <img className={`${styles.previewSticker}`} src={`${stickerUrl}`} />
@@ -110,29 +110,29 @@ const AddStickerPopup = ({
             <span className={styles.idInfo}>{cleanId()}</span>
           </div>
         </div>
-      </div>
-      <div className={styles.buttonstack}>
-        <Button
-          title={'Send Sticker'}
-          isSubmit={true}
-          stateTheme={stateTheme}
-          buttonStyle={{ width: '-webkit-fill-available' }}
-          onClick={() => {
-            sendMessage();
-          }}
-        />
-        <Button
-          title={'Add Sticker'}
-          isSubmit={true}
-          stateTheme={stateTheme}
-          buttonStyle={{
-            width: '-webkit-fill-available',
-            'margin-left': '10px'
-          }}
-          onClick={() => {
-            save();
-          }}
-        />
+        <div style={stateTheme.popup.dialog.buttonStack}>
+          <Button
+            title={'Send Sticker'}
+            isSubmit={true}
+            stateTheme={stateTheme}
+            buttonStyle={{ width: '-webkit-fill-available' }}
+            onClick={() => {
+              sendMessage();
+            }}
+          />
+          <Button
+            title={'Add Sticker'}
+            isSubmit={true}
+            stateTheme={stateTheme}
+            buttonStyle={{
+              width: '-webkit-fill-available',
+              'margin-left': '10px'
+            }}
+            onClick={() => {
+              save();
+            }}
+          />
+        </div>
       </div>
     </div>
   );

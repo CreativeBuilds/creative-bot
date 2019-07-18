@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import { AdvancedDiv } from '../Generics/AdvancedDiv';
-
 const Page = ({ children, stateTheme, style = {} }) => {
 
   return (

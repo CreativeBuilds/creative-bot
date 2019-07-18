@@ -135,9 +135,9 @@ const ChatFiltersPopup = ({
   };
 
   return (
-    <div className={`${styles.popup}`}>
+    <div style={stateTheme.popup.dialog.content}>
       <h2>Chat Settings</h2>
-      <div className={`${styles.chatFilterPopup}`}>
+      <div style={stateTheme.popup.dialog.content.seventyWidth}>
         <Toggle
           header='Show Event Messages'
           type={ToggleType.stretched}
@@ -215,15 +215,18 @@ const ChatFiltersPopup = ({
             </div>
           }
         />
+        <div style={stateTheme.popup.dialog.buttonStack}>
+          <Button
+          title={'Close'}
+          isSubmit={true}
+          buttonStyle={{ width: '100%' }}
+          stateTheme={stateTheme}
+          onClick={() => {
+            closeCurrentPopup();
+          }}
+        />
+        </div>
       </div>
-      <Button
-        title={'Close'}
-        isSubmit={true}
-        stateTheme={stateTheme}
-        onClick={() => {
-          closeCurrentPopup();
-        }}
-      />
     </div>
   );
 };

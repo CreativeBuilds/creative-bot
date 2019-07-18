@@ -202,11 +202,25 @@ const theme = {
         padding: '10px',
         borderRadius: '5px',
         boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)',
+        buttonStack: {
+          'margin-top': '10px',
+          width: '100%', 
+          minWidth: 'unset', 
+          display: 'inline-flex'
+        },
         content: {
           display: 'flex',
           'justify-content': 'center',
           'align-items': 'center',
-          'flex-direction': 'column'
+          'flex-direction': 'column',
+          fullWidth: {
+            width: '100%',
+            minWidth: 'unset'
+          },
+          seventyWidth: {
+            width: '70%',
+            minWidth: 'unset'
+          }
         }
       },
       close: {
@@ -384,6 +398,25 @@ const theme = {
           boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
         }
       },
+      scrollDown: {
+        width: '40px',
+        height: '40px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: '30px',
+        borderRadius: '50%',
+        container: {
+          zIndex: 9,
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'absolute',
+          bottom: '70px',
+          left: '0px'
+        }
+      },
       sender: {
         cursor: 'pointer',
         'font-size': '2em',
@@ -411,7 +444,6 @@ const theme = {
         transition: 'all 0.15s ease-in-out',
         height: '100%',
         'vertical-align': 'middle',
-        'margin-bottom': '2px',
         hamburger: {
           'font-size': '2.4em',
           position: 'absolute',
@@ -897,6 +929,10 @@ const theme = {
         padding: '5px'
       }
     },
+    scrollView: {
+      width: '100%',
+      height: '100%'
+    },
     timeStamp: {
       color: '#AAAAAA'
     },
@@ -1050,11 +1086,24 @@ const theme = {
         padding: '10px',
         borderRadius: '5px',
         boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)',
+        buttonStack: {
+          width: '100%', 
+          minWidth: 'unset', 
+          display: 'inline-flex'
+        },
         content: {
           display: 'flex',
           'justify-content': 'center',
           'align-items': 'center',
-          'flex-direction': 'column'
+          'flex-direction': 'column',
+          fullWidth: {
+            width: '100%',
+            minWidth: 'unset'
+          },
+          seventyWidth: {
+            width: '70%',
+            minWidth: 'unset'
+          }
         }
       },
       close: {
@@ -1232,6 +1281,25 @@ const theme = {
           cursor: 'pointer',
           border: '1.5px solid',
           boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
+        }
+      },
+      scrollDown: {
+        width: '40px',
+        height: '40px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: '30px',
+        borderRadius: '50%',
+        container: {
+          zIndex: 9,
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'absolute',
+          bottom: '70px',
+          left: '0px'
         }
       },
       sender: {

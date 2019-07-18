@@ -24,21 +24,19 @@ import { ChatTextToSpeechPopup } from './ChatTextToSpeechPopup';
 import { firebase } from '../../helpers/firebase';
 
 import {
+  AdvancedDiv,
   Button,
-  DestructiveButton,
   ActionButton,
-  SendButton,
+  IconButton,
   WidgetButton,
-  LinkButton
-} from '../Generics/Button';
-import {
-  TextField,
+  LinkButton,
   EmailField,
   PasswordField,
-  StepperField,
-  MessageField
-} from '../Generics/Input';
-import { Page, PageHeader, PageBody } from '../Generics/Common';
+  MessageField,
+  Page, 
+  PageHeader, 
+  PageBody 
+} from '../Generics/CreativeUI';
 
 import { isEmpty, isEqual } from 'lodash';
 
@@ -51,7 +49,6 @@ import { filter, distinctUntilChanged, first } from 'rxjs/operators';
 import { AccountsPopup } from './AccountsPopup';
 import { ChatEventsPopup } from './ChatEventsPopup';
 import { from } from 'rxjs';
-import { AdvancedDiv } from '../Generics/CreativeUI';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -125,7 +122,7 @@ const AddAcceptFirebasePopup = ({
   return (
     <div style={stateTheme.popup.dialog.content}>
       <h1 style={{ marginBottom: '0px' }}>CreativeBot Sign-in</h1>
-      <div style={{ width: '70%', minWidth: 'unset' }}>
+      <div style={stateTheme.popup.dialog.content.seventyWidth}>
         <p
           style={{
             margin: 'auto',
@@ -404,7 +401,7 @@ const AddCommandPopup = ({
   };
 
   return (
-    <div className={styles.popup}>
+    <div style={stateTheme.popup.dialog.content}>
       <div className={styles.input_wrapper}>
         {noInput ? null : (
           <React.Fragment>
@@ -452,7 +449,7 @@ const LoginWithDlivePopup = ({
   type = 'text'
 }: popup) => {
   return (
-    <div className={styles.popup}>
+    <div style={stateTheme.popup.dialog.content}>
       <h3 style={{ margin: '0px', marginBottom: '5px' }}>
         BOT ACCOUNT SIGN IN!
       </h3>
@@ -886,19 +883,29 @@ const Chat = ({ props }) => {
               openChatEventsPannel();
             }}
           />
-          <div
-            className={styles.viewers}
-            onClick={() => {
-              setViewersToggle(!viewersToggle);
-            }}
-          >
-            {viewersToggle ? (
+          <WidgetButton
+            icon={viewersToggle ? (
               <MdVisibility style={{ paddingRight: '5px' }} />
             ) : (
               <MdVisibilityOff />
             )}
-            <span> {viewersToggle ? viewers : null}</span>
-          </div>
+            style={{
+              display: 'inline-flex',
+              'justify-content': 'center',
+              'align-items': 'center',
+              transition: 'all 0.15s ease-in-out',
+              height: '100%',
+              'vertical-align': 'middle',
+              'margin-bottom': '3px'
+            }}
+            stateTheme={stateTheme}
+            onClick={() => {
+              setViewersToggle(!viewersToggle);
+            }}
+            footer={
+              <span> {viewersToggle ? viewers : null}</span>
+            }
+          />
         </div>
       </PageHeader>
       <PageBody stateTheme={stateTheme} id='messages'>
@@ -928,33 +935,17 @@ const Chat = ({ props }) => {
         )}
         {isScrolledUp ? (
           <div
-            style={{
-              zIndex: 9,
-              width: '100%',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              position: 'absolute',
-              bottom: '70px',
-              left: '0px'
-            }}
+            style={stateTheme.button.scrollDown.container}
           >
             <AdvancedDiv
               style={Object.assign(
                 {},
-                {
-                  width: '40px',
-                  height: '40px',
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  fontSize: '30px',
-                  borderRadius: '50%'
-                },
+                stateTheme.button.scrollDown,
                 stateTheme.base.tertiaryBackground
               )}
               hoverStyle={Object.assign({}, theme.globals.accentBackground, {
-                cursor: 'pointer'
+                cursor: 'pointer',
+                fill: 'black'
               })}
             >
               <div
@@ -994,12 +985,12 @@ const Chat = ({ props }) => {
           icon={<MdLocalMovies />} 
           stateTheme={stateTheme} 
           onClick={openTidyClips} />*/}
-        <SendButton
+        <IconButton
           icon={<MdFace />}
           stateTheme={stateTheme}
           onClick={openStickerPanel}
         />
-        <SendButton
+        <IconButton
           icon={<MdSend />}
           stateTheme={stateTheme}
           onClick={sendMessage}

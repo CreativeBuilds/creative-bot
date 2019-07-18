@@ -140,7 +140,7 @@ const ActionButton = ({
   );
 };
 
-const SendButton = ({
+const IconButton = ({
   icon,
   width = 'auto',
   isEnabled = true,
@@ -181,6 +181,8 @@ const WidgetButton = ({
   style = null,
   isEnabled = true,
   onClick = null,
+  header = null,
+  footer = null,
   stateTheme
 }) => {
   const [isenabled, setIsEnabled] = useState(isEnabled);
@@ -200,7 +202,16 @@ const WidgetButton = ({
       isButton={true}
       aStyle={Object.assign({}, stateTheme.button.widget, style)}
     >
-      <div onClick={onClick}>{icon}</div>
+      <div 
+        onClick={onClick} 
+        style={{
+          'verticalAlign': 'middle',
+          'display': 'flex'
+      }}>
+        {header != null ? header : null}
+        {icon}
+        {footer != null ? footer : null}
+      </div>
     </AdvancedDiv>
   );
 };
@@ -252,7 +263,7 @@ export {
   Button,
   DestructiveButton,
   ActionButton,
-  SendButton,
+  IconButton,
   WidgetButton,
   LinkButton
 };
