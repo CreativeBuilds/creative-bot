@@ -11,6 +11,7 @@ interface IProps {
   isButton?: Boolean;
   buttonStyle?: {};
   onClick?: () => VoidFunction;
+  onHover?: (e?: Boolean) => void;
   children: any;
 }
 
@@ -22,7 +23,8 @@ export const AdvancedDiv = (props: IProps) => {
     hoverClassName = '',
     style = {},
     hoverStyle = {},
-    onClick = null
+    onClick = null,
+    onHover = null,
   } = props;
   const [hover, setHover] = useState(false);
 
@@ -35,9 +37,15 @@ export const AdvancedDiv = (props: IProps) => {
     <div
       onMouseEnter={() => {
         setHover(true);
+        if (onHover != null) {
+          onHover(true);
+        }
       }}
       onMouseLeave={() => {
         setHover(false);
+        if (onHover != null) {
+          onHover(false);
+        }
       }}
       style={aStyle}
       className={aClassName}

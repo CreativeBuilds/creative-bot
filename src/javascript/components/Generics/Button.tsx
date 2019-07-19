@@ -221,6 +221,28 @@ const WidgetButton = ({
   );
 };
 
+const BubbleButton = ({
+  icon,
+  style = null,
+  isEnabled = true,
+  onClick = null,
+  header = null,
+  footer = null,
+  stateTheme
+}) => {
+  const [isenabled, setIsEnabled] = useState(isEnabled);
+
+  return (
+    <AdvancedDiv 
+      aStyle={stateTheme.button.bubble} 
+      style={stateTheme.button.bubble.svg}
+      hoverStyle={stateTheme.button.bubble.hover.svg}
+      onClick={onClick}>
+      {icon}
+    </AdvancedDiv>
+  );
+};
+
 const LinkButton = ({
   title,
   isSubmit = false,
@@ -270,5 +292,6 @@ export {
   ActionButton,
   IconButton,
   WidgetButton,
+  BubbleButton,
   LinkButton
 };

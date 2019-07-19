@@ -5,6 +5,7 @@ import {
     ActionButton,
     IconButton,
     WidgetButton,
+    BubbleButton,
     LinkButton
   } from "./Button";
 import { Checkbox } from './Checkbox';
@@ -46,6 +47,7 @@ export {
     ActionButton,
     IconButton,
     WidgetButton,
+    BubbleButton,
     LinkButton,
     Checkbox,
     Page,

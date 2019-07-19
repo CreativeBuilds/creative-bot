@@ -102,12 +102,12 @@ const AddStickerPopup = ({
       <h2>Add Sticker</h2>
       <div style={stateTheme.popup.dialog.content.fullWidth}>
         <div>
-          <div className={styles.sticker_container}>
-            <img className={`${styles.previewSticker}`} src={`${stickerUrl}`} />
+          <div style={stateTheme.popup.dialog.content.addSticker.imageContainer}>
+            <img  style={stateTheme.popup.dialog.content.addSticker.imageContainer.image} src={`${stickerUrl}`} />
           </div>
-          <div className={styles.stickerIdContainer}>
-            <span className={styles.idTitle}>Sticker DLive Id:</span>
-            <span className={styles.idInfo}>{cleanId()}</span>
+          <div style={stateTheme.popup.dialog.content.addSticker.idContainer}>
+            <span style={stateTheme.popup.dialog.content.addSticker.idContainer.title}>Sticker DLive Id:</span>
+            <span style={stateTheme.popup.dialog.content.addSticker.idContainer.info}>{cleanId()}</span>
           </div>
         </div>
         <div style={stateTheme.popup.dialog.buttonStack}>

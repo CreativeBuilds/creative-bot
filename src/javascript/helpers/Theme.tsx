@@ -222,6 +222,36 @@ const theme = {
           seventyWidth: {
             width: '70%',
             minWidth: 'unset'
+          },
+          addSticker: {
+            imageContainer: {
+              position: 'relative',
+              image: {
+                'margin-left': 'auto',
+                'margin-right': 'auto',
+                display: 'block',
+                width: '150px',
+                'border-radius': '16px',
+                'user-select': 'none',
+                'box-shadow': '1px 1px 30px rgba(21, 21, 21, 0.6)',
+              }
+            },
+            idContainer: {
+              'margin-top': '10px',
+              'margin-bottom': '10px',
+              title: {
+                width: '100%',
+                display: 'block',
+                'text-align': 'center',
+                'user-select': 'none',
+              },
+              info: {
+                width: '100%',
+                display: 'block',
+                'text-align': 'center',
+                color: '#727272',
+              }
+            }
           }
         }
       },
@@ -499,6 +529,23 @@ const theme = {
             transition: 'all 0.15s'
           }
         },
+        deleteMsg: {
+          position: 'absolute',
+          top: '2px',
+          right: '5px',
+          height: '32px',
+          width: '32px',
+          transition: 'all 0.15s',
+          icon: {
+            fontSize: '1.9em',
+            top: '0',
+            left: '0',
+            right: '0',
+            bottom: '0',
+            position: 'absolute',
+            transition: 'all 0.15s'
+          }
+        },
         add: {
           position: 'absolute',
           top: '1px',
@@ -506,6 +553,42 @@ const theme = {
           'font-size': '25px'
         },
         hover: {}
+      },
+      bubble: {
+        position: 'absolute',
+        background: 'white',
+        width: '25px',
+        height: '25px',
+        'border-radius': '16px',
+        float: 'right',
+        top: '0',
+        right: '0',
+        'box-shadow': '1px 1px 30px rgba(21, 21, 21, 0.6)',
+        svg: {
+          'vertical-align': 'middle',
+          'text-align': 'center',
+          height: '16px',
+          width: '16px',
+          margin: '0px',
+          'margin-top': '4px',
+          'margin-left': '4px',
+          fill: 'Black',
+          stroke: 'black',
+        },
+        hover: {
+          display: 'block',
+          svg: {
+            fill: 'green',
+            stroke: 'green',
+            'vertical-align': 'middle',
+            'text-align': 'center',
+            height: '16px',
+            width: '16px',
+            margin: '0px',
+            'margin-top': '4px',
+            'margin-left': '4px',
+          }
+        }
       }
     },
     input: {
@@ -935,6 +1018,60 @@ const theme = {
       width: '100%',
       height: '100%'
     },
+    chatPage: {
+      message: {
+        content: {
+          flex: '1',
+          'text-align': 'left',
+          display: 'flex',
+          'align-items': 'center',
+          'vertical-align': 'middle',
+        },
+        imageContainer: {
+          display: 'table-cell',
+          position: 'relative',
+          image: {
+            'margin-left': '10px',
+            'max-height': '80px',
+            display: 'block',
+            width: '150px',
+            'border-radius': '16px',
+            'user-select': 'none',
+            'box-shadow': '1px 1px 30px rgba(21, 21, 21, 0.6)',
+          },
+          deleteBtn: {
+            display: 'none',
+            position: 'absolute',
+            background: 'white',
+            width: '25px',
+            height: '25px',
+            'border-radius': '16px',
+            float: 'right',
+            top: '0',
+            right: '0',
+            'box-shadow': '1px 1px 30px rgba(21, 21, 21, 0.6)',
+            svg: {
+              'vertical-align': 'middle',
+              'text-align': 'center',
+              height: '16px',
+              width: '16px',
+              margin: '0px',
+              'margin-top': '4px',
+              'margin-left': '4px',
+              fill: 'Black',
+              stroke: 'black',
+            },
+            hover: {
+              display: 'block',
+              svg: {
+                fill: 'green',
+                stroke: 'green'
+              }
+            }
+          }
+        },
+      }
+    },
     timeStamp: {
       color: '#AAAAAA'
     },
@@ -1105,6 +1242,36 @@ const theme = {
           seventyWidth: {
             width: '70%',
             minWidth: 'unset'
+          },
+          addSticker: {
+            imageContainer: {
+              position: 'relative',
+              image: {
+                'margin-left': 'auto',
+                'margin-right': 'auto',
+                display: 'block',
+                width: '150px',
+                'border-radius': '16px',
+                'user-select': 'none',
+                'box-shadow': '1px 1px 30px rgba(21, 21, 21, 0.6)',
+              }
+            },
+            idContainer: {
+              'margin-top': '10px',
+              'margin-bottom': '10px',
+              title: {
+                width: '100%',
+                display: 'block',
+                'text-align': 'center',
+                'user-select': 'none',
+              },
+              info: {
+                width: '100%',
+                display: 'block',
+                'text-align': 'center',
+                color: '#727272',
+              }
+            }
           }
         }
       },

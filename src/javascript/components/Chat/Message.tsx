@@ -4,6 +4,11 @@ import Styles from './Message.scss';
 import { MdClose, MdAdd } from 'react-icons/md';
 import { AddStickerPopup } from './AddStickerPopup';
 import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
+import { 
+  AdvancedDiv,
+  WidgetButton,
+  BubbleButton
+ } from '../Generics/CreativeUI';
 import {
   removeMessage,
   timeoutUser,
@@ -63,44 +68,42 @@ const MessageHeader = ({
 };
 
 const MessageContent = ({
-  styles,
+  stateTheme,
   message = null,
   evntMsg = null,
   src = null,
   onClick = null,
   contentType
 }) => {
+  const [isHovering, setHovering] = useState<Boolean>(false);
+
   return (
-    <div className={styles.message_content}>
+    <div style={stateTheme.chatPage.message.content}>
       {contentType == MessageContentType.normal ? (
-        <div className={styles.message_content}>{message.content}</div>
+        <div style={stateTheme.chatPage.message.content}>{message.content}</div>
       ) : contentType == MessageContentType.sticker ? (
-        <div className={styles.sticker_container}>
-          <div className={styles.emoteDeleteButton} onClick={onClick}>
-            <MdAdd />
+        <AdvancedDiv 
+          style={stateTheme.chatPage.message.imageContainer} 
+          onHover={(e) => { setHovering(e); }}>
+          <div>
+            {isHovering ? <BubbleButton icon={<MdAdd />} stateTheme={stateTheme} onClick={onClick} /> : null }
+            <img style={stateTheme.chatPage.message.imageContainer.image} src={src} />
           </div>
-          <img className={styles.sticker} src={src} />
-        </div>
+        </AdvancedDiv>
       ) : contentType == MessageContentType.stickerAsText ? (
-        <div className={styles.sticker_container}>
-          <div className={styles.emoteDeleteButton} onClick={onClick}>
-            <MdAdd />
+        <AdvancedDiv 
+          style={stateTheme.chatPage.message.imageContainer} 
+          onHover={(e) => { setHovering(e); }}>
+          <div>
+            {isHovering ? <BubbleButton icon={<MdAdd />} stateTheme={stateTheme} onClick={onClick} /> : null }
+            <div style={stateTheme.chatPage.message.content}>{message.content}</div>
           </div>
-          <div className={styles.message_content}>{message.content}</div>
-        </div>
+        </AdvancedDiv>
       ) : (
-        <div className={styles.message_content}>
-          <div className={styles.message_content}>{evntMsg}</div>
+        <div style={stateTheme.chatPage.message.content}>
+          <div style={stateTheme.chatPage.message.content}>{evntMsg}</div>
         </div>
       )}
-    </div>
-  );
-};
-
-const DeleteButton = ({ styles, onDelete }) => {
-  return (
-    <div className={styles.message_remove}>
-      <MdClose onClick={onDelete} />
     </div>
   );
 };
@@ -294,7 +297,7 @@ const Message = ({
             ) : null}
             {message.content ? (
               <MessageContent
-                styles={styles}
+                stateTheme={stateTheme}
                 evntMsg={eventMessage()}
                 contentType={MessageContentType.event}
               />
@@ -331,7 +334,7 @@ const Message = ({
             {!hasStickersAsText ? (
               message.content ? (
                 <MessageContent
-                  styles={Object.assign({}, { minHeight: '90px' }, styles)}
+                  stateTheme={stateTheme}
                   message={message}
                   src={getSticker(message.content)}
                   onClick={addSticker}
@@ -340,19 +343,20 @@ const Message = ({
               ) : null
             ) : message.content ? (
               <MessageContent
-                styles={styles}
+                stateTheme={stateTheme}
                 message={message}
                 onClick={addSticker}
                 contentType={MessageContentType.stickerAsText}
               />
             ) : null}
             {canDelete() ? (
-              <DeleteButton
-                styles={styles}
-                onDelete={() => {
-                  removeMessage(message.id, message.streamerBlockchainUsername);
-                }}
-              />
+              <WidgetButton 
+              icon={<MdClose style={stateTheme.button.widget.closePopup.icon}/>} 
+              stateTheme={stateTheme}
+              style={stateTheme.button.widget.deleteMsg}
+              onClick={() => {
+                removeMessage(message.id, message.streamerBlockchainUsername);
+              }}/>
             ) : null}
           </div>
         ) : null
@@ -386,19 +390,20 @@ const Message = ({
           ) : null}
           {message.content ? (
             <MessageContent
-              styles={styles}
+              stateTheme={stateTheme}
               message={message}
               contentType={MessageContentType.normal}
             />
           ) : null}
 
           {canDelete() ? (
-            <DeleteButton
-              styles={styles}
-              onDelete={() => {
+            <WidgetButton 
+              icon={<MdClose style={stateTheme.button.widget.closePopup.icon}/>} 
+              stateTheme={stateTheme}
+              style={stateTheme.button.widget.deleteMsg}
+              onClick={() => {
                 removeMessage(message.id, message.streamerBlockchainUsername);
-              }}
-            />
+              }}/>
           ) : null}
         </div>
       )}
