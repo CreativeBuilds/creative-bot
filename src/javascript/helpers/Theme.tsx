@@ -1020,6 +1020,58 @@ const theme = {
     },
     chatPage: {
       message: {
+        type: {
+          event: {
+            width: 'calc(100% - 35px)',
+            padding: '5px',
+            'text-overflow': 'wrap',
+            display: 'flex',
+            'align-items': 'center',
+            'padding-right': '30px',
+            position: 'relative',
+            'margin-bottom': '5px',
+            'border-radius': '5px',
+          },
+          normal: {
+            'font-weight': 'normal',
+            width: 'calc(100% - 35px)',
+            padding: '5px',
+            'text-overflow': 'wrap',
+            display: 'flex',
+            'align-items': 'center',
+            'padding-right': '30px',
+            position: 'relative',
+            'margin-bottom': '5px',
+            'border-radius': '5px',
+            highlighted: {
+              border: '2px solid rgba(0, 0, 0, 0)',
+            }
+          }
+        },
+        header: {
+          'margin-right': '10px',
+          'user-select': 'none',
+          container: {
+            display: 'inline-block',
+            'vertical-align': 'middle',
+          },
+          timestamp: {
+            display: 'inline-block',
+            'vertical-align': 'middle',
+            'margin-right': '5px',
+            color: '#AAAAAA'
+          },
+          username: {
+            display: 'inline-block',
+            'margin-left': '5px',
+            'vertical-align': 'middle',
+            cursor: 'pointer'
+          },
+          image: {
+            'vertical-align': 'middle',
+            'border-radius': '50%',
+          }
+        },
         content: {
           flex: '1',
           'text-align': 'left',
@@ -1038,42 +1090,9 @@ const theme = {
             'border-radius': '16px',
             'user-select': 'none',
             'box-shadow': '1px 1px 30px rgba(21, 21, 21, 0.6)',
-          },
-          deleteBtn: {
-            display: 'none',
-            position: 'absolute',
-            background: 'white',
-            width: '25px',
-            height: '25px',
-            'border-radius': '16px',
-            float: 'right',
-            top: '0',
-            right: '0',
-            'box-shadow': '1px 1px 30px rgba(21, 21, 21, 0.6)',
-            svg: {
-              'vertical-align': 'middle',
-              'text-align': 'center',
-              height: '16px',
-              width: '16px',
-              margin: '0px',
-              'margin-top': '4px',
-              'margin-left': '4px',
-              fill: 'Black',
-              stroke: 'black',
-            },
-            hover: {
-              display: 'block',
-              svg: {
-                fill: 'green',
-                stroke: 'green'
-              }
-            }
           }
         },
       }
-    },
-    timeStamp: {
-      color: '#AAAAAA'
     },
     dashedBorder: {
       border: '3px dashed #f0f0f0',
@@ -1982,8 +2001,81 @@ const theme = {
         padding: '5px'
       }
     },
-    timeStamp: {
-      color: '#555555'
+    chatPage: {
+      message: {
+        type: {
+          event: {
+            width: 'calc(100% - 35px)',
+            padding: '5px',
+            'text-overflow': 'wrap',
+            display: 'flex',
+            'align-items': 'center',
+            'padding-right': '30px',
+            position: 'relative',
+            'margin-bottom': '5px',
+            'border-radius': '5px',
+          },
+          normal: {
+            'font-weight': 'normal',
+            width: 'calc(100% - 35px)',
+            padding: '5px',
+            'text-overflow': 'wrap',
+            display: 'flex',
+            'align-items': 'center',
+            'padding-right': '30px',
+            position: 'relative',
+            'margin-bottom': '5px',
+            'border-radius': '5px',
+            highlighted: {
+              border: '2px solid rgba(0, 0, 0, 0)',
+            }
+          }
+        },
+        header: {
+          'margin-right': '10px',
+          'user-select': 'none',
+          container: {
+            display: 'inline-block',
+            'vertical-align': 'middle',
+          },
+          timestamp: {
+            display: 'inline-block',
+            'vertical-align': 'middle',
+            'margin-right': '5px',
+            color: '#484848'
+          },
+          username: {
+            display: 'inline-block',
+            'margin-left': '5px',
+            'vertical-align': 'middle',
+            cursor: 'pointer'
+          },
+          image: {
+            'vertical-align': 'middle',
+            'border-radius': '50%',
+          }
+        },
+        content: {
+          flex: '1',
+          'text-align': 'left',
+          display: 'flex',
+          'align-items': 'center',
+          'vertical-align': 'middle',
+        },
+        imageContainer: {
+          display: 'table-cell',
+          position: 'relative',
+          image: {
+            'margin-left': '10px',
+            'max-height': '80px',
+            display: 'block',
+            width: '150px',
+            'border-radius': '16px',
+            'user-select': 'none',
+            'box-shadow': '1px 1px 30px rgba(21, 21, 21, 0.6)',
+          }
+        },
+      }
     },
     dashedBorder: {
       border: '3px dashed #202225',

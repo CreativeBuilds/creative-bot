@@ -32,7 +32,6 @@ enum MessageContentType {
 
 const MessageHeader = ({
   stateTheme,
-  styles,
   message,
   onClick,
   headerType,
@@ -41,25 +40,21 @@ const MessageHeader = ({
 }) => {
   return (
     <div
-      className={
-        headerType == MessageHeaderType.normal
-          ? styles.messageHeader
-          : `${styles.messageHeader}`
-      }
+      style={stateTheme.chatPage.message.header}
     >
       {hasTimestamp ? (
-        <div className={styles.timestampContainer}>
-          <span style={stateTheme.timeStamp}>
+        <div style={stateTheme.chatPage.message.header.timestamp}>
+          <span>
             {hasTimestampAsDigital
               ? message.Msg_timestamp_digital
               : message.Msg_timestamp}
           </span>
         </div>
       ) : null}
-      <div className={styles.image_container}>
-        <img src={message.sender.avatar} width={26} height={26} />
+      <div style={stateTheme.chatPage.message.header.container}>
+        <img style={stateTheme.chatPage.message.header.image} src={message.sender.avatar} width={26} height={26} />
       </div>
-      <span className={styles.username_container} onClick={onClick}>
+      <span style={stateTheme.chatPage.message.header.username} onClick={onClick}>
         {message.sender.dliveUsername}
         {': '}
       </span>
@@ -109,7 +104,6 @@ const MessageContent = ({
 };
 
 const Message = ({
-  styles,
   Config,
   message,
   nth,
@@ -269,7 +263,6 @@ const Message = ({
         stickerDLiveId={message.content.replace('channel', 'mine')}
         stickerUrl={getSticker(message.content)}
         stateTheme={stateTheme}
-        styles={styles}
         Config={Object.assign({}, config)}
         text={<span>Stickers</span>}
         closeCurrentPopup={closeCurrentPopup}
@@ -281,11 +274,10 @@ const Message = ({
     <div>
       {isEvent() ? (
         hasFilteredEvents ? (
-          <div className={styles.messageEvent}>
+          <div style={Object.assign({}, theme.globals.accentBackground, stateTheme.chatPage.message.type.event)}>
             {message.sender ? (
               <MessageHeader
                 stateTheme={stateTheme}
-                styles={styles}
                 message={message}
                 headerType={MessageHeaderType.event}
                 hasTimestamp={hasFilteredTimestamps}
@@ -307,21 +299,21 @@ const Message = ({
       ) : isSticker() ? (
         hasFilteredStickers ? (
           <div
-            className={`${styles.message} ${
-              message.content.toLowerCase().includes(ownerName)
-                ? Styles.highlighted
-                : ''
-            }`}
             style={Object.assign(
               {},
+              Object.assign({},
               stateTheme.cell.normal,
-              nth % 2 ? stateTheme.cell.alternate : {}
+              nth % 2 ? stateTheme.cell.alternate : {}),
+              Object.assign({},
+                message.content.toLowerCase().includes(ownerName)
+                ? Object.assign({}, theme.globals.accentDarkBorderColor, stateTheme.chatPage.message.type.normal.highlighted)
+                : null,
+                stateTheme.chatPage.message.type.normal)
             )}
           >
             {message.sender ? (
               <MessageHeader
                 stateTheme={stateTheme}
-                styles={styles}
                 message={message}
                 headerType={MessageHeaderType.normal}
                 hasTimestamp={hasFilteredTimestamps}
@@ -362,23 +354,21 @@ const Message = ({
         ) : null
       ) : (
         <div
-          className={`${styles.message} ${
-            message.content
-              ? message.content.toLowerCase().includes(ownerName)
-                ? Styles.highlighted
-                : ''
-              : ''
-          }`}
-          style={Object.assign(
-            {},
-            stateTheme.cell.normal,
-            nth % 2 ? stateTheme.cell.alternate : {}
-          )}
+        style={Object.assign(
+          {},
+          Object.assign({},
+          stateTheme.cell.normal,
+          nth % 2 ? stateTheme.cell.alternate : {}),
+          Object.assign({},
+            message.content.toLowerCase().includes(ownerName)
+            ? Object.assign({}, theme.globals.accentDarkBorderColor, stateTheme.chatPage.message.type.normal.highlighted)
+            : null,
+            stateTheme.chatPage.message.type.normal)
+        )}
         >
           {message.sender ? (
             <MessageHeader
               stateTheme={stateTheme}
-              styles={styles}
               message={message}
               headerType={MessageHeaderType.normal}
               hasTimestamp={hasFilteredTimestamps}

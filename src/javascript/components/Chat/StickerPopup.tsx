@@ -10,7 +10,8 @@ import {
   MdSentimentDissatisfied
 } from 'react-icons/md';
 
-import { Message } from './Message';
+import { ScrollView } from '../Generics/CreativeUI';
+
 import { firebaseEmotes$, setRxEmotes } from '../../helpers/rxEmotes';
 import { Action } from 'rxjs/internal/scheduler/Action';
 
@@ -176,7 +177,27 @@ const StickerPopup = ({
           </div>
           <div className={segStyles.segmentBody}>
             <div className={segStyles.segmentView}>
-              <div className={styles.gridView}>
+              <ScrollView stateTheme={stateTheme}>
+              {/*<Emote
+                  stickerDLiveId={':emote/mine/dlive-53093718/36d1544a90081e3_300300:'}
+                  stickerUrl={'https://images.prd.dlivecdn.com/emote/37a2e5297000955_288300'}
+                  canDelete={false}
+                  />
+                  <Emote
+                  stickerDLiveId={':emote/mine/dlive-53093718/36d1544a90081e3_300300:'}
+                  stickerUrl={'https://images.prd.dlivecdn.com/emote/37a2e5297000955_288300'}
+                  canDelete={false}
+                  />
+                  <Emote
+                  stickerDLiveId={':emote/mine/dlive-53093718/36d1544a90081e3_300300:'}
+                  stickerUrl={'https://images.prd.dlivecdn.com/emote/37a2e5297000955_288300'}
+                  canDelete={false}
+                  />
+                  <Emote
+                  stickerDLiveId={':emote/mine/dlive-53093718/36d1544a90081e3_300300:'}
+                  stickerUrl={'https://images.prd.dlivecdn.com/emote/37a2e5297000955_288300'}
+                  canDelete={false}
+              />*/}
                 {emotesList.length > 0 ? (
                   emotesList.map(i => (
                     <Emote
@@ -192,7 +213,7 @@ const StickerPopup = ({
                     <h3>{noStickerErrorMsg[index]}</h3>
                   </div>
                 )}
-              </div>
+              </ScrollView>
             </div>
           </div>
         </div>

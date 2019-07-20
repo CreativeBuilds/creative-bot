@@ -20,7 +20,6 @@ interface popup {
   stickerUrl: String;
   stickerDLiveId: String;
   stickerId: String;
-  styles: any;
   stateTheme: any;
   text?: string | Function | Element | any;
   Config?: any;
@@ -32,7 +31,6 @@ const AddStickerPopup = ({
   stickerId,
   stickerDLiveId,
   stickerUrl,
-  styles,
   stateTheme,
   text = '',
   Config = {},

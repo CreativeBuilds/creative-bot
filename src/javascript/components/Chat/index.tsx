@@ -920,7 +920,6 @@ const Chat = ({ props }) => {
               <Message
                 addPopup={addPopup}
                 Config={config}
-                styles={styles}
                 message={message}
                 closeCurrentPopup={closeCurrentPopup}
                 stateTheme={stateTheme}
