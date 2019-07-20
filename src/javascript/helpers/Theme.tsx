@@ -1578,6 +1578,42 @@ const theme = {
           'font-size': '25px'
         },
         hover: {}
+      },
+      bubble: {
+        position: 'absolute',
+        background: 'white',
+        width: '25px',
+        height: '25px',
+        'border-radius': '16px',
+        float: 'right',
+        top: '0',
+        right: '0',
+        'box-shadow': '1px 1px 30px rgba(21, 21, 21, 0.6)',
+        svg: {
+          'vertical-align': 'middle',
+          'text-align': 'center',
+          height: '16px',
+          width: '16px',
+          margin: '0px',
+          'margin-top': '4px',
+          'margin-left': '4px',
+          fill: 'Black',
+          stroke: 'black',
+        },
+        hover: {
+          display: 'block',
+          svg: {
+            fill: 'green',
+            stroke: 'green',
+            'vertical-align': 'middle',
+            'text-align': 'center',
+            height: '16px',
+            width: '16px',
+            margin: '0px',
+            'margin-top': '4px',
+            'margin-left': '4px',
+          }
+        }
       }
     },
     input: {
