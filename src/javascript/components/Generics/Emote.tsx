@@ -7,7 +7,7 @@ import { MdClose } from 'react-icons/md';
 import { 
   AdvancedDiv,
   BubbleButton
- } from '../Generics/CreativeUI';
+ } from './CreativeUI';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
