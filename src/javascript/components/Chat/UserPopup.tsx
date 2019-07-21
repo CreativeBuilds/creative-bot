@@ -4,9 +4,16 @@ import { MdClose, MdTimer, MdDoNotDisturb, MdCancel } from 'react-icons/md';
 import { removeMessage } from '../../helpers/removeMessage';
 import ReactTooltip from 'react-tooltip';
 
-import { Toggle, ToggleType } from '../Generics/Toggle';
-import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
-import { TextField, StepperField } from '../Generics/Input';
+import { 
+  Toggle, 
+  ToggleType, 
+  Button,
+  WidgetButton, 
+  DestructiveButton, 
+  ActionButton, 
+  TextField, 
+  StepperField 
+} from '../Generics/CreativeUI';
 
 import { firebaseUsers$, setRxUsers } from '../../helpers/rxUsers';
 
@@ -83,7 +90,9 @@ const UserPopup = ({
                 style={stateTheme.chatPage.userPopup.actions}>
                 <div data-tip='Remove Message'>
                   {canDelete ? (
-                    <MdCancel
+                    <WidgetButton 
+                      icon={<MdCancel />}
+                      stateTheme={stateTheme}
                       style={stateTheme.chatPage.userPopup.actions.item}
                       onClick={() => {
                         deleteMessage();
@@ -94,7 +103,9 @@ const UserPopup = ({
                 </div>
                 <div data-tip='Timeout for 5 Minutes'>
                   {canDelete ? (
-                    <MdTimer
+                    <WidgetButton 
+                      icon={<MdTimer />}
+                      stateTheme={stateTheme}
                       style={stateTheme.chatPage.userPopup.actions.item}
                       onClick={() => {
                         timeoutUser();
@@ -103,12 +114,14 @@ const UserPopup = ({
                   ) : null}
                 </div>
                 <div data-tip='Ban User'>
-                  <MdDoNotDisturb
+                  <WidgetButton 
+                    icon={<MdDoNotDisturb />}
+                    stateTheme={stateTheme}
                     style={stateTheme.chatPage.userPopup.actions.item}
                     onClick={() => {
                       muteUser();
                     }}
-                  />
+                    />
                 </div>
 
                 <ReactTooltip />
