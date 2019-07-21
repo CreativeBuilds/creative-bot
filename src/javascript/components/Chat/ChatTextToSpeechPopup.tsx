@@ -17,7 +17,6 @@ const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
 
 interface popup {
-  styles: any;
   stateTheme: any;
   text?: string | Function | Element | any;
   Config?: any;
@@ -27,7 +26,6 @@ interface popup {
 let timeout;
 
 const ChatTextToSpeechPopup = ({
-  styles,
   stateTheme,
   text = '',
   Config = {},
@@ -97,7 +95,6 @@ const ChatTextToSpeechPopup = ({
             setTTSAmplitude(value);
             saveToDB('tts_Amplitude', value);
           }}
-          style={styles}
           stateTheme={stateTheme}
         />
         <RangeSlider
@@ -109,7 +106,6 @@ const ChatTextToSpeechPopup = ({
             setTTSPitch(value);
             saveToDB('tts_Pitch', value);
           }}
-          style={styles}
           stateTheme={stateTheme}
         />
         <RangeSlider
@@ -121,7 +117,6 @@ const ChatTextToSpeechPopup = ({
             setTTSSpeed(value);
             saveToDB('tts_Speed', value);
           }}
-          style={styles}
           stateTheme={stateTheme}
         />
         {/*<Slider header="Word Gap" val={ttsWordGap} valType={"ms"} maxValue={100} hasHeader={true} onChange={(e, value) => {setTTSWordGap(value); saveToDB("tts_WordGap", value);}} style={styles}/>*/}

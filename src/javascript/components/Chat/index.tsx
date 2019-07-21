@@ -35,7 +35,8 @@ import {
   Message,
   Page, 
   PageHeader, 
-  PageBody 
+  PageBody, 
+  TextField
 } from '../Generics/CreativeUI';
 
 import { isEmpty, isEqual } from 'lodash';
@@ -57,9 +58,9 @@ const { BrowserWindow } = remote;
 let authKey = false;
 let streamerDisplayName = false;
 
-const styles: any = require('./Chat.scss');
+//const styles: any = require('./Chat.scss');
+
 interface popup {
-  styles: any;
   closeCurrentPopup?: any;
   addPopup: any;
   stateTheme: any;
@@ -77,7 +78,6 @@ function validateStringForEmail(email) {
 }
 
 const AddAcceptFirebasePopup = ({
-  styles,
   closeCurrentPopup,
   stateTheme,
   configName,
@@ -331,7 +331,6 @@ const AddAcceptFirebasePopup = ({
 };
 
 const AddCommandPopup = ({
-  styles,
   closeCurrentPopup,
   stateTheme,
   configName,
@@ -402,31 +401,32 @@ const AddCommandPopup = ({
 
   return (
     <div style={stateTheme.popup.dialog.content}>
-      <div className={styles.input_wrapper}>
+      <div style={stateTheme.popup.dialog.content.seventyWidth}>
         {noInput ? null : (
           <React.Fragment>
-            <div className={styles.input_name}>{configName}</div>
-            <input
-              className={styles.input}
-              onKeyDown={keyDown}
-              type={type}
-              onChange={e => {
+            <TextField 
+              header={configName} 
+              stateTheme={stateTheme} 
+              onKeyDown={keyDown} 
+              onChange={e => { 
                 verifyInput(e.target.value);
               }}
-              value={name}
-            />
+              text={name}/>
           </React.Fragment>
         )}
       </div>
       <div
-        className={styles.helper_text}
-        style={isError() ? { color: 'red' } : {}}
+        style={Object.assign({}, 
+          isError() ? { color: 'red' } : {}, 
+          stateTheme.popup.dialog.helperText)
+        }
       >
         {helperText}
       </div>
       <Button
         title={buttonText}
         isSubmit={true}
+        buttonStyle={{ width: '70%', marginTop: '10px' }}
         isEnabled={error ? false : true}
         stateTheme={stateTheme}
         onClick={() => {
@@ -438,7 +438,6 @@ const AddCommandPopup = ({
 };
 
 const LoginWithDlivePopup = ({
-  styles,
   closeCurrentPopup,
   stateTheme,
   configName,
@@ -458,7 +457,7 @@ const LoginWithDlivePopup = ({
           textAlign: 'center',
           width: '70%',
           margin: 'auto',
-          marginBottom: '10px'
+          marginBottom: '15px'
         }}
       >
         Please do not use your streamer account,{' '}
@@ -466,40 +465,15 @@ const LoginWithDlivePopup = ({
       </i>
       <div
         style={{
-          display: 'flex',
+          display: 'block',
           justifyContent: 'center',
-          alignItems: 'center'
+          alignItems: 'center',
+          width: '70%',
         }}
       >
-        {/* TODO: This is going to need a Generic button file */}
-        {/*<AdvancedDiv
-          style={{
-            whiteSpace: 'nowrap',
-            width: 'min-content',
-            padding: '10px',
-            background: theme.globals.actionButton.backgroundColor,
-            color: theme.globals.actionButton.color,
-            borderRadius: '5px'
-          }}
-          hoverStyle={{
-            cursor: 'pointer',
-            boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
-          }}
-        >
-          <div
-            onClick={e => {
-              // Need to create a popup that is oauth for dlive
-              ipcRenderer.send('oauthWindowStart');
-              ipcRenderer.once('newAuthKey', (event, key) => {
-                closeCurrentPopup(key);
-              });
-            }}
-          >
-            Sign-in With DLive
-          </div>
-        </AdvancedDiv>*/}
         <ActionButton
           title={'Save'}
+          buttonStyle={{ width: '100%' }}
           stateTheme={stateTheme}
           onClick={e => {
             // Need to create a popup that is oauth for dlive
@@ -507,6 +481,22 @@ const LoginWithDlivePopup = ({
             ipcRenderer.once('newAuthKey', (event, key) => {
               closeCurrentPopup(key);
             });
+          }}
+        />
+        <LinkButton
+          title={'Sign Out'}
+          buttonStyle={{ width: '100%', marginBottom: '0px !important' }}
+          stateTheme={stateTheme}
+          onClick={() => {
+            firebase
+              .auth()
+              .signOut()
+              .then(() => {
+                ipcRenderer.send('logout');
+                setTimeout(() => {
+                  window.close();
+                }, 500);
+              });
           }}
         />
       </div>
@@ -665,7 +655,6 @@ const Chat = ({ props }) => {
       streamerDisplayName = true;
       addPopup(
         <AddCommandPopup
-          styles={styles}
           addPopup={addPopup}
           closeCurrentPopup={(input, setError) => {
             if (input !== '') {
@@ -711,7 +700,6 @@ const Chat = ({ props }) => {
       authKey = true;
       addPopup(
         <LoginWithDlivePopup
-          styles={styles}
           addPopup={addPopup}
           Config={Object.assign({}, config)}
           closeCurrentPopup={(input, setError) => {
@@ -730,8 +718,7 @@ const Chat = ({ props }) => {
             <div>
               Check the instructions on how to get your Auth Key from DLive{' '}
               <span
-                className={styles.link}
-                style={{ color: theme.globals.accentHighlight.highlightColor }}
+                style={Object.assign({}, { color: theme.globals.accentHighlight.highlightColor }, stateTheme.text.link)}
                 onClick={e => {
                   e.preventDefault();
                   shell.openExternal(
@@ -755,7 +742,6 @@ const Chat = ({ props }) => {
     if (config.acceptedToS && typeof config.isFirebaseUser === 'undefined') {
       addPopup(
         <AddAcceptFirebasePopup
-          styles={styles}
           addPopup={addPopup}
           closeCurrentPopup={obj => {
             let Config = Object.assign(
@@ -805,7 +791,6 @@ const Chat = ({ props }) => {
     if (!config.acceptedToS && config.init) {
       addPopup(
         <AddCommandPopup
-          styles={styles}
           addPopup={addPopup}
           closeCurrentPopup={() => {
             let Config = Object.assign({}, { acceptedToS: true }, config);
@@ -816,7 +801,7 @@ const Chat = ({ props }) => {
           configName={''}
           text={
             <span>
-              Welcome to Creative's Chat Bot!
+              <h3 style={{ marginBottom: '5px' }}>Welcome to Creative's Chat Bot!</h3>
               <br /> Before we can do cool things, you're going to have to fill
               in some config options...
               <br />
@@ -843,7 +828,7 @@ const Chat = ({ props }) => {
         stateTheme={stateTheme}
       >
         CHAT
-        <div className={styles.rightContainer}>
+        <div style={stateTheme.page.header.rightContainer}>
           <WidgetButton
             icon={<MdSettingsVoice />}
             stateTheme={stateTheme}
@@ -851,7 +836,6 @@ const Chat = ({ props }) => {
               addPopup(
                 <ChatTextToSpeechPopup
                   stateTheme={stateTheme}
-                  styles={styles}
                   Config={Object.assign({}, config)}
                   closeCurrentPopup={closeCurrentPopup}
                 />

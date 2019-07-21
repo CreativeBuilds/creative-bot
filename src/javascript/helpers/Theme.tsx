@@ -210,6 +210,13 @@ const theme = {
           minWidth: 'unset', 
           display: 'inline-flex'
         },
+        helperText: {
+          display: 'flex',
+          'justify-content': 'center',
+          'align-items': 'center',
+          'text-align': 'center',
+          'margin-bottom': '5px',
+        },
         content: {
           display: 'flex',
           'justify-content': 'center',
@@ -519,6 +526,7 @@ const theme = {
           height: '32px',
           width: '32px',
           transition: 'all 0.15s',
+          'z-index': '1',
           icon: {
             fontSize: '1.9em',
             top: '0',
@@ -587,6 +595,11 @@ const theme = {
             'margin-left': '4px',
           }
         }
+      }
+    },
+    text: {
+      link: {
+        'font-weight': 'bold'
       }
     },
     input: {
@@ -1003,7 +1016,13 @@ const theme = {
         'align-items': 'center',
         'border-bottom': '4px solid #202225',
         'font-size': '30px',
-        position: 'relative'
+        position: 'relative',
+        rightContainer: {
+          display: 'inline-block',
+          position: 'absolute',
+          'vertical-align': 'middle',
+          right: '5px'
+        }
       },
       content: {
         flex: '1',
@@ -1027,6 +1046,70 @@ const theme = {
           svg: {
             width: '72px',
             height: '72px',
+          }
+        }
+      },
+      userPopup: {
+        container: {
+          width: '100%',
+          height: 'min-content'
+        },
+        header: {
+          display: 'flex',
+          width: '100%',
+          height: '192.5px',
+          position: 'relative',
+          panel: {
+            width: '100%',
+            height: '125px',
+            'border-radius': '5px',
+            display: 'flex',
+            'justify-content': 'center'
+          }
+        },
+        actions: {
+          position: 'absolute',
+          bottom: '72.5px',
+          right: '5px',
+          width: 'min-content',
+          height: 'min-content',
+          display: 'flex',
+          'fontSize': '1.6em',
+          item: {
+            'margin-left': '10px'
+          }
+        },
+        avatar: {
+          'border-radius': '50%',
+          width: '125px',
+          height: '125px',
+          position: 'absolute',
+          left: 'calc(50% - 62.5px)',
+          display: 'flex',
+          'justify-content': 'center',
+          'align-items': 'center',
+          top: 'calc(125px - 62.5px)',
+          img: {
+            width: '115px',
+            'border-radius': '50%',
+            'box-shadow': '1px 1px 5px #000',
+          }
+        },
+        username: {
+          display: 'flex',
+          'justify-content': 'center',
+          'align-items': 'center',
+          width: '70%',
+          height: 'calc(100% - 67.5px)',
+          'letter-spacing': '1px',
+          title: {
+            width: '100%',
+            overflow: 'hidden',
+            'textOverflow': 'ellipsis',
+            'whiteSpace': 'nowrap',
+            'fontSize': '1.6em',
+            'fontWeight': 'bold',
+            'textAlign': 'center',
           }
         }
       },
@@ -1282,6 +1365,13 @@ const theme = {
           width: '100%', 
           minWidth: 'unset', 
           display: 'inline-flex'
+        },
+        helperText: {
+          display: 'flex',
+          'justify-content': 'center',
+          'align-items': 'center',
+          'text-align': 'center',
+          'margin-bottom': '5px',
         },
         content: {
           display: 'flex',
@@ -1595,6 +1685,7 @@ const theme = {
           height: '32px',
           width: '32px',
           transition: 'all 0.15s',
+          'z-index': '1',
           icon: {
             fontSize: '1.9em',
             top: '0',
@@ -1646,6 +1737,11 @@ const theme = {
             'margin-left': '4px',
           }
         }
+      }
+    },
+    text: {
+      link: {
+        'font-weight': 'bold'
       }
     },
     input: {
@@ -2060,7 +2156,13 @@ const theme = {
         'align-items': 'center',
         'border-bottom': '4px solid #cccccc',
         'font-size': '30px',
-        position: 'relative'
+        position: 'relative',
+        rightContainer: {
+          display: 'inline-block',
+          position: 'absolute',
+          'vertical-align': 'middle',
+          right: '5px'
+        }
       },
       content: {
         flex: '1',
@@ -2080,6 +2182,70 @@ const theme = {
           svg: {
             width: '72px',
             height: '72px',
+          }
+        }
+      },
+      userPopup: {
+        container: {
+          width: '100%',
+          height: 'min-content'
+        },
+        header: {
+          display: 'flex',
+          width: '100%',
+          height: '192.5px',
+          position: 'relative',
+          panel: {
+            width: '100%',
+            height: '125px',
+            'border-radius': '5px',
+            display: 'flex',
+            'justify-content': 'center'
+          }
+        },
+        actions: {
+          position: 'absolute',
+          bottom: '72.5px',
+          right: '5px',
+          width: 'min-content',
+          height: 'min-content',
+          display: 'flex',
+          'fontSize': '1.6em',
+          item: {
+            'margin-left': '10px'
+          }
+        },
+        avatar: {
+          'border-radius': '50%',
+          width: '125px',
+          height: '125px',
+          position: 'absolute',
+          left: 'calc(50% - 62.5px)',
+          display: 'flex',
+          'justify-content': 'center',
+          'align-items': 'center',
+          top: 'calc(125px - 62.5px)',
+          img: {
+            width: '115px',
+            'border-radius': '50%',
+            'box-shadow': '1px 1px 5px #000',
+          }
+        },
+        username: {
+          display: 'flex',
+          'justify-content': 'center',
+          'align-items': 'center',
+          width: '70%',
+          height: 'calc(100% - 67.5px)',
+          'letter-spacing': '1px',
+          title: {
+            width: '100%',
+            overflow: 'hidden',
+            'textOverflow': 'ellipsis',
+            'whiteSpace': 'nowrap',
+            'fontSize': '1.6em',
+            'fontWeight': 'bold',
+            'textAlign': 'center',
           }
         }
       },

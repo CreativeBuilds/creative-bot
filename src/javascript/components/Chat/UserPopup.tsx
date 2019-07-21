@@ -10,7 +10,6 @@ import { TextField, StepperField } from '../Generics/Input';
 
 import { firebaseUsers$, setRxUsers } from '../../helpers/rxUsers';
 
-import Styles from './Chat.scss';
 import { first } from 'rxjs/operators';
 
 const UserPopup = ({
@@ -66,67 +65,26 @@ const UserPopup = ({
 
   return (
     <div style={stateTheme.popup.dialog.content}>
-      <div style={Object.assign({}, {
-          'min-height': 'min-content',
-          height: '300px',
-          'max-height': '90vh',
-        }, stateTheme.popup.dialog.content.fullWidth)}>
+      <div style={stateTheme.popup.dialog.content.fullWidth}>
         <div
-          style={{
-            width: '100%',
-            height: 'min-content'
-          }}>
+          style={stateTheme.chatPage.userPopup.container}>
           <div
-            style={{
-              display: 'flex',
-              width: '100%',
-              height: '192.5px',
-              position: 'relative'
-            }}>
+            style={stateTheme.chatPage.userPopup.header}>
             <div style={Object.assign({}, 
-                stateTheme.cell.alternate, {
-                  width: '100%',
-                  height: '125px',
-                  'border-radius': '5px',
-                  display: 'flex',
-                  'justify-content': 'center'
-                })}>
-              <div className={Styles.username} 
-                style ={{
-                  display: 'flex',
-                  'justifyContent': 'center',
-                  width: '70%',
-                  height: 'calc(100% - 67.5px)',
-                  'alignItems': 'center',
-                  'letterSpacing': '1px',
-                }}>
-                <div 
-                  style={{
-                    width: '100%',
-                    overflow: 'hidden',
-                    'textOverflow': 'ellipsis',
-                    'whiteSpace': 'nowrap',
-                    'fontSize': '1.6em',
-                    'fontWeight': 'bold',
-                    'textAlign': 'center',
-                  }}>
+                  stateTheme.cell.alternate, 
+                  stateTheme.chatPage.userPopup.header.panel)}>
+              <div
+                style ={stateTheme.chatPage.userPopup.username}>
+                <div style={stateTheme.chatPage.userPopup.username.title}>
                   {user.dliveUsername}
                 </div>
               </div>
               <div
-                style={{
-                  position: 'absolute',
-                  bottom: '72.5px',
-                  right: '5px',
-                  width: 'min-content',
-                  height: 'min-content',
-                  display: 'flex',
-                  'fontSize': '1.6em',
-                }}>
+                style={stateTheme.chatPage.userPopup.actions}>
                 <div data-tip='Remove Message'>
                   {canDelete ? (
                     <MdCancel
-                      style={{ 'marginLeft': '10px' }}
+                      style={stateTheme.chatPage.userPopup.actions.item}
                       onClick={() => {
                         deleteMessage();
                         closeCurrentPopup();
@@ -137,7 +95,7 @@ const UserPopup = ({
                 <div data-tip='Timeout for 5 Minutes'>
                   {canDelete ? (
                     <MdTimer
-                      style={{ 'marginLeft': '10px' }}
+                      style={stateTheme.chatPage.userPopup.actions.item}
                       onClick={() => {
                         timeoutUser();
                       }}
@@ -146,7 +104,7 @@ const UserPopup = ({
                 </div>
                 <div data-tip='Ban User'>
                   <MdDoNotDisturb
-                    style={{ 'marginLeft': '10px' }}
+                    style={stateTheme.chatPage.userPopup.actions.item}
                     onClick={() => {
                       muteUser();
                     }}
@@ -156,16 +114,17 @@ const UserPopup = ({
                 <ReactTooltip />
               </div>
             </div>
-            <div style={stateTheme.main}>
-              <img src={user.avatar} />
+            <div style={stateTheme.chatPage.userPopup.avatar}>
+              <img style={stateTheme.chatPage.userPopup.avatar.img} src={user.avatar} />
             </div>
           </div>
-          <div className={Styles.UserPopup_header_down}>
-            <div className={Styles.input_wrapper}>
+          <div style={{ display: 'block', width: '100%'}}>
+            <div style={{ display: 'inline-flex', width: '100%', marginBottom: '10px' }}>
               <TextField 
                 placeholderText={"Enter Points"} 
                 stateTheme={stateTheme} 
-                width={'50%'}
+                width={'90%'}
+                style={{ height: '32px', marginTop: '11px' }}
                 inputStyle={stateTheme.base.secondaryBackground}
                 onChange={e => {
                   if (!isNaN(Number(e.target.value)) || e.target.value === '')
@@ -174,6 +133,7 @@ const UserPopup = ({
               <Toggle
                 header='Is Admin'
                 type={ToggleType.compact}
+                style={{ float: 'right', marginBottom: '0px !important' }}
                 isEnabled={true}
                 isOn={isAdmin}
                 onClick={() => {
