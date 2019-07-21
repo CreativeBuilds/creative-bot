@@ -14,7 +14,6 @@ import {
   MdArrowDownward
 } from 'react-icons/md';
 
-import { Message } from './Message';
 import { StickerPopup } from './StickerPopup';
 import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
 import { firebaseEmotes$ } from '../../helpers/rxEmotes';
@@ -33,6 +32,7 @@ import {
   EmailField,
   PasswordField,
   MessageField,
+  Message,
   Page, 
   PageHeader, 
   PageBody 
@@ -588,7 +588,6 @@ const Chat = ({ props }) => {
     addPopup(
       <StickerPopup
         stateTheme={stateTheme}
-        styles={styles}
         Config={Object.assign({}, config)}
         text={<span>Stickers</span>}
         Emotes={emotes}
@@ -614,7 +613,6 @@ const Chat = ({ props }) => {
     addPopup(
       <ChatFiltersPopup
         stateTheme={stateTheme}
-        styles={styles}
         Config={Object.assign({}, config)}
         closeCurrentPopup={closeCurrentPopup}
       />
@@ -625,7 +623,6 @@ const Chat = ({ props }) => {
     addPopup(
       <AccountsPopup
         stateTheme={stateTheme}
-        styles={styles}
         Config={Object.assign({}, config)}
         closeCurrentPopup={closeCurrentPopup}
       />,
@@ -637,7 +634,6 @@ const Chat = ({ props }) => {
     addPopup(
       <ChatEventsPopup
         stateTheme={stateTheme}
-        styles={styles}
         Config={Object.assign({}, config)}
         closeCurrentPopup={closeCurrentPopup}
       />,

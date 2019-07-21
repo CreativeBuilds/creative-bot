@@ -17,19 +17,16 @@ import { Action } from 'rxjs/internal/scheduler/Action';
 
 import { SegmentControl, SegmentControlSource } from '../SegmentControl/index';
 import { SegmentControlItem } from '../SegmentControl/SegmentControlItem';
-import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { Button, DestructiveButton, ActionButton, Emote } from '../Generics/CreativeUI';
 
-import { Emote } from './Emote';
 import { string } from 'prop-types';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
 
-const styles: any = require('./Chat.scss');
 const segStyles: any = require('../SegmentControl/SegmentControl.scss');
 
 interface popup {
-  styles: any;
   stateTheme: any;
   text?: string | Function | Element | any;
   Config?: any;
@@ -37,7 +34,6 @@ interface popup {
 }
 
 const StickerPopup = ({
-  styles,
   stateTheme,
   text = '',
   Config = {},
@@ -197,19 +193,20 @@ const StickerPopup = ({
                   stickerDLiveId={':emote/mine/dlive-53093718/36d1544a90081e3_300300:'}
                   stickerUrl={'https://images.prd.dlivecdn.com/emote/37a2e5297000955_288300'}
                   canDelete={false}
-              />*/}
+                />*/}
                 {emotesList.length > 0 ? (
                   emotesList.map(i => (
                     <Emote
                       stickerDLiveId={i.dliveid}
                       stickerUrl={i.url}
+                      stateTheme={stateTheme}
                       canDelete={index == 1 ? true : false}
                       onDelete={() => deleteEmote(i.id)}
                     />
                   ))
                 ) : (
-                  <div className={styles.noStickers}>
-                    <MdSentimentDissatisfied />
+                  <div style={stateTheme.chatPage.stickers.noStickers}>
+                    <MdSentimentDissatisfied  style={stateTheme.chatPage.stickers.noStickers.svg}/>
                     <h3>{noStickerErrorMsg[index]}</h3>
                   </div>
                 )}

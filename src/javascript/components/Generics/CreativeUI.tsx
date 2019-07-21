@@ -18,6 +18,7 @@ import {
     ContextItem 
     } from './ContextMenu';
 import { DragDrop } from './DragDrop';
+import { Emote } from './Emote';
 import {
     TextField,
     EmailField,
@@ -30,6 +31,7 @@ import {
       MenuBar, 
       MenuItem 
     } from './MenuBar';
+import { Message } from './Message';
 import { Panel } from './Panel';
 import { Popup } from './Popup';
 import { ScrollView } from './ScrollView'
@@ -56,6 +58,7 @@ export {
     ContextMenu,
     ContextItem,
     DragDrop,
+    Emote,
     TextField,
     EmailField,
     PasswordField,
@@ -64,6 +67,7 @@ export {
     SearchField,
     MenuBar,
     MenuItem,
+    Message,
     Panel,
     Popup,
     ScrollView,

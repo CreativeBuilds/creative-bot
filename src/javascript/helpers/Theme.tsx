@@ -578,8 +578,6 @@ const theme = {
         hover: {
           display: 'block',
           svg: {
-            fill: 'green',
-            stroke: 'green',
             'vertical-align': 'middle',
             'text-align': 'center',
             height: '16px',
@@ -1019,6 +1017,19 @@ const theme = {
       height: '100%'
     },
     chatPage: {
+      stickers:{
+        noStickers: {
+          'vertical-align': 'middle',
+          position: 'absolute',
+          top: '30%',
+          width: '100%',
+          'user-select': 'none',
+          svg: {
+            width: '72px',
+            height: '72px',
+          }
+        }
+      },
       message: {
         type: {
           event: {
@@ -1092,6 +1103,29 @@ const theme = {
             'box-shadow': '1px 1px 30px rgba(21, 21, 21, 0.6)',
           }
         },
+      }
+    },
+    items: {
+      emote: {
+        'box-sizing': 'border-box',
+        width: '100px',
+        'max-height': '100px',
+        'user-select': 'none',
+        hover: {
+          'border-radius': '8px',
+        },
+        container: {
+          display: 'inline-block',
+          width: '100px',
+          height: '100px',
+          'max-width': '100px',
+          'max-height': '100px',
+          'margin-right': '10px',
+          'margin-bottom': '10px',
+          position: 'relative',
+          border: '4px solid rgba(0, 0, 0, 0)',
+          'border-color': 'transparent'
+        }
       }
     },
     dashedBorder: {
@@ -1603,8 +1637,6 @@ const theme = {
         hover: {
           display: 'block',
           svg: {
-            fill: 'green',
-            stroke: 'green',
             'vertical-align': 'middle',
             'text-align': 'center',
             height: '16px',
@@ -2038,6 +2070,19 @@ const theme = {
       }
     },
     chatPage: {
+      stickers:{
+        noStickers: {
+          'vertical-align': 'middle',
+          position: 'absolute',
+          top: '30%',
+          width: '100%',
+          'user-select': 'none',
+          svg: {
+            width: '72px',
+            height: '72px',
+          }
+        }
+      },
       message: {
         type: {
           event: {
@@ -2111,6 +2156,29 @@ const theme = {
             'box-shadow': '1px 1px 30px rgba(21, 21, 21, 0.6)',
           }
         },
+      }
+    },
+    items: {
+      emote: {
+        'box-sizing': 'border-box',
+        width: '100px',
+        'max-height': '100px',
+        'user-select': 'none',
+        hover: {
+          'border-radius': '8px',
+        },
+        container: {
+          display: 'inline-block',
+          width: '100px',
+          height: '100px',
+          'max-width': '100px',
+          'max-height': '100px',
+          'margin-right': '10px',
+          'margin-bottom': '10px',
+          position: 'relative',
+          border: '4px solid rgba(0, 0, 0, 0)',
+          'border-color': 'transparent'
+        }
       }
     },
     dashedBorder: {

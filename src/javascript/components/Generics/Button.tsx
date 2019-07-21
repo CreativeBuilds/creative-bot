@@ -223,6 +223,7 @@ const WidgetButton = ({
 
 const BubbleButton = ({
   icon,
+  hoverTextColor = 'green',
   style = null,
   isEnabled = true,
   onClick = null,
@@ -236,7 +237,11 @@ const BubbleButton = ({
     <AdvancedDiv 
       aStyle={stateTheme.button.bubble} 
       style={stateTheme.button.bubble.svg}
-      hoverStyle={stateTheme.button.bubble.hover.svg}
+      hoverStyle={Object.assign({}, { 
+        fill: hoverTextColor, 
+        stroke: hoverTextColor, 
+        color: hoverTextColor} ,
+        stateTheme.button.bubble.hover.svg)}
       onClick={onClick}>
       {icon}
     </AdvancedDiv>

@@ -3,18 +3,14 @@ import { useContext, Component, useState, useEffect } from 'react';
 import { theme, ThemeContext } from '../../helpers';
 import { MdSend, MdPerson, MdMood, MdFace } from 'react-icons/md';
 
-import { Message } from './Message';
 import { firebaseEmotes$, setRxEmotes } from '../../helpers/rxEmotes';
 import { Action } from 'rxjs/internal/scheduler/Action';
 
 import { SegmentControl, SegmentControlSource } from '../SegmentControl/index';
-import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
+import { Button, DestructiveButton, ActionButton, Message } from '../Generics/CreativeUI';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
-
-const styles: any = require('./Chat.scss');
-const segStyles: any = require('../SegmentControl/SegmentControl.scss');
 
 interface popup {
   stickerUrl: String;

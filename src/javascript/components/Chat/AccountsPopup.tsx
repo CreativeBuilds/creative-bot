@@ -3,7 +3,6 @@ import { useContext, Component, useState, useEffect } from 'react';
 import { theme, ThemeContext } from '../../helpers';
 import { MdSend, MdPerson, MdMood, MdFace } from 'react-icons/md';
 
-import { Message } from './Message';
 import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
 import { Action } from 'rxjs/internal/scheduler/Action';
 
@@ -15,11 +14,7 @@ import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
 
-const styles: any = require('./Chat.scss');
-const segStyles: any = require('../SegmentControl/SegmentControl.scss');
-
 interface popup {
-  styles: any;
   stateTheme: any;
   text?: string | Function | Element | any;
   Config?: any;
@@ -27,7 +22,6 @@ interface popup {
 }
 
 const AccountsPopup = ({
-  styles,
   stateTheme,
   text = '',
   Config = {},
