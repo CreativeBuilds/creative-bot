@@ -10,7 +10,9 @@ const theme = {
       borderColor: '#ffd300'
     },
     accentFillColor: {
-      fill: '#ffd300'
+      fill: '#ffd300',
+      stroke: '#ffd300',
+      color: '#ffd300'
     },
     accentHighlight: {
       highlightColor: '#ffd300',
@@ -202,11 +204,62 @@ const theme = {
         padding: '10px',
         borderRadius: '5px',
         boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)',
+        buttonStack: {
+          'margin-top': '10px',
+          width: '100%', 
+          minWidth: 'unset', 
+          display: 'inline-flex'
+        },
+        helperText: {
+          display: 'flex',
+          'justify-content': 'center',
+          'align-items': 'center',
+          'text-align': 'center',
+          'margin-bottom': '5px',
+        },
         content: {
           display: 'flex',
           'justify-content': 'center',
           'align-items': 'center',
-          'flex-direction': 'column'
+          'flex-direction': 'column',
+          fullWidth: {
+            width: '100%',
+            minWidth: 'unset'
+          },
+          seventyWidth: {
+            width: '70%',
+            minWidth: 'unset'
+          },
+          addSticker: {
+            imageContainer: {
+              position: 'relative',
+              image: {
+                'margin-left': 'auto',
+                'margin-right': 'auto',
+                display: 'block',
+                width: '150px',
+                'border-radius': '16px',
+                'user-select': 'none',
+                'box-shadow': '1px 1px 30px rgba(21, 21, 21, 0.6)',
+              }
+            },
+            idContainer: {
+              'margin-top': '10px',
+              'margin-bottom': '10px',
+              title: {
+                width: '100%',
+                display: 'block',
+                'text-align': 'center',
+                'user-select': 'none',
+              },
+              info: {
+                width: '100%',
+                display: 'block',
+                'text-align': 'center',
+                color: '#727272',
+              }
+            }
+          }
         }
       },
       close: {
@@ -384,6 +437,25 @@ const theme = {
           boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
         }
       },
+      scrollDown: {
+        width: '40px',
+        height: '40px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: '30px',
+        borderRadius: '50%',
+        container: {
+          zIndex: 9,
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'absolute',
+          bottom: '70px',
+          left: '0px'
+        }
+      },
       sender: {
         cursor: 'pointer',
         'font-size': '2em',
@@ -411,7 +483,6 @@ const theme = {
         transition: 'all 0.15s ease-in-out',
         height: '100%',
         'vertical-align': 'middle',
-        'margin-bottom': '2px',
         hamburger: {
           'font-size': '2.4em',
           position: 'absolute',
@@ -455,6 +526,24 @@ const theme = {
           height: '32px',
           width: '32px',
           transition: 'all 0.15s',
+          'z-index': '1',
+          icon: {
+            fontSize: '1.9em',
+            top: '0',
+            left: '0',
+            right: '0',
+            bottom: '0',
+            position: 'absolute',
+            transition: 'all 0.15s'
+          }
+        },
+        deleteMsg: {
+          position: 'absolute',
+          top: '2px',
+          right: '5px',
+          height: '32px',
+          width: '32px',
+          transition: 'all 0.15s',
           icon: {
             fontSize: '1.9em',
             top: '0',
@@ -472,6 +561,45 @@ const theme = {
           'font-size': '25px'
         },
         hover: {}
+      },
+      bubble: {
+        position: 'absolute',
+        background: 'white',
+        width: '25px',
+        height: '25px',
+        'border-radius': '16px',
+        float: 'right',
+        top: '0',
+        right: '0',
+        'box-shadow': '1px 1px 30px rgba(21, 21, 21, 0.6)',
+        svg: {
+          'vertical-align': 'middle',
+          'text-align': 'center',
+          height: '16px',
+          width: '16px',
+          margin: '0px',
+          'margin-top': '4px',
+          'margin-left': '4px',
+          fill: 'Black',
+          stroke: 'black',
+        },
+        hover: {
+          display: 'block',
+          svg: {
+            'vertical-align': 'middle',
+            'text-align': 'center',
+            height: '16px',
+            width: '16px',
+            margin: '0px',
+            'margin-top': '4px',
+            'margin-left': '4px',
+          }
+        }
+      }
+    },
+    text: {
+      link: {
+        'font-weight': 'bold'
       }
     },
     input: {
@@ -888,7 +1016,13 @@ const theme = {
         'align-items': 'center',
         'border-bottom': '4px solid #202225',
         'font-size': '30px',
-        position: 'relative'
+        position: 'relative',
+        rightContainer: {
+          display: 'inline-block',
+          position: 'absolute',
+          'vertical-align': 'middle',
+          right: '5px'
+        }
       },
       content: {
         flex: '1',
@@ -897,8 +1031,185 @@ const theme = {
         padding: '5px'
       }
     },
-    timeStamp: {
-      color: '#AAAAAA'
+    scrollView: {
+      width: '100%',
+      height: '100%'
+    },
+    chatPage: {
+      stickers:{
+        noStickers: {
+          'vertical-align': 'middle',
+          position: 'absolute',
+          top: '30%',
+          width: '100%',
+          'user-select': 'none',
+          svg: {
+            width: '72px',
+            height: '72px',
+          }
+        }
+      },
+      userPopup: {
+        container: {
+          width: '100%',
+          height: 'min-content'
+        },
+        header: {
+          display: 'flex',
+          width: '100%',
+          height: '192.5px',
+          position: 'relative',
+          panel: {
+            width: '100%',
+            height: '125px',
+            'border-radius': '5px',
+            display: 'flex',
+            'justify-content': 'center'
+          }
+        },
+        actions: {
+          position: 'absolute',
+          bottom: '72.5px',
+          right: '5px',
+          width: 'min-content',
+          height: 'min-content',
+          display: 'flex',
+          'fontSize': '1.6em',
+          item: {
+            'margin-left': '10px'
+          }
+        },
+        avatar: {
+          'border-radius': '50%',
+          width: '125px',
+          height: '125px',
+          position: 'absolute',
+          left: 'calc(50% - 62.5px)',
+          display: 'flex',
+          'justify-content': 'center',
+          'align-items': 'center',
+          top: 'calc(125px - 62.5px)',
+          img: {
+            width: '115px',
+            'border-radius': '50%',
+            'box-shadow': '1px 1px 5px #000',
+          }
+        },
+        username: {
+          display: 'flex',
+          'justify-content': 'center',
+          'align-items': 'center',
+          width: '70%',
+          height: 'calc(100% - 67.5px)',
+          'letter-spacing': '1px',
+          title: {
+            width: '100%',
+            overflow: 'hidden',
+            'textOverflow': 'ellipsis',
+            'whiteSpace': 'nowrap',
+            'fontSize': '1.6em',
+            'fontWeight': 'bold',
+            'textAlign': 'center',
+          }
+        }
+      },
+      message: {
+        type: {
+          event: {
+            width: 'calc(100% - 35px)',
+            padding: '5px',
+            'text-overflow': 'wrap',
+            display: 'flex',
+            'align-items': 'center',
+            'padding-right': '30px',
+            position: 'relative',
+            'margin-bottom': '5px',
+            'border-radius': '5px',
+          },
+          normal: {
+            'font-weight': 'normal',
+            width: 'calc(100% - 35px)',
+            padding: '5px',
+            'text-overflow': 'wrap',
+            display: 'flex',
+            'align-items': 'center',
+            'padding-right': '30px',
+            position: 'relative',
+            'margin-bottom': '5px',
+            'border-radius': '5px',
+            highlighted: {
+              border: '2px solid rgba(0, 0, 0, 0)',
+            }
+          }
+        },
+        header: {
+          'margin-right': '10px',
+          'user-select': 'none',
+          container: {
+            display: 'inline-block',
+            'vertical-align': 'middle',
+          },
+          timestamp: {
+            display: 'inline-block',
+            'vertical-align': 'middle',
+            'margin-right': '5px',
+            color: '#AAAAAA'
+          },
+          username: {
+            display: 'inline-block',
+            'margin-left': '5px',
+            'vertical-align': 'middle',
+            cursor: 'pointer'
+          },
+          image: {
+            'vertical-align': 'middle',
+            'border-radius': '50%',
+          }
+        },
+        content: {
+          flex: '1',
+          'text-align': 'left',
+          display: 'flex',
+          'align-items': 'center',
+          'vertical-align': 'middle',
+        },
+        imageContainer: {
+          display: 'table-cell',
+          position: 'relative',
+          image: {
+            'margin-left': '10px',
+            'max-height': '80px',
+            display: 'block',
+            width: '150px',
+            'border-radius': '16px',
+            'user-select': 'none',
+            'box-shadow': '1px 1px 30px rgba(21, 21, 21, 0.6)',
+          }
+        },
+      }
+    },
+    items: {
+      emote: {
+        'box-sizing': 'border-box',
+        width: '100px',
+        'max-height': '100px',
+        'user-select': 'none',
+        hover: {
+          'border-radius': '8px',
+        },
+        container: {
+          display: 'inline-block',
+          width: '100px',
+          height: '100px',
+          'max-width': '100px',
+          'max-height': '100px',
+          'margin-right': '10px',
+          'margin-bottom': '10px',
+          position: 'relative',
+          border: '4px solid rgba(0, 0, 0, 0)',
+          'border-color': 'transparent'
+        }
+      }
     },
     dashedBorder: {
       border: '3px dashed #f0f0f0',
@@ -1050,11 +1361,61 @@ const theme = {
         padding: '10px',
         borderRadius: '5px',
         boxShadow: '5px 5px 5px rgba(0, 0, 0, 0.5)',
+        buttonStack: {
+          width: '100%', 
+          minWidth: 'unset', 
+          display: 'inline-flex'
+        },
+        helperText: {
+          display: 'flex',
+          'justify-content': 'center',
+          'align-items': 'center',
+          'text-align': 'center',
+          'margin-bottom': '5px',
+        },
         content: {
           display: 'flex',
           'justify-content': 'center',
           'align-items': 'center',
-          'flex-direction': 'column'
+          'flex-direction': 'column',
+          fullWidth: {
+            width: '100%',
+            minWidth: 'unset'
+          },
+          seventyWidth: {
+            width: '70%',
+            minWidth: 'unset'
+          },
+          addSticker: {
+            imageContainer: {
+              position: 'relative',
+              image: {
+                'margin-left': 'auto',
+                'margin-right': 'auto',
+                display: 'block',
+                width: '150px',
+                'border-radius': '16px',
+                'user-select': 'none',
+                'box-shadow': '1px 1px 30px rgba(21, 21, 21, 0.6)',
+              }
+            },
+            idContainer: {
+              'margin-top': '10px',
+              'margin-bottom': '10px',
+              title: {
+                width: '100%',
+                display: 'block',
+                'text-align': 'center',
+                'user-select': 'none',
+              },
+              info: {
+                width: '100%',
+                display: 'block',
+                'text-align': 'center',
+                color: '#727272',
+              }
+            }
+          }
         }
       },
       close: {
@@ -1234,6 +1595,25 @@ const theme = {
           boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
         }
       },
+      scrollDown: {
+        width: '40px',
+        height: '40px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        fontSize: '30px',
+        borderRadius: '50%',
+        container: {
+          zIndex: 9,
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'absolute',
+          bottom: '70px',
+          left: '0px'
+        }
+      },
       sender: {
         cursor: 'pointer',
         'font-size': '2em',
@@ -1305,6 +1685,7 @@ const theme = {
           height: '32px',
           width: '32px',
           transition: 'all 0.15s',
+          'z-index': '1',
           icon: {
             fontSize: '1.9em',
             top: '0',
@@ -1322,6 +1703,45 @@ const theme = {
           'font-size': '25px'
         },
         hover: {}
+      },
+      bubble: {
+        position: 'absolute',
+        background: 'white',
+        width: '25px',
+        height: '25px',
+        'border-radius': '16px',
+        float: 'right',
+        top: '0',
+        right: '0',
+        'box-shadow': '1px 1px 30px rgba(21, 21, 21, 0.6)',
+        svg: {
+          'vertical-align': 'middle',
+          'text-align': 'center',
+          height: '16px',
+          width: '16px',
+          margin: '0px',
+          'margin-top': '4px',
+          'margin-left': '4px',
+          fill: 'Black',
+          stroke: 'black',
+        },
+        hover: {
+          display: 'block',
+          svg: {
+            'vertical-align': 'middle',
+            'text-align': 'center',
+            height: '16px',
+            width: '16px',
+            margin: '0px',
+            'margin-top': '4px',
+            'margin-left': '4px',
+          }
+        }
+      }
+    },
+    text: {
+      link: {
+        'font-weight': 'bold'
       }
     },
     input: {
@@ -1736,7 +2156,13 @@ const theme = {
         'align-items': 'center',
         'border-bottom': '4px solid #cccccc',
         'font-size': '30px',
-        position: 'relative'
+        position: 'relative',
+        rightContainer: {
+          display: 'inline-block',
+          position: 'absolute',
+          'vertical-align': 'middle',
+          right: '5px'
+        }
       },
       content: {
         flex: '1',
@@ -1745,8 +2171,181 @@ const theme = {
         padding: '5px'
       }
     },
-    timeStamp: {
-      color: '#555555'
+    chatPage: {
+      stickers:{
+        noStickers: {
+          'vertical-align': 'middle',
+          position: 'absolute',
+          top: '30%',
+          width: '100%',
+          'user-select': 'none',
+          svg: {
+            width: '72px',
+            height: '72px',
+          }
+        }
+      },
+      userPopup: {
+        container: {
+          width: '100%',
+          height: 'min-content'
+        },
+        header: {
+          display: 'flex',
+          width: '100%',
+          height: '192.5px',
+          position: 'relative',
+          panel: {
+            width: '100%',
+            height: '125px',
+            'border-radius': '5px',
+            display: 'flex',
+            'justify-content': 'center'
+          }
+        },
+        actions: {
+          position: 'absolute',
+          bottom: '72.5px',
+          right: '5px',
+          width: 'min-content',
+          height: 'min-content',
+          display: 'flex',
+          'fontSize': '1.6em',
+          item: {
+            'margin-left': '10px'
+          }
+        },
+        avatar: {
+          'border-radius': '50%',
+          width: '125px',
+          height: '125px',
+          position: 'absolute',
+          left: 'calc(50% - 62.5px)',
+          display: 'flex',
+          'justify-content': 'center',
+          'align-items': 'center',
+          top: 'calc(125px - 62.5px)',
+          img: {
+            width: '115px',
+            'border-radius': '50%',
+            'box-shadow': '1px 1px 5px #000',
+          }
+        },
+        username: {
+          display: 'flex',
+          'justify-content': 'center',
+          'align-items': 'center',
+          width: '70%',
+          height: 'calc(100% - 67.5px)',
+          'letter-spacing': '1px',
+          title: {
+            width: '100%',
+            overflow: 'hidden',
+            'textOverflow': 'ellipsis',
+            'whiteSpace': 'nowrap',
+            'fontSize': '1.6em',
+            'fontWeight': 'bold',
+            'textAlign': 'center',
+          }
+        }
+      },
+      message: {
+        type: {
+          event: {
+            width: 'calc(100% - 35px)',
+            padding: '5px',
+            'text-overflow': 'wrap',
+            display: 'flex',
+            'align-items': 'center',
+            'padding-right': '30px',
+            position: 'relative',
+            'margin-bottom': '5px',
+            'border-radius': '5px',
+          },
+          normal: {
+            'font-weight': 'normal',
+            width: 'calc(100% - 35px)',
+            padding: '5px',
+            'text-overflow': 'wrap',
+            display: 'flex',
+            'align-items': 'center',
+            'padding-right': '30px',
+            position: 'relative',
+            'margin-bottom': '5px',
+            'border-radius': '5px',
+            highlighted: {
+              border: '2px solid rgba(0, 0, 0, 0)',
+            }
+          }
+        },
+        header: {
+          'margin-right': '10px',
+          'user-select': 'none',
+          container: {
+            display: 'inline-block',
+            'vertical-align': 'middle',
+          },
+          timestamp: {
+            display: 'inline-block',
+            'vertical-align': 'middle',
+            'margin-right': '5px',
+            color: '#484848'
+          },
+          username: {
+            display: 'inline-block',
+            'margin-left': '5px',
+            'vertical-align': 'middle',
+            cursor: 'pointer'
+          },
+          image: {
+            'vertical-align': 'middle',
+            'border-radius': '50%',
+          }
+        },
+        content: {
+          flex: '1',
+          'text-align': 'left',
+          display: 'flex',
+          'align-items': 'center',
+          'vertical-align': 'middle',
+        },
+        imageContainer: {
+          display: 'table-cell',
+          position: 'relative',
+          image: {
+            'margin-left': '10px',
+            'max-height': '80px',
+            display: 'block',
+            width: '150px',
+            'border-radius': '16px',
+            'user-select': 'none',
+            'box-shadow': '1px 1px 30px rgba(21, 21, 21, 0.6)',
+          }
+        },
+      }
+    },
+    items: {
+      emote: {
+        'box-sizing': 'border-box',
+        width: '100px',
+        'max-height': '100px',
+        'user-select': 'none',
+        hover: {
+          'border-radius': '8px',
+        },
+        container: {
+          display: 'inline-block',
+          width: '100px',
+          height: '100px',
+          'max-width': '100px',
+          'max-height': '100px',
+          'margin-right': '10px',
+          'margin-bottom': '10px',
+          position: 'relative',
+          border: '4px solid rgba(0, 0, 0, 0)',
+          'border-color': 'transparent'
+        }
+      }
     },
     dashedBorder: {
       border: '3px dashed #202225',

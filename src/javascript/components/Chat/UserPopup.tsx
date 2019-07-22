@@ -4,13 +4,19 @@ import { MdClose, MdTimer, MdDoNotDisturb, MdCancel } from 'react-icons/md';
 import { removeMessage } from '../../helpers/removeMessage';
 import ReactTooltip from 'react-tooltip';
 
-import { Toggle, ToggleType } from '../Generics/Toggle';
-import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
-import { TextField, StepperField } from '../Generics/Input';
+import { 
+  Toggle, 
+  ToggleType, 
+  Button,
+  WidgetButton, 
+  DestructiveButton, 
+  ActionButton, 
+  TextField, 
+  StepperField 
+} from '../Generics/CreativeUI';
 
 import { firebaseUsers$, setRxUsers } from '../../helpers/rxUsers';
 
-import Styles from './Chat.scss';
 import { first } from 'rxjs/operators';
 
 const UserPopup = ({
@@ -65,73 +71,94 @@ const UserPopup = ({
   };
 
   return (
-    <div className={Styles.UserPopup}>
-      <div className={Styles.UserPopup_header}>
-        <div className={Styles.UserPopup_header_up}>
-          <div style={stateTheme.cell.alternate}>
-            <div className={Styles.username}>
-              <div>{user.dliveUsername}</div>
-            </div>
-            <div className={Styles.UserPopup_header_up_right}>
-              <div data-tip='Remove Message'>
-                {canDelete ? (
-                  <MdCancel
+    <div style={stateTheme.popup.dialog.content}>
+      <div style={stateTheme.popup.dialog.content.fullWidth}>
+        <div
+          style={stateTheme.chatPage.userPopup.container}>
+          <div
+            style={stateTheme.chatPage.userPopup.header}>
+            <div style={Object.assign({}, 
+                  stateTheme.cell.alternate, 
+                  stateTheme.chatPage.userPopup.header.panel)}>
+              <div
+                style ={stateTheme.chatPage.userPopup.username}>
+                <div style={stateTheme.chatPage.userPopup.username.title}>
+                  {user.dliveUsername}
+                </div>
+              </div>
+              <div
+                style={stateTheme.chatPage.userPopup.actions}>
+                <div data-tip='Remove Message'>
+                  {canDelete ? (
+                    <WidgetButton 
+                      icon={<MdCancel />}
+                      stateTheme={stateTheme}
+                      style={stateTheme.chatPage.userPopup.actions.item}
+                      onClick={() => {
+                        deleteMessage();
+                        closeCurrentPopup();
+                      }}
+                    />
+                  ) : null}
+                </div>
+                <div data-tip='Timeout for 5 Minutes'>
+                  {canDelete ? (
+                    <WidgetButton 
+                      icon={<MdTimer />}
+                      stateTheme={stateTheme}
+                      style={stateTheme.chatPage.userPopup.actions.item}
+                      onClick={() => {
+                        timeoutUser();
+                      }}
+                    />
+                  ) : null}
+                </div>
+                <div data-tip='Ban User'>
+                  <WidgetButton 
+                    icon={<MdDoNotDisturb />}
+                    stateTheme={stateTheme}
+                    style={stateTheme.chatPage.userPopup.actions.item}
                     onClick={() => {
-                      deleteMessage();
-                      closeCurrentPopup();
+                      muteUser();
                     }}
-                  />
-                ) : null}
-              </div>
-              <div data-tip='Timeout for 5 Minutes'>
-                {canDelete ? (
-                  <MdTimer
-                    onClick={() => {
-                      timeoutUser();
-                    }}
-                  />
-                ) : null}
-              </div>
-              <div data-tip='Ban User'>
-                <MdDoNotDisturb
-                  onClick={() => {
-                    muteUser();
-                  }}
-                />
-              </div>
+                    />
+                </div>
 
-              <ReactTooltip />
+                <ReactTooltip />
+              </div>
+            </div>
+            <div style={stateTheme.chatPage.userPopup.avatar}>
+              <img style={stateTheme.chatPage.userPopup.avatar.img} src={user.avatar} />
             </div>
           </div>
-          <div style={stateTheme.main}>
-            <img src={user.avatar} />
+          <div style={{ display: 'block', width: '100%'}}>
+            <div style={{ display: 'inline-flex', width: '100%', marginBottom: '10px' }}>
+              <TextField 
+                placeholderText={"Enter Points"} 
+                stateTheme={stateTheme} 
+                width={'90%'}
+                style={{ height: '32px', marginTop: '11px' }}
+                inputStyle={stateTheme.base.secondaryBackground}
+                onChange={e => {
+                  if (!isNaN(Number(e.target.value)) || e.target.value === '')
+                    setPoints(e.target.value);
+                }}/>
+              <Toggle
+                header='Is Admin'
+                type={ToggleType.compact}
+                style={{ float: 'right', marginBottom: '0px !important' }}
+                isEnabled={true}
+                isOn={isAdmin}
+                onClick={() => {
+                  setIsAdmin(!isAdmin);
+                }}
+                stateTheme={stateTheme}
+              />
+            </div>
+            <Button title={submitText} isSubmit={true} stateTheme={stateTheme} onClick={() => {
+              SaveUser();
+            }} />
           </div>
-        </div>
-        <div className={Styles.UserPopup_header_down}>
-          <div className={Styles.input_wrapper}>
-            <TextField 
-              placeholderText={"Enter Points"} 
-              stateTheme={stateTheme} 
-              width={'50%'}
-              inputStyle={stateTheme.base.secondaryBackground}
-              onChange={e => {
-                if (!isNaN(Number(e.target.value)) || e.target.value === '')
-                  setPoints(e.target.value);
-              }}/>
-            <Toggle
-              header='Is Admin'
-              type={ToggleType.compact}
-              isEnabled={true}
-              isOn={isAdmin}
-              onClick={() => {
-                setIsAdmin(!isAdmin);
-              }}
-              stateTheme={stateTheme}
-            />
-          </div>
-          <Button title={submitText} isSubmit={true} stateTheme={stateTheme} onClick={() => {
-            SaveUser();
-          }} />
         </div>
       </div>
     </div>

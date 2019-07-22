@@ -140,12 +140,13 @@ const ActionButton = ({
   );
 };
 
-const SendButton = ({
+const IconButton = ({
   icon,
   width = 'auto',
   isEnabled = true,
   onClick = null,
   stateTheme,
+  style = {},
   buttonStyle = {}
 }) => {
   return (
@@ -155,23 +156,25 @@ const SendButton = ({
         !isEnabled ? stateTheme.button.normal.disabled : null,
         Object.assign(
           {},
+          Object.assign({}, stateTheme.button.sender, style),
           Object.assign({}, stateTheme.base.quinaryBackground, {
             borderColor: 'transparent'
-          }),
-          stateTheme.button.sender
+          })
         )
       )}
       hoverStyle={Object.assign(
         {},
         Object.assign({}, theme.globals.accentFillColor, {
-          borderColor: theme.globals.accentBorderColor.borderColor
+          borderColor: theme.globals.accentBorderColor.borderColor,
+          fill: theme.globals.accentBackground.backgroundColor 
         }),
         stateTheme.button.sender.hover
       )}
       isButton={true}
       aStyle={buttonStyle}
+      onClick={onClick}
     >
-      <div onClick={onClick}>{icon}</div>
+      {icon}
     </AdvancedDiv>
   );
 };
@@ -181,6 +184,8 @@ const WidgetButton = ({
   style = null,
   isEnabled = true,
   onClick = null,
+  header = null,
+  footer = null,
   stateTheme
 }) => {
   const [isenabled, setIsEnabled] = useState(isEnabled);
@@ -194,13 +199,51 @@ const WidgetButton = ({
       )}
       hoverStyle={Object.assign(
         {},
-        { cursor: 'pointer' },
+        { 
+          cursor: 'pointer'
+        },
         theme.globals.accentFillColor
       )}
       isButton={true}
       aStyle={Object.assign({}, stateTheme.button.widget, style)}
     >
-      <div onClick={onClick}>{icon}</div>
+      <div 
+        onClick={onClick} 
+        style={{
+          'verticalAlign': 'middle',
+          'display': 'flex'
+      }}>
+        {header != null ? header : null}
+        {icon}
+        {footer != null ? footer : null}
+      </div>
+    </AdvancedDiv>
+  );
+};
+
+const BubbleButton = ({
+  icon,
+  hoverTextColor = 'green',
+  style = null,
+  isEnabled = true,
+  onClick = null,
+  header = null,
+  footer = null,
+  stateTheme
+}) => {
+  const [isenabled, setIsEnabled] = useState(isEnabled);
+
+  return (
+    <AdvancedDiv 
+      aStyle={stateTheme.button.bubble} 
+      style={stateTheme.button.bubble.svg}
+      hoverStyle={Object.assign({}, { 
+        fill: hoverTextColor, 
+        stroke: hoverTextColor, 
+        color: hoverTextColor} ,
+        stateTheme.button.bubble.hover.svg)}
+      onClick={onClick}>
+      {icon}
     </AdvancedDiv>
   );
 };
@@ -252,7 +295,8 @@ export {
   Button,
   DestructiveButton,
   ActionButton,
-  SendButton,
+  IconButton,
   WidgetButton,
+  BubbleButton,
   LinkButton
 };
