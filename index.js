@@ -81,12 +81,15 @@ const {
 } = require('./helpers/removeMessage');
 
 let verifyStreamerDisplayName = config => {
-  return getBlockchainUsername(config.streamerDisplayName, config).then(
-    username => {
+  return getBlockchainUsername(config.streamerDisplayName, config)
+    .then(username => {
       if (username.length === 0) return false;
       return username;
-    }
-  );
+    })
+    .catch(err => {
+      delete config.authKey;
+      win.webContents.send('rxConfig', config);
+    });
 };
 
 const sendError = (WS, error) => {
@@ -204,14 +207,19 @@ function createWindow() {
     )
     .subscribe(Config => {
       if (!Config.authKey || !Config.streamerDisplayName) return;
-      verifyStreamerDisplayName(Config).then(username => {
-        if (username) {
-          let config = Object.assign({}, Config, { streamer: username });
+      verifyStreamerDisplayName(Config)
+        .then(username => {
+          if (username) {
+            let config = Object.assign({}, Config, { streamer: username });
+            win.webContents.send('rxConfig', config);
+          } else {
+            return;
+          }
+        })
+        .catch(err => {
+          delete config.authKey;
           win.webContents.send('rxConfig', config);
-        } else {
-          return;
-        }
-      });
+        });
     });
 
   let oldGiveaways = { first: true };
@@ -408,9 +416,14 @@ function createWindow() {
   });
 
   ipcMain.on('removeMessage', (event, { id, streamer }) => {
-    removeMessage(id, streamer).then(() => {
-      win.webContents.send('removedMessage', { id, streamer });
-    });
+    removeMessage(id, streamer)
+      .then(() => {
+        win.webContents.send('removedMessage', { id, streamer });
+      })
+      .catch(err => {
+        delete config.authKey;
+        win.webContents.send('rxConfig', config);
+      });
   });
 
   ipcMain.on('timeoutUser', (event, { id, streamer }) => {
@@ -501,20 +514,25 @@ function createWindow() {
         console.log('INSIDE THE SECOND IF');
         return rxConfig.next(Config);
       }
-      verifyStreamerDisplayName(Config).then(bool => {
-        console.log('got to bool');
-        if (bool) {
-          rxConfig.next(Config);
-          win.webContents.send('passedConfig');
-        } else {
-          win.webContents.send(
-            'failedConfig',
-            `Error Updating... Streamer: ${
-              Config.streamerDisplayName
-            } is not found!`
-          );
-        }
-      });
+      verifyStreamerDisplayName(Config)
+        .then(bool => {
+          console.log('got to bool');
+          if (bool) {
+            rxConfig.next(Config);
+            win.webContents.send('passedConfig');
+          } else {
+            win.webContents.send(
+              'failedConfig',
+              `Error Updating... Streamer: ${
+                Config.streamerDisplayName
+              } is not found!`
+            );
+          }
+        })
+        .catch(err => {
+          delete config.authKey;
+          win.webContents.send('rxConfig', config);
+        });
     }
   });
   ipcMain.on('getRxCommands', () => {
@@ -675,7 +693,10 @@ function createWindow() {
           // TODO check permissions
           command.run({ message, data, args }).then(msg => {
             if (!msg) return;
-            sendMessage(msg);
+            sendMessage(msg).catch(err => {
+              delete config.authKey;
+              win.webContents.send('rxConfig', config);
+            });
           });
         } else if (Commands[commandName]) {
           console.log('INSIDE COMMAND');
@@ -699,7 +720,10 @@ function createWindow() {
                 streamChannel
               }).then(reply => {
                 console.log('GOT REPLY', reply);
-                sendMessage(reply);
+                sendMessage(reply).catch(err => {
+                  delete config.authKey;
+                  win.webContents.send('rxConfig', config);
+                });
                 rxCommands.next(Commands);
               });
             });
@@ -729,7 +753,10 @@ function createWindow() {
                 `${
                   message.sender.dliveUsername
                 } that giveaway has a winner and is closed!`
-              );
+              ).catch(err => {
+                delete config.authKey;
+                win.webContents.send('rxConfig', config);
+              });
             let one = giveaway.createdAt + giveaway.secondsUntilClose * 1000;
             let secondsLeft = one - Date.now();
             if (giveaway.secondsUntilClose === 0 || secondsLeft > 0) {
@@ -757,7 +784,10 @@ function createWindow() {
                         `${
                           message.sender.dliveUsername
                         } has entered the giveaway with 1 ticket!`
-                      );
+                      ).catch(err => {
+                        delete config.authKey;
+                        win.webContents.send('rxConfig', config);
+                      });
                     }
                   } else if (
                     giveaway.maxEntries > 0 &&
@@ -774,7 +804,10 @@ function createWindow() {
                         `${
                           message.sender.dliveUsername
                         } there has been an error, you do not have enough points to purchase this ticket(s). Total Cost: ${totalCost}`
-                      );
+                      ).catch(err => {
+                        delete config.authKey;
+                        win.webContents.send('rxConfig', config);
+                      });
                     let newObj = {};
                     newObj[sender] = {
                       tickets: ticketsToPurchase + giveawayUser.tickets,
@@ -795,7 +828,10 @@ function createWindow() {
                         message.sender.dliveUsername
                       } has purchased more tickets for the giveaway with a total of ${ticketsToPurchase +
                         giveawayUser.tickets} tickets!`
-                    );
+                    ).catch(err => {
+                      delete config.authKey;
+                      win.webContents.send('rxConfig', config);
+                    });
                     // Check to see
                   } else {
                     let ticketsToPurchase = Number(args[1]);
@@ -808,7 +844,10 @@ function createWindow() {
                         `${
                           message.sender.dliveUsername
                         } there has been an error, you do not have enough points to purchase this ticket(s). Total Cost: ${totalCost}`
-                      );
+                      ).catch(err => {
+                        delete config.authKey;
+                        win.webContents.send('rxConfig', config);
+                      });
                     let newObj = {};
                     newObj[sender] = {
                       tickets: ticketsToPurchase,
@@ -829,7 +868,10 @@ function createWindow() {
                       `${
                         message.sender.dliveUsername
                       } has entered the giveaway with ${ticketsToPurchase} ticket(s)!`
-                    );
+                    ).catch(err => {
+                      delete config.authKey;
+                      win.webContents.send('rxConfig', config);
+                    });
                   }
                   let newObj = {};
                   newObj[commandName] = giveaway;
@@ -843,7 +885,10 @@ function createWindow() {
                     `${
                       message.sender.dliveUsername
                     } you do not have enough points for that!`
-                  );
+                  ).catch(err => {
+                    delete config.authKey;
+                    win.webContents.send('rxConfig', config);
+                  });
                 }
               });
             }
@@ -866,7 +911,10 @@ function createWindow() {
         first()
       )
       .subscribe(dlive => {
-        dlive.sendMessage(reply, config.streamerDisplayName);
+        dlive.sendMessage(reply, config.streamerDisplayName).catch(err => {
+          delete config.authKey;
+          win.webContents.send('rxConfig', config);
+        });
       });
   };
 
@@ -1161,7 +1209,12 @@ function createWindow() {
           )
           .subscribe(dlive => {
             rxConfig.pipe(first()).subscribe(config => {
-              dlive.sendMessage(msg.value, config.streamerDisplayName);
+              dlive
+                .sendMessage(msg.value, config.streamerDisplayName)
+                .catch(err => {
+                  delete config.authKey;
+                  win.webContents.send('rxConfig', config);
+                });
             });
           });
       } else if (msg.type === 'send_lino') {
@@ -1182,13 +1235,14 @@ function createWindow() {
 
   let oldListeners = [];
   let oldDlive = null;
+  let msgListener = null;
   // This is for the app
   rxConfig
     .pipe(
       filter(x => !!x.authKey && !!x.streamerDisplayName),
       distinctUntilChanged((prev, curr) => {
         return (
-          prev.authKey === curr.authKey ||
+          prev.authKey === curr.authKey &&
           prev.streamerDisplayName === curr.streamerDisplayName
         );
       })
@@ -1204,11 +1258,20 @@ function createWindow() {
         )
         .subscribe(dlive => {
           console.log('GOT DLIVE');
-          dlive.listenToChat(config.streamerDisplayName).then(messages => {
-            messages.subscribe(message => {
-              onNewMsg(message, config.streamerDisplayName, config);
+          dlive
+            .listenToChat(config.streamerDisplayName)
+            .then(messages => {
+              console.log('GOT RX OBJECT', config.streamerDisplayName);
+              oldListeners.push(
+                messages.subscribe(message => {
+                  console.log('GOT NEW MESSAGE', message);
+                  onNewMsg(message, config.streamerDisplayName, config);
+                })
+              );
+            })
+            .catch(err => {
+              console.log('GOT ERR IN LISTEN TO CHAT', err);
             });
-          });
           dlive.getChannel(config.streamerDisplayName).then(channel => {
             console.log('SUBSCRIBING TO RXLIVESTREAM HERE');
             channel.rxLivestream.subscribe(livestream => {
@@ -1226,8 +1289,15 @@ function createWindow() {
 }
 
 ipcMain.on('sendmessage', (event, { from, message }) => {
+  console.log('SENDING MSG');
   if (config.authKey != null || config.username != null) {
-    sendMessage(message);
+    rxDlive.pipe(first()).subscribe(dlive => {
+      dlive.sendMessage(message, config.streamerDisplayName).catch(err => {
+        console.log('SEND MESSAGE FAILED');
+        delete config.authKey;
+        win.webContents.send('rxConfig', config);
+      });
+    });
   } else {
     var bannerMessage = {
       needsBanner: true,

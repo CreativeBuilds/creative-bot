@@ -253,7 +253,6 @@ class RouterWrapper extends Component<any, any> {
     //   this.addPopup(
     //     <UpdatePopup closeCurrentPopup={this.closeCurrentPopup} />,
     //     false,
-    //     true
     //   );
     // });
 
@@ -287,12 +286,6 @@ class RouterWrapper extends Component<any, any> {
     return (
       <React.Fragment>
         {popups.length > 0 ? (
-          /*<Popup
-            Component={popups[popups.length - 1]}
-            closePopup={this.closeCurrentPopup}
-            hasGradiant={hasGradiant}
-            noX={this.state.noX}
-          />*/
           <Popup
             hasGradiant={hasGradiant}
             noX={this.state.noX}

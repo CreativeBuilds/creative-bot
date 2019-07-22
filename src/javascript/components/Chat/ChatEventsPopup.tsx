@@ -218,6 +218,15 @@ const ChatEventsPopup = ({
     }, 750);
   };
 
+  let sendTestMsg = msg => {
+    msg = msg.trim();
+    if (msg.length === 0) return;
+    ipcRenderer.send('sendmessage', {
+      from: 'bot',
+      message: msg.replace('$USER', 'CreativeBot')
+    });
+  };
+
   return (
     <div className={`${styles.popup}`}>
       <h2>Chat on Events</h2>
@@ -271,7 +280,9 @@ const ChatEventsPopup = ({
                       marginBottom: '10px',
                       maxHeight: '30px'
                     }}
-                    onClick={() => {}}
+                    onClick={() => {
+                      sendTestMsg(onFollow);
+                    }}
                   />
                 </div>
                 <div
@@ -306,7 +317,9 @@ const ChatEventsPopup = ({
                       marginBottom: '10px',
                       maxHeight: '30px'
                     }}
-                    onClick={() => {}}
+                    onClick={() => {
+                      sendTestMsg(onSub);
+                    }}
                   />
                 </div>
                 <div
@@ -339,7 +352,9 @@ const ChatEventsPopup = ({
                       marginBottom: '10px',
                       maxHeight: '30px'
                     }}
-                    onClick={() => {}}
+                    onClick={() => {
+                      sendTestMsg(onGiftedSub);
+                    }}
                   />
                 </div>
               </div>
@@ -402,7 +417,9 @@ const ChatEventsPopup = ({
                       marginBottom: '10px',
                       maxHeight: '30px'
                     }}
-                    onClick={() => {}}
+                    onClick={() => {
+                      sendTestMsg(onLemon);
+                    }}
                   />
                 </div>
                 <div
@@ -435,7 +452,9 @@ const ChatEventsPopup = ({
                       marginBottom: '10px',
                       maxHeight: '30px'
                     }}
-                    onClick={() => {}}
+                    onClick={() => {
+                      sendTestMsg(onIcecream);
+                    }}
                   />
                 </div>
                 <div
@@ -468,7 +487,9 @@ const ChatEventsPopup = ({
                       marginBottom: '10px',
                       maxHeight: '30px'
                     }}
-                    onClick={() => {}}
+                    onClick={() => {
+                      sendTestMsg(onDiamond);
+                    }}
                   />
                 </div>
                 <div
@@ -501,7 +522,9 @@ const ChatEventsPopup = ({
                       marginBottom: '10px',
                       maxHeight: '30px'
                     }}
-                    onClick={() => {}}
+                    onClick={() => {
+                      sendTestMsg(onNinja);
+                    }}
                   />
                 </div>
                 <div
@@ -534,7 +557,9 @@ const ChatEventsPopup = ({
                       marginBottom: '10px',
                       maxHeight: '30px'
                     }}
-                    onClick={() => {}}
+                    onClick={() => {
+                      sendTestMsg(onNinjet);
+                    }}
                   />
                 </div>
               </div>

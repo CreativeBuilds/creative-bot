@@ -11,6 +11,11 @@ const Window: any = window;
 const { ipcRenderer } = Window.require('electron');
 
 ipcRenderer.on('rxConfig', (event, config) => {
+  if (!config.authKey) {
+    config.authKey = null;
+  }
+  console.log(config.authKey);
+  console.log('GOT CONFIG', Object.keys(config));
   setRxConfig(config);
 });
 
