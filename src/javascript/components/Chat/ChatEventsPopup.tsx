@@ -219,335 +219,336 @@ const ChatEventsPopup = ({
       <h2>Chat on Events</h2>
       <div style={stateTheme.popup.dialog.content.fullWidth}>
         <ScrollView stateTheme={stateTheme}>
-          <Toggle
-            header='Send Event Messages'
-            type={ToggleType.stretched}
-            isEnabled={true}
-            isOn={enableEventMessages}
-            onClick={() => {
-              updateEnableEvents(enableEventMessages);
-            }}
-            stateTheme={stateTheme}
-          />
+        <Toggle
+          header='Send Event Messages'
+          type={ToggleType.stretched}
+          isEnabled={true}
+          isOn={enableEventMessages}
+          onClick={() => {
+            updateEnableEvents(enableEventMessages);
+          }}
+          stateTheme={stateTheme}
+        />
 
-          <Panel
-            header={enableEventMessages ? null : 'Event Messages Disabled'}
-            hasHeader={!enableEventMessages}
-            style={stateTheme.base.tertiaryBackground}
-            stateTheme={stateTheme}
-            content={
-              enableEventMessages ? (
-                <div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <div style={{ flex: 1 }}>
-                      <TextField
-                        header={'On Follow'}
-                        placeholderText='No message...'
-                        stateTheme={stateTheme}
-                        width={'100%'}
-                        text={onFollow}
-                        inputStyle={stateTheme.base.secondaryBackground}
-                        onChange={e => {
-                          updateFollow(e.target.value);
-                        }}
-                      />
-                    </div>
-                    <IconButton
-                      icon={
-                        <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
-                      }
+        <Panel
+          header={enableEventMessages ? null : 'Event Messages Disabled'}
+          hasHeader={!enableEventMessages}
+          style={stateTheme.base.tertiaryBackground}
+          stateTheme={stateTheme}
+          content={
+            enableEventMessages ? (
+              <div>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <div style={{ flex: 1 }}>
+                    <TextField
+                      header={'On Follow'}
+                      placeholderText='No message...'
                       stateTheme={stateTheme}
-                      buttonStyle={{
-                        marginTop: '30px',
-                        marginBottom: '10px',
-                        maxHeight: '30px',
-                        height: '30px',
+                      width={'100%'}
+                      text={onFollow}
+                      inputStyle={stateTheme.base.secondaryBackground}
+                      onChange={e => {
+                        updateFollow(e.target.value);
                       }}
-                      onClick={() => {}}
                     />
                   </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <div style={{ flex: 1 }}>
-                      <TextField
-                        header={'On Sub'}
-                        placeholderText='No message...'
-                        stateTheme={stateTheme}
-                        width={'100%'}
-                        text={onSub}
-                        inputStyle={stateTheme.base.secondaryBackground}
-                        onChange={e => {
-                          updateSub(e.target.value);
-                          // if (!isNaN(Number(e.target.value)) || e.target.value === '')
-                          //   setPoints(e.target.value);
-                        }}
-                      />
-                    </div>
-                    <IconButton
-                      icon={
-                        <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
-                      }
-                      stateTheme={stateTheme}
-                      buttonStyle={{
-                        marginTop: '30px',
-                        marginBottom: '10px',
-                        maxHeight: '30px',
-                        height: '30px',
-                      }}
-                      onClick={() => {}}
-                    />
-                  </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <div style={{ flex: 1 }}>
-                      <TextField
-                        header={'On Gift Sub'}
-                        placeholderText='No message...'
-                        stateTheme={stateTheme}
-                        text={onGiftedSub}
-                        width={'100%'}
-                        inputStyle={stateTheme.base.secondaryBackground}
-                        onChange={e => {
-                          updateGiftedSub(e.target.value);
-                        }}
-                      />
-                    </div>
-                    <IconButton
-                      icon={
-                        <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
-                      }
-                      stateTheme={stateTheme}
-                      buttonStyle={{
-                        marginTop: '30px',
-                        marginBottom: '10px',
-                        maxHeight: '30px',
-                        height: '30px',
-                      }}
-                      onClick={() => {}}
-                    />
-                  </div>
-                </div>
-              ) : null
-            }
-          />
-          <Panel
-            header={
-              enableEventMessages
-                ? 'Donation Messages'
-                : 'Event Messages Disabled'
-            }
-            hasHeader={true}
-            style={Object.assign(
-              {},
-              { marginTop: '10px' },
-              stateTheme.base.tertiaryBackground
-            )}
-            stateTheme={stateTheme}
-            content={
-              enableEventMessages ? (
-                <div>
-                  <Toggle
-                    header='Spam Filter'
-                    type={ToggleType.stretched}
-                    isEnabled={true}
-                    isOn={enableDebounceEvents}
-                    onClick={() => {
-                      updateDebounceEvents(enableDebounceEvents);
-                    }}
+                  <IconButton
+                    icon={
+                      <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
+                    }
                     stateTheme={stateTheme}
+                    buttonStyle={{
+                      marginTop: '30px',
+                      marginBottom: '10px',
+                      maxHeight: '30px',
+                      height: '30px',
+                    }}
+                    onClick={() => {}}
                   />
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <div style={{ flex: 1 }}>
-                      <TextField
-                        placeholderText='No message...'
-                        header={'Lemon'}
-                        stateTheme={stateTheme}
-                        text={onLemon}
-                        width={'100%'}
-                        inputStyle={stateTheme.base.secondaryBackground}
-                        onChange={e => {
-                          updateLemon(e.target.value);
-                        }}
-                      />
-                    </div>
-                    <IconButton
-                      icon={
-                        <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
-                      }
-                      stateTheme={stateTheme}
-                      buttonStyle={{
-                        marginTop: '30px',
-                        marginBottom: '10px',
-                        maxHeight: '30px',
-                        height: '30px',
-                      }}
-                      onClick={() => {}}
-                    />
-                  </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <div style={{ flex: 1 }}>
-                      <TextField
-                        header={'Icecream'}
-                        placeholderText='No message...'
-                        text={onIcecream}
-                        stateTheme={stateTheme}
-                        width={'100%'}
-                        inputStyle={stateTheme.base.secondaryBackground}
-                        onChange={e => {
-                          updateIcecream(e.target.value);
-                        }}
-                      />
-                    </div>
-                    <IconButton
-                      icon={
-                        <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
-                      }
-                      stateTheme={stateTheme}
-                      buttonStyle={{
-                        marginTop: '30px',
-                        marginBottom: '10px',
-                        maxHeight: '30px',
-                        height: '30px',
-                      }}
-                      onClick={() => {}}
-                    />
-                  </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <div style={{ flex: 1 }}>
-                      <TextField
-                        header={'Diamond'}
-                        placeholderText='No message...'
-                        text={onDiamond}
-                        stateTheme={stateTheme}
-                        width={'100%'}
-                        inputStyle={stateTheme.base.secondaryBackground}
-                        onChange={e => {
-                          updateDiamond(e.target.value);
-                        }}
-                      />
-                    </div>
-                    <IconButton
-                      icon={
-                        <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
-                      }
-                      stateTheme={stateTheme}
-                      buttonStyle={{
-                        marginTop: '30px',
-                        marginBottom: '10px',
-                        maxHeight: '30px',
-                        height: '30px',
-                      }}
-                      onClick={() => {}}
-                    />
-                  </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <div style={{ flex: 1 }}>
-                      <TextField
-                        header={'Ninjaghini'}
-                        placeholderText='No message...'
-                        text={onNinja}
-                        stateTheme={stateTheme}
-                        width={'100%'}
-                        inputStyle={stateTheme.base.secondaryBackground}
-                        onChange={e => {
-                          updateNinja(e.target.value);
-                        }}
-                      />
-                    </div>
-                    <IconButton
-                      icon={
-                        <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
-                      }
-                      stateTheme={stateTheme}
-                      buttonStyle={{
-                        marginTop: '30px',
-                        marginBottom: '10px',
-                        maxHeight: '30px',
-                        height: '30px',
-                      }}
-                      onClick={() => {}}
-                    />
-                  </div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'center',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <div style={{ flex: 1 }}>
-                      <TextField
-                        header={'Ninjet'}
-                        placeholderText='No message...'
-                        text={onNinjet}
-                        stateTheme={stateTheme}
-                        width={'100%'}
-                        inputStyle={stateTheme.base.secondaryBackground}
-                        onChange={e => {
-                          updateNinjet(e.target.value);
-                        }}
-                      />
-                    </div>
-                    <IconButton
-                      icon={
-                        <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
-                      }
-                      stateTheme={stateTheme}
-                      buttonStyle={{
-                        marginTop: '30px',
-                        marginBottom: '10px',
-                        maxHeight: '30px',
-                        height: '30px',
-                      }}
-                      onClick={() => {}}
-                    />
-                  </div>
                 </div>
-              ) : null
-            }
-          />
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <div style={{ flex: 1 }}>
+                    <TextField
+                      header={'On Sub'}
+                      placeholderText='No message...'
+                      stateTheme={stateTheme}
+                      width={'100%'}
+                      text={onSub}
+                      inputStyle={stateTheme.base.secondaryBackground}
+                      onChange={e => {
+                        updateSub(e.target.value);
+                        // if (!isNaN(Number(e.target.value)) || e.target.value === '')
+                        //   setPoints(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <IconButton
+                    icon={
+                      <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
+                    }
+                    stateTheme={stateTheme}
+                    buttonStyle={{
+                      marginTop: '30px',
+                      marginBottom: '10px',
+                      maxHeight: '30px',
+                      height: '30px',
+                    }}
+                    onClick={() => {}}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <div style={{ flex: 1 }}>
+                    <TextField
+                      header={'On Gift Sub'}
+                      placeholderText='No message...'
+                      stateTheme={stateTheme}
+                      text={onGiftedSub}
+                      width={'100%'}
+                      inputStyle={stateTheme.base.secondaryBackground}
+                      onChange={e => {
+                        updateGiftedSub(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <IconButton
+                    icon={
+                      <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
+                    }
+                    stateTheme={stateTheme}
+                    buttonStyle={{
+                      marginTop: '30px',
+                      marginBottom: '10px',
+                      maxHeight: '30px',
+                      height: '30px',
+                    }}
+                    onClick={() => {}}
+                  />
+                </div>
+              </div>
+            ) : null
+          }
+        />
+        <Panel
+          header={
+            enableEventMessages
+              ? 'Donation Messages'
+              : 'Event Messages Disabled'
+          }
+          hasHeader={true}
+          style={Object.assign(
+            {},
+            { marginTop: '10px' },
+            stateTheme.base.tertiaryBackground
+          )}
+          stateTheme={stateTheme}
+          content={
+            enableEventMessages ? (
+              <div>
+                <Toggle
+                  header='Spam Filter'
+                  type={ToggleType.stretched}
+                  isEnabled={true}
+                  isOn={enableDebounceEvents}
+                  onClick={() => {
+                    updateDebounceEvents(enableDebounceEvents);
+                  }}
+                  stateTheme={stateTheme}
+                />
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <div style={{ flex: 1 }}>
+                    <TextField
+                      placeholderText='No message...'
+                      header={'Lemon'}
+                      stateTheme={stateTheme}
+                      text={onLemon}
+                      width={'100%'}
+                      inputStyle={stateTheme.base.secondaryBackground}
+                      onChange={e => {
+                        updateLemon(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <IconButton
+                    icon={
+                      <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
+                    }
+                    stateTheme={stateTheme}
+                    buttonStyle={{
+                      marginTop: '30px',
+                      marginBottom: '10px',
+                      maxHeight: '30px',
+                      height: '30px',
+                    }}
+                    onClick={() => {}}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <div style={{ flex: 1 }}>
+                    <TextField
+                      header={'Icecream'}
+                      placeholderText='No message...'
+                      text={onIcecream}
+                      stateTheme={stateTheme}
+                      width={'100%'}
+                      inputStyle={stateTheme.base.secondaryBackground}
+                      onChange={e => {
+                        updateIcecream(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <IconButton
+                    icon={
+                      <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
+                    }
+                    stateTheme={stateTheme}
+                    buttonStyle={{
+                      marginTop: '30px',
+                      marginBottom: '10px',
+                      maxHeight: '30px',
+                      height: '30px',
+                    }}
+                    onClick={() => {}}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <div style={{ flex: 1 }}>
+                    <TextField
+                      header={'Diamond'}
+                      placeholderText='No message...'
+                      text={onDiamond}
+                      stateTheme={stateTheme}
+                      width={'100%'}
+                      inputStyle={stateTheme.base.secondaryBackground}
+                      onChange={e => {
+                        updateDiamond(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <IconButton
+                    icon={
+                      <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
+                    }
+                    stateTheme={stateTheme}
+                    buttonStyle={{
+                      marginTop: '30px',
+                      marginBottom: '10px',
+                      maxHeight: '30px',
+                      height: '30px',
+                    }}
+                    onClick={() => {}}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <div style={{ flex: 1 }}>
+                    <TextField
+                      header={'Ninjaghini'}
+                      placeholderText='No message...'
+                      text={onNinja}
+                      stateTheme={stateTheme}
+                      width={'100%'}
+                      inputStyle={stateTheme.base.secondaryBackground}
+                      onChange={e => {
+                        updateNinja(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <IconButton
+                    icon={
+                      <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
+                    }
+                    stateTheme={stateTheme}
+                    buttonStyle={{
+                      marginTop: '30px',
+                      marginBottom: '10px',
+                      maxHeight: '30px',
+                      height: '30px',
+                    }}
+                    onClick={() => {}}
+                  />
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <div style={{ flex: 1 }}>
+                    <TextField
+                      header={'Ninjet'}
+                      placeholderText='No message...'
+                      text={onNinjet}
+                      stateTheme={stateTheme}
+                      width={'100%'}
+                      inputStyle={stateTheme.base.secondaryBackground}
+                      onChange={e => {
+                        updateNinjet(e.target.value);
+                      }}
+                    />
+                  </div>
+                  <IconButton
+                    icon={
+                      <MdPlayArrow style={{ height: '30px  !important', width: '30px' }} />
+                    }
+                    stateTheme={stateTheme}
+                    buttonStyle={{
+                      marginTop: '30px',
+                      marginBottom: '10px',
+                      maxHeight: '30px',
+                      height: '30px',
+                    }}
+                    onClick={() => {}}
+                  />
+                </div>
+              </div>
+            ) : null
+          }
+        />
         </ScrollView>
-        <div style={stateTheme.popup.dialog.buttonStack}>
+      </div>
+      <div style={stateTheme.popup.dialog.buttonStack}>
           <Button
           title={'Close'}
           isSubmit={true}
@@ -560,7 +561,6 @@ const ChatEventsPopup = ({
           }}
         />
         </div>
-      </div>
     </div>
   );
 };
