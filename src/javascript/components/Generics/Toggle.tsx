@@ -23,8 +23,7 @@ const Toggle = ({
   isEnabled,
   onClick,
   onChange = null,
-  stateTheme,
-  style = {}
+  stateTheme
 }) => {
   return (
     <div
@@ -37,9 +36,7 @@ const Toggle = ({
             ? stateTheme.toggle.stretched
             : stateTheme.toggle.compact
         ),
-        Object.assign({},
-        style,
-        stateTheme.toggle)
+        stateTheme.toggle
       )}
     >
       <div
