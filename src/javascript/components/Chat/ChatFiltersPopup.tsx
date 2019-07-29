@@ -3,6 +3,7 @@ import { useContext, Component, useState, useEffect } from 'react';
 import { theme, ThemeContext } from '../../helpers';
 import { MdSend, MdPerson, MdMood, MdFace } from 'react-icons/md';
 
+import { Message } from './Message';
 import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
 import { Action } from 'rxjs/internal/scheduler/Action';
 
@@ -18,7 +19,11 @@ import { first } from 'rxjs/operators';
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
 
+const styles: any = require('./Chat.scss');
+const segStyles: any = require('../SegmentControl/SegmentControl.scss');
+
 interface popup {
+  styles: any;
   stateTheme: any;
   text?: string | Function | Element | any;
   Config?: any;
@@ -26,6 +31,7 @@ interface popup {
 }
 
 const ChatFiltersPopup = ({
+  styles,
   stateTheme,
   text = '',
   Config = {},
@@ -129,9 +135,9 @@ const ChatFiltersPopup = ({
   };
 
   return (
-    <div style={stateTheme.popup.dialog.content}>
+    <div className={`${styles.popup}`}>
       <h2>Chat Settings</h2>
-      <div style={stateTheme.popup.dialog.content.seventyWidth}>
+      <div className={`${styles.chatFilterPopup}`}>
         <Toggle
           header='Show Event Messages'
           type={ToggleType.stretched}
@@ -209,18 +215,15 @@ const ChatFiltersPopup = ({
             </div>
           }
         />
-        <div style={stateTheme.popup.dialog.buttonStack}>
-          <Button
-          title={'Close'}
-          isSubmit={true}
-          buttonStyle={{ width: '100%' }}
-          stateTheme={stateTheme}
-          onClick={() => {
-            closeCurrentPopup();
-          }}
-        />
-        </div>
       </div>
+      <Button
+        title={'Close'}
+        isSubmit={true}
+        stateTheme={stateTheme}
+        onClick={() => {
+          closeCurrentPopup();
+        }}
+      />
     </div>
   );
 };

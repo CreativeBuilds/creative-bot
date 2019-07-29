@@ -14,6 +14,7 @@ import {
   MdArrowDownward
 } from 'react-icons/md';
 
+import { Message } from './Message';
 import { StickerPopup } from './StickerPopup';
 import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
 import { firebaseEmotes$ } from '../../helpers/rxEmotes';
@@ -23,21 +24,21 @@ import { ChatTextToSpeechPopup } from './ChatTextToSpeechPopup';
 import { firebase } from '../../helpers/firebase';
 
 import {
-  AdvancedDiv,
   Button,
+  DestructiveButton,
   ActionButton,
-  IconButton,
+  SendButton,
   WidgetButton,
-  LinkButton,
+  LinkButton
+} from '../Generics/Button';
+import {
+  TextField,
   EmailField,
   PasswordField,
-  MessageField,
-  Message,
-  Page, 
-  PageHeader, 
-  PageBody, 
-  TextField
-} from '../Generics/CreativeUI';
+  StepperField,
+  MessageField
+} from '../Generics/Input';
+import { Page, PageHeader, PageBody } from '../Generics/Common';
 
 import { isEmpty, isEqual } from 'lodash';
 
@@ -50,6 +51,7 @@ import { filter, distinctUntilChanged, first } from 'rxjs/operators';
 import { AccountsPopup } from './AccountsPopup';
 import { ChatEventsPopup } from './ChatEventsPopup';
 import { from } from 'rxjs';
+import { AdvancedDiv } from '../Generics/CreativeUI';
 
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
@@ -58,9 +60,9 @@ const { BrowserWindow } = remote;
 let authKey = false;
 let streamerDisplayName = false;
 
-//const styles: any = require('./Chat.scss');
-
+const styles: any = require('./Chat.scss');
 interface popup {
+  styles: any;
   closeCurrentPopup?: any;
   addPopup: any;
   stateTheme: any;
@@ -78,6 +80,7 @@ function validateStringForEmail(email) {
 }
 
 const AddAcceptFirebasePopup = ({
+  styles,
   closeCurrentPopup,
   stateTheme,
   configName,
@@ -122,7 +125,7 @@ const AddAcceptFirebasePopup = ({
   return (
     <div style={stateTheme.popup.dialog.content}>
       <h1 style={{ marginBottom: '0px' }}>CreativeBot Sign-in</h1>
-      <div style={stateTheme.popup.dialog.content.seventyWidth}>
+      <div style={{ width: '70%', minWidth: 'unset' }}>
         <p
           style={{
             margin: 'auto',
@@ -331,6 +334,7 @@ const AddAcceptFirebasePopup = ({
 };
 
 const AddCommandPopup = ({
+  styles,
   closeCurrentPopup,
   stateTheme,
   configName,
@@ -400,33 +404,32 @@ const AddCommandPopup = ({
   };
 
   return (
-    <div style={stateTheme.popup.dialog.content}>
-      <div style={stateTheme.popup.dialog.content.seventyWidth}>
+    <div className={styles.popup}>
+      <div className={styles.input_wrapper}>
         {noInput ? null : (
           <React.Fragment>
-            <TextField 
-              header={configName} 
-              stateTheme={stateTheme} 
-              onKeyDown={keyDown} 
-              onChange={e => { 
+            <div className={styles.input_name}>{configName}</div>
+            <input
+              className={styles.input}
+              onKeyDown={keyDown}
+              type={type}
+              onChange={e => {
                 verifyInput(e.target.value);
               }}
-              text={name}/>
+              value={name}
+            />
           </React.Fragment>
         )}
       </div>
       <div
-        style={Object.assign({}, 
-          isError() ? { color: 'red' } : {}, 
-          stateTheme.popup.dialog.helperText)
-        }
+        className={styles.helper_text}
+        style={isError() ? { color: 'red' } : {}}
       >
         {helperText}
       </div>
       <Button
         title={buttonText}
         isSubmit={true}
-        buttonStyle={{ width: '70%', marginTop: '10px' }}
         isEnabled={error ? false : true}
         stateTheme={stateTheme}
         onClick={() => {
@@ -438,6 +441,7 @@ const AddCommandPopup = ({
 };
 
 const LoginWithDlivePopup = ({
+  styles,
   closeCurrentPopup,
   stateTheme,
   configName,
@@ -448,7 +452,7 @@ const LoginWithDlivePopup = ({
   type = 'text'
 }: popup) => {
   return (
-    <div style={stateTheme.popup.dialog.content}>
+    <div className={styles.popup}>
       <h3 style={{ margin: '0px', marginBottom: '5px' }}>
         BOT ACCOUNT SIGN IN!
       </h3>
@@ -457,7 +461,7 @@ const LoginWithDlivePopup = ({
           textAlign: 'center',
           width: '70%',
           margin: 'auto',
-          marginBottom: '15px'
+          marginBottom: '10px'
         }}
       >
         Please do not use your streamer account,{' '}
@@ -465,15 +469,40 @@ const LoginWithDlivePopup = ({
       </i>
       <div
         style={{
-          display: 'block',
+          display: 'flex',
           justifyContent: 'center',
-          alignItems: 'center',
-          width: '70%',
+          alignItems: 'center'
         }}
       >
+        {/* TODO: This is going to need a Generic button file */}
+        {/*<AdvancedDiv
+          style={{
+            whiteSpace: 'nowrap',
+            width: 'min-content',
+            padding: '10px',
+            background: theme.globals.actionButton.backgroundColor,
+            color: theme.globals.actionButton.color,
+            borderRadius: '5px'
+          }}
+          hoverStyle={{
+            cursor: 'pointer',
+            boxShadow: '2.5px 2.5px 5px rgba(0,0,0,0.5)'
+          }}
+        >
+          <div
+            onClick={e => {
+              // Need to create a popup that is oauth for dlive
+              ipcRenderer.send('oauthWindowStart');
+              ipcRenderer.once('newAuthKey', (event, key) => {
+                closeCurrentPopup(key);
+              });
+            }}
+          >
+            Sign-in With DLive
+          </div>
+        </AdvancedDiv>*/}
         <ActionButton
-          title={'Save'}
-          buttonStyle={{ width: '100%' }}
+          title={'Login'}
           stateTheme={stateTheme}
           onClick={e => {
             // Need to create a popup that is oauth for dlive
@@ -481,22 +510,6 @@ const LoginWithDlivePopup = ({
             ipcRenderer.once('newAuthKey', (event, key) => {
               closeCurrentPopup(key);
             });
-          }}
-        />
-        <LinkButton
-          title={'Sign Out'}
-          buttonStyle={{ width: '100%', marginBottom: '0px !important' }}
-          stateTheme={stateTheme}
-          onClick={() => {
-            firebase
-              .auth()
-              .signOut()
-              .then(() => {
-                ipcRenderer.send('logout');
-                setTimeout(() => {
-                  window.close();
-                }, 500);
-              });
           }}
         />
       </div>
@@ -578,6 +591,7 @@ const Chat = ({ props }) => {
     addPopup(
       <StickerPopup
         stateTheme={stateTheme}
+        styles={styles}
         Config={Object.assign({}, config)}
         text={<span>Stickers</span>}
         Emotes={emotes}
@@ -603,6 +617,7 @@ const Chat = ({ props }) => {
     addPopup(
       <ChatFiltersPopup
         stateTheme={stateTheme}
+        styles={styles}
         Config={Object.assign({}, config)}
         closeCurrentPopup={closeCurrentPopup}
       />
@@ -613,6 +628,7 @@ const Chat = ({ props }) => {
     addPopup(
       <AccountsPopup
         stateTheme={stateTheme}
+        styles={styles}
         Config={Object.assign({}, config)}
         closeCurrentPopup={closeCurrentPopup}
       />,
@@ -624,6 +640,7 @@ const Chat = ({ props }) => {
     addPopup(
       <ChatEventsPopup
         stateTheme={stateTheme}
+        styles={styles}
         Config={Object.assign({}, config)}
         closeCurrentPopup={closeCurrentPopup}
       />,
@@ -655,6 +672,7 @@ const Chat = ({ props }) => {
       streamerDisplayName = true;
       addPopup(
         <AddCommandPopup
+          styles={styles}
           addPopup={addPopup}
           closeCurrentPopup={(input, setError) => {
             if (input !== '') {
@@ -700,6 +718,7 @@ const Chat = ({ props }) => {
       authKey = true;
       addPopup(
         <LoginWithDlivePopup
+          styles={styles}
           addPopup={addPopup}
           Config={Object.assign({}, config)}
           closeCurrentPopup={(input, setError) => {
@@ -718,7 +737,8 @@ const Chat = ({ props }) => {
             <div>
               Check the instructions on how to get your Auth Key from DLive{' '}
               <span
-                style={Object.assign({}, { color: theme.globals.accentHighlight.highlightColor }, stateTheme.text.link)}
+                className={styles.link}
+                style={{ color: theme.globals.accentHighlight.highlightColor }}
                 onClick={e => {
                   e.preventDefault();
                   shell.openExternal(
@@ -742,6 +762,7 @@ const Chat = ({ props }) => {
     if (config.acceptedToS && typeof config.isFirebaseUser === 'undefined') {
       addPopup(
         <AddAcceptFirebasePopup
+          styles={styles}
           addPopup={addPopup}
           closeCurrentPopup={obj => {
             let Config = Object.assign(
@@ -791,6 +812,7 @@ const Chat = ({ props }) => {
     if (!config.acceptedToS && config.init) {
       addPopup(
         <AddCommandPopup
+          styles={styles}
           addPopup={addPopup}
           closeCurrentPopup={() => {
             let Config = Object.assign({}, { acceptedToS: true }, config);
@@ -801,7 +823,7 @@ const Chat = ({ props }) => {
           configName={''}
           text={
             <span>
-              <h3 style={{ marginBottom: '5px' }}>Welcome to Creative's Chat Bot!</h3>
+              Welcome to Creative's Chat Bot!
               <br /> Before we can do cool things, you're going to have to fill
               in some config options...
               <br />
@@ -828,7 +850,7 @@ const Chat = ({ props }) => {
         stateTheme={stateTheme}
       >
         CHAT
-        <div style={stateTheme.page.header.rightContainer}>
+        <div className={styles.rightContainer}>
           <WidgetButton
             icon={<MdSettingsVoice />}
             stateTheme={stateTheme}
@@ -836,6 +858,7 @@ const Chat = ({ props }) => {
               addPopup(
                 <ChatTextToSpeechPopup
                   stateTheme={stateTheme}
+                  styles={styles}
                   Config={Object.assign({}, config)}
                   closeCurrentPopup={closeCurrentPopup}
                 />
@@ -863,29 +886,19 @@ const Chat = ({ props }) => {
               openChatEventsPannel();
             }}
           />
-          <WidgetButton
-            icon={viewersToggle ? (
+          <div
+            className={styles.viewers}
+            onClick={() => {
+              setViewersToggle(!viewersToggle);
+            }}
+          >
+            {viewersToggle ? (
               <MdVisibility style={{ paddingRight: '5px' }} />
             ) : (
               <MdVisibilityOff />
             )}
-            style={{
-              display: 'inline-flex',
-              'justify-content': 'center',
-              'align-items': 'center',
-              transition: 'all 0.15s ease-in-out',
-              height: '100%',
-              'vertical-align': 'middle',
-              'margin-bottom': '3px'
-            }}
-            stateTheme={stateTheme}
-            onClick={() => {
-              setViewersToggle(!viewersToggle);
-            }}
-            footer={
-              <span> {viewersToggle ? viewers : null}</span>
-            }
-          />
+            <span> {viewersToggle ? viewers : null}</span>
+          </div>
         </div>
       </PageHeader>
       <PageBody stateTheme={stateTheme} id='messages'>
@@ -900,6 +913,7 @@ const Chat = ({ props }) => {
               <Message
                 addPopup={addPopup}
                 Config={config}
+                styles={styles}
                 message={message}
                 closeCurrentPopup={closeCurrentPopup}
                 stateTheme={stateTheme}
@@ -914,17 +928,33 @@ const Chat = ({ props }) => {
         )}
         {isScrolledUp ? (
           <div
-            style={stateTheme.button.scrollDown.container}
+            style={{
+              zIndex: 9,
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              position: 'absolute',
+              bottom: '70px',
+              left: '0px'
+            }}
           >
             <AdvancedDiv
               style={Object.assign(
                 {},
-                stateTheme.button.scrollDown,
+                {
+                  width: '40px',
+                  height: '40px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  fontSize: '30px',
+                  borderRadius: '50%'
+                },
                 stateTheme.base.tertiaryBackground
               )}
               hoverStyle={Object.assign({}, theme.globals.accentBackground, {
-                cursor: 'pointer',
-                fill: 'black'
+                cursor: 'pointer'
               })}
             >
               <div
@@ -964,27 +994,13 @@ const Chat = ({ props }) => {
           icon={<MdLocalMovies />} 
           stateTheme={stateTheme} 
           onClick={openTidyClips} />*/}
-        <IconButton
+        <SendButton
           icon={<MdFace />}
-          style={{ 
-            padding: '5px'  
-          }}
-          buttonStyle={{
-            maxHeight: '48px',
-            height: '48px'
-          }}
           stateTheme={stateTheme}
           onClick={openStickerPanel}
         />
-        <IconButton
+        <SendButton
           icon={<MdSend />}
-          style={{ 
-            padding: '5px'  
-          }}
-          buttonStyle={{
-            maxHeight: '48px',
-            height: '48px'
-          }}
           stateTheme={stateTheme}
           onClick={sendMessage}
         />

@@ -76,10 +76,6 @@ const EmailField = ({
   const [isenabled, setIsEnabled] = useState(isEnabled);
   const [textInput, setTextInput] = useState(text);
 
-  useEffect(() => {
-    setTextInput(text);
-  }, [text]);
-
   return (
     <div
       style={Object.assign(
@@ -130,10 +126,6 @@ const PasswordField = ({
 }) => {
   const [isenabled, setIsEnabled] = useState(isEnabled);
   const [textInput, setTextInput] = useState(text);
-
-  useEffect(() => {
-    setTextInput(text);
-  }, [text]);
 
   return (
     <div
@@ -297,10 +289,6 @@ const SearchField = ({
 }) => {
   const [isenabled, setIsEnabled] = useState(isEnabled);
   const [textInput, setTextInput] = useState(text);
-
-  useEffect(() => {
-    setTextInput(text);
-  }, [text]);
 
   return (
     <div

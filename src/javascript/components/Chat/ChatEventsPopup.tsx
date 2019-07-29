@@ -3,13 +3,15 @@ import { useContext, Component, useState, useEffect } from 'react';
 import { theme, ThemeContext } from '../../helpers';
 import { MdSend, MdPerson, MdMood, MdFace, MdPlayArrow } from 'react-icons/md';
 
+import { Message } from './Message';
 import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
 import { Action } from 'rxjs/internal/scheduler/Action';
 
 // Generic Components
-import { 
-  Toggle, 
+import { SegmentControl, SegmentControlSource } from '../SegmentControl/index';
+import { Toggle, 
   ToggleType,
+  ScrollView,
   Panel,
   Button,
   DestructiveButton,
@@ -17,8 +19,7 @@ import {
   WidgetButton,
   IconButton,
   TextField, 
-  StepperField,
-  ScrollView 
+  StepperField 
   } from '../Generics/CreativeUI';
 import { GoNoNewline } from 'react-icons/go';
 import { first } from 'rxjs/operators';
@@ -26,7 +27,11 @@ import { first } from 'rxjs/operators';
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
 
+const styles: any = require('./Chat.scss');
+const segStyles: any = require('../SegmentControl/SegmentControl.scss');
+
 interface popup {
+  styles: any;
   stateTheme: any;
   text?: string | Function | Element | any;
   Config?: any;
@@ -43,6 +48,7 @@ let ninjaTimeout;
 let ninjetTimeout;
 
 const ChatEventsPopup = ({
+  styles,
   stateTheme,
   text = '',
   Config = {},
@@ -214,8 +220,17 @@ const ChatEventsPopup = ({
     }, 750);
   };
 
+  let sendTestMsg = msg => {
+    msg = msg.trim();
+    if (msg.length === 0) return;
+    ipcRenderer.send('sendmessage', {
+      from: 'bot',
+      message: msg.replace('$USER', 'CreativeBot')
+    });
+  };
+
   return (
-    <div style={stateTheme.popup.dialog.content}>
+    <div className={`${styles.popup}`}>
       <h2>Chat on Events</h2>
       <div style={stateTheme.popup.dialog.content.fullWidth}>
         <ScrollView stateTheme={stateTheme}>

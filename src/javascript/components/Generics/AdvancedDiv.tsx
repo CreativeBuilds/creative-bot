@@ -10,8 +10,6 @@ interface IProps {
   hoverStyle?: {};
   isButton?: Boolean;
   buttonStyle?: {};
-  onClick?: () => VoidFunction;
-  onHover?: (e?: Boolean) => void;
   children: any;
 }
 
@@ -22,9 +20,7 @@ export const AdvancedDiv = (props: IProps) => {
     className = '',
     hoverClassName = '',
     style = {},
-    hoverStyle = {},
-    onClick = null,
-    onHover = null,
+    hoverStyle = {}
   } = props;
   const [hover, setHover] = useState(false);
 
@@ -37,19 +33,12 @@ export const AdvancedDiv = (props: IProps) => {
     <div
       onMouseEnter={() => {
         setHover(true);
-        if (onHover != null) {
-          onHover(true);
-        }
       }}
       onMouseLeave={() => {
         setHover(false);
-        if (onHover != null) {
-          onHover(false);
-        }
       }}
       style={aStyle}
       className={aClassName}
-      onClick={onClick}
     >
       {React.cloneElement(props.children, {
         isHovering: hover,

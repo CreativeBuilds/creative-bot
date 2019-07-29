@@ -3,6 +3,7 @@ import { useContext, Component, useState, useEffect } from 'react';
 import { theme, ThemeContext } from '../../helpers';
 import { MdSend, MdPerson, MdMood, MdFace } from 'react-icons/md';
 
+import { Message } from './Message';
 import { firebaseConfig$, setRxConfig } from '../../helpers/rxConfig';
 import { Action } from 'rxjs/internal/scheduler/Action';
 
@@ -14,7 +15,11 @@ import { Button, DestructiveButton, ActionButton } from '../Generics/Button';
 const Window: any = window;
 const { ipcRenderer, shell } = Window.require('electron');
 
+const styles: any = require('./Chat.scss');
+const segStyles: any = require('../SegmentControl/SegmentControl.scss');
+
 interface popup {
+  styles: any;
   stateTheme: any;
   text?: string | Function | Element | any;
   Config?: any;
@@ -22,6 +27,7 @@ interface popup {
 }
 
 const AccountsPopup = ({
+  styles,
   stateTheme,
   text = '',
   Config = {},
@@ -49,9 +55,17 @@ const AccountsPopup = ({
   };
 
   return (
-    <div style={stateTheme.popup.dialog.content}>
+    <div className={`${styles.popup}`}>
       <h2>Account Settings</h2>
-      <div style={stateTheme.popup.dialog.content.seventyWidth} >
+      <div
+        style={{
+          flex: 1,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column'
+        }}
+      >
         {!!config.authKey ? (
           <DestructiveButton 
             title={"Reconnect Bot Account"} 
@@ -80,27 +94,24 @@ const AccountsPopup = ({
               closeCurrentPopup();
             }} />
         ) : null}
-        <div style={stateTheme.popup.dialog.buttonStack}>
-          <Button 
-          title={"Close"} 
-          isSubmit={true} 
-          buttonStyle={{ width: '100%'}}
-          stateTheme={stateTheme}  
-          onClick={() => {
-              // Check to see if a change has happened
-              if (needRestart()) {
-                saveToDB(config);
-                setTimeout(() => {
-                  ipcRenderer.send('shutdown');
-                }, 250);
-              }
-              closeCurrentPopup();
-            }} />
-        {needRestart() ? (
-          <i style={{ marginTop: '5px' }}>Bot will need to be restarted...</i>
-        ) : null}
-        </div>
       </div>
+      <Button 
+        title={"Close"} 
+        isSubmit={true} 
+        stateTheme={stateTheme}  
+        onClick={() => {
+            // Check to see if a change has happened
+            if (needRestart()) {
+              saveToDB(config);
+              setTimeout(() => {
+                ipcRenderer.send('shutdown');
+              }, 250);
+            }
+            closeCurrentPopup();
+          }} />
+      {needRestart() ? (
+        <i style={{ marginTop: '5px' }}>Bot will need to be restarted...</i>
+      ) : null}
     </div>
   );
 };

@@ -62,9 +62,17 @@ const checkMessages = () => {
           subscribing: true
         }
       }
-    }).catch(err => {
-      throw err;
-    });
+    })
+      .then(body => {
+        if (msg.cb) {
+          msg.cb(body, null);
+        }
+      })
+      .catch(err => {
+        if (msg.cb) {
+          msg.cb(null, err);
+        }
+      });
   });
 };
 
@@ -76,8 +84,10 @@ const sendMessage = (message, streamer) => {
       msgs.push({
         message,
         streamer,
-        cb: body => {
-          response(body);
+        cb: (body, err) => {
+          err ? console.log('GOT ERR', err) : null;
+          if (!err) return response(body);
+          return reject(err);
         }
       });
     });
