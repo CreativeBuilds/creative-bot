@@ -3,8 +3,9 @@ import {
     Button,
     DestructiveButton,
     ActionButton,
-    SendButton,
+    IconButton,
     WidgetButton,
+    BubbleButton,
     LinkButton
   } from "./Button";
 import { Checkbox } from './Checkbox';
@@ -17,6 +18,7 @@ import {
     ContextItem 
     } from './ContextMenu';
 import { DragDrop } from './DragDrop';
+import { Emote } from './Emote';
 import {
     TextField,
     EmailField,
@@ -29,19 +31,25 @@ import {
       MenuBar, 
       MenuItem 
     } from './MenuBar';
+import { Message } from './Message';
 import { Panel } from './Panel';
 import { Popup } from './Popup';
+import { ScrollView } from './ScrollView'
 import { RangeSlider } from './Slider';
 import { TitleBar } from './TitleBar';
-import { Toggle } from './Toggle';
+import { 
+    Toggle,
+    ToggleType 
+    } from './Toggle';
 
 export {
     AdvancedDiv,
     Button,
     DestructiveButton,
     ActionButton,
-    SendButton,
+    IconButton,
     WidgetButton,
+    BubbleButton,
     LinkButton,
     Checkbox,
     Page,
@@ -50,6 +58,7 @@ export {
     ContextMenu,
     ContextItem,
     DragDrop,
+    Emote,
     TextField,
     EmailField,
     PasswordField,
@@ -58,9 +67,12 @@ export {
     SearchField,
     MenuBar,
     MenuItem,
+    Message,
     Panel,
     Popup,
+    ScrollView,
     RangeSlider,
     TitleBar,
-    Toggle
+    Toggle,
+    ToggleType
 };
