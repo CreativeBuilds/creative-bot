@@ -1,6 +1,6 @@
 {
   "name": "creative-bot",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "This open-source DLive chat bot was made by the community for the community. Add some extra spice to your chat with custom commands, timers, a point system and more today!",
   "main": "index.js",
   "scripts": {
@@ -45,7 +45,6 @@
     "rxjs": "^6.5.2",
     "rxjs-websockets": "^7.0.0",
     "tar": "^2.2.2",
-    "unzip": "^0.1.11",
     "ws": "^6.2.1"
   },
   "devDependencies": {

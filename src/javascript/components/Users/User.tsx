@@ -14,7 +14,9 @@ const Popup = ({ user, styles, closeCurrentPopup, stateTheme }) => {
 
   const saveToDB = points => {
     ipcRenderer.send('editpoints', {
-      username: user.blockchainUsername,
+      username: user.blockchainUsername
+        ? user.blockchainUsername
+        : user.username,
       points
     });
   };
@@ -86,7 +88,7 @@ const User = ({
       style={Object.assign(
         {},
         stateTheme.cell.normal,
-        nth % 2 ? stateTheme.cell.alternate : { }
+        nth % 2 ? stateTheme.cell.alternate : {}
       )}
     >
       <div className={styles.image_container}>

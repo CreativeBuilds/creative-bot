@@ -1,4 +1,5 @@
-const { sendMessage, keepActive, wss, sendLino } = require('./helpers');
+const { sendMessage, wss, sendLino } = require('./helpers');
+const { keepActive, init } = require('./helpers/keepActive');
 const setRxUsers = require('./helpers/setRxUsers');
 const log = require('electron-log');
 const storage = require('electron-json-storage');
@@ -61,8 +62,7 @@ const getCustomVariables = require('./helpers/getCustomVariables');
 const parseReply = require('./helpers/parseReply');
 rxCommands.subscribe(commands => (Commands = commands));
 const rxTimers = require('./helpers/rxTimers');
-const exportBackupData = require('./helpers/exportBackupData');
-const importBackupData = require('./helpers/importBackupData');
+// const exportBackupData = require('./helpers/exportBackupData');
 let { makeNewCommand, getBlockchainUsername } = require('./helpers');
 const { autoUpdater } = require('electron-updater');
 require('./helpers/startTimers').run();
@@ -108,6 +108,7 @@ function createWindow() {
   } else {
     win = new BrowserWindow({ width: 1280, height: 720, frame: false });
   }
+  init(win);
 
   // and load the index.html of the app.
   if (env === 'dev_watch') {
@@ -163,13 +164,6 @@ function createWindow() {
   ipcMain.on('oauthWindowStart', () => {
     oauthWindowStart();
   });
-
-  // APP.get('/oauth', (req, res) => {
-  //   let authorization = req.param('auth');
-  //   res.send('<script>window.close();</script>');
-  // });
-
-  // APP.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
   rxConfig
     .pipe(
@@ -298,14 +292,17 @@ function createWindow() {
   let users = {};
 
   setRxUsers.pipe(skip(1)).subscribe(users => {
-    console.log('GOT DA USERS', users);
+    console.log('GOT THE USERS', Date.now(), users['creativebuilds']);
     win.webContents.send('rxUsers', users);
   });
 
   ipcMain.on('editpoints', (event, { username, points }) => {
-    let Users = Object.assign({}, users);
-    Users[username].points = points;
-    setRxUsers.next(Users);
+    rxUsers.pipe(first()).subscribe(users => {
+      let Users = Object.assign({}, users);
+      console.log(username, 'USERNAME', Users[username]);
+      Users[username].points = points;
+      setRxUsers.next(Users);
+    });
   });
 
   ipcMain.on('removecommand', (event, { name }) => {
@@ -374,10 +371,11 @@ function createWindow() {
     exportBackupData(source, dir, 'creativebot_backup_' + date + '_' + time);
   });
 
-  ipcMain.on('import-backup-data', (event, source) => {
-    var dir = storage.getDefaultDataPath();
-    importBackupData(path.resolve(source), path.resolve(dir));
-  });
+  //REMOVED IN 1.7
+  // ipcMain.on('import-backup-data', (event, source) => {
+  //   var dir = storage.getDefaultDataPath();
+  //   importBackupData(path.resolve(source), path.resolve(dir));
+  // });
 
   ipcMain.on('triggerBannerMessage', (event, bannerMessage) => {
     event.sender.send('show-bannermessage', [bannerMessage]);
@@ -884,13 +882,15 @@ function createWindow() {
         }
         return amount * multiplier;
       };
-      // TODO ADD FRONTEND STUFF FOR THIS
+
       win.webContents.send('newdonation', {
         message,
         inLino: message.inLino
       });
+
       let username = message.sender.blockchainUsername;
       let Users = Object.assign({}, users);
+
       if (!Users[username]) {
         Users[username] = {
           points: 0,
@@ -901,10 +901,13 @@ function createWindow() {
           role: message.roomRole
         };
       }
-      Users[username].lino =
-        (Users[username].lino ? Users[username].lino : 0) +
-        inLino(message.gift, message.amount);
-      rxUsers.next(Users);
+      rxUsers.pipe(first()).subscribe(users => {
+        let Users = Object.assign({}, users);
+        Users[username].lino =
+          (Users[username].lino ? Users[username].lino : 0) +
+          inLino(message.gift, message.amount);
+        rxUsers.next(Users);
+      });
     }
     /*if (message.type === 'Message') {
       wss.broadcast(
