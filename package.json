@@ -32,7 +32,7 @@
     "https": "^1.0.0",
     "jszip": "^3.2.1",
     "lino-js": "^1.0.19",
-    "lodash": "^4.17.11",
+    "lodash": "^4.17.13",
     "moment": "^2.24.0",
     "open": "^6.3.0",
     "queueing-subject": "^0.3.2",
