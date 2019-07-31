@@ -3,7 +3,9 @@ node_modules
 storage/*
 build/*
 extras
-dist/*
+dist/bundle.js
+dist/bundle.js.map
+
 src/javascript/helpers/firebaseConfig.ts
 
 electron-builder.json
