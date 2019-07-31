@@ -1,4 +1,5 @@
-const { sendMessage, keepActive, wss, sendLino } = require('./helpers');
+const { sendMessage, wss, sendLino } = require('./helpers');
+const { keepActive, init } = require('./helpers/keepActive');
 const setRxUsers = require('./helpers/setRxUsers');
 const log = require('electron-log');
 const storage = require('electron-json-storage');
@@ -126,6 +127,7 @@ function createWindow() {
     win.webContents.send('new-update');
   });
   autoUpdater.checkForUpdates();
+  init(win);
 
   // and load the index.html of the app.
   if (env === 'dev_watch') {
@@ -181,13 +183,6 @@ function createWindow() {
   ipcMain.on('oauthWindowStart', () => {
     oauthWindowStart();
   });
-
-  // APP.get('/oauth', (req, res) => {
-  //   let authorization = req.param('auth');
-  //   res.send('<script>window.close();</script>');
-  // });
-
-  // APP.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
   rxConfig
     .pipe(
@@ -325,10 +320,12 @@ function createWindow() {
   });
 
   ipcMain.on('editpoints', (event, { username, points }) => {
-    let Users = Object.assign({}, users);
-    if (!Users[username]) return;
-    Users[username].points = points;
-    setRxUsers.next(Users);
+    rxUsers.pipe(first()).subscribe(users => {
+      let Users = Object.assign({}, users);
+      console.log(username, 'USERNAME', Users[username]);
+      Users[username].points = points;
+      setRxUsers.next(Users);
+    });
   });
 
   ipcMain.on('removecommand', (event, { name }) => {
@@ -397,6 +394,7 @@ function createWindow() {
   //   exportBackupData(source, dir, 'creativebot_backup_' + date + '_' + time);
   // });
 
+  //REMOVED IN 1.7
   // ipcMain.on('import-backup-data', (event, source) => {
   //   var dir = storage.getDefaultDataPath();
   //   importBackupData(path.resolve(source), path.resolve(dir));
@@ -1064,13 +1062,15 @@ function createWindow() {
         }
         return amount * multiplier;
       };
-      // TODO ADD FRONTEND STUFF FOR THIS
+
       win.webContents.send('newdonation', {
         message,
         inLino: message.inLino
       });
+
       let username = message.sender.blockchainUsername;
       let Users = Object.assign({}, users);
+
       if (!Users[username]) {
         Users[username] = {
           points: 0,
@@ -1081,10 +1081,13 @@ function createWindow() {
           role: message.roomRole
         };
       }
-      Users[username].lino =
-        (Users[username].lino ? Users[username].lino : 0) +
-        inLino(message.gift, message.amount);
-      rxUsers.next(Users);
+      rxUsers.pipe(first()).subscribe(users => {
+        let Users = Object.assign({}, users);
+        Users[username].lino =
+          (Users[username].lino ? Users[username].lino : 0) +
+          inLino(message.gift, message.amount);
+        rxUsers.next(Users);
+      });
     }
     /*if (message.type === 'Message') {
       wss.broadcast(

@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { useState } from 'react';
 
-import { Button, DestructiveButton, ActionButton, WidgetButton } from '../Generics/Button';
+import {
+  Button,
+  DestructiveButton,
+  ActionButton,
+  WidgetButton
+} from '../Generics/Button';
 import { TextField } from '../Generics/Input';
 
 import { MdModeEdit } from 'react-icons/md';
@@ -15,7 +20,9 @@ const Popup = ({ user, styles, closeCurrentPopup, stateTheme }) => {
 
   const saveToDB = points => {
     ipcRenderer.send('editpoints', {
-      username: user.blockchainUsername,
+      username: user.blockchainUsername
+        ? user.blockchainUsername
+        : user.username,
       points
     });
   };
@@ -116,12 +123,13 @@ const User = ({
         <div className={styles.username}>{User.dliveUsername}</div>
         <div className={styles.points}>
           {User.points}
-          <WidgetButton 
-            icon={<MdModeEdit />} 
-            stateTheme={stateTheme} 
+          <WidgetButton
+            icon={<MdModeEdit />}
+            stateTheme={stateTheme}
             onClick={() => {
               updateUserPointsPopup(User);
-            }}/>
+            }}
+          />
         </div>
         <div className={styles.points}>
           {User.lino ? Math.floor(User.lino / 10) / 100 : 0}
