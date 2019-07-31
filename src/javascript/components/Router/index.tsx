@@ -10,7 +10,7 @@ import { Menu } from '../Menu';
 //import { Popup } from '../Popup';
 import { Popup } from '../Generics/Popup';
 import { CommandsPage } from '../Commands';
-import { firebaseUsers$ } from '../../helpers/rxUsers';
+import { firebaseUsers$, setRxUser } from '../../helpers/rxUsers';
 import { firebaseCommands$ } from '../../helpers/rxCommands';
 import { firebaseConfig$ } from '../../helpers/rxConfig';
 import { firebaseTimers$ } from '../../helpers/rxTimers';
@@ -114,9 +114,12 @@ class RouterWrapper extends Component<any, any> {
     rxLists.subscribe(Lists => {
       this.setState({ lists: Lists });
     });
-    ipcRenderer.on('updatedUser', (event, { user }) => {
-      let users = Object.assign({}, this.state.users);
-      users[user.username] = user;
+    // ipcRenderer.on('updatedUser', (event, { user }) => {
+    //   let users = Object.assign({}, this.state.users);
+    //   users[user.username] = user;
+    // });
+    ipcRenderer.on('updateUser', (event, user) => {
+      setRxUser(user);
     });
     ipcRenderer.on('removedMessage', (event, { id, streamer }) => {
       let arr = [...this.state.messages];

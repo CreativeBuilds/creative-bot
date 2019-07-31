@@ -58,7 +58,7 @@ export const setRxUsers = users => {
     }
     if (user.username) {
       user.blockchainUsername = user.username;
-      delete user.blockchainUsername;
+      delete user.username;
     }
     acc[key] = user;
     return acc;
@@ -134,6 +134,7 @@ export const setRxUsers = users => {
             created++;
           });
           sameArr.forEach(key => {
+            console.log('KEY', key);
             let ref = firestore
               .collection('users')
               .doc(rxUser.uid)
@@ -143,12 +144,34 @@ export const setRxUsers = users => {
             updated++;
             update = true;
           });
+          console.log('UPDATE', update);
           if (update) {
             console.log(
               `Users (New: ${created}) (Deleted: ${deleted}) (Updated: ${updated})`
             );
-            batch.commit();
+            batch
+              .commit()
+              .then(value => {
+                console.log('SUCCEEDED', value);
+              })
+              .catch(err => console.error(err));
           }
         });
+    });
+};
+
+export const setRxUser = user => {
+  rxFirebaseuser
+    .pipe(
+      filter(x => !isEmpty(x)),
+      first()
+    )
+    .subscribe((rxUser: any) => {
+      let ref = firestore
+        .collection('users')
+        .doc(rxUser.uid)
+        .collection('users')
+        .doc(user.blockchainUsername);
+      ref.set(user, { merge: true });
     });
 };
