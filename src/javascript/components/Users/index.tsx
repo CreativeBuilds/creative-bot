@@ -74,8 +74,8 @@ const SettingsPopup = ({ stateTheme, styles, Config, closeCurrentPopup }) => {
   let updatePoints = val => {
     let num = parseInt(val);
     if (isNaN(num)) return;
-    if (num < 0) return setPointsTimerText('');
-    setPointsTimerText(val);
+    if (num < 0) return setPointsText('');
+    setPointsText(val);
     if (timeoutPoints) {
       clearTimeout(timeoutPoints);
     }
@@ -432,7 +432,8 @@ const UsersPage = ({ props }) => {
     <Page stateTheme={stateTheme} style={stateTheme.base.tertiaryBackground}>
       <PageHeader
         style={stateTheme.base.quinaryForeground}
-        stateTheme={stateTheme}>
+        stateTheme={stateTheme}
+      >
         USERS
         <div
           style={{
@@ -443,7 +444,7 @@ const UsersPage = ({ props }) => {
         >
           <SearchField
             placeholderText={'Search...'}
-            text={""}
+            text={''}
             stateTheme={stateTheme}
             width={'150px'}
             style={{ 'overflow-y': 'hidden', 'overflow-x': 'auto' }}

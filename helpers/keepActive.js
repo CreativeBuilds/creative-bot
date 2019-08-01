@@ -46,9 +46,9 @@ const init = win => {
               });
             }
             win.webContents.send('updateUser', storageUser);
+            delete activeUsers[username];
           });
         }
-        activeUsers = {};
       }, 1000 * config.pointsTimer);
     });
 };

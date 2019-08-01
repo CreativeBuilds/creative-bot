@@ -1082,30 +1082,17 @@ function createWindow() {
             role: message.roomRole
           };
         }
-        Users[username].lino =
-          (Users[username].lino ? Users[username].lino : 0) +
-          inLino(message.gift, message.amount);
-        rxUsers.next(Users);
+        try {
+          Users[username].lino =
+            (Users[username].lino ? Users[username].lino : 0) +
+            inLino(message.gift, message.amount);
+          rxUsers.next(Users);
+        } catch (err) {
+          console.error(err);
+          // TODO send a warning message to the user in the front end
+        }
       });
     }
-    /*if (message.type === 'Message') {
-      wss.broadcast(
-        JSON.stringify({
-          type: 'message',
-          value: message
-        })
-      );
-      textMessage(message, streamerDisplayName);
-      keepActive(message);
-      win.webContents.send('newmessage', { message });
-      let content = message.content;
-      console.log(
-        'NEW MSG FROM:',
-        message.sender.dliveUsername,
-        'MESSAGE: ',
-        content
-      );
-    }*/
 
     wss.broadcast(
       JSON.stringify({
