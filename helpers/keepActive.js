@@ -38,11 +38,14 @@ const init = win => {
                 displayname: user.dliveUsername,
                 lino: 0,
                 username,
+                blockchainUsername: user.blockchainUsername,
                 role: activeUsers[username].roomRole
               };
             } else {
               storageUser = Object.assign({}, storageUser, {
-                points: storageUser.points + (config.points || 5)
+                points: storageUser.points + (config.points || 5),
+                blockchainUsername: user.blockchainUsername,
+                displayname: user.dliveUsername
               });
             }
             win.webContents.send('updateUser', storageUser);
