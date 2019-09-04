@@ -5,6 +5,10 @@ import { Login } from './login/Login';
 import { rxUser } from '../helpers/rxUser';
 import { Background } from './Background';
 import { createGlobalStyle } from 'styled-components';
+import { filter, skip } from 'rxjs/operators';
+import { Menu } from './menu/Menu';
+import { Chat } from './chat/Chat';
+import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 
 const Global = createGlobalStyle`
   body, #app {
@@ -14,21 +18,34 @@ const Global = createGlobalStyle`
     height: 100vh;
     width: 100vw;
   }
+  #menu {
+    background: #f1f1f1;
+  }
+  #menu-toggle{
+    & > span {
+      background: #922cce !important;
+    }
+    &:hover > span {
+      background: #ad44eb !important;
+    }
+  }
 `;
 
 /**
  * @description Main renderer
  */
 export const Main = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState<null | boolean>(null);
 
   useEffect(() => {
     /**
      * @description listen to rxUser (for login events)
      *              once the user is logged in, set the state to say they are logged in
      *              then change the route
+     *
+     *              skips the first as its the default value and will trigger the login screen
      */
-    const listener = rxUser.subscribe((user: firebase.User) => {
+    const listener = rxUser.pipe(skip(1)).subscribe((user: firebase.User) => {
       setIsLoggedIn(!!user);
     });
     return () => {
@@ -41,10 +58,22 @@ export const Main = () => {
       <Global />
       <HashRouter basename='/'>
         {isLoggedIn ? (
-          <div>Logged in!</div>
-        ) : (
           <React.Fragment>
-            {/* <Route path='123' render={() => <div />} /> */}
+            <Menu />
+            <div
+              style={{
+                width: 'calc(100vw - 84px)',
+                height: 'calc(100vh - 20px)',
+                marginLeft: '64px',
+                padding: '10px',
+                position: 'relative'
+              }}
+            >
+              <Route path='/' exact={true} render={() => <Chat />} />
+            </div>
+          </React.Fragment>
+        ) : isLoggedIn === null ? null : (
+          <React.Fragment>
             <Route path='/' exact={true} render={() => <Login />} />
           </React.Fragment>
         )}

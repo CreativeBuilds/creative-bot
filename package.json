@@ -27,13 +27,15 @@
   "author": "CreativeBuilds",
   "license": "MIT",
   "dependencies": {
+    "@trendmicro/react-sidenav": "^0.4.5",
     "email-validator": "^2.0.4",
     "firebase": "^6.5.0",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
+    "react-icons": "^3.7.0",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
-    "rxjs": "^6.5.2",
+    "rxjs": "^6.5.3",
     "styled-components": "^4.3.2"
   },
   "devDependencies": {
