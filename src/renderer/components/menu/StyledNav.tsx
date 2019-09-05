@@ -8,9 +8,14 @@ import * as SideNav from '@trendmicro/react-sidenav';
 // tslint:disable-next-line: no-unsafe-any
 const { Toggle, Nav, NavItem, NavIcon, NavText } = SideNav;
 
+interface ISideNavProps {
+  background?: string;
+}
+
 // SideNav
 const StyledSideNav = styled(SideNav)`
-  background: #922cce;
+  background: ${(props: ISideNavProps): string =>
+    props.background ? props.background : ''};
   border-right: 2px 2px 4px rgba(0, 0, 0, 0.2);
   box-shadow: 2px 2px 4px 4px rgba(0, 0, 0, 0.2);
 `;
@@ -26,9 +31,9 @@ StyledToggle.defaultProps = Toggle.defaultProps;
 
 // Nav
 const StyledNav = styled(Nav)`
-  background-color: #922cce;
+  /* background-color: #922cce; */
   &&&[class*='sidenav-subnav--'] {
-    background: #922cce !important;
+    /* background: #922cce !important; */
   }
   &[class*='sidenav-nav--'] {
     > [class*='expandable--'] {
@@ -42,7 +47,7 @@ const StyledNav = styled(Nav)`
           padding-bottom: 10px;
         }
         [class*='-navitem--']:hover {
-          background: #ad44eb;
+          /* background: #ad44eb; */
         }
       }
     }
@@ -55,19 +60,19 @@ const StyledNav = styled(Nav)`
         /* background: blue; */
         margin: 0 !important;
         > [class*='navitem--'] {
-          color: #922ccedd;
+          /* color: #922ccedd; */
           padding-top: 10px;
           padding-bottom: 10px;
         }
       }
       > [class*='sidenav-subnavitem--']:hover {
         > [class*='navitem--'] {
-          background-color: #ad44eb;
+          /* background-color: #ad44eb; */
         }
       }
       > [class*='sidenav-subnavitem--'][class*='selected--'] {
         > [class*='navitem--'] {
-          color: #922cce;
+          /* color: #922cce; */
         }
         > [class*='navitem--']::before {
           border-left: 2px solid #ad44eb;
@@ -77,13 +82,13 @@ const StyledNav = styled(Nav)`
   }
   && > [class*='sidenav-navitem--'] {
     > [class*='navitem--'] {
-      background-color: #f1f1f1;
-      color: #922ccedd;
+      /* background-color: #f1f1f1;
+      color: #922ccedd; */
     }
   }
   && > [class*='sidenav-navitem--']:hover {
     > [class*='navitem--'] {
-      background: #e1e1e1;
+      /* background: #e1e1e1; */
     }
   }
   && > [class*='sidenav-navitem--'],
@@ -92,19 +97,19 @@ const StyledNav = styled(Nav)`
       [class*='navicon--'] {
         &,
         > * {
-          color: #922ccedd;
+          /* color: #922ccedd; */
         }
       }
       [class*='navtext--'] {
         &,
         > * {
-          color: #922ccedd;
+          /* color: #922ccedd; */
         }
       }
       [class*='sidenav-nav-text--'] {
         &,
         > * {
-          color: #922ccedd;
+          /* color: #922ccedd; */
         }
       }
     }
@@ -112,8 +117,8 @@ const StyledNav = styled(Nav)`
   && > [class*='sidenav-navitem--'][class*='highlighted--'],
   && > [class*='sidenav-navitem--'][class*='highlighted--']:hover {
     > [class*='navitem--'] {
-      background-color: #922cce !important;
-      color: #f1f1f1;
+      /* background-color: #922cce !important; */
+      /* color: #f1f1f1; */
     }
     > [class*='navitem--'] {
       [class*='navicon--'],
@@ -136,7 +141,7 @@ StyledNav.defaultProps = Nav.defaultProps;
 const StyledNavItem = styled(NavItem)`
   &&&:hover {
     [class*='navtext--'] {
-      color: #922ccedd;
+      /* color: #922ccedd; */
     }
   }
 `;
@@ -145,14 +150,14 @@ StyledNavItem.defaultProps = NavItem.defaultProps;
 
 // NavIcon
 const StyledNavIcon = styled(NavIcon)`
-  color: #922ccedd;
+  /* color: #922ccedd; */
 `;
 // tslint:disable-next-line: no-unsafe-any
 StyledNavIcon.defaultProps = NavIcon.defaultProps;
 
 // NavText
 const StyledNavText = styled(NavText)`
-  color: #922ccedd;
+  /* color: #922ccedd; */
 `;
 // tslint:disable-next-line: no-unsafe-any
 StyledNavText.defaultProps = NavText.defaultProps;

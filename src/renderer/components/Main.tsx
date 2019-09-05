@@ -18,9 +18,6 @@ const Global = createGlobalStyle`
     height: 100vh;
     width: 100vw;
   }
-  #menu {
-    background: #f1f1f1;
-  }
   #menu-toggle{
     & > span {
       background: #922cce !important;
