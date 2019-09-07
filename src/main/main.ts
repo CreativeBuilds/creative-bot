@@ -4,6 +4,9 @@ import * as url from 'url';
 
 let mainWindow: Electron.BrowserWindow | null;
 
+/**
+ * @description creates the main electron window, which spawns the react project
+ */
 function createWindow(): void {
   // Create the browser window.
   mainWindow = new BrowserWindow({

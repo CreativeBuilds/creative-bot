@@ -25,10 +25,15 @@ const MenuComponent = (
 ): React.FunctionComponentElement<IProps> => {
   console.log(props);
 
+  /**
+   *
+   * @param selected
+   * @description acts as the main "router" swapping hashes when clicked.
+   */
   const sideNavSelect = async (selected: string): Promise<void> => {
     if (selected === '/logout') {
       await auth.signOut();
-      window.location.href = '/';
+      window.location.hash = '';
     } else {
       props.history.push(selected);
     }
@@ -36,11 +41,16 @@ const MenuComponent = (
 
   interface IGlobalOverRide {
     background?: string;
+    backgroundHighlight?: string;
     backgroundHover?: string;
     color?: string;
+    colorHighlight?: string;
     textColor?: string;
   }
 
+  /**
+   * @description Over rides the default menu styles
+   */
   const GlobalOverRide = createGlobalStyle`
     #menu {
       background: ${(mProps: IGlobalOverRide): string =>
@@ -48,12 +58,21 @@ const MenuComponent = (
     }
     #menu-toggle {
       background: ${(mProps: IGlobalOverRide): string =>
-        mProps.background ? mProps.background : '#f1f1f1'} !important
+        mProps.background ? mProps.background : '#f1f1f1'} !important;
+        & > span {
+          background: ${(mProps: IGlobalOverRide): string =>
+            mProps.textColor ? mProps.textColor : '#922ccedd'} !important
+        }
+        *:hover > span{
+          background: ${(mProps: IGlobalOverRide): string =>
+            mProps.colorHighlight
+              ? mProps.colorHighlight
+              : '#f1f1f1'} !important
+        }
     }
     div[class*='sidenav-navitem--'] {
       > div {
-        background-color: ${(mProps: IGlobalOverRide): string =>
-          mProps.background ? mProps.background : '#f1f1f1'} !important;
+        background-color: '#00000000' !important;
         &:hover{
           background-color: ${(mProps: IGlobalOverRide): string =>
             mProps.backgroundHover
@@ -74,18 +93,24 @@ const MenuComponent = (
       }
       &[class*='highlighted--'] > div {
         background-color: ${(mProps: IGlobalOverRide): string =>
-          mProps.color ? mProps.color : '#922cce'} !important;
+          mProps.backgroundHighlight
+            ? mProps.backgroundHighlight
+            : '#922cce'} !important;
 
         /**
          * This text/icon css is for when the selected view is toggled or selected
          */
         & > div[class*='navtext--'] {
           color: ${(mProps: IGlobalOverRide): string =>
-            mProps.background ? mProps.background : '#f1f1f1'} !important
+            mProps.colorHighlight
+              ? mProps.colorHighlight
+              : '#f1f1f1'} !important
         }
         & > div[class*='navicon--'] > svg {
           color: ${(mProps: IGlobalOverRide): string =>
-            mProps.background ? mProps.background : '#f1f1f1'} !important
+            mProps.colorHighlight
+              ? mProps.colorHighlight
+              : '#f1f1f1'} !important
         }
       }
     }
@@ -98,6 +123,8 @@ const MenuComponent = (
         backgroundHover={'#e1e1e1'}
         color={'#922cce'}
         textColor={'#922ccedd'}
+        backgroundHighlight={'#922cce'}
+        colorHighlight={'#f1f1f1'}
       />
       <SideNav onSelect={sideNavSelect} id={'menu'}>
         <Toggle id={'menu-toggle'} />

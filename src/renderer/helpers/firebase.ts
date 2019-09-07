@@ -1,6 +1,6 @@
 import * as firebase from 'firebase';
 /**
- * Init login to firestore
+ * @description Init login to firestore
  */
 const app: firebase.app.App = firebase.initializeApp({
   apiKey: 'AIzaSyC5iSTEvNKKkm1YQQ6Ygo-CvFo89foaR0o',
@@ -14,6 +14,12 @@ const app: firebase.app.App = firebase.initializeApp({
 
 const auth = firebase.auth();
 
+/**
+ *
+ * @param email
+ * @param password
+ * @description wraps the firebase auth login
+ */
 const createUser = async (
   email: string,
   password: string

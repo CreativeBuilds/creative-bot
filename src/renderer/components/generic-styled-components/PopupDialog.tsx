@@ -9,7 +9,7 @@ interface IPropsDialog {
 }
 
 /**
- * Generic white background popup dialog
+ * @description Generic white background popup dialog
  */
 export const PopupDialog = styled.div`
   position: relative;
@@ -33,6 +33,29 @@ interface ITitleProps {
   center?: boolean;
 }
 
+/**
+ * @description The back icon in the top left of the PopupDialog, allows for navigation
+ */
+export const PopupDialogBackIcon = styled.div`
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  height: 30px;
+  width: 30px;
+  font-size: 30px;
+  & > svg {
+    height: 30px;
+    width: 30px;
+    font-size: 30px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+`;
+
+/**
+ * @description Title of popup, not always needed
+ */
 export const PopupDialogTitle = styled.h1`
   max-width: 100%;
   font-size: 1.7em;
@@ -42,6 +65,9 @@ export const PopupDialogTitle = styled.h1`
   text-align: ${(props: ITitleProps) => (!!props.center ? 'center' : 'auto')};
 `;
 
+/**
+ * @description Used for any filler text in a popup
+ */
 export const PopupDialogText = styled.div`
   width: 85%;
   font-size: 1.2em;
@@ -50,6 +76,9 @@ export const PopupDialogText = styled.div`
   text-align: ${(props: ITitleProps) => (!!props.center ? 'center' : 'unset')};
 `;
 
+/**
+ * @description User for any input of text needed
+ */
 export const PopupDialogInput = styled.input`
   border: 0px;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
@@ -64,6 +93,9 @@ export const PopupDialogInput = styled.input`
   }
 `;
 
+/**
+ * @description Wraps input fields that need a title/helper text
+ */
 export const PopupDialogInputWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -73,7 +105,9 @@ export const PopupDialogInputWrapper = styled.div`
   margin: auto;
   margin-bottom: 10px;
 `;
-
+/**
+ * @description Name above input slot
+ */
 export const PopupDialogInputName = styled.div`
   font-size: 1.1em;
   font-weight: 100;
@@ -83,7 +117,10 @@ interface IInfoProps {
   error?: boolean;
   isHidden?: boolean;
 }
-
+/**
+ * @param props pass error to show as red text or default inherit color
+ * @description Helper text beneath input
+ */
 export const PopupDialogInputInfo = styled.div`
   font-size: 1em;
   font-weight: 100;

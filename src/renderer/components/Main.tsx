@@ -10,6 +10,9 @@ import { Menu } from './menu/Menu';
 import { Chat } from './chat/Chat';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 
+/**
+ * @description any css that should globally affect all pages should be here
+ */
 const Global = createGlobalStyle`
   body, #app {
     margin: 0;
@@ -18,14 +21,14 @@ const Global = createGlobalStyle`
     height: 100vh;
     width: 100vw;
   }
-  #menu-toggle{
+  /* #menu-toggle{
     & > span {
       background: #922cce !important;
     }
     &:hover > span {
       background: #ad44eb !important;
     }
-  }
+  } */
 `;
 
 /**
@@ -59,10 +62,10 @@ export const Main = () => {
             <Menu />
             <div
               style={{
-                width: 'calc(100vw - 84px)',
-                height: 'calc(100vh - 20px)',
+                width: 'calc(100vw - 104px)',
+                height: 'calc(100vh - 40px)',
                 marginLeft: '64px',
-                padding: '10px',
+                padding: '20px',
                 position: 'relative'
               }}
             >
