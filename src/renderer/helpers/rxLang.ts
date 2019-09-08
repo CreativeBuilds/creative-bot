@@ -9,5 +9,5 @@ const defaultLang = 'en';
  */
 export const rxLang: Observable<IConfig['lang']> = rxConfig.pipe(
   filter(x => !!x),
-  switchMap((config: IConfig) => [config.lang] || [defaultLang])
+  switchMap((config: IConfig) => [config.lang ? config.lang : defaultLang])
 );
