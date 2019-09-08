@@ -16,6 +16,7 @@ import { sendToMain, rxEventsFromMain } from '../helpers/eventHandler';
 import { rxWordMap } from '../helpers/rxWordMap';
 import { rxEvents } from '../helpers/rxEvents';
 import { rxConfig, updateConfig } from '../helpers/rxConfig';
+import { rxChat } from '../helpers/rxChat';
 
 /**
  * @description subscribe to all events from dlive and if the payload message is unable to parse
@@ -25,7 +26,10 @@ rxEvents.subscribe((event: IRXEvent | undefined) => {
   if (!event || !event.payload || !event.payload.message) {
     return;
   }
-  if (event.type === 'connection_error') {
+  if (
+    event.type === 'connection_error' &&
+    event.payload.message !== 'invalid json'
+  ) {
     updateConfig({ authKey: null }).catch(err => null);
   }
 });
@@ -41,6 +45,19 @@ const Global = createGlobalStyle`
     height: 100vh;
     width: 100vw;
   }
+  * {
+    &::-webkit-scrollbar {
+      background: rgba(0,0,0,0);
+      width: 5px;
+    }
+    &::-webkit-scrollbar-track {
+      border-radius: 15px;
+    }
+    &::-webkit-scrollbar-thumb{
+      background: #ccc;
+      border-radius: 15px;
+    }
+  }
 `;
 
 /**
@@ -50,11 +67,6 @@ export const Main = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<null | boolean>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [config, setConfig] = useState<Partial<IConfig> | null>(null);
-
-  /**
-   * @description here are all the variables that need to be accessed across the app
-   */
-  const [chat, setChat] = useState<{}[]>([]);
   /**
    * @description this subscriber listens to see if the user logs in through dlive at all
    */
@@ -89,21 +101,6 @@ export const Main = () => {
   useEffect(() => {
     const listener = rxConfig.subscribe((mConfig: IConfig) => {
       setConfig(mConfig);
-      /**
-       * @description check to see if the authKey is null or lenghth of none
-       */
-      // if (!mConfig.authKey || mConfig.authKey.length === 0) {
-      //   sendToMain('openLogin', {});
-
-      //   return;
-      // } else if (
-      //   !mConfig.streamerAuthKey ||
-      //   mConfig.streamerAuthKey.length === 0
-      // ) {
-      //   sendToMain('openLoginStreamer', {});
-
-      //   return;
-      // }
     });
 
     return () => {
@@ -115,6 +112,12 @@ export const Main = () => {
     /**
      * @description listens to rxChat for any new info
      */
+    rxChat.subscribe(chatMessage => {
+      if (!chatMessage) {
+        return;
+      }
+      console.log(chatMessage);
+    });
   }, []);
 
   useEffect(() => {

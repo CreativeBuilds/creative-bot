@@ -35,6 +35,10 @@ export const PageTitle = styled.div`
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
   display: flex;
   position: relative;
+  max-height: 36px;
+  height: 36px;
+  overflow-y: hidden;
+  align-items: center;
 `;
 
 export const PageTitleRight = styled.div`
