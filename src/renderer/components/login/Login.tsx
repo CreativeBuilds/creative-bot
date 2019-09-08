@@ -8,12 +8,14 @@ import {
   PopupDialogInputWrapper,
   PopupDialogInputName,
   PopupDialogInputInfo,
-  PopupDialogBackIcon
+  PopupDialogBackIcon,
+  PopupButtonWrapper
 } from '../generic-styled-components/PopupDialog';
 import { Button } from '../generic-styled-components/Button';
 import * as validator from 'email-validator';
 import { createUser, auth } from '@/renderer/helpers/firebase';
 import { FaLongArrowAltLeft } from 'react-icons/fa';
+import { getPhrase } from '@/renderer/helpers/lang';
 
 /**
  * @description The main div for the login screeen
@@ -24,24 +26,6 @@ const LoginMain = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-`;
-
-/**
- * @description wraps the buttons on the bottom and uses flex to space them out accordingly
- */
-const LoginButtonWrapper = styled.div`
-  display: flex;
-  position: absolute;
-  bottom: 15px;
-  left: 0px;
-  right: 0px;
-  width: 85%;
-  margin: auto;
-  & > button {
-    flex: 1;
-    margin-left: 5px;
-    margin-right: 5px;
-  }
 `;
 
 /**
@@ -64,6 +48,7 @@ const Login = () => {
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [passwordError, setPasswordError] = React.useState(false);
   const [passwordConfirmation, setPasswordConfirmation] = React.useState('');
 
   /**
@@ -97,6 +82,7 @@ const Login = () => {
    * @description sets password when the user types text
    */
   const updatePassword = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setPasswordError(false);
     setPassword(e.target.value);
   };
 
@@ -106,20 +92,13 @@ const Login = () => {
    */
   const updateEmail = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setEmail(e.target.value);
-    console.log(validator.validate(e.target.value));
   };
 
   /**
    * @description actually sends the account creation info to firebase
    */
   const createAccount = (): void => {
-    createUser(email, password)
-      .then(() => {
-        console.log('MADE ACCOUNT!');
-      })
-      .catch(err => {
-        console.error(err);
-      });
+    createUser(email, password).catch(err => null);
   };
 
   /**
@@ -127,8 +106,9 @@ const Login = () => {
    */
   const loginToAccount = (): void => {
     auth.signInWithEmailAndPassword(email, password).catch(err => {
-      // tslint:disable-next-line: no-console
-      console.error(err);
+      setPassword('');
+      console.log('setting to true!');
+      setPasswordError(true);
     });
   };
 
@@ -149,7 +129,7 @@ const Login = () => {
    * @description checks to see if the user login button should be disabled or not
    */
   const isDisabledLogin = (): boolean => {
-    return password.length < 8 || !validator.validate(email);
+    return password.length < 8 || !validator.validate(email) || passwordError;
   };
 
   /**
@@ -168,23 +148,30 @@ const Login = () => {
             <PopupDialogBackIcon>
               <FaLongArrowAltLeft onClick={backToMain} />
             </PopupDialogBackIcon>
-            <PopupDialogTitle center>Create an Account</PopupDialogTitle>
+            <PopupDialogTitle center>
+              {getPhrase('login_create_title')}
+            </PopupDialogTitle>
             <PopupDialogText style={{ marginBottom: '10px' }}>
-              Please enter an email and password to log into CreativeBot <br />{' '}
-              <b>Note</b> this is seperate from your dlive account!
+              {getPhrase('login_create_pleaseenter')}
+              <br /> <b>{getPhrase('login_note')}</b>{' '}
+              {getPhrase('login_create_warning')}
             </PopupDialogText>
             <PopupDialogInputWrapper>
-              <PopupDialogInputName>Email</PopupDialogInputName>
+              <PopupDialogInputName>
+                {getPhrase('login_email')}
+              </PopupDialogInputName>
               <PopupDialogInput value={email} onChange={updateEmail} />
               <PopupDialogInputInfo
                 error
                 isHidden={validator.validate(email) || email.length === 0}
               >
-                That isn't an email
+                {getPhrase('login_email_error')}
               </PopupDialogInputInfo>
             </PopupDialogInputWrapper>
             <PopupDialogInputWrapper>
-              <PopupDialogInputName>Password</PopupDialogInputName>
+              <PopupDialogInputName>
+                {getPhrase('login_password')}
+              </PopupDialogInputName>
               <PopupDialogInput
                 type={'password'}
                 value={password}
@@ -194,11 +181,13 @@ const Login = () => {
                 error
                 isHidden={password.length > 8 || password.length === 0}
               >
-                This password is too short!
+                {getPhrase('login_password_error')}
               </PopupDialogInputInfo>
             </PopupDialogInputWrapper>
             <PopupDialogInputWrapper style={{ marginBottom: '60px' }}>
-              <PopupDialogInputName>Confirm Password</PopupDialogInputName>
+              <PopupDialogInputName>
+                {getPhrase('login_password_confirm')}
+              </PopupDialogInputName>
               <PopupDialogInput
                 type={'password'}
                 value={passwordConfirmation}
@@ -211,30 +200,35 @@ const Login = () => {
                   passwordConfirmation.length === 0
                 }
               >
-                This password doesn't match!
+                {getPhrase('login_password_confirm_error')}
               </PopupDialogInputInfo>
             </PopupDialogInputWrapper>
-            <LoginButtonWrapper>
+            <PopupButtonWrapper>
               <Button
                 onClick={isDisabled() ? (): null => null : createAccount}
                 disabled={isDisabled()}
               >
-                Create
+                {getPhrase('login_create')}
               </Button>
-            </LoginButtonWrapper>
+            </PopupButtonWrapper>
           </React.Fragment>
         ) : login === true ? (
           <React.Fragment>
             <PopupDialogBackIcon>
               <FaLongArrowAltLeft onClick={backToMain} />
             </PopupDialogBackIcon>
-            <PopupDialogTitle center>Create an Account</PopupDialogTitle>
+            <PopupDialogTitle center>
+              {getPhrase('login_login_title')}
+            </PopupDialogTitle>
             <PopupDialogText style={{ marginBottom: '10px' }}>
-              Please enter an email and password to log into CreativeBot <br />{' '}
-              <b>Note</b> this is seperate from your dlive account!
+              {getPhrase('login_create_pleaseenter')}
+              <br /> <b>{getPhrase('login_note')}</b>{' '}
+              {getPhrase('login_create_warning')}
             </PopupDialogText>
             <PopupDialogInputWrapper>
-              <PopupDialogInputName>Email</PopupDialogInputName>
+              <PopupDialogInputName>
+                {getPhrase('login_email')}
+              </PopupDialogInputName>
               <PopupDialogInput value={email} onChange={updateEmail} />
               {/* <PopupDialogInputInfo
                 error
@@ -244,38 +238,47 @@ const Login = () => {
               </PopupDialogInputInfo> */}
             </PopupDialogInputWrapper>
             <PopupDialogInputWrapper style={{ marginBottom: '60px' }}>
-              <PopupDialogInputName>Password</PopupDialogInputName>
+              <PopupDialogInputName>
+                {getPhrase('login_password')}
+              </PopupDialogInputName>
               <PopupDialogInput
                 type={'password'}
                 value={password}
                 onChange={updatePassword}
               />
+              <PopupDialogInputInfo error={true} isHidden={!passwordError}>
+                {getPhrase('login_invalid_password')}
+              </PopupDialogInputInfo>
             </PopupDialogInputWrapper>
-            <LoginButtonWrapper>
+            <PopupButtonWrapper>
               <Button
                 onClick={isDisabledLogin() ? (): null => null : loginToAccount}
                 disabled={isDisabledLogin()}
               >
-                Login
+                {getPhrase('login_logintext')}
               </Button>
-            </LoginButtonWrapper>
+            </PopupButtonWrapper>
           </React.Fragment>
         ) : (
           <React.Fragment>
-            <PopupDialogTitle center>Welcome!</PopupDialogTitle>
+            <PopupDialogTitle center>
+              {getPhrase('welcome_title')}
+            </PopupDialogTitle>
             <PopupDialogText style={{ marginBottom: '20px' }}>
-              Welcome to CreativeBot, the best DLive bot around!
+              {getPhrase('welcome_text_first')}
             </PopupDialogText>
             <PopupDialogText style={{ marginBottom: '20px' }}>
-              To get started either, create an account or login if you already
-              have a <b>CreativeBot</b> account!
+              {getPhrase('welcome_text_second_one')} <b>{getPhrase('name')}</b>{' '}
+              {getPhrase('welcome_text_second_two')}
             </PopupDialogText>
-            <LoginButtonWrapper>
+            <PopupButtonWrapper>
               <Button onClick={handleLogin} inverted>
-                Login
+                {getPhrase('login_logintext')}
               </Button>
-              <Button onClick={handleCreate}>Create</Button>
-            </LoginButtonWrapper>
+              <Button onClick={handleCreate}>
+                {getPhrase('login_create')}
+              </Button>
+            </PopupButtonWrapper>
           </React.Fragment>
         )}
       </PopupDialog>

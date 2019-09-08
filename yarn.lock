@@ -5770,6 +5770,11 @@ rx-lite@*, rx-lite@^4.0.8:
   resolved "https://registry.yarnpkg.com/rx-lite/-/rx-lite-4.0.8.tgz#0b1e11af8bc44836f04a6407e92da42467b79444"
   integrity sha1-Cx4Rr4vESDbwSmQH6S2kJGe3lEQ=
 
+rxfire@^3.8.0:
+  version "3.8.0"
+  resolved "https://registry.yarnpkg.com/rxfire/-/rxfire-3.8.0.tgz#7ad637ed33fd9dcba3dcebc2efac46576e0ac538"
+  integrity sha512-z411ClL/zGYWK7oWwvFRzLOxd7oq9fKanJ2xQoPuxnv+fPE1egW6hWoKZSbGrL8avX9co0XeSpyXET+C0ZskKA==
+
 rxjs@^6.4.0, rxjs@^6.5.3:
   version "6.5.3"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.3.tgz#510e26317f4db91a7eb1de77d9dd9ba0a4899a3a"

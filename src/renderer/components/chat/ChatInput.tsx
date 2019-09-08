@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { FaShare } from 'react-icons/fa';
+import { getPhrase } from '@/renderer/helpers/lang';
 
 const ChatInputWrapper = styled.div`
   display: flex;
@@ -110,7 +111,6 @@ export const ChatInput = (): React.ReactElement => {
   };
 
   const sendMessage = (): void => {
-    console.log('sending text');
     setText('');
   };
 
@@ -118,7 +118,7 @@ export const ChatInput = (): React.ReactElement => {
     <ChatInputWrapper>
       <ChatInputStyled
         hoverShadow={'rgba(223, 30, 191, 0.15)'}
-        placeholder={'Send a message...'}
+        placeholder={getPhrase('chat_send')}
         value={text}
         onChange={updateText}
       />

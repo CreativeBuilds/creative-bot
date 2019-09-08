@@ -29,6 +29,20 @@ export const PopupDialog = styled.div`
   animation-fill-mode: forwards;
 `;
 
+export const PopupDialogBackground = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: -webkit-fill-available;
+  height: -webkit-fill-available;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+`;
+
 interface ITitleProps {
   center?: boolean;
 }
@@ -40,6 +54,26 @@ export const PopupDialogBackIcon = styled.div`
   position: absolute;
   top: 5px;
   left: 10px;
+  height: 30px;
+  width: 30px;
+  font-size: 30px;
+  & > svg {
+    height: 30px;
+    width: 30px;
+    font-size: 30px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+`;
+
+/**
+ * @description The exit icon in the top right of the PopupDialog, allows for closing popup
+ */
+export const PopupDialogExitIcon = styled.div`
+  position: absolute;
+  top: 5px;
+  right: 5px;
   height: 30px;
   width: 30px;
   font-size: 30px;
@@ -126,4 +160,22 @@ export const PopupDialogInputInfo = styled.div`
   font-weight: 100;
   color: ${(props: IInfoProps) => (!!props.error ? '#EE5050' : 'inherit')};
   display: ${(props: IInfoProps) => (!!props.isHidden ? 'none' : 'inherit')};
+`;
+
+/**
+ * @description wraps the buttons on the bottom and uses flex to space them out accordingly
+ */
+export const PopupButtonWrapper = styled.div`
+  display: flex;
+  position: absolute;
+  bottom: 15px;
+  left: 0px;
+  right: 0px;
+  width: 85%;
+  margin: auto;
+  & > button {
+    flex: 1;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
 `;

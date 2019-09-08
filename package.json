@@ -35,6 +35,7 @@
     "react-icons": "^3.7.0",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
+    "rxfire": "^3.8.0",
     "rxjs": "^6.5.3",
     "styled-components": "^4.3.2"
   },

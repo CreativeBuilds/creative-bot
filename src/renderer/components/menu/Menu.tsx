@@ -12,6 +12,7 @@ import {
 } from 'react-icons/fa';
 import { auth } from '../../helpers/firebase';
 import { createGlobalStyle } from 'styled-components';
+import { getPhrase } from '@/renderer/helpers/lang';
 // import styled from 'styled-components';
 
 // tslint:disable-next-line: use-default-type-parameter
@@ -23,11 +24,8 @@ interface IProps extends RouteComponentProps<{}> {}
 const MenuComponent = (
   props: IProps
 ): React.FunctionComponentElement<IProps> => {
-  console.log(props);
-
   /**
    *
-   * @param selected
    * @description acts as the main "router" swapping hashes when clicked.
    */
   const sideNavSelect = async (selected: string): Promise<void> => {
@@ -139,7 +137,7 @@ const MenuComponent = (
                 style={{ fontSize: '30px', width: '30px', height: '45px' }}
               ></FaComments>
             </NavIcon>
-            <NavText>CHAT</NavText>
+            <NavText>{getPhrase('menu_chat')}</NavText>
           </NavItem>
           <NavItem eventKey='/users'>
             <NavIcon>
@@ -147,7 +145,7 @@ const MenuComponent = (
                 style={{ fontSize: '30px', width: '30px', height: '45px' }}
               ></FaUserAlt>
             </NavIcon>
-            <NavText>USERS</NavText>
+            <NavText>{getPhrase('menu_users')}</NavText>
           </NavItem>
           <NavItem eventKey='/giveaways'>
             <NavIcon>
@@ -155,7 +153,7 @@ const MenuComponent = (
                 style={{ fontSize: '30px', width: '30px', height: '45px' }}
               ></FaGift>
             </NavIcon>
-            <NavText>GIVEAWAYS</NavText>
+            <NavText>{getPhrase('menu_giveaways')}</NavText>
           </NavItem>
           <NavItem eventKey='/commands'>
             <NavIcon>
@@ -163,7 +161,7 @@ const MenuComponent = (
                 style={{ fontSize: '30px', width: '30px', height: '45px' }}
               ></FaList>
             </NavIcon>
-            <NavText>COMMANDS</NavText>
+            <NavText>{getPhrase('menu_commands')}</NavText>
           </NavItem>
           <NavItem eventKey='/timers'>
             <NavIcon>
@@ -171,7 +169,7 @@ const MenuComponent = (
                 style={{ fontSize: '30px', width: '30px', height: '45px' }}
               ></FaClock>
             </NavIcon>
-            <NavText>TIMERS</NavText>
+            <NavText>{getPhrase('menu_timers')}</NavText>
           </NavItem>
           <NavItem eventKey='/quotes'>
             <NavIcon>
@@ -179,7 +177,7 @@ const MenuComponent = (
                 style={{ fontSize: '30px', width: '30px', height: '45px' }}
               ></FaCommentDots>
             </NavIcon>
-            <NavText>QUOTES</NavText>
+            <NavText>{getPhrase('menu_quotes')}</NavText>
           </NavItem>
           <NavItem eventKey='/logout'>
             <NavIcon>
@@ -187,7 +185,7 @@ const MenuComponent = (
                 style={{ fontSize: '30px', width: '30px', height: '45px' }}
               ></FaSignOutAlt>
             </NavIcon>
-            <NavText>LOGOUT</NavText>
+            <NavText>{getPhrase('menu_logout')}</NavText>
           </NavItem>
         </Nav>
       </SideNav>

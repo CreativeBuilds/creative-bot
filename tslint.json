@@ -36,6 +36,8 @@
     "ordered-imports": false,
     "rulesDirectory": ["node_modules/tslint-microsoft-contrib"],
     "variable-name": false,
+    "export-name": false,
+    "no-reserved-keywords": false,
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn"
   }

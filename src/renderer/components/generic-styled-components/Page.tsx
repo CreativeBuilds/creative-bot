@@ -23,6 +23,7 @@ export const PageMain = styled.div`
   display: flex;
   flex-direction: column;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.15);
+  position: relative;
 `;
 
 export const PageTitle = styled.div`
@@ -33,6 +34,18 @@ export const PageTitle = styled.div`
   padding: 10px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
   display: flex;
+  position: relative;
+`;
+
+export const PageTitleRight = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding-right: 10px;
+  height: 100%;
 `;
 
 export const PageContent = styled.div`

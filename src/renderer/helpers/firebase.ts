@@ -1,4 +1,5 @@
 import * as firebase from 'firebase';
+import { async } from 'rxjs/internal/scheduler/async';
 /**
  * @description Init login to firestore
  */
@@ -16,8 +17,6 @@ const auth = firebase.auth();
 
 /**
  *
- * @param email
- * @param password
  * @description wraps the firebase auth login
  */
 const createUser = async (
@@ -25,5 +24,6 @@ const createUser = async (
   password: string
 ): Promise<firebase.auth.UserCredential> =>
   firebase.auth().createUserWithEmailAndPassword(email, password);
+const firestore = firebase.firestore();
 
-export { firebase, app, auth, createUser };
+export { firebase, app, auth, createUser, firestore };
