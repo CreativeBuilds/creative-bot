@@ -17,6 +17,10 @@ import { rxWordMap } from '../helpers/rxWordMap';
 import { rxEvents } from '../helpers/rxEvents';
 import { rxConfig, updateConfig } from '../helpers/rxConfig';
 import { rxChat } from '../helpers/rxChat';
+import { Users } from './users/Users';
+import { start } from '../helpers/db/db';
+
+start().catch(null);
 
 /**
  * @description subscribe to all events from dlive and if the payload message is unable to parse
@@ -157,6 +161,7 @@ export const Main = () => {
   }, []);
 
   const renderChat = () => <Chat chat={[]} />;
+  const renderUsers = () => <Users />;
   const renderLoginDlive = () => (
     <LoginDlive streamer={!!config ? !config.streamerAuthKey : true} />
   );
@@ -185,6 +190,7 @@ export const Main = () => {
                     position: 'relative'
                   }}
                 >
+                  <Route path='/users' exact={true} render={renderUsers} />
                   <Route path='/' exact={true} render={renderChat} />
                 </div>
               </React.Fragment>

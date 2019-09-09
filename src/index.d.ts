@@ -62,3 +62,14 @@ declare interface IOption {
   label: string;
   value: string;
 }
+
+interface IUser {
+  id: string;
+  displayname: string;
+  username: string;
+  avatar: string;
+  lino: number;
+  points: number;
+  exp: number;
+  role: string;
+}
