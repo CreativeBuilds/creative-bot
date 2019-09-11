@@ -1,4 +1,5 @@
 import { GraphQLClient } from 'graphql-request';
+import { IMe } from '@/renderer';
 
 /**
  * @description Send request to dlive for info on a auth token

@@ -1,5 +1,9 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { IChatColors, IChatObject } from '@/renderer';
+import { getPhrase } from '@/renderer/helpers/lang';
+import { Icon } from '../generic-styled-components/Icon';
+import { FaEyeSlash, FaEye } from 'react-icons/fa';
 
 interface IChatProps {
   alternateBackground?: string;
@@ -84,6 +88,11 @@ export const ChatMessage = ({
   colors?: IChatColors;
   highlighted: boolean;
 }) => {
+  /**
+   * @description state for when a message is deleted, the user has the option to check to see what the message was by clicking on the eyeball
+   */
+  const [deletedButShow, setDeletedButShow] = React.useState(false);
+
   const determineBoxShadow = (): string => {
     // const sender = message.sender;
     const roomRole = message.roomRole;
@@ -103,14 +112,44 @@ export const ChatMessage = ({
     return colors.viewer;
   };
 
+  const updateShow = () => {
+    setDeletedButShow(!deletedButShow);
+  };
+
+  /**
+   * @description will return a chat message row, if the message is deleted then it will show text
+   * saying that the message was removed
+   *
+   * the user has the option to click an eyeball icon that will show the message
+   */
   return (
-    <Chat padTop highlighted={highlighted}>
-      <ChatUsername>{message.sender.displayname}</ChatUsername>
-      <ProfilePicture
-        shadowColor={determineBoxShadow()}
-        src={message.sender.avatar}
-      />
-      <ChatContent>{message.content}</ChatContent>
+    <Chat padTop={!message.deleted || deletedButShow} highlighted={highlighted}>
+      {message.deleted && !deletedButShow ? null : (
+        <ChatUsername>{message.sender.displayname}</ChatUsername>
+      )}
+      {message.deleted && !deletedButShow ? null : (
+        <ProfilePicture
+          shadowColor={determineBoxShadow()}
+          src={message.sender.avatar}
+        />
+      )}
+      <ChatContent>
+        {message.deleted && !deletedButShow
+          ? getPhrase('chat_deleted')
+          : message.content}
+      </ChatContent>
+      {message.deleted ? (
+        <Icon
+          style={{ position: 'absolute', right: '10px', top: '19px' }}
+          onClick={updateShow}
+        >
+          {deletedButShow ? (
+            <FaEye size={'18px'} />
+          ) : (
+            <FaEyeSlash size={'18px'} />
+          )}
+        </Icon>
+      ) : null}
     </Chat>
   );
 };

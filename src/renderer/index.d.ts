@@ -1,7 +1,4 @@
-declare module '@trendmicro/react-sidenav';
-declare module 'request';
-
-declare interface IConfig {
+export interface IConfig {
   authKey: null | string;
   streamerAuthKey: null | string;
   commandPrefix: string;
@@ -10,12 +7,12 @@ declare interface IConfig {
   selectedSender?: IOption;
 }
 
-declare interface IEvent {
+export interface IEvent {
   data: { [id: string]: any };
   name: string;
 }
 
-declare interface IRXEvent {
+export interface IRXEvent {
   payload: {
     message?: string;
     data?: { [id: string]: any };
@@ -23,12 +20,12 @@ declare interface IRXEvent {
   type: string;
 }
 
-declare interface IMe {
+export interface IMe {
   displayname: string;
   username: string;
 }
 
-declare interface ISender {
+export interface ISender {
   avatar: string;
   badges: {}[];
   displayname: string;
@@ -38,7 +35,7 @@ declare interface ISender {
   __typename: string;
 }
 
-declare interface IChatObject {
+export interface IChatObject {
   type: string;
   id: string;
   content?: string;
@@ -48,9 +45,11 @@ declare interface IChatObject {
   sender: ISender;
   subscribing?: boolean;
   __typename: string;
+  ids?: string[];
+  deleted?: boolean;
 }
 
-declare interface IChatColors {
+export interface IChatColors {
   owner: string;
   bot: string;
   staff: string;
@@ -58,12 +57,12 @@ declare interface IChatColors {
   moderator: string;
 }
 
-declare interface IOption {
+export interface IOption {
   label: string;
   value: string;
 }
 
-interface IUser {
+export interface IUser {
   id: string;
   displayname: string;
   username: string;

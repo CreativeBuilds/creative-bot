@@ -20,6 +20,7 @@ import { filter, distinctUntilChanged } from 'rxjs/operators';
 import Select from 'react-select';
 import { getSelf } from '@/renderer/helpers/dlive/getSelf';
 import { shell } from 'electron';
+import { IConfig, IMe, IChatObject, IOption } from '@/renderer';
 
 const ChatMessages = styled.div`
   display: flex;
@@ -107,13 +108,21 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
     }
     setMessages(AllMessages);
   };
+
+  const DeleteMessage = (id: string) => {
+    AllMessages = AllMessages.map(message => {
+      return { ...message, ...(id === message.id ? { deleted: true } : {}) };
+    });
+    setMessages(AllMessages);
+  };
+
   /**
    * @description will try and trigger auto scroll to bottom
    */
   React.useEffect(() => {
     const el = document.getElementById('scroll-to');
     if (!el) {
-      return console.log('no-el');
+      return;
     }
     el.scrollIntoView();
   }, [messages]);
@@ -163,7 +172,22 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
    * loop over them, triggering the updateMessages function each time)
    */
   React.useEffect(() => {
-    const listener = rxStoredMessages.subscribe(updateMessages);
+    AllMessages = [];
+    const listener = rxStoredMessages.subscribe(message => {
+      if (!message) {
+        return;
+      }
+      if (message.type === 'Delete') {
+        if (!message.ids) {
+          return;
+        }
+        message.ids.forEach(id => {
+          DeleteMessage(id);
+        });
+      } else {
+        updateMessages(message);
+      }
+    });
 
     return () => {
       listener.unsubscribe();

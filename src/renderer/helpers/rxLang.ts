@@ -1,6 +1,7 @@
 import { BehaviorSubject, Observable } from 'rxjs';
 import { rxConfig, updateConfig } from './rxConfig';
 import { filter, switchMap } from 'rxjs/operators';
+import { IConfig } from '..';
 
 const defaultLang = 'en';
 

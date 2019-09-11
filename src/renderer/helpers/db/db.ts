@@ -3,13 +3,14 @@ import Dexie from 'dexie';
 import 'dexie-observable';
 import { BehaviorSubject } from 'rxjs';
 import { IDatabaseChange } from 'dexie-observable/api';
+import { IUser } from '@/renderer';
 
 /**
  * @desciption This is all the users who have been edited since the last save to firestore
  *
  * @docs https://www.npmjs.com/package/dexie
  */
-const editedUsers: string[] = [];
+export const editedUsers: string[] = [];
 
 /**
  * @description a BehaviorSubject that will emit IDatabseChanges when they occur in the db
@@ -21,7 +22,7 @@ export const rxDbChanges = new BehaviorSubject<IDatabaseChange[]>([]);
  */
 // tslint:disable-next-line: completed-docs
 class MyDatabase extends Dexie {
-  public users: Dexie.Table<IUser, string>;
+  public users: Dexie.Table<User, string>;
 
   constructor() {
     super('CreativeBot');
@@ -42,7 +43,7 @@ const db = new MyDatabase();
  * @description Returns a user object that has mmultiple functions on it for updating variables like points
  */
 // tslint:disable-next-line: completed-docs
-class User implements IUser {
+export class User implements IUser {
   public id: string;
   public displayname: string;
   public username: string;
@@ -99,3 +100,5 @@ db.users.mapToClass(User);
 db.on('changes', changes => {
   rxDbChanges.next(changes);
 });
+
+export { db };

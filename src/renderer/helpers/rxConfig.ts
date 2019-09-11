@@ -3,6 +3,7 @@ import { rxUser } from './rxUser';
 import { filter, first, switchMap, map } from 'rxjs/operators';
 import { firestore } from './firebase';
 import { doc } from 'rxfire/firestore';
+import { IConfig } from '..';
 
 const defaultConfig = {
   authKey: null,

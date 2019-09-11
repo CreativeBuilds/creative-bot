@@ -6,6 +6,7 @@ import { Button } from '../generic-styled-components/Button';
 import Select from 'react-select';
 import { sendMessage } from '@/renderer/helpers/dlive/sendMessage';
 import { getSelf } from '@/renderer/helpers/dlive/getSelf';
+import { IMe, IConfig, IOption } from '@/renderer';
 
 const ChatInputWrapper = styled.div`
   display: flex;
@@ -160,6 +161,14 @@ export const ChatInput = ({
     // sendMessage()
     setText('');
   };
+  /**
+   * @description checks to see if the user hit the enter button, if they did, send the message
+   */
+  const checkForEnter = (e: React.KeyboardEvent<HTMLInputElement>): void => {
+    if (e.key === 'Enter' || e.keyCode === 13) {
+      sendMessageToStream();
+    }
+  };
 
   return (
     <React.Fragment>
@@ -172,6 +181,7 @@ export const ChatInput = ({
           placeholder={getPhrase('chat_send')}
           value={text}
           onChange={updateText}
+          onKeyDown={checkForEnter}
         />
         <ChatInputSend
           disabled={text.length === 0}

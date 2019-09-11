@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as url from 'url';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
+import { IEvent } from '@/renderer';
 
 let mainWindow: Electron.BrowserWindow | null;
 

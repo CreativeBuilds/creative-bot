@@ -18,9 +18,14 @@ import { rxEvents } from '../helpers/rxEvents';
 import { rxConfig, updateConfig } from '../helpers/rxConfig';
 import { rxChat } from '../helpers/rxChat';
 import { Users } from './users/Users';
-import { start } from '../helpers/db/db';
+import { getUsers } from '../helpers/users/users';
+import { rxDbChanges } from '../helpers/db/db';
+import { start } from '../helpers/start';
+import { IRXEvent, IConfig, IEvent } from '..';
 
 start().catch(null);
+
+rxDbChanges.subscribe(change => console.log('Change', change));
 
 /**
  * @description subscribe to all events from dlive and if the payload message is unable to parse

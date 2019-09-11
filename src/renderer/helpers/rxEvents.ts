@@ -4,6 +4,7 @@ import { filter, first, distinctUntilChanged } from 'rxjs/operators';
 import { rxConfig } from './rxConfig';
 import { getSelf } from './dlive/getSelf';
 import { database } from 'firebase';
+import { IMe, IConfig, IRXEvent } from '..';
 /**
  * @description Contains all events that happen inside of the app, if you need to react to something
  * in chat this is the thing to subscribe to
