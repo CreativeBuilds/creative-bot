@@ -72,3 +72,20 @@ export interface IUser {
   exp: number;
   role: string;
 }
+
+export interface ISize {
+  width: number;
+  height: number;
+}
+
+export interface IListRenderer {
+  index: number;
+  key: string;
+  style: React.CSSProperties;
+}
+
+export interface IOldUser extends IUser {
+  dliveUsername?: string;
+  linoUsername?: string;
+  blockchainUsername?: string;
+}

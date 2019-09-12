@@ -94,6 +94,13 @@ export class User implements IUser {
       )
     );
   }
+
+  /**
+   * @description converts the lino from an int state to how it looks on dlive
+   */
+  public getLino() {
+    return Math.floor(this.lino / 10000) * 10;
+  }
 }
 
 db.users.mapToClass(User);
