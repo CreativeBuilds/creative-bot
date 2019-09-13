@@ -11,21 +11,23 @@ import { Menu } from './menu/Menu';
 import { Chat } from './chat/Chat';
 import { LoginDlive } from './logindlive/LoginDlive';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
-import { sendToMain, rxEventsFromMain } from '../helpers/eventHandler';
+import { rxEventsFromMain } from '../helpers/eventHandler';
 
 import { rxWordMap } from '../helpers/rxWordMap';
 import { rxEvents } from '../helpers/rxEvents';
 import { rxConfig, updateConfig } from '../helpers/rxConfig';
 import { rxChat } from '../helpers/rxChat';
 import { Users } from './users/Users';
-import { getUsers } from '../helpers/users/users';
-import { rxDbChanges } from '../helpers/db/db';
 import { start } from '../helpers/start';
 import { IRXEvent, IConfig, IEvent } from '..';
+import { rxUsers, rxUsersArray } from '../helpers/rxUsers';
 
 start().catch(null);
 
-rxDbChanges.subscribe(change => console.log('Change', change));
+// rxUsersArray.pipe(first()).subscribe(users => {
+//   users[0].addPoints(10000).catch(null);
+//   console.log(users[0]);
+// });
 
 /**
  * @description subscribe to all events from dlive and if the payload message is unable to parse
@@ -125,7 +127,6 @@ export const Main = () => {
       if (!chatMessage) {
         return;
       }
-      console.log(chatMessage);
     });
   }, []);
 

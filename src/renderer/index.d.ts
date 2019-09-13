@@ -1,3 +1,9 @@
+import {
+  ICreateChange,
+  IUpdateChange,
+  IDeleteChange
+} from 'dexie-observable/api';
+
 export interface IConfig {
   authKey: null | string;
   streamerAuthKey: null | string;
@@ -89,3 +95,17 @@ export interface IOldUser extends IUser {
   linoUsername?: string;
   blockchainUsername?: string;
 }
+
+// export interface IUpdateChangeCustom extends IUpdateChange {
+//   obj: IUser;
+//   oldObj: IUser;
+// }
+
+// export interface IDeleteChangeCustom extends IDeleteChange {
+//   obj: IUser;
+// }
+
+// export type IDatabaseChange =
+//   | ICreateChange
+//   | IUpdateChangeCustom
+//   | IDeleteChangeCustom;

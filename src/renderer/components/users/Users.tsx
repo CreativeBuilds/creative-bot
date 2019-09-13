@@ -2,16 +2,25 @@ import * as React from 'react';
 import {
   PageMain,
   PageTitle,
-  PageContent
+  PageContent,
+  PageTitleRight
 } from '../generic-styled-components/Page';
 import styled from 'styled-components';
 import { List } from 'react-virtualized/dist/commonjs/List';
 import { AutoSizer } from 'react-virtualized/dist/commonjs/AutoSizer';
 import { ISize, IListRenderer } from '@/renderer';
 import { User } from '@/renderer/helpers/db/db';
-import { rxUsers } from '@/renderer/helpers/rxUsers';
+import { rxUsersArray } from '@/renderer/helpers/rxUsers';
 import { sortBy, reverse } from 'lodash';
-import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
+import { FaAngleDown, FaAngleUp, FaEdit } from 'react-icons/fa';
+import { StyledInput } from '../generic-styled-components/StyledInput';
+import { getPhrase } from '@/renderer/helpers/lang';
+import {
+  PopupDialogBackground,
+  PopupDialog
+} from '../generic-styled-components/PopupDialog';
+import { Icon } from '../generic-styled-components/Icon';
+import { UserPopup } from './UserPoup';
 
 const PageContentCustom = styled(PageContent)`
   padding: unset;
@@ -23,6 +32,11 @@ const PageTitleCustom = styled(PageTitle)`
   & > div {
     padding-bottom: 19px;
   }
+`;
+
+const PageTitleRightCustom = styled(PageTitleRight)`
+  padding-bottom: 19px;
+  height: 47px;
 `;
 
 interface IUserHeader {
@@ -101,9 +115,12 @@ export const Users = () => {
     'displayname' | 'lino' | 'points' | 'exp'
   >('displayname');
   const [filterFlip, setFliterFlip] = React.useState<boolean>(false);
+  const [popup, setPopup] = React.useState<React.ReactElement | null>(null);
+
+  const [searchText, setSearchtext] = React.useState<string>('');
 
   React.useEffect(() => {
-    const listener = rxUsers.subscribe(setAllUsers);
+    const listener = rxUsersArray.subscribe(setAllUsers);
 
     return () => {
       listener.unsubscribe();
@@ -173,13 +190,38 @@ export const Users = () => {
     return filter === type ? filterFlip : false;
   };
 
+  const updateSearchText = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    setSearchtext(e.target.value);
+  };
+
+  const filteredUsers = allUsers.reduce((acc: User[], user) => {
+    if (searchText.trim().length > 0) {
+      if (
+        user.displayname.toLowerCase().includes(searchText.toLowerCase().trim())
+      ) {
+        acc.push(user);
+      }
+    } else {
+      acc.push(user);
+    }
+
+    return acc;
+  }, []);
+
   return (
     <PageMain>
       <PageTitleCustom>
-        <div>Users</div>{' '}
+        <div>{getPhrase('users_name')}</div>{' '}
+        <PageTitleRightCustom>
+          <StyledInput
+            onChange={updateSearchText}
+            value={searchText}
+            placeholder={getPhrase('users_search_placeholder')}
+          />
+        </PageTitleRightCustom>
         <UsersHeader style={{ paddingRight: '5px', paddingBottom: '0px' }}>
           <UsersColumn hover={true} onClick={toggleUsername}>
-            Username{' '}
+            {getPhrase('users_column_username')}{' '}
             {isFlipped('displayname') ? (
               <FaAngleDown size={15} style={{ paddingLeft: '5px' }} />
             ) : (
@@ -187,7 +229,7 @@ export const Users = () => {
             )}
           </UsersColumn>
           <UsersColumn hover={true} onClick={toggleLevel}>
-            Level{' '}
+            {getPhrase('users_column_level')}{' '}
             {isFlipped('exp') ? (
               <FaAngleDown size={15} style={{ paddingLeft: '5px' }} />
             ) : (
@@ -195,7 +237,7 @@ export const Users = () => {
             )}
           </UsersColumn>
           <UsersColumn hover={true} onClick={togglePoints}>
-            Points{' '}
+            {getPhrase('users_column_points')}{' '}
             {isFlipped('points') ? (
               <FaAngleDown size={15} style={{ paddingLeft: '5px' }} />
             ) : (
@@ -203,12 +245,22 @@ export const Users = () => {
             )}
           </UsersColumn>
           <UsersColumn hover={true} onClick={toggleLino}>
-            Lino{' '}
+            {getPhrase('users_column_lino')}{' '}
             {isFlipped('lino') ? (
               <FaAngleDown size={15} style={{ paddingLeft: '5px' }} />
             ) : (
               <FaAngleUp size={15} style={{ paddingLeft: '5px' }} />
             )}
+          </UsersColumn>
+          <UsersColumn
+            style={{
+              maxWidth: 'min-content',
+              minWidth: '50px',
+              display: 'flex',
+              justifyContent: 'center'
+            }}
+          >
+            {getPhrase('users_column_edit')}
           </UsersColumn>
         </UsersHeader>
       </PageTitleCustom>
@@ -226,7 +278,7 @@ export const Users = () => {
                 width={width}
                 height={height}
                 rowHeight={40}
-                rowCount={allUsers.length}
+                rowCount={filteredUsers.length}
                 rowRenderer={({
                   index,
                   key,
@@ -237,7 +289,7 @@ export const Users = () => {
                    *
                    * Note: if filter is displayname then it needs to toLowerCase all the names, else lowercase and uppercase will be seperated
                    */
-                  const sorted = sortBy(allUsers, (mUser: User) => {
+                  const sorted = sortBy(filteredUsers, (mUser: User) => {
                     if (filter === 'displayname') {
                       return mUser.displayname.toLowerCase();
                     } else {
@@ -245,6 +297,12 @@ export const Users = () => {
                     }
                   });
                   const user = (filterFlip ? reverse(sorted) : sorted)[index];
+                  const editUserPopup = () => {
+                    const closePopup = () => {
+                      setPopup(null);
+                    };
+                    setPopup(<UserPopup user={user} closePopup={closePopup} />);
+                  };
 
                   return (
                     <UserRow style={style} key={key} alternate={!!(index % 2)}>
@@ -252,6 +310,18 @@ export const Users = () => {
                       <UsersColumn>1</UsersColumn>
                       <UsersColumn>{user.points}</UsersColumn>
                       <UsersColumn>{user.getLino()}</UsersColumn>
+                      <UsersColumn
+                        style={{
+                          maxWidth: 'min-content',
+                          minWidth: '50px',
+                          display: 'flex',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <Icon>
+                          <FaEdit size='20px' onClick={editUserPopup}></FaEdit>
+                        </Icon>
+                      </UsersColumn>
                     </UserRow>
                   );
                 }}
@@ -260,6 +330,7 @@ export const Users = () => {
           }}
         </AutoSizer>
       </PageContentCustom>
+      {popup ? <PopupDialogBackground>{popup}</PopupDialogBackground> : null}
     </PageMain>
   );
 };
