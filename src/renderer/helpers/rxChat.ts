@@ -6,9 +6,8 @@ import { IChatObject, IRXEvent } from '..';
 /**
  * @description contains all new chat messages (text and emotes not events like sub/dono)
  */
-export const rxChat: Observable<IChatObject | boolean> = rxEvents.pipe(
+export const rxChat: Observable<Partial<IChatObject>> = rxEvents.pipe(
   filter((x: IRXEvent): boolean => {
-    console.log('X', x);
     if (!x || !x.payload || !x.payload.data) {
       return false;
     }
@@ -24,7 +23,7 @@ export const rxChat: Observable<IChatObject | boolean> = rxEvents.pipe(
   }),
   map((x: IRXEvent) => {
     if (!x.payload.data) {
-      return false;
+      return {};
     }
 
     // tslint:disable-next-line: no-unsafe-any
@@ -32,7 +31,20 @@ export const rxChat: Observable<IChatObject | boolean> = rxEvents.pipe(
 
     return data[0];
   }),
-  filter(x => !!x)
+  filter(x => !!x && Object.keys(x).length !== 0)
+);
+
+/**
+ * @description returns all chat messages with raw content
+ */
+export const rxMessages = rxChat.pipe(
+  filter((chat: IChatObject): boolean => {
+    if (typeof chat === 'boolean') {
+      return false;
+    }
+
+    return chat.type === 'Message';
+  })
 );
 
 /**
@@ -40,9 +52,6 @@ export const rxChat: Observable<IChatObject | boolean> = rxEvents.pipe(
  */
 export const rxStoredMessages = new ReplaySubject<IChatObject>(40);
 
-rxChat.subscribe((chat: IChatObject | boolean) => {
-  if (typeof chat === 'boolean') {
-    return console.log('returning boolean', chat);
-  }
+rxChat.subscribe((chat: IChatObject) => {
   rxStoredMessages.next(chat);
 });

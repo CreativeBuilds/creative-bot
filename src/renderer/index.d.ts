@@ -79,6 +79,14 @@ export interface IUser {
   role: string;
 }
 
+export interface ICommand {
+  id: string;
+  name: string;
+  permissions: any[];
+  reply: string;
+  cost: number;
+}
+
 export interface ISize {
   width: number;
   height: number;

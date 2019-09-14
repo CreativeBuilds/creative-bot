@@ -6,7 +6,7 @@ import { Login } from './login/Login';
 import { rxUser } from '../helpers/rxUser';
 import { Background } from './Background';
 import { createGlobalStyle } from 'styled-components';
-import { filter, skip, first } from 'rxjs/operators';
+import { filter, skip, first, withLatestFrom, flatMap } from 'rxjs/operators';
 import { Menu } from './menu/Menu';
 import { Chat } from './chat/Chat';
 import { LoginDlive } from './logindlive/LoginDlive';
@@ -16,18 +16,17 @@ import { rxEventsFromMain } from '../helpers/eventHandler';
 import { rxWordMap } from '../helpers/rxWordMap';
 import { rxEvents } from '../helpers/rxEvents';
 import { rxConfig, updateConfig } from '../helpers/rxConfig';
-import { rxChat } from '../helpers/rxChat';
+import { rxChat, rxMessages } from '../helpers/rxChat';
 import { Users } from './users/Users';
 import { start } from '../helpers/start';
 import { IRXEvent, IConfig, IEvent } from '..';
-import { rxUsers, rxUsersArray } from '../helpers/rxUsers';
+import { rxCommands } from '../helpers/rxCommands';
+import { rxMe } from '../helpers/rxMe';
+import { Commands } from './commands/Commands';
 
 start().catch(null);
 
-// rxUsersArray.pipe(first()).subscribe(users => {
-//   users[0].addPoints(10000).catch(null);
-//   console.log(users[0]);
-// });
+rxMe.subscribe(me => console.log('me', me));
 
 /**
  * @description subscribe to all events from dlive and if the payload message is unable to parse
@@ -44,6 +43,26 @@ rxEvents.subscribe((event: IRXEvent | undefined) => {
     updateConfig({ authKey: null }).catch(err => null);
   }
 });
+
+/**
+ * @description listen for commands then run them
+ */
+rxMessages
+  .pipe(
+    filter(x => {
+      if (!x.content) {
+        return false;
+      }
+
+      return x.content.startsWith('!');
+    })
+  )
+  .pipe(withLatestFrom(rxCommands))
+  .subscribe(([message, commands]) => {
+    commands.forEach(command => {
+      command.checkAndRun(message);
+    });
+  });
 
 /**
  * @description any css that should globally affect all pages should be here
@@ -168,6 +187,7 @@ export const Main = () => {
 
   const renderChat = () => <Chat chat={[]} />;
   const renderUsers = () => <Users />;
+  const renderCommands = () => <Commands />;
   const renderLoginDlive = () => (
     <LoginDlive streamer={!!config ? !config.streamerAuthKey : true} />
   );
@@ -196,6 +216,11 @@ export const Main = () => {
                     position: 'relative'
                   }}
                 >
+                  <Route
+                    path='/commands'
+                    exact={true}
+                    render={renderCommands}
+                  />
                   <Route path='/users' exact={true} render={renderUsers} />
                   <Route path='/' exact={true} render={renderChat} />
                 </div>

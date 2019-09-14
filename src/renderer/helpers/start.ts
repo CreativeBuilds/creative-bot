@@ -1,5 +1,5 @@
 import { filter, first, map } from 'rxjs/operators';
-import { db, rxDbChanges } from './db/db';
+import { db, rxDbChanges, Command } from './db/db';
 import { rxFireUsers, rxUsers } from './rxUsers';
 import { startRecentChat } from './recentChat';
 import { IDatabaseChange } from 'dexie-observable/api';
@@ -12,7 +12,6 @@ export const lastBackedUpUsersToCloud = 0;
  * @description takes an array of user ids that will be updated to firestore
  */
 export const backupUsersToCloud = async (usersArray: string[]) => {
-  console.log('BACK UP USERS HAS FIRED!');
   if (Date.now() - lastBackedUpUsersToCloud < 1000 * 60 * 5) {
     return Promise.reject('Trying to update too soon!');
   }
@@ -55,7 +54,7 @@ export const start = async () => {
    * @description subscribe to the firestore users and if they update, update all users in the database with the new data. Then subscribe to rxDbChanges (local db changes) and for any user that updates, save the user id for later
    */
   rxFireUsers.subscribe(async users => {
-    await db.users.bulkPut(users).catch(null);
+    await db.users.bulkAdd(users).catch(null);
     if (listener) {
       // tslint:disable-next-line: no-unsafe-any
       listener.unsubscribe();
@@ -81,7 +80,6 @@ export const start = async () => {
       )
       .subscribe(changes => {
         changes.forEach(change => {
-          console.log('GOT CHANGE', change);
           changedUsers[change.key] = true;
         });
       });

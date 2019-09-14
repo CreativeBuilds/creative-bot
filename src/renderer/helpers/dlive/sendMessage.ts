@@ -13,7 +13,6 @@ export const sendMessage = async (
     subscribing: boolean;
   }
 ) => {
-  console.log(authToken, input);
   // tslint:disable-next-line: promise-must-complete
   return new Promise((res, rej) => {
     const client = new GraphQLClient('https://api.dlive.tv/', {
@@ -27,6 +26,7 @@ export const sendMessage = async (
           sendStreamchatMessage(input: $input) {
             err {
               code
+              message
               __typename
             }
             __typename
@@ -38,7 +38,6 @@ export const sendMessage = async (
     client
       .request(query, { input })
       .then((me: { me: IMe }) => {
-        console.log(me);
         res(me.me);
       })
       .catch(rej);

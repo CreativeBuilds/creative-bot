@@ -19,7 +19,6 @@ export const rxEventsFromMain = new BehaviorSubject({
 ipcRenderer.on(
   'event',
   (event: any, data: { name: string; data: { [id: string]: any } }) => {
-    console.log('sending event to rx', data);
     rxEventsFromMain.next(data);
   }
 );

@@ -127,6 +127,11 @@ export const PopupDialogInput = styled.input`
   }
 `;
 
+export const PopupDialogPadding = styled.div`
+  height: 60px;
+  width: 100%;
+`;
+
 /**
  * @description Wraps input fields that need a title/helper text
  */

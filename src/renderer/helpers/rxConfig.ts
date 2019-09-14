@@ -51,7 +51,6 @@ export const rxConfig = rxUser.pipe(
  * @description updates a users config to firestore
  */
 export const updateConfig = async (config: Partial<IConfig>) => {
-  console.log('inside async event');
   return rxUser
     .pipe(
       filter(x => !!x),
@@ -59,8 +58,6 @@ export const updateConfig = async (config: Partial<IConfig>) => {
     )
     .subscribe(
       async (user: firebase.User): Promise<void> => {
-        console.log('updating config', config);
-
         return firestore
           .collection('configs')
           .doc(user.uid)

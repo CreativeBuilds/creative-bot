@@ -44,7 +44,7 @@ export const startRecentChat = () => {
       if (typeof chat === 'boolean') {
         return;
       }
-      if (!chat || chat.type !== 'Message') {
+      if (!chat || chat.type !== 'Message' || !chat.sender) {
         return;
       }
       mEditedUsers[chat.sender.username] = true;

@@ -147,7 +147,7 @@ export const ChatInput = ({
   const sendMessageToStream = (): void => {
     const currentSelected = selectedSender.value;
     if (!config.streamerAuthKey || !config.authKey) {
-      return console.log('RETURNING NO CONFIG SHIT FOUND', config);
+      return;
     }
     sendMessage(
       currentSelected === 'streamer' ? config.streamerAuthKey : config.authKey,
@@ -157,7 +157,7 @@ export const ChatInput = ({
         streamer: streamerAccount.username,
         subscribing: true
       }
-    ).catch(console.error);
+    ).catch(null);
     // sendMessage()
     setText('');
   };
@@ -172,9 +172,6 @@ export const ChatInput = ({
 
   return (
     <React.Fragment>
-      {/* <ChatInputSelect>
-        
-      </ChatInputSelect> */}
       <ChatInputWrapper>
         <ChatInputStyled
           hoverShadow={'rgba(223, 30, 191, 0.15)'}

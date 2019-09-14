@@ -3,10 +3,15 @@ import Dexie from 'dexie';
 import 'dexie-observable';
 import { BehaviorSubject } from 'rxjs';
 import { IDatabaseChange } from 'dexie-observable/api';
-import { IUser } from '@/renderer';
+import { IUser, ICommand, IChatObject, IConfig, IMe } from '@/renderer';
 import { firestore } from '../firebase';
 import { rxUser } from '../rxUser';
-import { first } from 'rxjs/operators';
+import { first, filter, tap, withLatestFrom } from 'rxjs/operators';
+import { rxConfig } from '../rxConfig';
+import { sendMessage } from '../dlive/sendMessage';
+import { rxMe } from '../rxMe';
+import { sendMessageWithConfig } from '../sendMessageWithConfig';
+import { getPhrase } from '../lang';
 
 /**
  * @desciption This is all the users who have been edited since the last save to firestore
@@ -46,6 +51,7 @@ const db = new MyDatabase();
  * @description when something in the database changes, push it to rxDbChanges
  */
 db.on('changes', changes => {
+  // tslint:disable-next-line: no-console
   console.log('changes', changes);
   rxDbChanges.next(changes);
 });
@@ -136,6 +142,164 @@ export class User implements IUser {
    */
   public getLino() {
     return Math.floor(this.lino / 10000) * 10;
+  }
+}
+
+/**
+ * @description is the Command class for all commands
+ */
+// tslint:disable-next-line: completed-docs
+export class Command implements ICommand {
+  public id: string;
+  public name: string;
+  public permissions: any[];
+  public reply: string;
+  public cost: number;
+
+  constructor(
+    id: string,
+    name: string,
+    permissions: any[] = [],
+    reply: string = '',
+    cost: number = 0
+  ) {
+    this.id = id;
+    this.name = name;
+    this.permissions = permissions;
+    this.reply = reply;
+    this.cost = cost;
+  }
+
+  public toJSON() {
+    return {
+      id: this.id,
+      name: this.name,
+      permissions: this.permissions,
+      reply: this.reply,
+      cost: this.cost
+    };
+  }
+
+  /**
+   * @description saves the command to firestore
+   */
+  public save() {
+    rxUser
+      .pipe(
+        filter(x => !!x),
+        first()
+      )
+      .subscribe(user => {
+        if (!user) {
+          return;
+        }
+
+        firestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('commands')
+          .doc(this.id)
+          .set(this.toJSON())
+          .catch(null);
+      });
+  }
+  /**
+   * @description runs the command by getting the config and sending the reply after parsing
+   */
+  public async run({
+    commandName,
+    variables,
+    message
+  }: {
+    commandName: string;
+    variables: string[];
+    message: IChatObject;
+  }) {
+    const getParsedMessage = async ({
+      message: mMessage,
+      reply
+    }: {
+      message: IChatObject;
+      reply: string;
+    }): Promise<string> => {
+      return reply;
+    };
+
+    const parsedMessage = getParsedMessage({
+      message,
+      reply: this.reply
+    }).catch(null);
+    parsedMessage
+      .then(msgToSend => {
+        sendMessageWithConfig(msgToSend);
+      })
+      .catch(null);
+  }
+
+  /**
+   * @description checks to see if a message triggers this command
+   */
+  public checkAndRun(message: IChatObject) {
+    if (!message.content) {
+      return false;
+    }
+
+    const name = `!${this.name.toLowerCase()}`;
+    if (!message.content.startsWith(name)) {
+      return false;
+    }
+
+    const variables = message.content.split(' ');
+    const commandName = variables.shift();
+
+    const sender = message.sender;
+    db.users
+      .get(sender.username)
+      .then(user => {
+        const mUser =
+          user ||
+          new User(
+            sender.username,
+            sender.displayname,
+            sender.username,
+            sender.avatar,
+            0,
+            0,
+            0,
+            message.role
+          );
+        if (mUser.points > this.cost) {
+          mUser
+            .addPoints(-this.cost)
+            .then(() => {
+              this.run({
+                commandName: commandName ? commandName : '',
+                variables,
+                message
+              }).catch(null);
+            })
+            .catch(null);
+        } else {
+          sendMessageWithConfig(getPhrase('command_error_cost'));
+        }
+      })
+      .catch(null);
+  }
+
+  public delete() {
+    rxUser.pipe(first()).subscribe(authUser => {
+      if (!authUser) {
+        return;
+      }
+
+      firestore
+        .collection('users')
+        .doc(authUser.uid)
+        .collection('commands')
+        .doc(this.name)
+        .delete()
+        .catch(null);
+    });
   }
 }
 

@@ -150,7 +150,7 @@ export const Users = () => {
 
       return;
     } else {
-      setFliterFlip(false);
+      setFliterFlip(true);
       setFilter('exp');
     }
   };
@@ -164,7 +164,7 @@ export const Users = () => {
 
       return;
     } else {
-      setFliterFlip(false);
+      setFliterFlip(true);
       setFilter('points');
     }
   };
@@ -178,7 +178,7 @@ export const Users = () => {
 
       return;
     } else {
-      setFliterFlip(false);
+      setFliterFlip(true);
       setFilter('lino');
     }
   };
@@ -222,35 +222,43 @@ export const Users = () => {
         <UsersHeader style={{ paddingRight: '5px', paddingBottom: '0px' }}>
           <UsersColumn hover={true} onClick={toggleUsername}>
             {getPhrase('users_column_username')}{' '}
-            {isFlipped('displayname') ? (
-              <FaAngleDown size={15} style={{ paddingLeft: '5px' }} />
-            ) : (
-              <FaAngleUp size={15} style={{ paddingLeft: '5px' }} />
-            )}
+            {filter === 'displayname' ? (
+              isFlipped('displayname') ? (
+                <FaAngleDown size={15} style={{ paddingLeft: '5px' }} />
+              ) : (
+                <FaAngleUp size={15} style={{ paddingLeft: '5px' }} />
+              )
+            ) : null}
           </UsersColumn>
           <UsersColumn hover={true} onClick={toggleLevel}>
             {getPhrase('users_column_level')}{' '}
-            {isFlipped('exp') ? (
-              <FaAngleDown size={15} style={{ paddingLeft: '5px' }} />
-            ) : (
-              <FaAngleUp size={15} style={{ paddingLeft: '5px' }} />
-            )}
+            {filter === 'exp' ? (
+              isFlipped('exp') ? (
+                <FaAngleDown size={15} style={{ paddingLeft: '5px' }} />
+              ) : (
+                <FaAngleUp size={15} style={{ paddingLeft: '5px' }} />
+              )
+            ) : null}
           </UsersColumn>
           <UsersColumn hover={true} onClick={togglePoints}>
             {getPhrase('users_column_points')}{' '}
-            {isFlipped('points') ? (
-              <FaAngleDown size={15} style={{ paddingLeft: '5px' }} />
-            ) : (
-              <FaAngleUp size={15} style={{ paddingLeft: '5px' }} />
-            )}
+            {filter === 'points' ? (
+              isFlipped('points') ? (
+                <FaAngleDown size={15} style={{ paddingLeft: '5px' }} />
+              ) : (
+                <FaAngleUp size={15} style={{ paddingLeft: '5px' }} />
+              )
+            ) : null}
           </UsersColumn>
           <UsersColumn hover={true} onClick={toggleLino}>
             {getPhrase('users_column_lino')}{' '}
-            {isFlipped('lino') ? (
-              <FaAngleDown size={15} style={{ paddingLeft: '5px' }} />
-            ) : (
-              <FaAngleUp size={15} style={{ paddingLeft: '5px' }} />
-            )}
+            {filter === 'lino' ? (
+              isFlipped('lino') ? (
+                <FaAngleDown size={15} style={{ paddingLeft: '5px' }} />
+              ) : (
+                <FaAngleUp size={15} style={{ paddingLeft: '5px' }} />
+              )
+            ) : null}
           </UsersColumn>
           <UsersColumn
             style={{

@@ -107,7 +107,6 @@ const Login = () => {
   const loginToAccount = (): void => {
     auth.signInWithEmailAndPassword(email, password).catch(err => {
       setPassword('');
-      console.log('setting to true!');
       setPasswordError(true);
     });
   };

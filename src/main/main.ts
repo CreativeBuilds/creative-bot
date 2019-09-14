@@ -54,7 +54,7 @@ function createWindow(): void {
         loginWindow = null;
         loginWindow = undefined;
       } catch (err) {
-        console.error(err);
+        return;
       }
     }
 
@@ -71,9 +71,7 @@ function createWindow(): void {
         node.innerHTML = str;
         document.body.appendChild(node);
     }
-    
     addStyleString('.container{ max-height: 100vh !important; overflow-y: auto !important;height:min-content;display:block;}.login-card{width: 712px !important}.author-section{display:flex; flex-wrap: wrap;}.author-section > p.author-section-item {flex:1;min-width: 200px;}');
-    
     let but = document.getElementsByClassName('login-form-button')[0];
     let first = true;
     but.addEventListener('click', (e)=>{
@@ -88,13 +86,13 @@ function createWindow(): void {
 
     loginWindow.webContents.on(
       'did-fail-load',
-      (mEvent, e, desc, url, isMainFrame) => {
+      (mEvent, e, desc, nUrl, isMainFrame) => {
         if (!loginWindow || !mainWindow) {
           return;
         }
-        if (url.startsWith('http://localhost')) {
+        if (nUrl.startsWith('http://localhost')) {
           // console.log('URL STARTS WITH THIS');
-          const auth = url.split('?auth=')[1];
+          const auth = nUrl.split('?auth=')[1];
           // console.log('GOT AUTH', url.split('?=auth='));
           if (!auth) {
             loginWindow.close();
@@ -110,14 +108,13 @@ function createWindow(): void {
       }
     );
 
-    loginWindow.webContents.on('will-navigate', (event, url) => {
+    loginWindow.webContents.on('will-navigate', (event, mUrl) => {
       if (!loginWindow || !mainWindow) {
         return;
       }
-      console.log('GOT NEW URL', url);
-      if (url.startsWith('http://localhost')) {
+      if (mUrl.startsWith('http://localhost')) {
         // console.log('URL STARTS WITH THIS');
-        let auth = url.split('?auth=')[1];
+        const auth = mUrl.split('?auth=')[1];
         // console.log('GOT AUTH', url.split('?=auth='));
         if (!auth) {
           loginWindow.close();
@@ -136,7 +133,6 @@ function createWindow(): void {
   rxEventHandler
     .pipe(filter(x => x.name === 'openLogin'))
     .subscribe((event: IEvent) => {
-      console.log('requesting to open login');
       oauthWindowStart(false);
     });
   rxEventHandler
