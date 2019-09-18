@@ -51,6 +51,7 @@ const MenuComponent = (
    */
   const GlobalOverRide = createGlobalStyle`
     #menu {
+      Top: 28px !important;
       background: ${(mProps: IGlobalOverRide): string =>
         mProps.background ? mProps.background : '#f1f1f1'} !important
     }

@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { Login } from './login/Login';
 import { rxUser } from '../helpers/rxUser';
 import { Background } from './Background';
+import { TitleBar } from './TitleBar';
 import { createGlobalStyle } from 'styled-components';
 import { filter, skip, first, withLatestFrom, flatMap } from 'rxjs/operators';
 import { Menu } from './menu/Menu';
@@ -196,6 +197,7 @@ export const Main = () => {
   return (
     <Background>
       <Global />
+      <TitleBar />
       {isLoading ? null : (
         <HashRouter basename='/'>
           {isLoggedIn && (config !== null && !!config) ? (
@@ -210,8 +212,9 @@ export const Main = () => {
                 <div
                   style={{
                     width: 'calc(100vw - 104px)',
-                    height: 'calc(100vh - 40px)',
+                    height: 'calc(100vh - 70px)',
                     marginLeft: '64px',
+                    marginTop: '28px',
                     padding: '20px',
                     position: 'relative'
                   }}
