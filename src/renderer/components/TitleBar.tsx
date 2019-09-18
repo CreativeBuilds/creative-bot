@@ -1,6 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 const { remote } = require('electron');
+const { app } = remote;
 import { Icon } from './generic-styled-components/Icon';
 import { FaMinus, FaRegWindowMaximize, FaWindowMaximize, FaTimes, FaBug, FaAdjust } from 'react-icons/fa';
 
@@ -43,7 +44,7 @@ const VersionTitle = styled.div`
     color: #f9f9f9;
     display: inline-block;
     position: absolute;
-    left: 20px;
+    left: 15px;
     top: 3.2px;
     margin-top: auto;
     margin-bottom: auto;
@@ -159,7 +160,7 @@ export const TitleBar = () => {
     return(
         <Bar>
             <DraggableArea />
-            <VersionTitle>2.0-canary</VersionTitle>
+            <VersionTitle>{process.env.npm_package_version}</VersionTitle>
             <AppTitle>CreativeBot</AppTitle>
             <ActionButtonsContainer>
                 { /* <WindowActionButton icon={<FaAdjust />}/> */ }
