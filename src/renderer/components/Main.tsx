@@ -19,6 +19,7 @@ import { rxEvents } from '../helpers/rxEvents';
 import { rxConfig, updateConfig } from '../helpers/rxConfig';
 import { rxChat, rxMessages } from '../helpers/rxChat';
 import { Users } from './users/Users';
+import { Themes } from './themes/Themes';
 import { start } from '../helpers/start';
 import { IRXEvent, IConfig, IEvent } from '..';
 import { rxCommands } from '../helpers/rxCommands';
@@ -189,6 +190,7 @@ export const Main = () => {
   const renderChat = () => <Chat chat={[]} />;
   const renderUsers = () => <Users />;
   const renderCommands = () => <Commands />;
+  const renderThemes = () => <Themes />;
   const renderLoginDlive = () => (
     <LoginDlive streamer={!!config ? !config.streamerAuthKey : true} />
   );
@@ -225,6 +227,7 @@ export const Main = () => {
                     render={renderCommands}
                   />
                   <Route path='/users' exact={true} render={renderUsers} />
+                  <Route path='/Themes' exact={true} render={renderThemes} />
                   <Route path='/' exact={true} render={renderChat} />
                 </div>
               </React.Fragment>

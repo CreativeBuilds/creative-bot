@@ -8,7 +8,9 @@ import {
   FaList,
   FaClock,
   FaSignOutAlt,
-  FaQuoteRight
+  FaQuoteRight,
+  FaImage,
+  FaImages
 } from 'react-icons/fa';
 import { auth } from '../../helpers/firebase';
 import { createGlobalStyle } from 'styled-components';
@@ -179,6 +181,14 @@ const MenuComponent = (
               ></FaQuoteRight>
             </NavIcon>
             <NavText>{getPhrase('menu_quotes')}</NavText>
+          </NavItem>
+          <NavItem eventKey='/themes'>
+            <NavIcon>
+              <FaImage
+                style={{ fontSize: '30px', width: '30px', height: '45px' }}
+              ></FaImage>
+            </NavIcon>
+            <NavText>THEMES</NavText>
           </NavItem>
           <NavItem eventKey='/logout'>
             <NavIcon>

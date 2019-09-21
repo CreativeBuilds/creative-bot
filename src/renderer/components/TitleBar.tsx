@@ -58,7 +58,7 @@ const AppTitle = styled.div`
     vertical-align: middle;
     color: white;
     margin: auto;
-    padding-left: 120px;
+    padding-left: 204px;
 `;
 
 /**
@@ -163,7 +163,7 @@ export const TitleBar = () => {
             <VersionTitle>{process.env.npm_package_version}</VersionTitle>
             <AppTitle>CreativeBot</AppTitle>
             <ActionButtonsContainer>
-                { /* <WindowActionButton icon={<FaAdjust />}/> */ }
+                <WindowActionButton icon={<FaAdjust />}/>
                 <WindowActionButton icon={<FaBug />} onClick={() => showDevTools()}/>
                 <WindowActionButton icon={<FaMinus />} onClick={() => minimize()}/>
                 <WindowActionButton icon={getMaximizedIcon()} onClick={() => maximize()}/>
