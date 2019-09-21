@@ -23,6 +23,7 @@ import { IRXEvent, IConfig, IEvent } from '..';
 import { rxCommands } from '../helpers/rxCommands';
 import { rxMe } from '../helpers/rxMe';
 import { Commands } from './commands/Commands';
+import { Timers } from './timers/Timers';
 
 start().catch(null);
 
@@ -188,6 +189,7 @@ export const Main = () => {
   const renderChat = () => <Chat chat={[]} />;
   const renderUsers = () => <Users />;
   const renderCommands = () => <Commands />;
+  const renderTimers = () => <Timers />;
   const renderLoginDlive = () => (
     <LoginDlive streamer={!!config ? !config.streamerAuthKey : true} />
   );
@@ -222,6 +224,7 @@ export const Main = () => {
                     render={renderCommands}
                   />
                   <Route path='/users' exact={true} render={renderUsers} />
+                  <Route path='/timers' exact={true} render={renderTimers} />
                   <Route path='/' exact={true} render={renderChat} />
                 </div>
               </React.Fragment>

@@ -166,14 +166,14 @@ export const AddOrEditCommandPopup = (props: IProps) => {
             commandName.startsWith('!') ||
             (!!commands[commandName.toLowerCase()] &&
               (!!props.command
-                ? props.command.name !== commandName.toLowerCase()
-                : false))
+                ? props.command.name.toLowerCase() !== commandName.toLowerCase()
+                : true))
           }
         >
           {!!commands[commandName.toLowerCase()] &&
           (!!props.command
-            ? props.command.name !== commandName.toLowerCase()
-            : false)
+            ? props.command.name.toLowerCase() !== commandName.toLowerCase()
+            : true)
             ? getPhrase('new_command_name_error_exists')
             : getPhrase('new_command_name_info')}
         </PopupDialogInputInfo>

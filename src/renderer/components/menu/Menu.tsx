@@ -147,14 +147,14 @@ const MenuComponent = (
             </NavIcon>
             <NavText>{getPhrase('menu_users')}</NavText>
           </NavItem>
-          <NavItem eventKey='/giveaways'>
+          {/* <NavItem eventKey='/giveaways'>
             <NavIcon>
               <FaGift
                 style={{ fontSize: '30px', width: '30px', height: '45px' }}
               ></FaGift>
             </NavIcon>
             <NavText>{getPhrase('menu_giveaways')}</NavText>
-          </NavItem>
+          </NavItem> */}
           <NavItem eventKey='/commands'>
             <NavIcon>
               <FaList
@@ -171,14 +171,14 @@ const MenuComponent = (
             </NavIcon>
             <NavText>{getPhrase('menu_timers')}</NavText>
           </NavItem>
-          <NavItem eventKey='/quotes'>
+          {/* <NavItem eventKey='/quotes'>
             <NavIcon>
               <FaQuoteRight
                 style={{ fontSize: '30px', width: '30px', height: '45px' }}
               ></FaQuoteRight>
             </NavIcon>
             <NavText>{getPhrase('menu_quotes')}</NavText>
-          </NavItem>
+          </NavItem> */}
           <NavItem eventKey='/logout'>
             <NavIcon>
               <FaSignOutAlt

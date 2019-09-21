@@ -5,8 +5,8 @@ import {
   PageContent,
   PageTitleRight
 } from '../generic-styled-components/Page';
-import { Command } from '@/renderer/helpers/db/db';
-import { rxCommands } from '@/renderer/helpers/rxCommands';
+import { Timer } from '@/renderer/helpers/db/db';
+import { rxTimers } from '@/renderer/helpers/rxTimers';
 import styled from 'styled-components';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { AutoSizer, List } from 'react-virtualized';
@@ -20,9 +20,9 @@ import {
   FaToggleOn,
   FaToggleOff
 } from 'react-icons/fa';
-import { AddOrEditCommandPopup } from './AddOrEditCommandPopup';
+import { AddOrEditTimerPopup } from './AddOrEditTimerPopup';
 import { PopupDialogBackground } from '../generic-styled-components/PopupDialog';
-import { RemoveCommandPopup } from './RemoveCommandPopup';
+import { RemoveTimerPopup } from './RemoveTimerPopup';
 
 const PageContentCustom = styled(PageContent)`
   padding: unset;
@@ -41,29 +41,29 @@ const PageTitleRightCustom = styled(PageTitleRight)`
   height: 47px;
 `;
 
-interface ICommandColumn {
+interface ITimerColumn {
   hover?: boolean;
 }
 
-const CommandsColumn = styled.div`
+const TimersColumn = styled.div`
   flex: 1;
   height: 100%;
   display: flex;
   align-items: center;
-  user-select: ${(props: ICommandColumn): string =>
+  user-select: ${(props: ITimerColumn): string =>
     props.hover ? 'none' : 'inherit'};
   &:hover {
-    cursor: ${(props: ICommandColumn): string =>
+    cursor: ${(props: ITimerColumn): string =>
       props.hover ? 'pointer' : 'unset'};
   }
 `;
 
-interface ICommandHeader {
+interface ITimerHeader {
   background?: string;
   borderColor?: string;
 }
 
-const CommandsHeader = styled.div`
+const TimersHeader = styled.div`
   height: 25px;
   display: flex;
   position: absolute;
@@ -74,22 +74,22 @@ const CommandsHeader = styled.div`
   left: 0;
   padding-left: 10px;
   border-top: 1px solid
-    ${(props: ICommandHeader): string =>
+    ${(props: ITimerHeader): string =>
       props.borderColor ? props.borderColor : '#d1d1d1'};
   border-bottom: 1px solid
-    ${(props: ICommandHeader): string =>
+    ${(props: ITimerHeader): string =>
       props.borderColor ? props.borderColor : '#d1d1d1'};
-  background: ${(props: ICommandHeader): string =>
+  background: ${(props: ITimerHeader): string =>
     props.background ? props.background : '#e1e1e1'};
 `;
 
-interface ICommandRow {
+interface ITimerRow {
   alternate: boolean;
   alternateBackground?: string;
   backgroundColor?: string;
 }
 
-const CommandRow = styled.div`
+const TimerRow = styled.div`
   width: calc(100% - 5px);
   height: 40px;
   display: flex;
@@ -97,7 +97,7 @@ const CommandRow = styled.div`
   & > div:nth-child(1) {
     padding-left: 10px;
   }
-  background: ${(props: ICommandRow): string =>
+  background: ${(props: ITimerRow): string =>
     props.alternate
       ? props.alternateBackground
         ? props.alternateBackground
@@ -108,54 +108,52 @@ const CommandRow = styled.div`
 `;
 
 /**
- * @description this is the commands page, allows for editing, creating, and deleting of new commands
+ * @description this is the Timers page, allows for editing, creating, and deleting of new Timers
  */
-export const Commands = () => {
-  const [commands, setCommands] = React.useState<Command[]>([]);
+export const Timers = () => {
+  const [Timers, setTimers] = React.useState<Timer[]>([]);
   const [popup, setPopup] = React.useState<React.ReactElement | null>(null);
 
   React.useEffect(() => {
-    const listener = rxCommands.subscribe(setCommands);
+    const listener = rxTimers.subscribe(setTimers);
 
     return () => {
       listener.unsubscribe();
     };
   }, []);
 
-  const filteredCommands = commands;
+  const filteredTimers = Timers;
 
   const closePopup = () => {
     setPopup(null);
   };
 
-  const addCommandPopup = () => {
-    setPopup(<AddOrEditCommandPopup closePopup={closePopup} />);
+  const addTimerPopup = () => {
+    setPopup(<AddOrEditTimerPopup closePopup={closePopup} />);
   };
 
   return (
     <PageMain>
       <PageTitleCustom style={{ boxShadow: 'unset' }}>
-        <div>{getPhrase('commands_name')}</div>
+        <div>{getPhrase('timers_name')}</div>
         <PageTitleRightCustom>
           <Icon>
             <FaPlusCircle
-              title={getPhrase('commands_add')}
+              title={getPhrase('timers_add')}
               size='25px'
-              onClick={addCommandPopup}
+              onClick={addTimerPopup}
             ></FaPlusCircle>
           </Icon>
         </PageTitleRightCustom>
-        <CommandsHeader style={{ paddingRight: '5px', paddingBottom: '0px' }}>
-          <CommandsColumn style={{ maxWidth: '130px' }}>
-            {getPhrase('commands_column_name')}
-          </CommandsColumn>
-          <CommandsColumn style={{ maxWidth: '90px' }}>
-            {getPhrase('commands_column_cost')}
-          </CommandsColumn>
-          <CommandsColumn>
-            {getPhrase('commands_column_response')}
-          </CommandsColumn>
-          <CommandsColumn
+        <TimersHeader style={{ paddingRight: '5px', paddingBottom: '0px' }}>
+          <TimersColumn style={{ maxWidth: '130px' }}>
+            {getPhrase('timers_column_name')}
+          </TimersColumn>
+          <TimersColumn style={{ maxWidth: '90px' }}>
+            {getPhrase('timers_column_cost')}
+          </TimersColumn>
+          <TimersColumn>{getPhrase('timers_column_response')}</TimersColumn>
+          <TimersColumn
             style={{
               maxWidth: 'min-content',
               minWidth: '75px',
@@ -163,9 +161,9 @@ export const Commands = () => {
               justifyContent: 'center'
             }}
           >
-            {getPhrase('commands_column_toggle')}
-          </CommandsColumn>
-          <CommandsColumn
+            {getPhrase('timers_column_toggle')}
+          </TimersColumn>
+          <TimersColumn
             style={{
               maxWidth: 'min-content',
               minWidth: '50px',
@@ -173,9 +171,9 @@ export const Commands = () => {
               justifyContent: 'center'
             }}
           >
-            {getPhrase('commands_column_edit')}
-          </CommandsColumn>
-          <CommandsColumn
+            {getPhrase('timers_column_edit')}
+          </TimersColumn>
+          <TimersColumn
             style={{
               maxWidth: 'min-content',
               minWidth: '50px',
@@ -183,9 +181,9 @@ export const Commands = () => {
               justifyContent: 'center'
             }}
           >
-            {getPhrase('commands_column_remove')}
-          </CommandsColumn>
-        </CommandsHeader>
+            {getPhrase('timers_column_remove')}
+          </TimersColumn>
+        </TimersHeader>
       </PageTitleCustom>
       <PageContentCustom>
         <AutoSizer>
@@ -201,7 +199,7 @@ export const Commands = () => {
                 width={width}
                 height={height}
                 rowHeight={40}
-                rowCount={filteredCommands.length}
+                rowCount={filteredTimers.length}
                 rowRenderer={({
                   index,
                   key,
@@ -212,70 +210,65 @@ export const Commands = () => {
                    *
                    * Note: if filter is displayname then it needs to toLowerCase all the names, else lowercase and uppercase will be seperated
                    */
-                  const sorted = sortBy(
-                    filteredCommands,
-                    (mCommand: Command) => {
-                      return mCommand.name.toLowerCase();
-                    }
-                  );
-                  const command = sorted[index];
-                  const editCommandPopup = () => {
+                  const sorted = sortBy(filteredTimers, (mTimer: Timer) => {
+                    return mTimer.name.toLowerCase();
+                  });
+                  const timer = sorted[index];
+                  const editTimerPopup = () => {
                     const mClosePopup = () => {
                       setPopup(null);
                     };
                     setPopup(
-                      <AddOrEditCommandPopup
-                        command={command}
+                      <AddOrEditTimerPopup
+                        timer={timer}
                         closePopup={mClosePopup}
                       />
                     );
                   };
 
-                  const removeCommandPopup = () => {
+                  const removeTimerPopup = () => {
                     const mClosePopup = () => {
                       setPopup(null);
                     };
                     setPopup(
-                      <RemoveCommandPopup
-                        command={command}
+                      <RemoveTimerPopup
+                        timer={timer}
                         closePopup={mClosePopup}
                       />
                     );
                   };
-                  /**
-                   * @description enables/disables the command in firestore which will retrigger the rx feed
-                   */
+
                   const swapEnable = () => {
-                    if (command.enabled) {
-                      command.disable();
+                    if (timer.enabled) {
+                      timer.disable();
                     } else {
-                      command.enable();
+                      timer.enable();
                     }
                   };
 
-                  if (command.name === 'discord') {
-                    console.log('COMMAND', command);
+                  if (timer.name === 'discord') {
+                    console.log('COMMAND', timer);
                   }
 
                   return (
-                    <CommandRow
+                    <TimerRow
                       style={{
                         ...style,
-                        ...(filteredCommands.length * 40 < height
+                        ...(filteredTimers.length * 40 < height
                           ? { width: 'calc(100% - 5px)', paddingRight: '5px' }
                           : {})
                       }}
                       key={key}
                       alternate={!!(index % 2)}
                     >
-                      <CommandsColumn style={{ maxWidth: '130px' }}>
-                        {command.name}
-                      </CommandsColumn>
-                      <CommandsColumn style={{ maxWidth: '90px' }}>
-                        {command.cost}
-                      </CommandsColumn>
-                      <CommandsColumn>{command.reply}</CommandsColumn>
-                      <CommandsColumn
+                      <TimersColumn style={{ maxWidth: '130px' }}>
+                        {timer.name}
+                      </TimersColumn>
+                      <TimersColumn style={{ maxWidth: '90px' }}>
+                        {timer.seconds}
+                      </TimersColumn>
+                      <TimersColumn>{timer.reply}</TimersColumn>
+                      <TimersColumn
                         style={{
                           maxWidth: 'min-content',
                           minWidth: '75px',
@@ -283,7 +276,7 @@ export const Commands = () => {
                           justifyContent: 'center'
                         }}
                       >
-                        {command.enabled ? (
+                        {timer.enabled ? (
                           <Icon>
                             <FaToggleOn onClick={swapEnable} size='25px' />
                           </Icon>
@@ -292,8 +285,8 @@ export const Commands = () => {
                             <FaToggleOff onClick={swapEnable} size='25px' />
                           </Icon>
                         )}
-                      </CommandsColumn>
-                      <CommandsColumn
+                      </TimersColumn>
+                      <TimersColumn
                         style={{
                           maxWidth: 'min-content',
                           minWidth: '50px',
@@ -302,13 +295,10 @@ export const Commands = () => {
                         }}
                       >
                         <Icon>
-                          <FaEdit
-                            size='20px'
-                            onClick={editCommandPopup}
-                          ></FaEdit>
+                          <FaEdit size='20px' onClick={editTimerPopup}></FaEdit>
                         </Icon>
-                      </CommandsColumn>
-                      <CommandsColumn
+                      </TimersColumn>
+                      <TimersColumn
                         style={{
                           maxWidth: 'min-content',
                           minWidth: '50px',
@@ -319,11 +309,11 @@ export const Commands = () => {
                         <Icon>
                           <FaTrashAlt
                             size='20px'
-                            onClick={removeCommandPopup}
+                            onClick={removeTimerPopup}
                           ></FaTrashAlt>
                         </Icon>
-                      </CommandsColumn>
-                    </CommandRow>
+                      </TimersColumn>
+                    </TimerRow>
                   );
                 }}
               />
