@@ -12,6 +12,10 @@ import {
  } from '../generic-styled-components/Section';
 
 import { ThemeThumbnail } from './ThemeThumbnail';
+import { 
+    AppearanceSelector, 
+    AppearanceItem
+} from './AppearanceSelector';
 
 import { getPhrase } from '@/renderer/helpers/lang';
 
@@ -33,21 +37,13 @@ export const Themes = (): React.ReactElement => {
             <PageContent>
                 <Section>
                     <SectionTitle>Appearance</SectionTitle>
-                    <div style={{ height: '120px', textAlign: 'center' }}>
-                        <div style={{ display: 'inline-flex' }}>
-                            <div>
-                                <h4 style={{ margin: '0' }}>Light</h4>
-                                <div style={{ padding: '5px', height: '90px', width: '150px'}}>
-                                    <ThemeThumbnail />
-                                </div>
-                            </div>
-                            <div>
-                                <h4 style={{ margin: '0' }}>Dark</h4>
-                                <div style={{ padding: '5px', height: '90px', width: '150px'}}>
-                                    <ThemeThumbnail textColor={'#b1b1b1'} sideBarBackgroundColor={'#242424'} contentViewBackgroundColor={'#242424'}/>
-                                </div>
-                            </div>
-                        </div>
+                    <div style={{ height: '140px', textAlign: 'center' }}>
+                        <AppearanceSelector>
+                            <AppearanceItem id={0} title={'Light'}/>
+                            <AppearanceItem id={1} title={'Dark'} textColor={'#b1b1b1'} sideBarBackgroundColor={'#242424'} contentViewBackgroundColor={'#242424'}/>
+                            <AppearanceItem id={2} title={'Light+'} textColor={'#242424'} sideBarBackgroundColor={'#d9d9d9'} contentViewBackgroundColor={'#d9d9d9'}/>
+                            <AppearanceItem id={3} title={'Dark+'} textColor={'#a1a1a1'} sideBarBackgroundColor={'#323232'} contentViewBackgroundColor={'#323232'}/>
+                        </AppearanceSelector>
                     </div>
                 </Section>
             </PageContent>
