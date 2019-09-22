@@ -35,7 +35,7 @@ export const AddOrEditTimerPopup = (props: IProps) => {
     props.timer ? props.timer.seconds : 600
   );
   const [timerMessages, setTimerMessages] = React.useState(
-    props.timer ? props.timer.seconds : 60
+    props.timer ? props.timer.messages : 0
   );
 
   const [timers, setTimers] = React.useState<{ [id: string]: Timer }>({});
@@ -71,7 +71,7 @@ export const AddOrEditTimerPopup = (props: IProps) => {
       timerName,
       timerReply,
       true,
-      timerMessages,
+      timerSeconds,
       timerMessages
     );
     newTimer.save();
@@ -86,16 +86,22 @@ export const AddOrEditTimerPopup = (props: IProps) => {
     if (!timer) {
       return;
     }
-    if (timerName === timer.name && timerReply === timer.reply) {
+    if (
+      timerName === timer.name &&
+      timerReply === timer.reply &&
+      timerSeconds === timer.seconds &&
+      timerMessages === timer.messages
+    ) {
       return;
     }
     const newTimer = new Timer(
       timerName,
       timerReply,
       timer.enabled,
-      timer.seconds,
-      timer.messages
+      timerSeconds,
+      timerMessages
     );
+    console.log('NEW TIMER', newTimer);
     newTimer.save();
     props.closePopup();
   };
@@ -110,12 +116,23 @@ export const AddOrEditTimerPopup = (props: IProps) => {
       if (!timer) {
         return false;
       }
-      if (timerName === timer.name && timerReply === timer.reply) {
+      if (
+        timerName === timer.name &&
+        timerReply === timer.reply &&
+        timerSeconds === timer.seconds &&
+        timerMessages === timer.messages
+      ) {
         return false;
       }
     }
 
-    return timerReply.length > 0 && timerName.length > 0;
+    return (
+      timerReply.length > 0 &&
+      timerName.length > 0 &&
+      !isNaN(timerSeconds) &&
+      !isNaN(timerMessages) &&
+      timerSeconds >= 60
+    );
   };
 
   const updateTimerName = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -127,7 +144,11 @@ export const AddOrEditTimerPopup = (props: IProps) => {
   };
 
   const updateTimerMessages = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTimerMessages(parseInt(e.target.value, undefined));
+    try {
+      setTimerMessages(parseInt(e.target.value, undefined));
+    } catch (err) {
+      console.error('Got an error', err);
+    }
   };
 
   const updateTimerSeconds = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -192,10 +213,13 @@ export const AddOrEditTimerPopup = (props: IProps) => {
       </PopupDialogInputWrapper>
       <PopupDialogInputWrapper>
         <PopupDialogInputName>
-          {getPhrase('new_timer_minseconds_title', timerSeconds)}
+          {getPhrase(
+            'new_timer_minseconds_title',
+            !isNaN(timerSeconds) ? timerSeconds : 60
+          )}
         </PopupDialogInputName>
         <PopupDialogInput
-          value={timerSeconds}
+          value={isNaN(timerSeconds) ? '' : timerSeconds}
           onChange={updateTimerSeconds}
           type='number'
           min={60}
@@ -209,7 +233,7 @@ export const AddOrEditTimerPopup = (props: IProps) => {
           {getPhrase('new_timer_minmsgs_title')}
         </PopupDialogInputName>
         <PopupDialogInput
-          value={timerMessages}
+          value={isNaN(timerMessages) ? '' : timerMessages}
           onChange={updateTimerMessages}
           type='number'
           min={0}
@@ -222,7 +246,11 @@ export const AddOrEditTimerPopup = (props: IProps) => {
         <Button
           disabled={!canSubmit()}
           onClick={
-            canSubmit() ? (props.timer ? handleEdit : handleCreate) : () => null
+            canSubmit()
+              ? !!props.timer
+                ? handleEdit
+                : handleCreate
+              : () => console.log('HELLO WORLD WEEE')
           }
           style={{ zIndex: 4, position: 'static' }}
         >

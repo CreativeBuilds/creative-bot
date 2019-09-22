@@ -146,11 +146,14 @@ export const Timers = () => {
           </Icon>
         </PageTitleRightCustom>
         <TimersHeader style={{ paddingRight: '5px', paddingBottom: '0px' }}>
-          <TimersColumn style={{ maxWidth: '130px' }}>
+          <TimersColumn style={{ maxWidth: '130px', minWidth: '130px' }}>
             {getPhrase('timers_column_name')}
           </TimersColumn>
-          <TimersColumn style={{ maxWidth: '90px' }}>
-            {getPhrase('timers_column_cost')}
+          <TimersColumn style={{ maxWidth: '90px', minWidth: '90px' }}>
+            {getPhrase('timers_column_seconds')}
+          </TimersColumn>
+          <TimersColumn style={{ maxWidth: '110px', minWidth: '110px' }}>
+            {getPhrase('timers_column_minmsgs')}
           </TimersColumn>
           <TimersColumn>{getPhrase('timers_column_response')}</TimersColumn>
           <TimersColumn
@@ -261,13 +264,29 @@ export const Timers = () => {
                       key={key}
                       alternate={!!(index % 2)}
                     >
-                      <TimersColumn style={{ maxWidth: '130px' }}>
+                      <TimersColumn
+                        style={{ maxWidth: '130px', minWidth: '130px' }}
+                      >
                         {timer.name}
                       </TimersColumn>
-                      <TimersColumn style={{ maxWidth: '90px' }}>
+                      <TimersColumn
+                        style={{ maxWidth: '90px', minWidth: '90px' }}
+                      >
                         {timer.seconds}
                       </TimersColumn>
-                      <TimersColumn>{timer.reply}</TimersColumn>
+                      <TimersColumn
+                        style={{ maxWidth: '110px', minWidth: '110px' }}
+                      >
+                        {timer.messages}
+                      </TimersColumn>
+                      <TimersColumn
+                        style={{
+                          overflow: 'hidden',
+                          whiteSpace: 'nowrap'
+                        }}
+                      >
+                        {timer.reply}
+                      </TimersColumn>
                       <TimersColumn
                         style={{
                           maxWidth: 'min-content',

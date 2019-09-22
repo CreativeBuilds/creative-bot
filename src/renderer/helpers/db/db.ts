@@ -393,7 +393,7 @@ export class Timer implements ITimer {
         if (!user) {
           return;
         }
-
+        console.log(this.name, this.toJSON());
         firestore
           .collection('users')
           .doc(user.uid)

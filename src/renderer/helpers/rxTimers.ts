@@ -28,7 +28,13 @@ export const rxTimers = rxUser.pipe(
   map((timers: ITimer[]) =>
     timers.map(
       (timer): Timer =>
-        new Timer(timer.name, timer.reply, timer.enabled, timer.seconds)
+        new Timer(
+          timer.name,
+          timer.reply,
+          timer.enabled,
+          timer.seconds,
+          timer.messages
+        )
     )
   )
 );

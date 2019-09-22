@@ -19,11 +19,13 @@ import { rxConfig, updateConfig } from '../helpers/rxConfig';
 import { rxChat, rxMessages } from '../helpers/rxChat';
 import { Users } from './users/Users';
 import { start } from '../helpers/start';
-import { IRXEvent, IConfig, IEvent } from '..';
+import { IRXEvent, IConfig, IEvent, ITimer } from '..';
 import { rxCommands } from '../helpers/rxCommands';
 import { rxMe } from '../helpers/rxMe';
 import { Commands } from './commands/Commands';
 import { Timers } from './timers/Timers';
+import { rxTimers } from '../helpers/rxTimers';
+import { sendMessageWithConfig } from '../helpers/sendMessageWithConfig';
 
 start().catch(null);
 
@@ -45,6 +47,28 @@ rxEvents.subscribe((event: IRXEvent | undefined) => {
   }
 });
 
+const timerIntervals: number[] = [];
+let totalMessagesPassed = 0;
+
+rxTimers.subscribe((allTimers: ITimer[]) => {
+  console.log('timers', allTimers);
+  timerIntervals.forEach(interval => {
+    clearInterval(interval);
+  });
+  allTimers.forEach(timer => {
+    let lastSentAt = totalMessagesPassed;
+    timerIntervals.push(
+      setInterval(() => {
+        if (lastSentAt <= totalMessagesPassed - timer.messages) {
+          console.log('ENOUGH MESSAGES HAVE PASSED');
+          sendMessageWithConfig(timer.reply);
+          lastSentAt = totalMessagesPassed;
+        }
+      }, 500000000)
+    );
+  });
+});
+
 /**
  * @description listen for commands then run them
  */
@@ -54,6 +78,7 @@ rxMessages
       if (!x.content) {
         return false;
       }
+      totalMessagesPassed += 1;
 
       return x.content.startsWith('!');
     })

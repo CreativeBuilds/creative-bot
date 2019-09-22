@@ -55,13 +55,12 @@ export const start = async () => {
    */
   rxFireUsers.subscribe(async users => {
     try {
-      db.users.each(user => {
-        console.log('USER EXISTS', user);
-      });
       await db.users.bulkAdd(users).catch(err => {
         console.log('its fine');
       });
-    } catch (err) {}
+    } catch (err) {
+      (() => null)();
+    }
 
     if (listener) {
       // tslint:disable-next-line: no-unsafe-any
@@ -93,17 +92,6 @@ export const start = async () => {
             delete changedUsers[change.key];
           }
         });
-      });
-    const userListener = rxUsers
-      .pipe(filter(x => !!x && Object.keys({ ...x }).length > 0))
-      .subscribe(users => {
-        if (!users.creativebuilds) {
-          return console.log('no me');
-        } else {
-          const user = users.creativebuilds;
-          console.log('DELETING ME', user);
-          // user.delete();
-        }
       });
   });
   startRecentChat();
