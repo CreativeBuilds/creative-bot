@@ -2,6 +2,7 @@ const lodash = require('lodash');
 const CopyPkgJsonPlugin = require('copy-pkg-json-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 function srcPaths(src) {
   return path.join(__dirname, src);
@@ -64,7 +65,8 @@ mainConfig.plugins = [
       scripts: { start: 'electron ./main.bundle.js' },
       postinstall: 'electron-builder install-app-deps'
     }
-  })
+  }),
+  new CopyWebpackPlugin([{ from: 'public/.icon-ico', to: '.icon-ico/' }])
 ];
 
 const rendererConfig = lodash.cloneDeep(commonConfig);
