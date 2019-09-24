@@ -1,4 +1,6 @@
+import * as React from 'react';
 import styled from 'styled-components';
+//import { ThemeContext, themeData } from '@/renderer/helpers/rxTheme';
 
 /**
  * @description all styled components used across pages will be found here
@@ -8,6 +10,8 @@ interface IDivStyles {
   background?: string;
   color?: string;
 }
+
+//const { appearance } = React.useContext(ThemeContext);
 
 /**
  * @description by default a white background for any page

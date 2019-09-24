@@ -19,6 +19,7 @@ const StyledSideNav = styled(SideNav)`
   border-right: 2px 2px 4px rgba(0, 0, 0, 0.2);
   box-shadow: 2px 2px 4px 4px rgba(0, 0, 0, 0.2);
 `;
+
 // tslint:disable-next-line: no-unsafe-any
 StyledSideNav.defaultProps = SideNav.defaultProps;
 

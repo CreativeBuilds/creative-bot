@@ -1,0 +1,132 @@
+{
+    "name": "Default Theme",
+    "author": "CreativeBuilds",
+    "version": "2.0.0",
+    "minVersion": "2.0.0",
+    "appearances": {
+        "dark": {
+            "accent": {
+                "backgroundColor": "#922cceff",
+                "hoverColor": "#922cceff",
+                "color": "#ffffffff"
+            },
+            "secondaryAccent": {
+                "backgroundColor": "#922ccedd",
+                "hoverColor": "#922ccedd",
+                "color": "#ffffffff"
+            },
+            "alternativeAccent": {
+                "backgroundColor": "#df1ebfff",
+                "hoverColor": "#df1ebfff",
+                "color": "#ffffffff"
+            },
+            "background": {
+                "primaryColor": "#383ee1",
+                "secondaryColor": "#df1ebf"
+            },
+            "titleBar": {
+                "color": "#ffffffff",
+                "backgroundColor": "#00000059"
+            },
+            "titleBarActionButton": {
+                "hoverColor": "#00000029"
+            },
+            "sideBar": {
+                "backgroundColor": "#242424ff"
+            },
+            "contentView": {
+                "backgroundColor": "#242424ff"
+            },
+            "title": {
+                "color": "#f1f1f1ff"
+            },
+            "text": {
+                "color": "#f1f1f1ff",
+                "disabledColor": "#969696ff"
+            },
+            "listItem": {
+                "color": "#f1f1f1ff",
+                "alternativeColor": "#e1e1e1ff"
+            },
+            "textInput": {
+                "color": "#000000ff",
+                "placeholderColor": "#00000059",
+                "backgroundColor": "#ffffffff"
+            },
+            "popupButton": {
+                "color": "#ffffffff",
+                "backgroundColor": "#df1ebfff",
+                "disabledBackgroundColor": "#d1d1d1",
+                "disabledColor": "#e1e1e1"
+            },
+            "dropDownBox": {
+                "backgroundColor": "#181818ff",
+                "color": "#e1e1e1ff",
+                "hoverColor": "#969696ff",
+                "selecedColor": "#0011ff"
+            }
+        },
+        "light": {
+            "accent": {
+                "backgroundColor": "#922cceff",
+                "hoverColor": "#922cceff",
+                "color": "#ffffffff"
+            },
+            "secondaryAccent": {
+                "backgroundColor": "#922ccedd",
+                "hoverColor": "#922ccedd",
+                "color": "#ffffffff"
+            },
+            "alternativeAccent": {
+                "backgroundColor": "#df1ebfff",
+                "hoverColor": "#df1ebfff",
+                "color": "#ffffffff"
+            },
+            "background": {
+                "primaryColor": "#383ee1",
+                "secondaryColor": "#df1ebf"
+            },
+            "titleBar": {
+                "color": "#ffffffff",
+                "backgroundColor": "#ffffff59"
+            },
+            "titleBarActionButton": {
+                "hoverColor": "#00000029"
+            },
+            "sideBar": {
+                "backgroundColor": "#f1f1f1ff"
+            },
+            "contentView": {
+                "backgroundColor": "#f1f1f1ff"
+            },
+            "title": {
+                "color": "#f1f1f1ff"
+            },
+            "text": {
+                "color": "#f1f1f1ff",
+                "disabledColor": "#969696ff"
+            },
+            "listItem": {
+                "color": "#f1f1f1ff",
+                "alternativeColor": "#e1e1e1ff"
+            },
+            "textInput": {
+                "color": "#000000ff",
+                "placeholderColor": "#00000059",
+                "backgroundColor": "#ffffffff"
+            },
+            "popupButton": {
+                "color": "#ffffffff",
+                "backgroundColor": "#df1ebfff",
+                "disabledBackgroundColor": "#d1d1d1",
+                "disabledColor": "#e1e1e1"
+            },
+            "dropDownBox": {
+                "backgroundColor": "#181818ff",
+                "color": "#e1e1e1ff",
+                "hoverColor": "#969696ff",
+                "selecedColor": "#0011ff"
+            }
+        }
+    }
+}
