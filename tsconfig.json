@@ -13,8 +13,6 @@
     },
     "module": "commonjs",
     "moduleResolution": "node",
-    "allowJs": true,
-    "skipLibCheck": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "noImplicitAny": true,
