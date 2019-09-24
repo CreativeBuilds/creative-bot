@@ -203,6 +203,7 @@ export const ChatMessage = ({
           )}
         </Icon>
       ) : null}
+      {console.log(message)}
     </Chat>
   );
 };
