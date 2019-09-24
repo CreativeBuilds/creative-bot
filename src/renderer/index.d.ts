@@ -104,6 +104,11 @@ export interface IOldUser extends IUser {
   blockchainUsername?: string;
 }
 
+export interface ThemeContext {
+  mode: string,
+  toggle (): void;
+}
+
 declare module "*.json" {
   const value: any;
   export default value;
