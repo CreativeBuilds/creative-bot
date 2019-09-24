@@ -4,6 +4,7 @@ import { IChatColors, IChatObject } from '@/renderer';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Icon } from '../generic-styled-components/Icon';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
+import { InnerSubscriber } from 'rxjs/internal/InnerSubscriber';
 
 interface IChatProps {
   alternateBackground?: string;
@@ -143,6 +144,35 @@ export const ChatMessage = ({
       }
     };
   };
+  const isDono = () => {
+    if (!message.content ){
+      return false;
+    };  
+    if (message.type == 'Donation'){
+      message.content = getPhrase('chat_donated');
+    };  
+    return true;
+  };
+
+  const isFollow = () => {
+      if (!message.content ){
+        return false;
+      };  
+      if (message.type == 'Follow'){
+        message.content = getPhrase('chat_followed');
+      };  
+      return true;
+    };
+  
+  const isSub = () => {
+    if (!message.content ){
+      return false;
+    };  
+    if (message.type == 'Subscription'){
+      message.content = getPhrase('chat_subbed');
+    };  
+    return true;
+  };
 
 
   const stickerUrl = (): string => {
@@ -179,6 +209,7 @@ export const ChatMessage = ({
       <ChatContent 
         hidden={isSticker()}
       >
+        {isFollow() && isSub() && isDono()}
         {message.deleted && !deletedButShow
           ? getPhrase('chat_deleted')
           : message.content}
