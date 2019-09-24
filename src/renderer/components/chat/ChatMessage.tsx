@@ -178,7 +178,7 @@ export const ChatMessage = ({
       )}
       <ChatContent 
         hidden={isSticker()}
-       >
+      >
         {message.deleted && !deletedButShow
           ? getPhrase('chat_deleted')
           : message.content}
@@ -190,7 +190,7 @@ export const ChatMessage = ({
         <ChatSticker 
           src={stickerUrl()}     
         />
-</StickerContent>
+      </StickerContent>
       {message.deleted ? (
         <Icon
           style={{ position: 'absolute', right: '10px', top: '19px' }}
