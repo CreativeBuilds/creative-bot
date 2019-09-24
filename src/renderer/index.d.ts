@@ -104,6 +104,11 @@ export interface IOldUser extends IUser {
   blockchainUsername?: string;
 }
 
+declare module "*.json" {
+  const value: any;
+  export default value;
+}
+
 // export interface IUpdateChangeCustom extends IUpdateChange {
 //   obj: IUser;
 //   oldObj: IUser;

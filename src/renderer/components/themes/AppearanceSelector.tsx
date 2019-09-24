@@ -4,9 +4,10 @@ import styled from 'styled-components';
 import { ThemeThumbnail } from './ThemeThumbnail'
 
 interface IAppearanceItemProps {
-    id: number;
+    id?: number;
     title: string;
-    selected?: boolean;
+    selected?: boolean | undefined;
+    onSelected?: Function | undefined;
     accent?: string;
     secondaryAccent?: string;
     textColor?: string;
@@ -16,8 +17,12 @@ interface IAppearanceItemProps {
     secondaryBackgroundColor?: string;
 }
 
+interface IAppearanceSelectorProps {
+    startIndex?: number;
+}
+
 interface IThumbnailContainerProps {
-    isSelected: Boolean;
+    isSelected: boolean | undefined;
 }
 
 /**
@@ -27,6 +32,7 @@ const AppearanceItemTitle = styled.h4`
     margin: 0;
     margin-bottom: 5px;
     font-weight: normal;
+    user-select: none;
 `;
 
 /**
@@ -61,19 +67,13 @@ const SelectorContainer = styled.div`
 /**
  * @description Displays an AppearanceItem which contains a ThemeThumbnail component in AppearanceSelector
  */
-export const AppearanceItem = ({id, title, selected, accent, secondaryAccent, textColor, sideBarBackgroundColor, contentViewBackgroundColor, primaryBackgroundColor, secondaryBackgroundColor}: IAppearanceItemProps): React.ReactElement => {
-    
-    const [isSelected, setSelected] =  React.useState<boolean>(Boolean(selected));
-    const [index, setIndex] = React.useState(id);
-
-    const onSelected = () => {
-        setSelected(!isSelected);
-    };
+export const AppearanceItem = ({id, title, selected, onSelected = function() {}, accent, secondaryAccent, textColor, sideBarBackgroundColor, contentViewBackgroundColor, primaryBackgroundColor, secondaryBackgroundColor}: IAppearanceItemProps): React.ReactElement => {
     
     return(
         <div>
             <AppearanceItemTitle>{title}</AppearanceItemTitle>
-            <ThumbnailContainer isSelected={isSelected} onClick={onSelected}>
+            <ThumbnailContainer isSelected={selected}
+                onClick={() => { onSelected(); }}>
                 <ThemeThumbnail 
                     accent={accent} 
                     secondaryAccent={secondaryAccent} 
@@ -90,19 +90,24 @@ export const AppearanceItem = ({id, title, selected, accent, secondaryAccent, te
 /**
  * @description Component that Acts like a Group of Checkboxes for changing a Theme's Appearance
  */
-export const AppearanceSelector = (props: any, startIndex?: Number) => {
+export const AppearanceSelector = (props: any, {startIndex}: IAppearanceSelectorProps ) => {
 
     const [index, setIndex] =  React.useState(startIndex != null ? startIndex : 0);
 
-    const testFunc = () => {
-        console.log('This a Test Homie');
-    }
+    const isSelected = (idx: Number): boolean => {
+        return index == idx ? true : false;
+    };
 
     return(
         <SelectorContainer>
             {
                 React.Children.toArray(props.children).map(function(element, idx) {
-                    return React.cloneElement(element, { onClick: testFunc() });
+                    return React.cloneElement(element, { id: idx, onSelected: function () {
+                        setIndex(idx);
+                        //console.log(element.props.title);
+                        //console.log(theme(element.props.title.toLowerCase()));
+                    },
+                    selected: isSelected(idx) });
                 })
             }
         </SelectorContainer>
