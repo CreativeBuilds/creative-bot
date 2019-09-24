@@ -1,6 +1,5 @@
 import { HashRouter, Route } from 'react-router-dom';
 import * as React from 'react';
-import { ThemeProvider } from 'styled-components';
 // tslint:disable-next-line: no-duplicate-imports
 import { useState, useEffect } from 'react';
 import { Login } from './login/Login';
@@ -26,7 +25,6 @@ import { IRXEvent, IConfig, IEvent } from '..';
 import { rxCommands } from '../helpers/rxCommands';
 import { rxMe } from '../helpers/rxMe';
 import { Commands } from './commands/Commands';
-import { ThemeContext, themeData } from '@/renderer/helpers/rxTheme';
 
 start().catch(null);
 
@@ -98,7 +96,6 @@ const Global = createGlobalStyle`
  * @description Main renderer
  */
 export const Main = () => {
-  const [appearance, setAppearance] = useState(themeData.appearances.light);
   const [isLoggedIn, setIsLoggedIn] = useState<null | boolean>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [config, setConfig] = useState<Partial<IConfig> | null>(null);
@@ -200,62 +197,58 @@ export const Main = () => {
   const renderLogin = () => <Login />;
 
   return (
-    <ThemeContext.Provider value={ {appearance} }>
-      <ThemeProvider theme={{ mode: 'light' }}> 
-        <Background>
-          <Global />
-          <TitleBar />
-          {isLoading ? null : (
-            <HashRouter basename='/'>
-              {isLoggedIn && (config !== null && !!config) ? (
-                (!!config.authKey ? config.authKey : '').length > 0 &&
-                (!!config.streamerAuthKey ? config.streamerAuthKey : '').length >
-                  0 ? (
-                  /**
-                   * @description user is logged into firebase & dlive
-                   */
-                  <React.Fragment>
-                    <Menu />
-                    <div
-                      style={{
-                        width: 'calc(100vw - 104px)',
-                        height: 'calc(100vh - 70px)',
-                        marginLeft: '64px',
-                        marginTop: '28px',
-                        padding: '20px',
-                        position: 'relative'
-                      }}
-                    >
-                      <Route
-                        path='/commands'
-                        exact={true}
-                        render={renderCommands}
-                      />
-                      <Route path='/users' exact={true} render={renderUsers} />
-                      <Route path='/Themes' exact={true} render={renderThemes} />
-                      <Route path='/' exact={true} render={renderChat} />
-                    </div>
-                  </React.Fragment>
-                ) : (
-                  /**
-                   * @description user is logged into firebase but not dlive
-                   */
-                  <React.Fragment>
-                    <Route path='/' exact={true} render={renderLoginDlive} />
-                  </React.Fragment>
-                )
-              ) : isLoggedIn === null ? null : (
-                /**
-                 * @description user is neither logged into firebase nor dlive
-                 */
-                <React.Fragment>
-                  <Route path='/' exact={true} render={renderLogin} />
-                </React.Fragment>
-              )}
-            </HashRouter>
+    <Background>
+      <Global />
+      <TitleBar />
+      {isLoading ? null : (
+        <HashRouter basename='/'>
+          {isLoggedIn && (config !== null && !!config) ? (
+            (!!config.authKey ? config.authKey : '').length > 0 &&
+            (!!config.streamerAuthKey ? config.streamerAuthKey : '').length >
+              0 ? (
+              /**
+               * @description user is logged into firebase & dlive
+               */
+              <React.Fragment>
+                <Menu />
+                <div
+                  style={{
+                    width: 'calc(100vw - 104px)',
+                    height: 'calc(100vh - 70px)',
+                    marginLeft: '64px',
+                    marginTop: '28px',
+                    padding: '20px',
+                    position: 'relative'
+                  }}
+                >
+                  <Route
+                    path='/commands'
+                    exact={true}
+                    render={renderCommands}
+                  />
+                  <Route path='/users' exact={true} render={renderUsers} />
+                  <Route path='/Themes' exact={true} render={renderThemes} />
+                  <Route path='/' exact={true} render={renderChat} />
+                </div>
+              </React.Fragment>
+            ) : (
+              /**
+               * @description user is logged into firebase but not dlive
+               */
+              <React.Fragment>
+                <Route path='/' exact={true} render={renderLoginDlive} />
+              </React.Fragment>
+            )
+          ) : isLoggedIn === null ? null : (
+            /**
+             * @description user is neither logged into firebase nor dlive
+             */
+            <React.Fragment>
+              <Route path='/' exact={true} render={renderLogin} />
+            </React.Fragment>
           )}
-        </Background>
-      </ThemeProvider>
-    </ThemeContext.Provider>
+        </HashRouter>
+      )}
+    </Background>
   );
 };

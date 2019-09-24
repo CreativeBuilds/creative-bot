@@ -13,8 +13,6 @@
     },
     "module": "commonjs",
     "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
     "strictNullChecks": true,

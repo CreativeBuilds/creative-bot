@@ -18,7 +18,6 @@ import {
 } from './AppearanceSelector';
 
 import { getPhrase } from '@/renderer/helpers/lang';
-import { rxConfig, updateConfig } from '@/renderer/helpers/rxConfig';
 
 import { reverse } from 'lodash';
 import styled from 'styled-components';
@@ -39,9 +38,11 @@ export const Themes = (): React.ReactElement => {
                 <Section>
                     <SectionTitle>Appearance</SectionTitle>
                     <div style={{ height: '140px', textAlign: 'center' }}>
-                        <AppearanceSelector startIndex={0}>
-                            <AppearanceItem title={'Light'} />
-                            <AppearanceItem title={'Dark'} textColor={'#b1b1b1'} sideBarBackgroundColor={'#242424'} contentViewBackgroundColor={'#242424'}/>
+                        <AppearanceSelector>
+                            <AppearanceItem id={0} title={'Light'}/>
+                            <AppearanceItem id={1} title={'Dark'} textColor={'#b1b1b1'} sideBarBackgroundColor={'#242424'} contentViewBackgroundColor={'#242424'}/>
+                            <AppearanceItem id={2} title={'Light+'} textColor={'#242424'} sideBarBackgroundColor={'#d9d9d9'} contentViewBackgroundColor={'#d9d9d9'}/>
+                            <AppearanceItem id={3} title={'Dark+'} textColor={'#a1a1a1'} sideBarBackgroundColor={'#323232'} contentViewBackgroundColor={'#323232'}/>
                         </AppearanceSelector>
                     </div>
                 </Section>

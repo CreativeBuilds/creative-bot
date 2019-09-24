@@ -8,8 +8,7 @@ import { IConfig } from '..';
 const defaultConfig = {
   authKey: null,
   commandPrefix: '!',
-  lang: 'en',
-  appearance: 'light'
+  lang: 'en'
 };
 
 /**
