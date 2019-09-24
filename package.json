@@ -1,6 +1,6 @@
 {
   "name": "creative-bot-2",
-  "version": "1.0.0",
+  "version": "2.0.0-alpha",
   "description": "New version of CreativeBot",
   "main": "./dist/main.bundle.js",
   "scripts": {
@@ -20,9 +20,10 @@
     },
     "win": {
       "target": "nsis",
-      "asar": false
+      "asar": false,
+      "certificateSubjectName": "CreativeBuilds"
     },
-    "buildVersion": "1.0.0"
+    "buildVersion": "2.0.0"
   },
   "author": "CreativeBuilds",
   "license": "MIT",
@@ -33,6 +34,7 @@
     "@types/react-virtualized": "^9.21.4",
     "dexie": "^2.0.4",
     "dexie-observable": "^1.0.0-beta.5",
+    "electron-debug": "^3.0.1",
     "email-validator": "^2.0.4",
     "firebase": "^6.5.0",
     "graphql-request": "^1.8.2",
@@ -58,6 +60,7 @@
     "acorn": "^6.0.5",
     "ajv": "^6.6.2",
     "copy-pkg-json-webpack-plugin": "0.0.38",
+    "copy-webpack-plugin": "^5.0.4",
     "cross-env": "^5.2.0",
     "css-loader": "^1.0.1",
     "electron": "^3.1.2",

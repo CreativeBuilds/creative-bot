@@ -4,6 +4,8 @@ import * as url from 'url';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { IEvent } from '@/renderer';
+import * as electronDebug from 'electron-debug';
+electronDebug({ showDevTools: false, isEnabled: true });
 
 let mainWindow: Electron.BrowserWindow | null;
 
@@ -14,13 +16,15 @@ const rxEventHandler = new BehaviorSubject({ name: 'start', data: {} });
  */
 function createWindow(): void {
   // Create the browser window.
+  console.log(path.join(__dirname, '.icon-ico/icon.ico'));
   mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
     webPreferences: {
       webSecurity: false,
-      devTools: process.env.NODE_ENV === 'production' ? false : true
-    }
+      devTools: true
+    },
+    icon: path.join(__dirname, '.icon-ico/icon.ico')
   });
 
   // and load the index.html of the app.
