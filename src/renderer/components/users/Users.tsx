@@ -22,6 +22,16 @@ import {
 import { Icon } from '../generic-styled-components/Icon';
 import { UserPopup } from './UserPoup';
 
+import { 
+  listItemColor,
+  listItemBorderColor,
+  listItemBackgroundColor,
+  listItemAlternativeColor,
+  textInputBackgroundColor, 
+  textInputColor,
+  textInputPlaceholderColor
+} from '@/renderer/helpers/appearance';
+
 const PageContentCustom = styled(PageContent)`
   padding: unset;
 `;
@@ -55,13 +65,13 @@ const UsersHeader = styled.div`
   left: 0;
   padding-left: 10px;
   border-top: 1px solid
-    ${(props: IUserHeader): string =>
-      props.borderColor ? props.borderColor : '#d1d1d1'};
+    ${(props: IUserHeader) =>
+      props.borderColor ? props.borderColor : listItemBorderColor ? listItemBorderColor : '#d1d1d1'};
   border-bottom: 1px solid
-    ${(props: IUserHeader): string =>
-      props.borderColor ? props.borderColor : '#d1d1d1'};
-  background: ${(props: IUserHeader): string =>
-    props.background ? props.background : '#e1e1e1'};
+    ${(props: IUserHeader) =>
+      props.borderColor ? props.borderColor : listItemBorderColor ? listItemBorderColor : '#d1d1d1'};
+  background: ${(props: IUserHeader) =>
+    props.background ? props.background : listItemAlternativeColor ? listItemAlternativeColor : '#e1e1e1'};
 `;
 
 interface IUserColumn {
@@ -96,14 +106,14 @@ const UserRow = styled.div`
   & > div:nth-child(1) {
     padding-left: 10px;
   }
-  background: ${(props: IUserRow): string =>
+  background: ${(props: IUserRow) =>
     props.alternate
       ? props.alternateBackground
         ? props.alternateBackground
-        : '#e1e1e1'
+        :  listItemAlternativeColor ? listItemAlternativeColor : '#e1e1e1'
       : props.backgroundColor
       ? props.backgroundColor
-      : '#f1f1f1'};
+      :  listItemBackgroundColor ? listItemBackgroundColor : '#f1f1f1'};
 `;
 
 /**

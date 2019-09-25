@@ -22,6 +22,17 @@ import { getSelf } from '@/renderer/helpers/dlive/getSelf';
 import { shell } from 'electron';
 import { IConfig, IMe, IChatObject, IOption } from '@/renderer';
 
+import { 
+  dropDownBoxBackgroundColor, 
+  dropDownBoxBorderColor, 
+  dropDownBoxHoverColor, 
+  dropDownBoxColor, 
+  dropDownBoxSelectedColor,
+  accentColor,
+  listItemColor,
+  listItemAlternativeColor,
+} from '@/renderer/helpers/appearance';
+
 const ChatMessages = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -61,6 +72,11 @@ const SelectWrap = styled.div`
   [class*='-control'] {
     min-height: 33px;
     max-height: 33px;
+    background: ${dropDownBoxBackgroundColor ? dropDownBoxBackgroundColor : '#ffffffff'};
+    border-color: ${dropDownBoxBorderColor ? dropDownBoxBorderColor : '#727272ff'};
+  }
+  [class*='-singleValue'] {
+    color: ${dropDownBoxColor ? dropDownBoxColor : '#f1f1f1ff'};
   }
 `;
 
@@ -76,7 +92,7 @@ const StyledA = styled.a`
   &:hover {
     cursor: pointer;
   }
-  color: #922cce;
+  color: ${accentColor ? accentColor : '#922cce'};
   padding-left: 5px;
   text-decoration: underline;
 `;

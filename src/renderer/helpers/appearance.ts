@@ -91,6 +91,16 @@ export const listItemColor = theme('mode', {
     dark: themeData.appearances.dark.listItem.color
 });
 
+export const listItemBorderColor = theme('mode', {
+    light: themeData.appearances.light.listItem.borderColor,
+    dark: themeData.appearances.dark.listItem.borderColor
+});
+
+export const listItemBackgroundColor = theme('mode', {
+    light: themeData.appearances.light.listItem.backgroundColor,
+    dark: themeData.appearances.dark.listItem.backgroundColor
+});
+
 export const listItemAlternativeColor = theme('mode', {
     light: themeData.appearances.light.listItem.alternativeColor,
     dark: themeData.appearances.dark.listItem.alternativeColor
@@ -134,6 +144,11 @@ export const popupButtonDisabledColor = theme('mode', {
 export const dropDownBoxColor = theme('mode', {
     light: themeData.appearances.light.dropDownBox.color,
     dark: themeData.appearances.dark.dropDownBox.color
+});
+
+export const dropDownBoxBorderColor = theme('mode', {
+    light: themeData.appearances.light.dropDownBox.borderColor,
+    dark: themeData.appearances.dark.dropDownBox.borderColor
 });
 
 export const dropDownBoxBackgroundColor = theme('mode', {

@@ -52,7 +52,8 @@ const ChatInputStyled = styled.input`
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   overflow: hidden;
-  background-color: ${(props: IChatInputStyled) => (props.backgroundColor ? props.backgroundColor : textInputBackgroundColor ? textInputBackgroundColor : '#ffffffff')} !important;
+  background: transparent;
+  background: ${(props: IChatInputStyled) => (props.backgroundColor ? props.backgroundColor : textInputBackgroundColor ? textInputBackgroundColor : '#ffffffff')} !important;
 `;
 
 interface IChatInputSend {

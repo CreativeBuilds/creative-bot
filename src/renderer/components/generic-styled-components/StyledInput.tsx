@@ -1,4 +1,9 @@
 import styled from 'styled-components';
+import {
+  textInputBackgroundColor, 
+  textInputColor,
+  textInputPlaceholderColor
+} from '@/renderer/helpers/appearance';
 
 interface IProps {
   width?: string;
@@ -25,5 +30,6 @@ export const StyledInput = styled.input`
     box-shadow: 2px 2px 4px
       ${(props: IProps): string =>
         props.shadowHoverColor ? props.shadowHoverColor : '#922ccedd'};
-  }
+  },
+  background: ${textInputBackgroundColor} !important;
 `;

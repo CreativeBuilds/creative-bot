@@ -18,6 +18,13 @@ import { AddOrEditCommandPopup } from './AddOrEditCommandPopup';
 import { PopupDialogBackground } from '../generic-styled-components/PopupDialog';
 import { RemoveCommandPopup } from './RemoveCommandPopup';
 
+import { 
+  listItemColor,
+  listItemBorderColor,
+  listItemBackgroundColor,
+  listItemAlternativeColor,
+} from '@/renderer/helpers/appearance';
+
 const PageContentCustom = styled(PageContent)`
   padding: unset;
 `;
@@ -68,13 +75,13 @@ const CommandsHeader = styled.div`
   left: 0;
   padding-left: 10px;
   border-top: 1px solid
-    ${(props: ICommandHeader): string =>
-      props.borderColor ? props.borderColor : '#d1d1d1'};
+    ${(props: ICommandHeader) =>
+      props.borderColor ? props.borderColor : listItemBorderColor ? listItemBorderColor : '#d1d1d1'};
   border-bottom: 1px solid
-    ${(props: ICommandHeader): string =>
-      props.borderColor ? props.borderColor : '#d1d1d1'};
-  background: ${(props: ICommandHeader): string =>
-    props.background ? props.background : '#e1e1e1'};
+    ${(props: ICommandHeader) =>
+      props.borderColor ? props.borderColor : listItemBorderColor ? listItemBorderColor : '#d1d1d1'};
+  background: ${(props: ICommandHeader) =>
+    props.background ? props.background : listItemAlternativeColor ? listItemAlternativeColor : '#e1e1e1'};
 `;
 
 interface ICommandRow {
@@ -91,14 +98,14 @@ const CommandRow = styled.div`
   & > div:nth-child(1) {
     padding-left: 10px;
   }
-  background: ${(props: ICommandRow): string =>
+  background: ${(props: ICommandRow) =>
     props.alternate
       ? props.alternateBackground
         ? props.alternateBackground
-        : '#e1e1e1'
+        :  listItemAlternativeColor ? listItemAlternativeColor : '#e1e1e1'
       : props.backgroundColor
       ? props.backgroundColor
-      : '#f1f1f1'};
+      :  listItemBackgroundColor ? listItemBackgroundColor : '#f1f1f1'};
 `;
 
 /**

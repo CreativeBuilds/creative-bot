@@ -45,12 +45,14 @@
             },
             "listItem": {
                 "color": "#f1f1f1ff",
-                "alternativeColor": "#e1e1e1ff"
+                "borderColor": "#545454ff",
+                "backgroundColor": "#282828ff",
+                "alternativeColor": "#383838ff"
             },
             "textInput": {
-                "color": "#181818ff",
+                "color": "#f1f1f1ff",
                 "placeholderColor": "#42424259",
-                "backgroundColor": "#ffffffff"
+                "backgroundColor": "#181818ff"
             },
             "popupButton": {
                 "color": "#ffffffff",
@@ -59,7 +61,8 @@
                 "disabledColor": "#e1e1e1"
             },
             "dropDownBox": {
-                "backgroundColor": "#181818ff",
+                "backgroundColor": "#161616ff",
+                "borderColor": "#545454ff",
                 "color": "#e1e1e1ff",
                 "hoverColor": "#969696ff",
                 "selectedColor": "#0011ff"
@@ -105,7 +108,9 @@
                 "disabledColor": "#969696ff"
             },
             "listItem": {
-                "color": "#f1f1f1ff",
+                "color": "#202020ff",
+                "borderColor": "#d1d1d1ff",
+                "backgroundColor": "#f1f1f1ff",
                 "alternativeColor": "#e1e1e1ff"
             },
             "textInput": {
@@ -121,6 +126,7 @@
             },
             "dropDownBox": {
                 "backgroundColor": "#181818ff",
+                "borderColor": "#646464ff",
                 "color": "#e1e1e1ff",
                 "hoverColor": "#969696ff",
                 "selectedColor": "#0011ff"
