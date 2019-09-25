@@ -3,7 +3,8 @@
  */
 
 import styled from 'styled-components';
-import * as SideNav from '@trendmicro/react-sidenav';
+import SideNav from '@trendmicro/react-sidenav';
+import React from 'react';
 // import ,  from '@trendmicro/react-sidenav';
 // tslint:disable-next-line: no-unsafe-any
 const { Toggle, Nav, NavItem, NavIcon, NavText } = SideNav;

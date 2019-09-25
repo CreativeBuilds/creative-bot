@@ -5,6 +5,8 @@ const { app } = remote;
 import { Icon } from './generic-styled-components/Icon';
 import { FaMinus, FaRegWindowMaximize, FaWindowMaximize, FaTimes, FaBug, FaAdjust } from 'react-icons/fa';
 
+import { titleBarBackgroundColor } from '../helpers/themeMap';
+
 /**
  * @description Renders The Bar for the TitleBar
  */
@@ -16,7 +18,7 @@ const Bar = styled.div`
   top: 0;
   right: 0;
   display: inline-flex;
-  background-color: #ffffff59;
+  background-color: ${titleBarBackgroundColor != null ? titleBarBackgroundColor :'#ffffff59'};
   z-index: 9999;
 `;
 

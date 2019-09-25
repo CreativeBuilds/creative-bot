@@ -17,6 +17,8 @@ import {
     AppearanceItem
 } from './AppearanceSelector';
 
+import { themeData } from '@/renderer/helpers/rxTheme';
+
 import { getPhrase } from '@/renderer/helpers/lang';
 
 import { reverse } from 'lodash';

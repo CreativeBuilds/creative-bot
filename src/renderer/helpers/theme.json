@@ -100,10 +100,10 @@
                 "backgroundColor": "#f1f1f1ff"
             },
             "title": {
-                "color": "#f1f1f1ff"
+                "color": "#181818ff"
             },
             "text": {
-                "color": "#f1f1f1ff",
+                "color": "#242424ff",
                 "disabledColor": "#969696ff"
             },
             "listItem": {

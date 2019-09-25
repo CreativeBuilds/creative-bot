@@ -15,6 +15,7 @@ import {
 import { auth } from '../../helpers/firebase';
 import { createGlobalStyle } from 'styled-components';
 import { getPhrase } from '@/renderer/helpers/lang';
+import { sideBarBackgroundColor } from '@/renderer/helpers/themeMap';
 // import styled from 'styled-components';
 
 // tslint:disable-next-line: use-default-type-parameter
@@ -54,12 +55,12 @@ const MenuComponent = (
   const GlobalOverRide = createGlobalStyle`
     #menu {
       Top: 28px !important;
-      background: ${(mProps: IGlobalOverRide): string =>
-        mProps.background ? mProps.background : '#f1f1f1'} !important
+      background: ${(mProps: IGlobalOverRide) =>
+        mProps.background ? mProps.background : sideBarBackgroundColor != null ? sideBarBackgroundColor : '#f1f1f1'} !important
     }
     #menu-toggle {
-      background: ${(mProps: IGlobalOverRide): string =>
-        mProps.background ? mProps.background : '#f1f1f1'} !important;
+      background: ${(mProps: IGlobalOverRide) =>
+        mProps.background ? mProps.background : sideBarBackgroundColor != null ? sideBarBackgroundColor : '#f1f1f1'} !important;
         & > span {
           background: ${(mProps: IGlobalOverRide): string =>
             mProps.textColor ? mProps.textColor : '#922ccedd'} !important
@@ -71,6 +72,7 @@ const MenuComponent = (
               : '#f1f1f1'} !important
         }
     }
+  
     div[class*='sidenav-navitem--'] {
       > div {
         background-color: '#00000000' !important;
@@ -120,7 +122,6 @@ const MenuComponent = (
   return (
     <React.Fragment>
       <GlobalOverRide
-        background={'#f1f1f1'}
         backgroundHover={'#e1e1e1'}
         color={'#922cce'}
         textColor={'#922ccedd'}

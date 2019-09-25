@@ -26,3 +26,13 @@ export const titleBarBackgroundColor = theme('mode', {
     light: themeData.appearances.light.titleBar.backgroundColor,
     dark: themeData.appearances.dark.titleBar.backgroundColor
 });
+
+export const titleColor = theme('mode', {
+    light: themeData.appearances.light.title.color,
+    dark: themeData.appearances.dark.title.color
+});
+
+export const textColor = theme('mode', {
+    light: themeData.appearances.light.text.color,
+    dark: themeData.appearances.dark.text.color
+});
