@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { contentViewBackgroundColor, titleColor, textColor } from '@/renderer/helpers/themeMap'
+import { contentViewBackgroundColor, titleColor, textColor } from '@/renderer/helpers/appearance'
 
 /**
  * @description all styled components used across pages will be found here

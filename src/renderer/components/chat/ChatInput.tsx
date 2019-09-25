@@ -8,6 +8,8 @@ import { sendMessage } from '@/renderer/helpers/dlive/sendMessage';
 import { getSelf } from '@/renderer/helpers/dlive/getSelf';
 import { IMe, IConfig, IOption } from '@/renderer';
 
+import { textInputBackgroundColor, textInputColor, textInputPlaceholderColor } from '@/renderer/helpers/appearance';
+
 const ChatInputWrapper = styled.div`
   display: flex;
   flex-direction: row;
@@ -19,10 +21,12 @@ const ChatInputWrapper = styled.div`
   border-bottom-right-radius: 10px;
   overflow: hidden;
 
+
   height: 50px;
 `;
 
 interface IChatInputStyled {
+  backgroundColor?: string;
   hoverShadow?: string;
 }
 
@@ -48,6 +52,7 @@ const ChatInputStyled = styled.input`
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   overflow: hidden;
+  background-color: ${(props: IChatInputStyled) => (props.backgroundColor ? props.backgroundColor : textInputBackgroundColor ? textInputBackgroundColor : '#ffffffff')} !important;
 `;
 
 interface IChatInputSend {

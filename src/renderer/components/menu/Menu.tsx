@@ -15,7 +15,11 @@ import {
 import { auth } from '../../helpers/firebase';
 import { createGlobalStyle } from 'styled-components';
 import { getPhrase } from '@/renderer/helpers/lang';
-import { sideBarBackgroundColor } from '@/renderer/helpers/themeMap';
+import { 
+  sideBarBackgroundColor,
+  sideBarHoverColor,
+  accentColor
+} from '@/renderer/helpers/appearance';
 // import styled from 'styled-components';
 
 // tslint:disable-next-line: use-default-type-parameter
@@ -56,20 +60,20 @@ const MenuComponent = (
     #menu {
       Top: 28px !important;
       background: ${(mProps: IGlobalOverRide) =>
-        mProps.background ? mProps.background : sideBarBackgroundColor != null ? sideBarBackgroundColor : '#f1f1f1'} !important
+        mProps.background ? mProps.background : sideBarBackgroundColor ? sideBarBackgroundColor : '#f1f1f1'} !important
     }
     #menu-toggle {
       background: ${(mProps: IGlobalOverRide) =>
-        mProps.background ? mProps.background : sideBarBackgroundColor != null ? sideBarBackgroundColor : '#f1f1f1'} !important;
+        mProps.background ? mProps.background : sideBarBackgroundColor ? sideBarBackgroundColor : '#f1f1f1'} !important;
         & > span {
-          background: ${(mProps: IGlobalOverRide): string =>
-            mProps.textColor ? mProps.textColor : '#922ccedd'} !important
+          background: ${(mProps: IGlobalOverRide) =>
+            mProps.textColor ? mProps.textColor : accentColor ? accentColor : '#922ccedd'} !important
         }
         *:hover > span{
-          background: ${(mProps: IGlobalOverRide): string =>
+          background: ${(mProps: IGlobalOverRide) =>
             mProps.colorHighlight
               ? mProps.colorHighlight
-              : '#f1f1f1'} !important
+              : sideBarHoverColor ? sideBarHoverColor :'#f1f1f1'} !important
         }
     }
   
@@ -77,28 +81,28 @@ const MenuComponent = (
       > div {
         background-color: '#00000000' !important;
         &:hover{
-          background-color: ${(mProps: IGlobalOverRide): string =>
+          background-color: ${(mProps: IGlobalOverRide) =>
             mProps.backgroundHover
               ? mProps.backgroundHover
-              : '#e1e1e1'} !important
+              : sideBarHoverColor ? sideBarHoverColor :'#f1f1f1'} !important
         }
         /**
          * This text/icon css is for when the selected view is not toggled or selected
          */
         & > div[class*='navtext--'] {
-          color: ${(mProps: IGlobalOverRide): string =>
-            mProps.textColor ? mProps.textColor : '#922ccedd'} !important
+          color: ${(mProps: IGlobalOverRide) =>
+            mProps.textColor ? mProps.textColor : accentColor ? accentColor : '#922ccedd'} !important
         }
         & > div[class*='navicon--'] > svg {
-          color: ${(mProps: IGlobalOverRide): string =>
-            mProps.textColor ? mProps.textColor : '#922ccedd'} !important
+          color: ${(mProps: IGlobalOverRide) =>
+            mProps.textColor ? mProps.textColor : accentColor ? accentColor : '#922ccedd'} !important
         }
       }
       &[class*='highlighted--'] > div {
-        background-color: ${(mProps: IGlobalOverRide): string =>
+        background-color: ${(mProps: IGlobalOverRide) =>
           mProps.backgroundHighlight
             ? mProps.backgroundHighlight
-            : '#922cce'} !important;
+            : accentColor ? accentColor : '#922ccedd' } !important;
 
         /**
          * This text/icon css is for when the selected view is toggled or selected
@@ -122,10 +126,6 @@ const MenuComponent = (
   return (
     <React.Fragment>
       <GlobalOverRide
-        backgroundHover={'#e1e1e1'}
-        color={'#922cce'}
-        textColor={'#922ccedd'}
-        backgroundHighlight={'#922cce'}
         colorHighlight={'#f1f1f1'}
       />
       <SideNav onSelect={sideNavSelect} id={'menu'}>

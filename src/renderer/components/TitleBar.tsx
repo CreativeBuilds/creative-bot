@@ -5,7 +5,7 @@ const { app } = remote;
 import { Icon } from './generic-styled-components/Icon';
 import { FaMinus, FaRegWindowMaximize, FaWindowMaximize, FaTimes, FaBug, FaAdjust } from 'react-icons/fa';
 
-import { titleBarBackgroundColor } from '../helpers/themeMap';
+import { titleBarBackgroundColor } from '@/renderer/helpers/appearance';
 
 /**
  * @description Renders The Bar for the TitleBar

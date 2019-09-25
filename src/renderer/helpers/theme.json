@@ -6,8 +6,8 @@
     "appearances": {
         "dark": {
             "accent": {
-                "backgroundColor": "#922cceff",
-                "hoverColor": "#922cceff",
+                "backgroundColor": "#944ffeff",
+                "hoverColor": "#944ffeff",
                 "color": "#ffffffff"
             },
             "secondaryAccent": {
@@ -26,13 +26,12 @@
             },
             "titleBar": {
                 "color": "#ffffffff",
-                "backgroundColor": "#00000059"
-            },
-            "titleBarActionButton": {
+                "backgroundColor": "#00000059",
                 "hoverColor": "#00000029"
             },
             "sideBar": {
-                "backgroundColor": "#242424ff"
+                "backgroundColor": "#242424ff",
+                "hoverColor": "#323232ff"
             },
             "contentView": {
                 "backgroundColor": "#242424ff"
@@ -49,8 +48,8 @@
                 "alternativeColor": "#e1e1e1ff"
             },
             "textInput": {
-                "color": "#000000ff",
-                "placeholderColor": "#00000059",
+                "color": "#181818ff",
+                "placeholderColor": "#42424259",
                 "backgroundColor": "#ffffffff"
             },
             "popupButton": {
@@ -63,7 +62,7 @@
                 "backgroundColor": "#181818ff",
                 "color": "#e1e1e1ff",
                 "hoverColor": "#969696ff",
-                "selecedColor": "#0011ff"
+                "selectedColor": "#0011ff"
             }
         },
         "light": {
@@ -88,13 +87,12 @@
             },
             "titleBar": {
                 "color": "#ffffffff",
-                "backgroundColor": "#ffffff59"
-            },
-            "titleBarActionButton": {
+                "backgroundColor": "#ffffff59",
                 "hoverColor": "#00000029"
             },
             "sideBar": {
-                "backgroundColor": "#f1f1f1ff"
+                "backgroundColor": "#f1f1f1ff",
+                "hoverColor": "#e1e1e1ff"
             },
             "contentView": {
                 "backgroundColor": "#f1f1f1ff"
@@ -125,7 +123,7 @@
                 "backgroundColor": "#181818ff",
                 "color": "#e1e1e1ff",
                 "hoverColor": "#969696ff",
-                "selecedColor": "#0011ff"
+                "selectedColor": "#0011ff"
             }
         }
     }
