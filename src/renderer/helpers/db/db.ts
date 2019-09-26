@@ -3,7 +3,7 @@ import Dexie from 'dexie';
 import 'dexie-observable';
 import { BehaviorSubject } from 'rxjs';
 import { IDatabaseChange } from 'dexie-observable/api';
-import { IUser, ICommand, IChatObject, IConfig, IMe } from '@/renderer';
+import { IUser, ICommand, IChatObject, IConfig, IMe, ITimer } from '@/renderer';
 import { firestore } from '../firebase';
 import { rxUser } from '../rxUser';
 import { first, filter, tap, withLatestFrom } from 'rxjs/operators';
@@ -100,6 +100,26 @@ export class User implements IUser {
   }
 
   /**
+   * @description remove the user from the database
+   * @warning with the listener may reset the user
+   */
+  public delete() {
+    rxUser.pipe(first()).subscribe(authUser => {
+      if (!authUser) {
+        return;
+      }
+      db.users.delete(this.username).catch(null);
+      firestore
+        .collection('users')
+        .doc(authUser.uid)
+        .collection('users')
+        .doc(this.username)
+        .delete()
+        .catch(null);
+    });
+  }
+
+  /**
    * @description convert the user object to a json format
    *
    * @note if you add any variables to the class object, you have to add them to this function as well if
@@ -122,8 +142,7 @@ export class User implements IUser {
    * @description saves to the local db (does not instantly fire to firestore, but it will be cached for the 1 hour update window)
    */
   public async save() {
-    return db.users.update(
-      this.username,
+    return db.users.put(
       new User(
         this.id,
         this.displayname,
@@ -155,19 +174,22 @@ export class Command implements ICommand {
   public permissions: any[];
   public reply: string;
   public cost: number;
+  public enabled: boolean;
 
   constructor(
     id: string,
     name: string,
     permissions: any[] = [],
     reply: string = '',
-    cost: number = 0
+    cost: number = 0,
+    enabled: boolean = true
   ) {
     this.id = id;
     this.name = name;
     this.permissions = permissions;
     this.reply = reply;
     this.cost = cost;
+    this.enabled = enabled;
   }
 
   public toJSON() {
@@ -176,8 +198,19 @@ export class Command implements ICommand {
       name: this.name,
       permissions: this.permissions,
       reply: this.reply,
-      cost: this.cost
+      cost: this.cost,
+      enabled: this.enabled
     };
+  }
+
+  public enable() {
+    this.enabled = true;
+    this.save();
+  }
+
+  public disable() {
+    this.enabled = false;
+    this.save();
   }
 
   /**
@@ -296,6 +329,97 @@ export class Command implements ICommand {
         .collection('users')
         .doc(authUser.uid)
         .collection('commands')
+        .doc(this.name)
+        .delete()
+        .catch(null);
+    });
+  }
+}
+
+// tslint:disable-next-line: completed-docs
+export class Timer implements ITimer {
+  public name: string;
+  public reply: string;
+  public enabled: boolean;
+  public seconds: number;
+  public messages: number;
+
+  constructor(
+    name: string,
+    reply: string = '',
+    enabled: boolean = true,
+    seconds: number = 60,
+    messages: number = 0
+  ) {
+    this.name = name;
+    this.reply = reply;
+    this.enabled = enabled;
+    this.seconds = seconds;
+    this.messages = messages;
+  }
+
+  public toJSON() {
+    return {
+      id: this.name,
+      name: this.name,
+      reply: this.reply,
+      enabled: this.enabled,
+      seconds: this.seconds,
+      messages: this.messages
+    };
+  }
+
+  public enable() {
+    this.enabled = true;
+    this.save();
+  }
+
+  public disable() {
+    this.enabled = false;
+    this.save();
+  }
+
+  /**
+   * @description saves the command to firestore
+   */
+  public save() {
+    console.log('saving timer', this);
+    rxUser
+      .pipe(
+        filter(x => !!x),
+        first()
+      )
+      .subscribe(user => {
+        if (!user) {
+          return;
+        }
+        console.log(this.name, this.toJSON());
+        firestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('timers')
+          .doc(this.name)
+          .set(this.toJSON())
+          .catch(null);
+      });
+  }
+  /**
+   * @description runs the command by getting the config and sending the reply after parsing
+   */
+  public async run() {
+    sendMessageWithConfig(this.reply);
+  }
+
+  public delete() {
+    rxUser.pipe(first()).subscribe(authUser => {
+      if (!authUser) {
+        return;
+      }
+
+      firestore
+        .collection('users')
+        .doc(authUser.uid)
+        .collection('timers')
         .doc(this.name)
         .delete()
         .catch(null);

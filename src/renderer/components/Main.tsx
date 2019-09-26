@@ -23,10 +23,13 @@ import { rxChat, rxMessages } from '../helpers/rxChat';
 import { Users } from './users/Users';
 import { Themes } from './themes/Themes';
 import { start } from '../helpers/start';
-import { IRXEvent, IConfig, IEvent } from '..';
+import { IRXEvent, IConfig, IEvent, ITimer } from '..';
 import { rxCommands } from '../helpers/rxCommands';
 import { rxMe } from '../helpers/rxMe';
 import { Commands } from './commands/Commands';
+import { Timers } from './timers/Timers';
+import { rxTimers } from '../helpers/rxTimers';
+import { sendMessageWithConfig } from '../helpers/sendMessageWithConfig';
 
 start().catch(null);
 
@@ -48,6 +51,28 @@ rxEvents.subscribe((event: IRXEvent | undefined) => {
   }
 });
 
+const timerIntervals: number[] = [];
+let totalMessagesPassed = 0;
+
+rxTimers.subscribe((allTimers: ITimer[]) => {
+  console.log('timers', allTimers);
+  timerIntervals.forEach(interval => {
+    clearInterval(interval);
+  });
+  allTimers.forEach(timer => {
+    let lastSentAt = totalMessagesPassed;
+    timerIntervals.push(
+      setInterval(() => {
+        if (lastSentAt <= totalMessagesPassed - timer.messages) {
+          console.log('ENOUGH MESSAGES HAVE PASSED');
+          sendMessageWithConfig(timer.reply);
+          lastSentAt = totalMessagesPassed;
+        }
+      }, 500000000)
+    );
+  });
+});
+
 /**
  * @description listen for commands then run them
  */
@@ -57,6 +82,7 @@ rxMessages
       if (!x.content) {
         return false;
       }
+      totalMessagesPassed += 1;
 
       return x.content.startsWith('!');
     })
@@ -193,6 +219,7 @@ export const Main = () => {
   const renderUsers = () => <Users />;
   const renderCommands = () => <Commands />;
   const renderThemes = () => <Themes />;
+  const renderTimers = () => <Timers />;
   const renderLoginDlive = () => (
     <LoginDlive streamer={!!config ? !config.streamerAuthKey : true} />
   );
@@ -230,7 +257,8 @@ export const Main = () => {
                       render={renderCommands}
                     />
                     <Route path='/users' exact={true} render={renderUsers} />
-                    <Route path='/Themes' exact={true} render={renderThemes} />
+                    <Route path='/timers' exact={true} render={renderTimers} />
+                    <Route path='/themes' exact={true} render={renderThemes} />
                     <Route path='/' exact={true} render={renderChat} />
                   </div>
                 </React.Fragment>

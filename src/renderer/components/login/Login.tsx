@@ -266,7 +266,7 @@ const Login = () => {
             <PopupDialogText style={{ marginBottom: '20px' }}>
               {getPhrase('welcome_text_first')}
             </PopupDialogText>
-            <PopupDialogText style={{ marginBottom: '20px' }}>
+            <PopupDialogText style={{ marginBottom: '60px' }}>
               {getPhrase('welcome_text_second_one')} <b>{getPhrase('name')}</b>{' '}
               {getPhrase('welcome_text_second_two')}
             </PopupDialogText>

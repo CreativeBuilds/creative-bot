@@ -3,38 +3,37 @@ import { rxUser } from './rxUser';
 import { filter, switchMap, map, tap } from 'rxjs/operators';
 import { firestore } from './firebase';
 import { collectionData } from 'rxfire/firestore';
-import { ICommand } from '..';
-import { Command } from './db/db';
+import { ITimer } from '..';
+import { Timer } from './db/db';
 
 /**
- * @description rxCommands is the behavior subject for getting the layout of all commands
+ * @description rxTimers is the behavior subject for getting the layout of all timers
  * @note this pulls directly from firebase and not local database as it doesn't update very much therefore, should not need to be hindered by using local db like users
  */
-export const rxCommands = rxUser.pipe(
+export const rxTimers = rxUser.pipe(
   filter(x => !!x),
   switchMap(
-    (authUser): ObservableInput<ICommand[]> => {
+    (authUser): ObservableInput<ITimer[]> => {
       if (!authUser) {
         return empty();
       }
       const ref = firestore
         .collection('users')
         .doc(authUser.uid)
-        .collection('commands');
+        .collection('timers');
 
       return collectionData(ref);
     }
   ),
-  map((commands: ICommand[]) =>
-    commands.map(
-      (command): Command =>
-        new Command(
-          command.name,
-          command.name,
-          command.permissions || [],
-          command.reply,
-          command.cost || 0,
-          command.enabled
+  map((timers: ITimer[]) =>
+    timers.map(
+      (timer): Timer =>
+        new Timer(
+          timer.name,
+          timer.reply,
+          timer.enabled,
+          timer.seconds,
+          timer.messages
         )
     )
   )

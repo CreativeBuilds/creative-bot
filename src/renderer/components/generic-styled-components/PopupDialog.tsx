@@ -17,10 +17,11 @@ export const PopupDialog = styled.div`
   min-width: ${(props: IPropsDialog) =>
     !!props.minWidth ? props.minWidth : '350px'};
   width: ${(props: IPropsDialog) => (!!props.width ? props.width : '350px')};
-  min-height: ${(props: IPropsDialog) =>
-    !!props.minHeight ? props.minHeight : '450px'};
+  min-height: 'unset';
   height: ${(props: IPropsDialog) =>
     !!props.height ? props.height : 'fit-content'};
+  max-height: 95%;
+  overflow-y: auto;
   color: #000;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
@@ -182,5 +183,78 @@ export const PopupButtonWrapper = styled.div`
     flex: 1;
     margin-left: 5px;
     margin-right: 5px;
+  }
+`;
+
+export const PopupDialogTabWrapper = styled.div`
+  width: 100%;
+  height: -fit-content;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const PopupDialogTabHeaderWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  height: 40px;
+  & > div {
+    max-width: 33%;
+  }
+`;
+
+interface IPopupDialogTabPage {
+  background?: string;
+}
+
+export const PopupDialogTabPage = styled.div`
+  padding: 5px;
+  flex: 1;
+  height: min-content;
+  border-radius: 10px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+  background: ${(props: IPopupDialogTabPage): string =>
+    props.background ? props.background : '#e1e1e1'};
+  border-top-left-radius: 0px;
+  z-index: 3;
+`;
+
+interface IPopupDialogTab {
+  backgroundSelected?: string;
+  background?: string;
+  selected: boolean;
+}
+
+export const PopupDialogTab = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: min-content;
+  padding: 5px;
+  font-size: 1.1em;
+  transition: all 0.15s ease-in-out;
+  z-index: ${(props: IPopupDialogTab): number => (props.selected ? 3 : 2)};
+  ${(props: IPopupDialogTab): string =>
+    props.selected
+      ? 'font-weight: bold; box-shadow: 2px 2px 4px rgba(0,0,0,0.15)'
+      : ''};
+  background: ${(props: IPopupDialogTab): string =>
+    props.selected
+      ? props.backgroundSelected
+        ? props.backgroundSelected
+        : '#e1e1e1'
+      : props.background
+      ? props.background
+      : '#e9e9e9'};
+  color: ${(props: IPopupDialogTab): string =>
+    props.selected ? 'inherit' : '#aaa'};
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+
+  &:hover {
+    cursor: ${(props: IPopupDialogTab): string =>
+      props.selected ? 'unset' : 'pointer'};
+    ${(props: IPopupDialogTab): string =>
+      props.selected ? '' : 'color: #666;'}
   }
 `;
