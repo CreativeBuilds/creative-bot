@@ -20,6 +20,7 @@
     "import-name": false,
     "possible-timing-attack": false,
     "max-func-body-length": false,
+    "max-classes-per-file": false,
     "no-implicit-dependencies": [
       true,
       "dev",

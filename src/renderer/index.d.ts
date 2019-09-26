@@ -11,6 +11,15 @@ export interface IConfig {
   lang: string;
   chatProfileShadows?: IChatColors;
   selectedSender?: IOption;
+  pointsTimer?: number;
+  points?: number;
+  donationSettings?: {
+    lemons?: number;
+    icecream?: number;
+    diamond?: number;
+    ninja?: number;
+    ninjet?: number;
+  };
 }
 
 export interface IEvent {
@@ -85,6 +94,15 @@ export interface ICommand {
   permissions: any[];
   reply: string;
   cost: number;
+  enabled: boolean;
+}
+
+export interface ITimer {
+  name: string;
+  seconds: number;
+  reply: string;
+  enabled: boolean;
+  messages: number;
 }
 
 export interface ISize {
@@ -103,7 +121,6 @@ export interface IOldUser extends IUser {
   linoUsername?: string;
   blockchainUsername?: string;
 }
-
 // export interface IUpdateChangeCustom extends IUpdateChange {
 //   obj: IUser;
 //   oldObj: IUser;

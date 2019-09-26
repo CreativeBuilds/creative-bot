@@ -1,6 +1,13 @@
 import { firestore } from './firebase';
 import { rxUser } from './rxUser';
-import { switchMap, filter, map, withLatestFrom, first } from 'rxjs/operators';
+import {
+  switchMap,
+  filter,
+  map,
+  withLatestFrom,
+  first,
+  tap
+} from 'rxjs/operators';
 import { ObservableInput, BehaviorSubject } from 'rxjs';
 import { collectionData } from 'rxfire/firestore';
 import { IOldUser, IUser } from '..';
@@ -134,27 +141,50 @@ export const rxUsers = rxDbChanges
   )
   .pipe(
     withLatestFrom(userMap),
+    tap(() => {
+      console.log('updating rxUsers');
+    }),
     map(([changeArr, UserMap]) => {
+      const cloneUserMap: { [id: string]: User } = { ...UserMap };
       if (!UserMap) {
         userMap.next({});
 
         return {};
       }
       changeArr.forEach(change => {
-        // tslint:disable-next-line: prefer-object-spread no-unsafe-any
-        const curUser: IUser = Object.assign({ obj: {} }, change).obj;
-        UserMap[curUser.username] = new User(
-          curUser.id,
-          curUser.displayname,
-          curUser.username,
-          curUser.avatar,
-          curUser.lino,
-          curUser.points,
-          curUser.exp,
-          curUser.role
-        );
+        if (change.type === 3) {
+          // tslint:disable-next-line: prefer-object-spread no-unsafe-any
+          const curUser: Partial<IUser> = Object.assign({ oldObj: {} }, change)
+            .oldObj;
+
+          if (!curUser.username) {
+            return;
+          }
+
+          // The user is being deleted
+          delete cloneUserMap[curUser.username];
+          console.log('deleted user from the map', curUser.username);
+        } else {
+          // tslint:disable-next-line: prefer-object-spread no-unsafe-any
+          const curUser: IUser = Object.assign({ obj: {} }, change).obj;
+          if (!curUser || !curUser.username) {
+            return console.log('NO CURRENT USER');
+          }
+
+          cloneUserMap[curUser.username] = new User(
+            curUser.id,
+            curUser.displayname,
+            curUser.username,
+            curUser.avatar,
+            curUser.lino,
+            curUser.points,
+            curUser.exp,
+            curUser.role
+          );
+        }
       });
-      userMap.next(UserMap);
+      console.log('pushing update to userMap');
+      userMap.next(cloneUserMap);
 
       return UserMap;
     })

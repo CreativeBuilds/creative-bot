@@ -12,7 +12,13 @@ import { ISize, IListRenderer } from '@/renderer';
 import { User } from '@/renderer/helpers/db/db';
 import { rxUsersArray } from '@/renderer/helpers/rxUsers';
 import { sortBy, reverse } from 'lodash';
-import { FaAngleDown, FaAngleUp, FaEdit } from 'react-icons/fa';
+import {
+  FaAngleDown,
+  FaAngleUp,
+  FaEdit,
+  FaTrashAlt,
+  FaCog
+} from 'react-icons/fa';
 import { StyledInput } from '../generic-styled-components/StyledInput';
 import { getPhrase } from '@/renderer/helpers/lang';
 import {
@@ -21,6 +27,9 @@ import {
 } from '../generic-styled-components/PopupDialog';
 import { Icon } from '../generic-styled-components/Icon';
 import { UserPopup } from './UserPoup';
+import { UsersDeleteAll } from './UsersDeleteAll';
+import { DeleteUserPopup } from './DeleteUserPopup';
+import { UserSettingsPopup } from './UsersSettingsPopup';
 
 const PageContentCustom = styled(PageContent)`
   padding: unset;
@@ -120,7 +129,9 @@ export const Users = () => {
   const [searchText, setSearchtext] = React.useState<string>('');
 
   React.useEffect(() => {
-    const listener = rxUsersArray.subscribe(setAllUsers);
+    const listener = rxUsersArray.subscribe(users => {
+      setAllUsers(users);
+    });
 
     return () => {
       listener.unsubscribe();
@@ -195,6 +206,10 @@ export const Users = () => {
   };
 
   const filteredUsers = allUsers.reduce((acc: User[], user) => {
+    console.log('user');
+    if (!user.displayname) {
+      return acc;
+    }
     if (searchText.trim().length > 0) {
       if (
         user.displayname.toLowerCase().includes(searchText.toLowerCase().trim())
@@ -208,6 +223,18 @@ export const Users = () => {
     return acc;
   }, []);
 
+  const close = () => {
+    setPopup(null);
+  };
+
+  const setDeleteAllPopup = () => {
+    setPopup(<UsersDeleteAll users={allUsers} closePopup={close} />);
+  };
+
+  const setUsersSettingsPopup = () => {
+    setPopup(<UserSettingsPopup closePopup={close} />);
+  };
+
   return (
     <PageMain>
       <PageTitleCustom>
@@ -218,6 +245,20 @@ export const Users = () => {
             value={searchText}
             placeholder={getPhrase('users_search_placeholder')}
           />
+          <Icon style={{ paddingLeft: '10px' }}>
+            <FaTrashAlt
+              size='25px'
+              title={getPhrase('users_delete_all')}
+              onClick={setDeleteAllPopup}
+            />
+          </Icon>
+          <Icon style={{ paddingLeft: '10px' }}>
+            <FaCog
+              size='25px'
+              title={getPhrase('users_settings')}
+              onClick={setUsersSettingsPopup}
+            />
+          </Icon>
         </PageTitleRightCustom>
         <UsersHeader style={{ paddingRight: '5px', paddingBottom: '0px' }}>
           <UsersColumn hover={true} onClick={toggleUsername}>
@@ -270,6 +311,16 @@ export const Users = () => {
           >
             {getPhrase('users_column_edit')}
           </UsersColumn>
+          <UsersColumn
+            style={{
+              maxWidth: 'min-content',
+              minWidth: '60px',
+              display: 'flex',
+              justifyContent: 'center'
+            }}
+          >
+            {getPhrase('users_column_delete')}
+          </UsersColumn>
         </UsersHeader>
       </PageTitleCustom>
       <PageContentCustom>
@@ -305,11 +356,17 @@ export const Users = () => {
                     }
                   });
                   const user = (filterFlip ? reverse(sorted) : sorted)[index];
+                  const closePopup = () => {
+                    setPopup(null);
+                  };
                   const editUserPopup = () => {
-                    const closePopup = () => {
-                      setPopup(null);
-                    };
                     setPopup(<UserPopup user={user} closePopup={closePopup} />);
+                  };
+
+                  const deleteUserPopup = () => {
+                    setPopup(
+                      <DeleteUserPopup user={user} closePopup={closePopup} />
+                    );
                   };
 
                   return (
@@ -328,6 +385,21 @@ export const Users = () => {
                       >
                         <Icon>
                           <FaEdit size='20px' onClick={editUserPopup}></FaEdit>
+                        </Icon>
+                      </UsersColumn>
+                      <UsersColumn
+                        style={{
+                          maxWidth: 'min-content',
+                          minWidth: '60px',
+                          display: 'flex',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <Icon>
+                          <FaTrashAlt
+                            size='20px'
+                            onClick={deleteUserPopup}
+                          ></FaTrashAlt>
                         </Icon>
                       </UsersColumn>
                     </UserRow>

@@ -54,7 +54,14 @@ export const start = async () => {
    * @description subscribe to the firestore users and if they update, update all users in the database with the new data. Then subscribe to rxDbChanges (local db changes) and for any user that updates, save the user id for later
    */
   rxFireUsers.subscribe(async users => {
-    await db.users.bulkAdd(users).catch(null);
+    try {
+      await db.users.bulkAdd(users).catch(err => {
+        console.log('its fine');
+      });
+    } catch (err) {
+      (() => null)();
+    }
+
     if (listener) {
       // tslint:disable-next-line: no-unsafe-any
       listener.unsubscribe();
@@ -81,6 +88,9 @@ export const start = async () => {
       .subscribe(changes => {
         changes.forEach(change => {
           changedUsers[change.key] = true;
+          if (change.type === 3) {
+            delete changedUsers[change.key];
+          }
         });
       });
   });
