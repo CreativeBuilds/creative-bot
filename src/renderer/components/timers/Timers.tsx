@@ -24,6 +24,13 @@ import { AddOrEditTimerPopup } from './AddOrEditTimerPopup';
 import { PopupDialogBackground } from '../generic-styled-components/PopupDialog';
 import { RemoveTimerPopup } from './RemoveTimerPopup';
 
+import { 
+  listItemColor,
+  listItemBorderColor,
+  listItemBackgroundColor,
+  listItemAlternativeColor,
+} from '@/renderer/helpers/appearance';
+
 const PageContentCustom = styled(PageContent)`
   padding: unset;
 `;
@@ -74,13 +81,13 @@ const TimersHeader = styled.div`
   left: 0;
   padding-left: 10px;
   border-top: 1px solid
-    ${(props: ITimerHeader): string =>
-      props.borderColor ? props.borderColor : '#d1d1d1'};
+    ${(props: ITimerHeader) =>
+      props.borderColor ? props.borderColor : listItemBorderColor ? listItemBorderColor : '#d1d1d1'};
   border-bottom: 1px solid
-    ${(props: ITimerHeader): string =>
-      props.borderColor ? props.borderColor : '#d1d1d1'};
-  background: ${(props: ITimerHeader): string =>
-    props.background ? props.background : '#e1e1e1'};
+    ${(props: ITimerHeader) =>
+      props.borderColor ? props.borderColor : listItemBorderColor ? listItemBorderColor : '#d1d1d1'};
+  background: ${(props: ITimerHeader) =>
+    props.background ? props.background : listItemAlternativeColor ? listItemAlternativeColor : '#e1e1e1'};
 `;
 
 interface ITimerRow {
@@ -97,14 +104,14 @@ const TimerRow = styled.div`
   & > div:nth-child(1) {
     padding-left: 10px;
   }
-  background: ${(props: ITimerRow): string =>
+  background: ${(props: ITimerRow) =>
     props.alternate
       ? props.alternateBackground
         ? props.alternateBackground
-        : '#e1e1e1'
+        :  listItemAlternativeColor ? listItemAlternativeColor : '#e1e1e1'
       : props.backgroundColor
       ? props.backgroundColor
-      : '#f1f1f1'};
+      :  listItemBackgroundColor ? listItemBackgroundColor : '#f1f1f1'};
 `;
 
 /**

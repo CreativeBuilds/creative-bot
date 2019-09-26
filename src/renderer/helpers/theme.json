@@ -46,12 +46,20 @@
             "listItem": {
                 "color": "#f1f1f1ff",
                 "borderColor": "#545454ff",
-                "backgroundColor": "#282828ff",
+                "backgroundColor": "#242424ff",
                 "alternativeColor": "#383838ff"
             },
             "textInput": {
                 "color": "#f1f1f1ff",
                 "placeholderColor": "#42424259",
+                "backgroundColor": "#181818ff"
+            },
+            "popup": {
+                "color": "#e1e1e1ff",
+                "backgroundColor": "#282828ff"
+            },
+            "popupTabView": {
+                "color": "#e1e1e1ff",
                 "backgroundColor": "#181818ff"
             },
             "popupButton": {
@@ -120,6 +128,14 @@
                 "color": "#000000ff",
                 "placeholderColor": "#00000059",
                 "backgroundColor": "#ffffffff"
+            },
+            "popup": {
+                "color": "#161616ff",
+                "backgroundColor": "#f1f1f1"
+            },
+            "popupTabView": {
+                "color": "#161616ff",
+                "backgroundColor": "#e1e1e1ff"
             },
             "popupButton": {
                 "color": "#ffffffff",

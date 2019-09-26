@@ -4,6 +4,7 @@ const { remote } = require('electron');
 const { app } = remote;
 import { Icon } from './generic-styled-components/Icon';
 import { FaMinus, FaRegWindowMaximize, FaWindowMaximize, FaTimes, FaBug, FaAdjust } from 'react-icons/fa';
+import { useTheme } from './ThemeContext';
 
 import { 
     titleBarTextColor, 
@@ -108,6 +109,8 @@ const WindowActionButton = ({icon, onClick = function() {}} : {icon: Object, onC
  */
 export const TitleBar = () => {
 
+    const themeToggle = useTheme();
+
     /**
     * @description Toggle the Dev Tools from Electron in the current 
     */
@@ -169,7 +172,7 @@ export const TitleBar = () => {
             <VersionTitle>{process.env.npm_package_version}</VersionTitle>
             <AppTitle>CreativeBot</AppTitle>
             <ActionButtonsContainer>
-                <WindowActionButton icon={<FaAdjust />}/>
+                <WindowActionButton icon={<FaAdjust />} onClick={() => { themeToggle.toggle(); }}/>
                 <WindowActionButton icon={<FaBug />} onClick={() => showDevTools()}/>
                 <WindowActionButton icon={<FaMinus />} onClick={() => minimize()}/>
                 <WindowActionButton icon={getMaximizedIcon()} onClick={() => maximize()}/>

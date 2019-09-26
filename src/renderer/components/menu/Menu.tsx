@@ -189,7 +189,7 @@ const MenuComponent = (
                 style={{ fontSize: '30px', width: '30px', height: '45px' }}
               ></FaImage>
             </NavIcon>
-            <NavText>THEMES</NavText>
+            <NavText>THEMES (Beta)</NavText>
           </NavItem>
           <NavItem eventKey='/logout'>
             <NavIcon>

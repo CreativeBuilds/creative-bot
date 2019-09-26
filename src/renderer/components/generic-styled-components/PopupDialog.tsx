@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 import { fadeIn } from '../animations/fadeIn';
+import { 
+  popupTextColor, 
+  popupBackgroundColor,
+  popupTabViewColor,
+  popupTabViewBackgroundColor
+} from '@/renderer/helpers/appearance';
 
 interface IPropsDialog {
   minWidth?: string;
@@ -13,7 +19,7 @@ interface IPropsDialog {
  */
 export const PopupDialog = styled.div`
   position: relative;
-  background: #f1f1f1;
+  background: ${() => popupBackgroundColor ? popupBackgroundColor : '#f1f1f1'};
   min-width: ${(props: IPropsDialog) =>
     !!props.minWidth ? props.minWidth : '350px'};
   width: ${(props: IPropsDialog) => (!!props.width ? props.width : '350px')};
@@ -22,7 +28,7 @@ export const PopupDialog = styled.div`
     !!props.height ? props.height : 'fit-content'};
   max-height: 95%;
   overflow-y: auto;
-  color: #000;
+  color: ${() => popupTextColor ? popupTextColor : '#000'};
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
   padding: 10px;
@@ -212,8 +218,8 @@ export const PopupDialogTabPage = styled.div`
   height: min-content;
   border-radius: 10px;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
-  background: ${(props: IPopupDialogTabPage): string =>
-    props.background ? props.background : '#e1e1e1'};
+  background: ${(props: IPopupDialogTabPage) =>
+    props.background ? props.background : popupTabViewBackgroundColor ? popupTabViewBackgroundColor : '#e1e1e1'};
   border-top-left-radius: 0px;
   z-index: 3;
 `;
@@ -232,17 +238,17 @@ export const PopupDialogTab = styled.div`
   min-width: min-content;
   padding: 5px;
   font-size: 1.1em;
-  transition: all 0.15s ease-in-out;
+  /* transition: all 0.15s ease-in-out; */
   z-index: ${(props: IPopupDialogTab): number => (props.selected ? 3 : 2)};
   ${(props: IPopupDialogTab): string =>
     props.selected
       ? 'font-weight: bold; box-shadow: 2px 2px 4px rgba(0,0,0,0.15)'
       : ''};
-  background: ${(props: IPopupDialogTab): string =>
+  background: ${(props: IPopupDialogTab) =>
     props.selected
       ? props.backgroundSelected
         ? props.backgroundSelected
-        : '#e1e1e1'
+        : popupTabViewBackgroundColor ? popupTabViewBackgroundColor : '#e1e1e1'
       : props.background
       ? props.background
       : '#e9e9e9'};

@@ -36,9 +36,6 @@ import {
   listItemBorderColor,
   listItemBackgroundColor,
   listItemAlternativeColor,
-  textInputBackgroundColor, 
-  textInputColor,
-  textInputPlaceholderColor
 } from '@/renderer/helpers/appearance';
 
 const PageContentCustom = styled(PageContent)`

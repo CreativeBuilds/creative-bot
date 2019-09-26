@@ -47,7 +47,7 @@ const ChatInputStyled = styled.input`
   padding-right: 60px;
   font-size: 1em;
   box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.15);
-  transition: all 0.15s ease-in-out;
+  /* transition: all 0.15s ease-in-out; */
   &:active,
   &:focus,
   &:hover {
@@ -110,7 +110,7 @@ const ChatInputSend = styled.div`
         : props.color
         ? props.color
         : 'inherit'};
-    transition: all 0.15s ease-in;
+    /* transition: all 0.15s ease-in; */
   }
 `;
 

@@ -131,6 +131,26 @@ export const textInputBackgroundColor = theme('mode', {
     dark: themeData.appearances.dark.textInput.backgroundColor
 });
 
+export const popupTextColor = theme('mode', {
+    light: themeData.appearances.light.popup.color,
+    dark: themeData.appearances.dark.popup.color
+});
+
+export const popupBackgroundColor = theme('mode', {
+    light: themeData.appearances.light.popup.backgroundColor,
+    dark: themeData.appearances.dark.popup.backgroundColor
+});
+
+export const popupTabViewColor = theme('mode', {
+    light: themeData.appearances.light.popupTabView.color,
+    dark: themeData.appearances.dark.popupTabView.color
+});
+
+export const popupTabViewBackgroundColor = theme('mode', {
+    light: themeData.appearances.light.popupTabView.backgroundColor,
+    dark: themeData.appearances.dark.popupTabView.backgroundColor
+});
+
 export const popupButtonColor = theme('mode', {
     light: themeData.appearances.light.popupButton.color,
     dark: themeData.appearances.dark.popupButton.color

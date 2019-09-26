@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 
 import { ThemeThumbnail } from './ThemeThumbnail'
+import { useTheme } from './../ThemeContext';
 
 interface IAppearanceItemProps {
     id?: number;
@@ -58,6 +59,7 @@ const ThumbnailContainer = styled.div`
 const SelectorContainer = styled.div`
     display: inline-flex;
     margin: 5px;
+    text-align: center;
 
     > div:not(:last-child) {
         margin-right: 15px;
@@ -93,6 +95,7 @@ export const AppearanceItem = ({id, title, selected, onSelected = function() {},
 export const AppearanceSelector = (props: any, {startIndex}: IAppearanceSelectorProps ) => {
 
     const [index, setIndex] =  React.useState(startIndex != null ? startIndex : 0);
+    const themeToggle = useTheme();
 
     const isSelected = (idx: Number): boolean => {
         return index == idx ? true : false;
@@ -104,6 +107,7 @@ export const AppearanceSelector = (props: any, {startIndex}: IAppearanceSelector
                 React.Children.toArray(props.children).map(function(element, idx) {
                     return React.cloneElement(element, { id: idx, onSelected: function () {
                         setIndex(idx);
+                        themeToggle.setTheme(idx == 0 ? 'light' : 'dark');
                         //console.log(element.props.title);
                         //console.log(theme(element.props.title.toLowerCase()));
                     },

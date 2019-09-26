@@ -32,7 +32,7 @@ export const Button = styled.button`
   /** Makes color light gray on disbaled */
   color: ${props =>
     props.disabled ? '#e1e1e1' : props.inverted ? '#000000' : '#f1f1f1'};
-  transition: 0.15s ease-in-out;
+  /* transition: 0.15s ease-in-out; */
   font-weight: 400;
   font-size: 1.05em;
   &:hover {

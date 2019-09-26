@@ -14,7 +14,7 @@ import { LoginDlive } from './logindlive/LoginDlive';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import { rxEventsFromMain } from '../helpers/eventHandler';
 
-import { ThemeProvider } from 'styled-components';
+import ThemeProvider, { ThemeContextProvider } from './ThemeContext';
 
 import { rxWordMap } from '../helpers/rxWordMap';
 import { rxEvents } from '../helpers/rxEvents';
@@ -106,6 +106,7 @@ const Global = createGlobalStyle`
     width: 100vw;
   }
   * {
+    transition: all 0.1s ease;
     &::-webkit-scrollbar {
       background: rgba(0,0,0,0);
       width: 5px;
@@ -126,7 +127,7 @@ const Global = createGlobalStyle`
 export const Main = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<null | boolean>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [config, setConfig] = useState<Partial<IConfig> | null>(null);
+  const [config, setConfig] = useState<Partial<IConfig>>({});
   /**
    * @description this subscriber listens to see if the user logs in through dlive at all
    */
@@ -218,7 +219,7 @@ export const Main = () => {
   const renderChat = () => <Chat chat={[]} />;
   const renderUsers = () => <Users />;
   const renderCommands = () => <Commands />;
-  const renderThemes = () => <Themes />;
+  const renderThemes = () => <Themes Config={config} />;
   const renderTimers = () => <Timers />;
   const renderLoginDlive = () => (
     <LoginDlive streamer={!!config ? !config.streamerAuthKey : true} />
@@ -226,7 +227,7 @@ export const Main = () => {
   const renderLogin = () => <Login />;
 
   return (
-    <ThemeProvider theme={{ mode: 'dark' }}>
+    <ThemeContextProvider>
       <Background>
         <Global />
         <TitleBar />
@@ -281,6 +282,6 @@ export const Main = () => {
           </HashRouter>
         )}
       </Background>
-    </ThemeProvider>
+    </ThemeContextProvider>
   );
 };

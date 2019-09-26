@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { IEvent } from '@/renderer';
 import * as electronDebug from 'electron-debug';
-electronDebug({ showDevTools: false, isEnabled: true });
+//electronDebug({ showDevTools: false, isEnabled: true });
 
 let mainWindow: Electron.BrowserWindow | null;
 

@@ -9,6 +9,7 @@ export interface IConfig {
   streamerAuthKey: null | string;
   commandPrefix: string;
   lang: string;
+  appearance: string;
   chatProfileShadows?: IChatColors;
   selectedSender?: IOption;
   pointsTimer?: number;
