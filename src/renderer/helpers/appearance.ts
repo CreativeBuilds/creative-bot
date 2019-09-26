@@ -71,9 +71,19 @@ export const contentViewBackgroundColor = theme('mode', {
     dark: themeData.appearances.dark.contentView.backgroundColor
 });
 
+export const titleBarTextColor = theme('mode', {
+    light: themeData.appearances.light.titleBar.color,
+    dark: themeData.appearances.dark.titleBar.color
+});
+
 export const titleBarBackgroundColor = theme('mode', {
     light: themeData.appearances.light.titleBar.backgroundColor,
     dark: themeData.appearances.dark.titleBar.backgroundColor
+});
+
+export const titleBarHoverColor = theme('mode', {
+    light: themeData.appearances.light.titleBar.hoverColor,
+    dark: themeData.appearances.dark.titleBar.hoverColor
 });
 
 export const titleColor = theme('mode', {
@@ -164,4 +174,9 @@ export const dropDownBoxHoverColor = theme('mode', {
 export const dropDownBoxSelectedColor = theme('mode', {
     light: themeData.appearances.light.dropDownBox.selectedColor,
     dark: themeData.appearances.dark.dropDownBox.selectedColor
+});
+
+export const seperatorColor = theme('mode', {
+    light: themeData.appearances.light.seperator.color,
+    dark: themeData.appearances.dark.seperator.color
 });

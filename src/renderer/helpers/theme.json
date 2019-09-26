@@ -25,7 +25,7 @@
                 "secondaryColor": "#df1ebf"
             },
             "titleBar": {
-                "color": "#ffffffff",
+                "color": "#f9f9f9ff",
                 "backgroundColor": "#00000059",
                 "hoverColor": "#00000029"
             },
@@ -66,6 +66,9 @@
                 "color": "#e1e1e1ff",
                 "hoverColor": "#969696ff",
                 "selectedColor": "#0011ff"
+            },
+            "seperator": {
+                "color": "#585858ff"
             }
         },
         "light": {
@@ -130,6 +133,9 @@
                 "color": "#e1e1e1ff",
                 "hoverColor": "#969696ff",
                 "selectedColor": "#0011ff"
+            },
+            "seperator": {
+                "color": "#c1c1c1ff"
             }
         }
     }

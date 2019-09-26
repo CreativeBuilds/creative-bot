@@ -5,7 +5,11 @@ const { app } = remote;
 import { Icon } from './generic-styled-components/Icon';
 import { FaMinus, FaRegWindowMaximize, FaWindowMaximize, FaTimes, FaBug, FaAdjust } from 'react-icons/fa';
 
-import { titleBarBackgroundColor } from '@/renderer/helpers/appearance';
+import { 
+    titleBarTextColor, 
+    titleBarBackgroundColor, 
+    titleBarHoverColor 
+} from '@/renderer/helpers/appearance';
 
 /**
  * @description Renders The Bar for the TitleBar
@@ -43,7 +47,7 @@ const DraggableArea = styled.div`
 const VersionTitle = styled.div`
     text-align: center;
     vertical-align: middle;
-    color: #f9f9f9;
+    color: ${titleBarTextColor ? titleBarTextColor : '#f9f9f9ff'};
     display: inline-block;
     position: absolute;
     left: 15px;
@@ -58,7 +62,7 @@ const VersionTitle = styled.div`
 const AppTitle = styled.div`
     text-align: center;
     vertical-align: middle;
-    color: white;
+    color: ${titleBarTextColor ? titleBarTextColor : '#f9f9f9ff'};
     margin: auto;
     padding-left: 204px;
 `;
@@ -82,7 +86,7 @@ const ActionButtonContainer = styled.div`
     cursor: pointer;
     z-index: 9999;
     &:hover {
-        background-color: #00000029;
+        background-color: ${titleBarHoverColor ? titleBarHoverColor : '#00000029'};
     };
 `;
 

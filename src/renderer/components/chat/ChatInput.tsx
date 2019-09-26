@@ -8,7 +8,11 @@ import { sendMessage } from '@/renderer/helpers/dlive/sendMessage';
 import { getSelf } from '@/renderer/helpers/dlive/getSelf';
 import { IMe, IConfig, IOption } from '@/renderer';
 
-import { textInputBackgroundColor, textInputColor, textInputPlaceholderColor } from '@/renderer/helpers/appearance';
+import { 
+  textInputBackgroundColor, 
+  textInputColor,
+  textInputPlaceholderColor
+ } from '@/renderer/helpers/appearance';
 
 const ChatInputWrapper = styled.div`
   display: flex;
