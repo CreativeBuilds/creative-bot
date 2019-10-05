@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { ThemeSet } from 'styled-theming';
 import { useState, useEffect } from 'react';
 
 import { rxConfig, updateConfig } from '@/renderer/helpers/rxConfig';
@@ -7,6 +8,7 @@ import { rxConfig, updateConfig } from '@/renderer/helpers/rxConfig';
 import { ThemeThumbnail } from './ThemeThumbnail'
 import { useTheme } from './../ThemeContext';
 import { IConfig } from '@/renderer';
+import { selectorColor } from '@/renderer/helpers/appearance';
 
 interface IAppearanceItemProps {
     id?: number;
@@ -29,6 +31,7 @@ interface IAppearanceSelectorProps {
 
 interface IThumbnailContainerProps {
     isSelected: boolean | undefined;
+    selectColor?: string;
 }
 
 /**
@@ -52,7 +55,12 @@ const ThumbnailContainer = styled.div`
 
     border-width: ${(props: IThumbnailContainerProps): string =>
             props.isSelected ? String('7px') : String('0px')};
-    border-color: dodgerblue;
+    border-color: ${(props: IThumbnailContainerProps): ThemeSet | string => 
+        props.selectColor 
+        ? props.selectColor 
+        : selectorColor 
+        ? selectorColor 
+        : '#1e90ffff'};
     border-style: solid;
     border-radius: 11px;
     box-sizing: border-box;

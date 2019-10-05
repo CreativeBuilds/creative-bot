@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { ThemeSet } from 'styled-theming';
 import { 
   accentColor, 
   accentHoverColor 
@@ -7,8 +8,8 @@ import {
 
 interface IProps {
   disabled?: boolean;
-  color?: string;
-  colorHover?: string;
+  color?: ThemeSet | string;
+  colorHover?: ThemeSet | string;
 }
 
 /**
@@ -21,7 +22,7 @@ export const Icon = styled.div`
   justify-content: center;
   align-items: center;
   & > svg {
-    color: ${(props: IProps) =>
+    color: ${(props: IProps): ThemeSet | string =>
       props.disabled
         ? '#e1e1e1'
         : props.color
@@ -32,7 +33,7 @@ export const Icon = styled.div`
     cursor: ${(props: IProps): string =>
       props.disabled ? 'unset' : 'pointer'};
     & > svg {
-      color: ${(props: IProps) =>
+      color: ${(props: IProps): ThemeSet | string =>
         props.disabled
           ? '#e1e1e1'
           : props.colorHover

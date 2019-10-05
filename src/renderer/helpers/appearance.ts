@@ -274,6 +274,30 @@ export const popupButtonBackgroundColor = theme('mode', {
 });
 
 /**
+ * @description Appearances Popup Button Inverted Background Color
+ */
+export const popupButtonInvertedBackgroundColor = theme('mode', {
+    light: themeData.appearances.light.popupButton.invertedBackgroundColor,
+    dark: themeData.appearances.dark.popupButton.invertedBackgroundColor
+});
+
+/**
+ * @description Appearances Popup Button Destructive Background Color
+ */
+export const popupButtonDestructiveBackgroundColor = theme('mode', {
+    light: themeData.appearances.light.popupButton.destructivebackgroundColor,
+    dark: themeData.appearances.dark.popupButton.destructivebackgroundColor
+});
+
+/**
+ * @description Appearances Popup Button Destructive Text Color
+ */
+export const popupButtonDestructiveColor = theme('mode', {
+    light: themeData.appearances.light.popupButton.destructiveColor,
+    dark: themeData.appearances.dark.popupButton.destructiveColor
+});
+
+/**
  * @description Appearances Popup Button Disabled Background Color
  */
 export const popupButtonDisabledBackgroundColor = theme('mode', {
@@ -335,4 +359,12 @@ export const dropDownBoxSelectedColor = theme('mode', {
 export const seperatorColor = theme('mode', {
     light: themeData.appearances.light.seperator.color,
     dark: themeData.appearances.dark.seperator.color
+});
+
+/**
+ * @description Appearances Selector Color
+ */
+export const selectorColor = theme('mode', {
+    light: themeData.appearances.light.selector.color,
+    dark: themeData.appearances.dark.selector.color
 });

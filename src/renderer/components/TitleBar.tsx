@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { ThemeSet } from 'styled-theming';
 const { remote } = require('electron');
 const { app } = remote;
 import { Icon } from './generic-styled-components/Icon';
@@ -12,6 +13,12 @@ import {
     titleBarHoverColor 
 } from '@/renderer/helpers/appearance';
 
+interface IProps {
+    textColor?: string;
+    hoverColor?: string;
+    backgroundColor?: string;
+}
+
 /**
  * @description Renders The Bar for the TitleBar
  */
@@ -23,7 +30,9 @@ const Bar = styled.div`
   top: 0;
   right: 0;
   display: inline-flex;
-  background-color: ${titleBarBackgroundColor != null ? titleBarBackgroundColor :'#ffffff59'};
+  background-color: ${(props: IProps): ThemeSet | string => 
+    props.backgroundColor ? props.backgroundColor : 
+        titleBarBackgroundColor ? titleBarBackgroundColor :'#ffffff59'};
   z-index: 9999;
 `;
 
@@ -48,7 +57,9 @@ const DraggableArea = styled.div`
 const VersionTitle = styled.div`
     text-align: center;
     vertical-align: middle;
-    color: ${titleBarTextColor ? titleBarTextColor : '#f9f9f9ff'};
+    color: ${(props: IProps): ThemeSet | string => 
+        props.textColor ? props.textColor : 
+            titleBarTextColor ? titleBarTextColor : '#f9f9f9ff'};
     display: inline-block;
     position: absolute;
     left: 15px;
@@ -63,7 +74,9 @@ const VersionTitle = styled.div`
 const AppTitle = styled.div`
     text-align: center;
     vertical-align: middle;
-    color: ${titleBarTextColor ? titleBarTextColor : '#f9f9f9ff'};
+    color: ${(props: IProps): ThemeSet | string => 
+        props.textColor ? props.textColor : 
+            titleBarTextColor ? titleBarTextColor : '#f9f9f9ff'};
     margin: auto;
     padding-left: 204px;
 `;
@@ -87,8 +100,18 @@ const ActionButtonContainer = styled.div`
     cursor: pointer;
     z-index: 9999;
     &:hover {
-        background-color: ${titleBarHoverColor ? titleBarHoverColor : '#00000029'};
+        background-color: ${(props: IProps): ThemeSet | string => 
+            props.hoverColor ? props.hoverColor : 
+                titleBarHoverColor ? titleBarHoverColor : '#00000029'};
     };
+
+    & > div {
+        & > svg {
+            color: ${(props: IProps): ThemeSet | string => 
+                props.textColor ? props.textColor : 
+                    titleBarTextColor ? titleBarTextColor : '#f9f9f9ff'} !important;
+        }
+    }
 `;
 
 /**
@@ -97,7 +120,7 @@ const ActionButtonContainer = styled.div`
 const WindowActionButton = ({icon, onClick = function() {}} : {icon: Object, onClick?: () => void}) => {
     return(
         <ActionButtonContainer onClick={onClick}>
-            <Icon style={{ margin: 'auto' }} color="#ffffff">
+            <Icon style={{ margin: 'auto' }}>
                 {icon}
             </Icon>
         </ActionButtonContainer>
