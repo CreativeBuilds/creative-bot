@@ -32,7 +32,7 @@ const Bar = styled.div`
  */
 const DraggableArea = styled.div`
   height: 100%;
-  width: calc(100% - 176px);
+  width: calc(100% - 210px);
   -webkit-app-region: drag;
   user-select: none;
   position: absolute;

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { ThemeSet } from 'styled-theming';
 import { IChatColors, IChatObject } from '@/renderer';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Icon } from '../generic-styled-components/Icon';
@@ -27,7 +28,7 @@ const Chat = styled.div`
     props.padTop ? '30px' : 'unset'};
   height: 55px;
   &:nth-child(even) {
-    background: ${(props: IChatProps) =>
+    background: ${(props: IChatProps) : ThemeSet | string =>
       props.highlighted
         ? props.highlightedBackground
           ? props.highlightedBackground

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ThemeSet } from 'styled-theming';
 import {
   PageMain,
   PageTitle,
@@ -49,6 +50,13 @@ const ScrollTo = styled.div`
   overflow: hidden;
 `;
 
+interface ISelectProps {
+  textColor?: string;
+  borderColor?: string;
+  selectedColor?: string;
+  backgroundColor?: string;
+}
+
 const SelectWrap = styled.div`
   position: relative;
   display: flex;
@@ -72,11 +80,17 @@ const SelectWrap = styled.div`
   [class*='-control'] {
     min-height: 33px;
     max-height: 33px;
-    background: ${dropDownBoxBackgroundColor ? dropDownBoxBackgroundColor : '#ffffffff'};
-    border-color: ${dropDownBoxBorderColor ? dropDownBoxBorderColor : '#727272ff'};
+    background: ${(props: ISelectProps): ThemeSet | string => 
+      props.backgroundColor ? props.backgroundColor : 
+        dropDownBoxBackgroundColor ? dropDownBoxBackgroundColor : '#ffffffff'};
+    border-color: ${(props: ISelectProps): ThemeSet | string => 
+      props.borderColor ? props.borderColor : 
+        dropDownBoxBorderColor ? dropDownBoxBorderColor : '#727272ff'};
   }
   [class*='-singleValue'] {
-    color: ${dropDownBoxColor ? dropDownBoxColor : '#f1f1f1ff'};
+    color: ${(props: ISelectProps): ThemeSet | string => 
+      props.textColor ? props.textColor : 
+        dropDownBoxColor ? dropDownBoxColor : '#f1f1f1ff'};
   }
 `;
 

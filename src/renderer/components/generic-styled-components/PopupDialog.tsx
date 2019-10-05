@@ -1,10 +1,15 @@
 import styled from 'styled-components';
+import { ThemeSet } from 'styled-theming';
 import { fadeIn } from '../animations/fadeIn';
 import { 
   popupTextColor, 
   popupBackgroundColor,
   popupTabViewColor,
-  popupTabViewBackgroundColor
+  popupTabViewBackgroundColor,
+  textInputBackgroundColor, 
+  textInputColor,
+  textInputPlaceholderColor,
+  accentColor
 } from '@/renderer/helpers/appearance';
 
 interface IPropsDialog {
@@ -19,7 +24,7 @@ interface IPropsDialog {
  */
 export const PopupDialog = styled.div`
   position: relative;
-  background: ${() => popupBackgroundColor ? popupBackgroundColor : '#f1f1f1'};
+  background: ${() : ThemeSet | string => popupBackgroundColor ? popupBackgroundColor : '#f1f1f1'};
   min-width: ${(props: IPropsDialog) =>
     !!props.minWidth ? props.minWidth : '350px'};
   width: ${(props: IPropsDialog) => (!!props.width ? props.width : '350px')};
@@ -117,6 +122,11 @@ export const PopupDialogText = styled.div`
   text-align: ${(props: ITitleProps) => (!!props.center ? 'center' : 'unset')};
 `;
 
+interface IInputProps {
+  textColor?: string;
+  backgroundColor?: string;
+}
+
 /**
  * @description User for any input of text needed
  */
@@ -132,6 +142,12 @@ export const PopupDialogInput = styled.input`
   &:active {
     outline: none !important;
   }
+  background:  ${(props: IInputProps): ThemeSet | string => 
+    props.backgroundColor ? props.backgroundColor : 
+      textInputBackgroundColor ? textInputBackgroundColor : '#ffffffff'};
+  color: ${(props: IInputProps): ThemeSet | string => 
+    props.textColor ? props.textColor : 
+      textInputColor ? textInputColor : '#000000ff'}
 `;
 
 export const PopupDialogPadding = styled.div`
@@ -218,7 +234,7 @@ export const PopupDialogTabPage = styled.div`
   height: min-content;
   border-radius: 10px;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
-  background: ${(props: IPopupDialogTabPage) =>
+  background: ${(props: IPopupDialogTabPage) : ThemeSet | string =>
     props.background ? props.background : popupTabViewBackgroundColor ? popupTabViewBackgroundColor : '#e1e1e1'};
   border-top-left-radius: 0px;
   z-index: 3;
@@ -244,7 +260,7 @@ export const PopupDialogTab = styled.div`
     props.selected
       ? 'font-weight: bold; box-shadow: 2px 2px 4px rgba(0,0,0,0.15)'
       : ''};
-  background: ${(props: IPopupDialogTab) =>
+  background: ${(props: IPopupDialogTab) : ThemeSet | string =>
     props.selected
       ? props.backgroundSelected
         ? props.backgroundSelected

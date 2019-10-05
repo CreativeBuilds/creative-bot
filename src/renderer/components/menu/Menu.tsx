@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ThemeSet } from 'styled-theming';
 import { Toggle, Nav, NavItem, NavIcon, NavText, SideNav } from './StyledNav';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 import {
@@ -59,18 +60,18 @@ const MenuComponent = (
   const GlobalOverRide = createGlobalStyle`
     #menu {
       Top: 28px !important;
-      background: ${(mProps: IGlobalOverRide) =>
+      background: ${(mProps: IGlobalOverRide) : ThemeSet | string =>
         mProps.background ? mProps.background : sideBarBackgroundColor ? sideBarBackgroundColor : '#f1f1f1'} !important
     }
     #menu-toggle {
-      background: ${(mProps: IGlobalOverRide) =>
+      background: ${(mProps: IGlobalOverRide) : ThemeSet | string =>
         mProps.background ? mProps.background : sideBarBackgroundColor ? sideBarBackgroundColor : '#f1f1f1'} !important;
         & > span {
-          background: ${(mProps: IGlobalOverRide) =>
+          background: ${(mProps: IGlobalOverRide) : ThemeSet | string =>
             mProps.textColor ? mProps.textColor : accentColor ? accentColor : '#922ccedd'} !important
         }
         *:hover > span{
-          background: ${(mProps: IGlobalOverRide) =>
+          background: ${(mProps: IGlobalOverRide) : ThemeSet | string =>
             mProps.colorHighlight
               ? mProps.colorHighlight
               : sideBarHoverColor ? sideBarHoverColor :'#f1f1f1'} !important
@@ -81,7 +82,7 @@ const MenuComponent = (
       > div {
         background-color: '#00000000' !important;
         &:hover{
-          background-color: ${(mProps: IGlobalOverRide) =>
+          background-color: ${(mProps: IGlobalOverRide) : ThemeSet | string =>
             mProps.backgroundHover
               ? mProps.backgroundHover
               : sideBarHoverColor ? sideBarHoverColor :'#f1f1f1'} !important
@@ -90,16 +91,16 @@ const MenuComponent = (
          * This text/icon css is for when the selected view is not toggled or selected
          */
         & > div[class*='navtext--'] {
-          color: ${(mProps: IGlobalOverRide) =>
+          color: ${(mProps: IGlobalOverRide) : ThemeSet | string =>
             mProps.textColor ? mProps.textColor : accentColor ? accentColor : '#922ccedd'} !important
         }
         & > div[class*='navicon--'] > svg {
-          color: ${(mProps: IGlobalOverRide) =>
+          color: ${(mProps: IGlobalOverRide) : ThemeSet | string =>
             mProps.textColor ? mProps.textColor : accentColor ? accentColor : '#922ccedd'} !important
         }
       }
       &[class*='highlighted--'] > div {
-        background-color: ${(mProps: IGlobalOverRide) =>
+        background-color: ${(mProps: IGlobalOverRide) : ThemeSet | string =>
           mProps.backgroundHighlight
             ? mProps.backgroundHighlight
             : accentColor ? accentColor : '#922ccedd' } !important;

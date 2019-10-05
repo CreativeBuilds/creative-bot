@@ -106,7 +106,7 @@ const Global = createGlobalStyle`
     width: 100vw;
   }
   * {
-    transition: all 0.1s ease;
+    /* transition: all 0.1s ease; */
     &::-webkit-scrollbar {
       background: rgba(0,0,0,0);
       width: 5px;
@@ -219,7 +219,7 @@ export const Main = () => {
   const renderChat = () => <Chat chat={[]} />;
   const renderUsers = () => <Users />;
   const renderCommands = () => <Commands />;
-  const renderThemes = () => <Themes Config={config} />;
+  const renderThemes = () => <Themes />;
   const renderTimers = () => <Timers />;
   const renderLoginDlive = () => (
     <LoginDlive streamer={!!config ? !config.streamerAuthKey : true} />

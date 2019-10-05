@@ -121,10 +121,10 @@ export const ThemeThumbnail = ({accent, secondaryAccent, textColor, sideBarBackg
     return(
         <ThemeThumbnailBackground primaryColor={primaryBackgroundColor} secondaryColor={secondaryBackgroundColor}>
             <ThemeThumbnailSideBarBackground Color={sideBarBackgroundColor}>
-                <ThemeThumbnailSideBarItem Color={secondaryAccent} />
-                <ThemeThumbnailSideBarItem Color={secondaryAccent} />
-                <ThemeThumbnailSideBarItem Color={secondaryAccent} />
-                <ThemeThumbnailSideBarItem Color={secondaryAccent} />
+                <ThemeThumbnailSideBarItem Color={accent} />
+                <ThemeThumbnailSideBarItem Color={accent} />
+                <ThemeThumbnailSideBarItem Color={accent} />
+                <ThemeThumbnailSideBarItem Color={accent} />
             </ThemeThumbnailSideBarBackground>
             <ThemeThumbnailContentViewBackground Color={contentViewBackgroundColor}>
                 <ThemeThumbnailContentViewTitleBarBackground Color={contentViewBackgroundColor}>

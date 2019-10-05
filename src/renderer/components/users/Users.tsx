@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ThemeSet } from 'styled-theming';
 import {
   PageMain,
   PageTitle,
@@ -71,12 +72,12 @@ const UsersHeader = styled.div`
   left: 0;
   padding-left: 10px;
   border-top: 1px solid
-    ${(props: IUserHeader) =>
+    ${(props: IUserHeader) : ThemeSet | string =>
       props.borderColor ? props.borderColor : listItemBorderColor ? listItemBorderColor : '#d1d1d1'};
   border-bottom: 1px solid
-    ${(props: IUserHeader) =>
+    ${(props: IUserHeader) : ThemeSet | string =>
       props.borderColor ? props.borderColor : listItemBorderColor ? listItemBorderColor : '#d1d1d1'};
-  background: ${(props: IUserHeader) =>
+  background: ${(props: IUserHeader) : ThemeSet | string =>
     props.background ? props.background : listItemAlternativeColor ? listItemAlternativeColor : '#e1e1e1'};
 `;
 
@@ -112,7 +113,7 @@ const UserRow = styled.div`
   & > div:nth-child(1) {
     padding-left: 10px;
   }
-  background: ${(props: IUserRow) =>
+  background: ${(props: IUserRow) : ThemeSet | string =>
     props.alternate
       ? props.alternateBackground
         ? props.alternateBackground

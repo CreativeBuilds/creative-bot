@@ -14,7 +14,8 @@ export const Section = styled.div`
 /**
  * @description A Container for Content called Section
  */
-export const SectionTitle = styled.h3`
+export const SectionTitle = styled.div`
+    font-size: 1.25em;
     margin: 0px;
     font-weight: normal;
 `;

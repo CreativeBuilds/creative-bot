@@ -6,7 +6,6 @@ import {
   PageContent,
   PageTitleRight
 } from '../generic-styled-components/Page';
-import { Icon } from '../generic-styled-components/Icon';
 import { 
     Section,
     SectionTitle
@@ -23,17 +22,7 @@ import { themeData } from '@/renderer/helpers/rxTheme';
 
 import { getPhrase } from '@/renderer/helpers/lang';
 
-import { rxConfig, updateConfig } from '@/renderer/helpers/rxConfig';
-
-import { reverse } from 'lodash';
 import styled from 'styled-components';
-import { getSelf } from '@/renderer/helpers/dlive/getSelf';
-import { shell } from 'electron';
-import { IConfig, IMe, IChatObject, IOption } from '@/renderer';
-
-interface IThemeProps {
-    Config: Partial<IConfig>;
-}
 
 const AppearanceWrapper = styled.div`
     height: 140px;
@@ -43,26 +32,7 @@ const AppearanceWrapper = styled.div`
 /**
  * @description displays the Themes page
  */
-export const Themes = ({ Config }: IThemeProps) : React.ReactElement => {
-
-    const themeToggle = useTheme();
-    const [config, setConfig] = useState<Partial<IConfig>>(Config);
-    const [themeState, setThemeState] = useState(themeToggle.appearance);
-
-    /**
-   * @description subscribes to config and makes sure that Appearance variable is upto date
-   */
-    useEffect(() => {
-        const listener = rxConfig.subscribe((mConfig: IConfig) => {
-            setConfig(mConfig);
-            console.log(mConfig.appearance);
-            setThemeState(mConfig.appearance)
-        });
-
-        return () => {
-        listener.unsubscribe();
-        };
-    }, []);
+export const Themes = () : React.ReactElement => {
 
     return(
         <PageMain>
@@ -73,7 +43,7 @@ export const Themes = ({ Config }: IThemeProps) : React.ReactElement => {
                 <Section>
                     <SectionTitle>Appearance</SectionTitle>
                     <AppearanceWrapper>
-                        <AppearanceSelector startIndex={ themeState === 'light' ? 0 : 1 }>
+                        <AppearanceSelector>
                         <AppearanceItem 
                                 title={'Light'} 
                                 accent={themeData.appearances.light.accent.backgroundColor}
@@ -81,8 +51,8 @@ export const Themes = ({ Config }: IThemeProps) : React.ReactElement => {
                                 textColor={themeData.appearances.light.text.color}
                                 sideBarBackgroundColor={themeData.appearances.light.sideBar.backgroundColor} 
                                 contentViewBackgroundColor={themeData.appearances.light.contentView.backgroundColor}
-                                primaryBackgroundColor={themeData.appearances.light.background.primaryBackgroundColor}
-                                secondaryBackgroundColor={themeData.appearances.light.background.secondaryBackgroundColor} />
+                                primaryBackgroundColor={themeData.appearances.light.background.primaryColor}
+                                secondaryBackgroundColor={themeData.appearances.light.background.secondaryColor} />
                             <AppearanceItem 
                                 title={'Dark'}
                                 accent={themeData.appearances.dark.accent.backgroundColor}
@@ -90,8 +60,8 @@ export const Themes = ({ Config }: IThemeProps) : React.ReactElement => {
                                 textColor={themeData.appearances.dark.text.color}
                                 sideBarBackgroundColor={themeData.appearances.dark.sideBar.backgroundColor} 
                                 contentViewBackgroundColor={themeData.appearances.dark.contentView.backgroundColor}
-                                primaryBackgroundColor={themeData.appearances.dark.background.primaryBackgroundColor}
-                                secondaryBackgroundColor={themeData.appearances.dark.background.secondaryBackgroundColor} />
+                                primaryBackgroundColor={themeData.appearances.dark.background.primaryColor}
+                                secondaryBackgroundColor={themeData.appearances.dark.background.secondaryColor} />
                         </AppearanceSelector>
                     </AppearanceWrapper>
                 </Section>

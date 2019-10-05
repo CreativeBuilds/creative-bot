@@ -1,12 +1,16 @@
 import styled from 'styled-components';
+import { ThemeSet } from 'styled-theming'; 
 import {
   textInputBackgroundColor, 
   textInputColor,
-  textInputPlaceholderColor
+  textInputPlaceholderColor,
+  accentColor
 } from '@/renderer/helpers/appearance';
 
 interface IProps {
   width?: string;
+  textColor?: string;
+  backgroundColor?: string;
   shadowColor?: string;
   shadowHoverColor?: string;
 }
@@ -28,8 +32,14 @@ export const StyledInput = styled.input`
   &:active,
   &:focus {
     box-shadow: 2px 2px 4px
-      ${(props: IProps): string =>
-        props.shadowHoverColor ? props.shadowHoverColor : '#922ccedd'};
-  },
-  background: ${textInputBackgroundColor} !important;
+      ${(props: IProps): ThemeSet | string =>
+        props.shadowHoverColor ? props.shadowHoverColor : 
+        accentColor ? accentColor : '#922ccedd'};
+  };
+  background:  ${(props: IProps): ThemeSet | string => 
+    props.backgroundColor ? props.backgroundColor : 
+      textInputBackgroundColor ? textInputBackgroundColor : '#ffffffff'};
+  color: ${(props: IProps): ThemeSet | string => 
+    props.textColor ? props.textColor : 
+      textInputColor ? textInputColor : '#000000ff'}
 `;

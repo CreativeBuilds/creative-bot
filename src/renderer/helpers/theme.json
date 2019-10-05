@@ -22,7 +22,8 @@
             },
             "background": {
                 "primaryColor": "#383ee1",
-                "secondaryColor": "#df1ebf"
+                "secondaryColor": "#df1ebf",
+                "deg": "45deg"
             },
             "titleBar": {
                 "color": "#f9f9f9ff",
@@ -52,7 +53,8 @@
             "textInput": {
                 "color": "#f1f1f1ff",
                 "placeholderColor": "#42424259",
-                "backgroundColor": "#181818ff"
+                "backgroundColor": "#181818ff",
+                "disabledTextColor": "#646464ff"
             },
             "popup": {
                 "color": "#e1e1e1ff",
@@ -60,7 +62,7 @@
             },
             "popupTabView": {
                 "color": "#e1e1e1ff",
-                "backgroundColor": "#181818ff"
+                "backgroundColor": "#202020ff"
             },
             "popupButton": {
                 "color": "#ffffffff",
@@ -97,7 +99,8 @@
             },
             "background": {
                 "primaryColor": "#383ee1",
-                "secondaryColor": "#df1ebf"
+                "secondaryColor": "#df1ebf",
+                "deg": "45deg"
             },
             "titleBar": {
                 "color": "#ffffffff",
@@ -127,7 +130,8 @@
             "textInput": {
                 "color": "#000000ff",
                 "placeholderColor": "#00000059",
-                "backgroundColor": "#ffffffff"
+                "backgroundColor": "#ffffffff",
+                "disabledTextColor": "#ccccccff"
             },
             "popup": {
                 "color": "#161616ff",
@@ -144,9 +148,9 @@
                 "disabledColor": "#e1e1e1"
             },
             "dropDownBox": {
-                "backgroundColor": "#181818ff",
-                "borderColor": "#646464ff",
-                "color": "#e1e1e1ff",
+                "backgroundColor": "#e1e1e1ff",
+                "borderColor": "#a1a1a1ff",
+                "color": "#181818ff",
                 "hoverColor": "#969696ff",
                 "selectedColor": "#0011ff"
             },
