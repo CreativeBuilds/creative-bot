@@ -37,15 +37,15 @@ export const Themes = () : React.ReactElement => {
     return(
         <PageMain>
             <PageTitle>
-                {'Themes (Beta)'}{''}
+                {getPhrase('themes_name')}{''}
             </PageTitle>
             <PageContent>
                 <Section>
-                    <SectionTitle>Appearance</SectionTitle>
+                    <SectionTitle>{getPhrase('section_appearance')}</SectionTitle>
                     <AppearanceWrapper>
                         <AppearanceSelector>
                         <AppearanceItem 
-                                title={'Light'} 
+                                title={getPhrase('appearance_light_name')} 
                                 accent={themeData.appearances.light.accent.backgroundColor}
                                 secondaryAccent={themeData.appearances.light.secondaryAccent.backgroundColor}
                                 textColor={themeData.appearances.light.text.color}
@@ -54,7 +54,7 @@ export const Themes = () : React.ReactElement => {
                                 primaryBackgroundColor={themeData.appearances.light.background.primaryColor}
                                 secondaryBackgroundColor={themeData.appearances.light.background.secondaryColor} />
                             <AppearanceItem 
-                                title={'Dark'}
+                                title={getPhrase('appearance_dark_name')}
                                 accent={themeData.appearances.dark.accent.backgroundColor}
                                 secondaryAccent={themeData.appearances.dark.secondaryAccent.backgroundColor}
                                 textColor={themeData.appearances.dark.text.color}
