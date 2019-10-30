@@ -45,12 +45,13 @@ const LoginInputWrapper = styled.div`
 const Login = () => {
   const [create, setCreate] = React.useState(false);
   const [login, setLogin] = React.useState(false);
-
   const [email, setEmail] = React.useState('');
+  const [emailError, setEmailError] = React.useState(false);
+  const [pwReset,setPWReset] = React.useState(false);
   const [password, setPassword] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordConfirmation, setPasswordConfirmation] = React.useState('');
-
+  const [pwCode, setPWCode] = React.useState('');
   /**
    * @descritpion triggers on Create button from main screen, sends user to account creation
    */
@@ -85,6 +86,15 @@ const Login = () => {
     setPasswordError(false);
     setPassword(e.target.value);
   };
+ 
+  /**
+   * @param e Regular input element change
+   * @description sets password when the user types text
+   */
+  const updatePWCode = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    
+    setPWCode(e.target.value);
+  };
 
   /**
    * @param e Regular input element change
@@ -110,6 +120,39 @@ const Login = () => {
       setPasswordError(true);
     });
   };
+
+ /**
+   * @description Takes login info and has firebase send a password reset email
+   */
+  const sendPasswordResetEmail = (): void => {
+    auth.sendPasswordResetEmail(email).catch(err => {
+      setEmail('');
+     setEmailError(true);
+    });
+    
+    if (!emailError) {
+      setPWReset(true);
+      setLogin(false);
+    };
+    console.log("PW Reset: " + pwReset);
+    };
+
+
+ /**
+   * @description Takes login info and has firebase send a password reset email
+   */
+  const sendPasswordReset = (): void => {
+    /*auth.sendPasswordResetEmail(email).catch(err => {
+    *  setEmail('');
+    * setEmailError(true);
+    *});
+    */
+    if (!emailError) {
+      setPWReset(true);
+      setLogin(false);
+    };
+    console.log("PW Reset: " + pwReset);
+    };
 
   /**
    * @description checks to see if the user creation button should be disabled or not
@@ -181,7 +224,7 @@ const Login = () => {
                 isHidden={password.length > 8 || password.length === 0}
               >
                 {getPhrase('login_password_error')}
-              </PopupDialogInputInfo>
+              </PopupDialogInputInfo>              
             </PopupDialogInputWrapper>
             <PopupDialogInputWrapper style={{ marginBottom: '60px' }}>
               <PopupDialogInputName>
@@ -211,7 +254,7 @@ const Login = () => {
               </Button>
             </PopupButtonWrapper>
           </React.Fragment>
-        ) : login === true ? (
+        )  : login === true ? (
           <React.Fragment>
             <PopupDialogBackIcon>
               <FaLongArrowAltLeft onClick={backToMain} />
@@ -247,6 +290,66 @@ const Login = () => {
               />
               <PopupDialogInputInfo error={true} isHidden={!passwordError}>
                 {getPhrase('login_invalid_password')}
+                
+              </PopupDialogInputInfo>
+            </PopupDialogInputWrapper>
+            <PopupButtonWrapper>
+              <Button
+                hidden={password.length == 0}
+                onClick={isDisabledLogin() ? (): null => null : loginToAccount}
+                disabled={isDisabledLogin()}
+              >
+                {getPhrase('login_logintext')}
+              </Button>
+
+            </PopupButtonWrapper>
+            <PopupButtonWrapper>
+              <Button
+              hidden={password.length !== 0}
+              onClick={sendPasswordResetEmail}
+              >
+                  {'Forgot Password'}
+              </Button>
+            </PopupButtonWrapper>
+
+          </React.Fragment>
+        ) :  pwReset === true ? (
+          <React.Fragment>
+            <PopupDialogBackIcon>
+              <FaLongArrowAltLeft onClick={backToMain} />
+            </PopupDialogBackIcon>
+            <PopupDialogTitle center>
+              {'Forgot Login'}
+            </PopupDialogTitle>
+            <PopupDialogText style={{ marginBottom: '10px' }}>
+              {'If the email you entered is associated with a CreativeBot account, please enter the reset code that was sent to that email address.'}
+              <br /> <b>{getPhrase('login_note')}</b>{' '}
+              {getPhrase('login_create_warning')}
+            </PopupDialogText>
+            <PopupDialogInputWrapper>
+              <PopupDialogInputName>
+                {'Reset Code'}
+              </PopupDialogInputName>
+              <PopupDialogInput value={pwCode} onChange={updatePWCode} />
+              {/* <PopupDialogInputInfo
+                error
+                isHidden={validator.validate(email) || email.length === 0}
+              >
+                That isn't an email
+              </PopupDialogInputInfo> */}
+            </PopupDialogInputWrapper>
+            <PopupDialogInputWrapper style={{ marginBottom: '60px' }}>
+              <PopupDialogInputName>
+                {'New Password'}
+              </PopupDialogInputName>
+              <PopupDialogInput
+                type={'password'}
+                value={password}
+                onChange={updatePassword}
+              />
+              <PopupDialogInputInfo error={true} isHidden={!passwordError}>
+                {getPhrase('login_invalid_password')}
+                
               </PopupDialogInputInfo>
             </PopupDialogInputWrapper>
             <PopupButtonWrapper>
@@ -256,7 +359,17 @@ const Login = () => {
               >
                 {getPhrase('login_logintext')}
               </Button>
+
             </PopupButtonWrapper>
+            <PopupButtonWrapper>
+              <Button
+              disabled={password.length !== 0}
+              hidden={password.length !== 0}
+              >
+                  {'Forgot Password'}
+              </Button>
+            </PopupButtonWrapper>
+
           </React.Fragment>
         ) : (
           <React.Fragment>

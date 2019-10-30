@@ -16,7 +16,7 @@ export const rxChat: Observable<Partial<IChatObject>> = rxEvents.pipe(
     const data: [IChatObject] = x.payload.data.streamMessageReceived;
 
     return !!data
-      ? data[0].type === 'Message' || data[0].type === 'Delete' || data[0].type === 'Subscription' || data[0].type === 'Donation' || data[0].type === 'Follow'
+      ? data[0].type === 'Message' || data[0].type === 'Delete' || data[0].type === 'Subscription' || data[0].type === 'Donation' || data[0].type === 'Follow' || data[0].type === 'Gift'
         ? true
         : false
       : false;

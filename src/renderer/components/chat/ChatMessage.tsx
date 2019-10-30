@@ -72,7 +72,26 @@ const StickerContent = styled.div`
   padding-right: 15px;
   word-wrap: break-word;
 `;
-
+const FollowContent = styled.div`
+  flex: 1;
+  max-height: 75px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 17px;
+  padding-left: 15px;
+  padding-right: 15px;
+  word-wrap: break-word;
+`;
+const GiftContent = styled.div`
+  flex: 1;
+  max-height: 75px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 17px;
+  padding-left: 15px;
+  padding-right: 15px;
+  word-wrap: break-word;
+`;
 const ChatSticker = styled.img`
   padding-top: 2px;
   max-width: 60px;
@@ -144,14 +163,14 @@ export const ChatMessage = ({
       }
     };
   };
-  const isDono = () => {
+  const isGift = () => {
     if (!message.content ){
       return false;
     };  
-    if (message.type == 'Donation'){
-      message.content = getPhrase('chat_donated');
+    if (message.type == 'Gift'){
+      return true;
     };  
-    return true;
+    return false;
   };
 
   const isFollow = () => {
@@ -159,9 +178,9 @@ export const ChatMessage = ({
         return false;
       };  
       if (message.type == 'Follow'){
-        message.content = getPhrase('chat_followed');
+        return true;
       };  
-      return true;
+      return false;
     };
   
   const isSub = () => {
@@ -169,11 +188,19 @@ export const ChatMessage = ({
       return false;
     };  
     if (message.type == 'Subscription'){
-      message.content = getPhrase('chat_subbed');
+     return true; 
     };  
-    return true;
+    return false;
   };
 
+
+  const isChat = () => {
+    if (!message.content ){
+      return false;
+    };  
+      
+    return (isGift() || isFollow() || isSticker() || isSub());
+  };
 
   const stickerUrl = (): string => {
     var stickerLink:string=''
@@ -207,9 +234,8 @@ export const ChatMessage = ({
         />
       )}
       <ChatContent 
-        hidden={isSticker()}
+        hidden={!isChat()}
       >
-        {isFollow() && isSub() && isDono()}
         {message.deleted && !deletedButShow
           ? getPhrase('chat_deleted')
           : message.content}
@@ -222,6 +248,16 @@ export const ChatMessage = ({
           src={stickerUrl()}     
         />
       </StickerContent>
+      <FollowContent
+        hidden={!isFollow()}
+      >
+        {getPhrase('chat_followed')}
+      </FollowContent>
+      <GiftContent
+        hidden={!isGift()}
+      >
+      {'Just Donated!'}
+      </GiftContent>
       {message.deleted ? (
         <Icon
           style={{ position: 'absolute', right: '10px', top: '19px' }}
