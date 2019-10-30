@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { IEvent } from '@/renderer';
 import * as electronDebug from 'electron-debug';
-electronDebug({ showDevTools: false, isEnabled: true });
+//electronDebug({ showDevTools: false, isEnabled: true });
 
 let mainWindow: Electron.BrowserWindow | null;
 
@@ -20,6 +20,8 @@ function createWindow(): void {
   mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
+    autoHideMenuBar: true,
+    frame: false,
     webPreferences: {
       webSecurity: false,
       devTools: true

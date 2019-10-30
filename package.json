@@ -1,6 +1,6 @@
 {
   "name": "creative-bot-2",
-  "version": "2.0.0-alpha",
+  "version": "2.0.0-canary",
   "description": "New version of CreativeBot",
   "main": "./dist/main.bundle.js",
   "scripts": {
@@ -32,6 +32,7 @@
     "@types/lodash": "^4.14.138",
     "@types/react-select": "^3.0.4",
     "@types/react-virtualized": "^9.21.4",
+    "@types/styled-theming": "^2.2.2",
     "dexie": "^2.0.4",
     "dexie-observable": "^1.0.0-beta.5",
     "electron-debug": "^3.0.1",
@@ -49,7 +50,8 @@
     "rxfire": "^3.8.0",
     "rxjs": "^6.5.3",
     "rxjs-compat": "^6.5.3",
-    "styled-components": "^4.3.2"
+    "styled-components": "^4.3.2",
+    "styled-theming": "^2.2.0"
   },
   "devDependencies": {
     "@types/mocha": "^5.2.5",

@@ -46,7 +46,7 @@ export const RemoveCommandPopup = ({ closePopup, command }: IProps) => {
       {getPhrase('remove_command_warning')}
       <PopupDialogPadding />
       <PopupButtonWrapper>
-        <Button onClick={handleDelete}>
+        <Button onClick={handleDelete} destructive>
           {getPhrase('remove_command_submit')}
         </Button>
       </PopupButtonWrapper>

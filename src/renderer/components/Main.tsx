@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import { Login } from './login/Login';
 import { rxUser } from '../helpers/rxUser';
 import { Background } from './Background';
+import { TitleBar } from './TitleBar';
 import { createGlobalStyle } from 'styled-components';
 import { filter, skip, first, withLatestFrom, flatMap } from 'rxjs/operators';
 import { Menu } from './menu/Menu';
@@ -13,11 +14,14 @@ import { LoginDlive } from './logindlive/LoginDlive';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import { rxEventsFromMain } from '../helpers/eventHandler';
 
+import ThemeProvider, { ThemeContextProvider } from './ThemeContext';
+
 import { rxWordMap } from '../helpers/rxWordMap';
 import { rxEvents } from '../helpers/rxEvents';
 import { rxConfig, updateConfig } from '../helpers/rxConfig';
 import { rxChat, rxMessages } from '../helpers/rxChat';
 import { Users } from './users/Users';
+import { Themes } from './themes/Themes';
 import { start } from '../helpers/start';
 import { IRXEvent, IConfig, IEvent, ITimer } from '..';
 import { rxCommands } from '../helpers/rxCommands';
@@ -102,6 +106,7 @@ const Global = createGlobalStyle`
     width: 100vw;
   }
   * {
+    /* transition: all 0.1s ease; */
     &::-webkit-scrollbar {
       background: rgba(0,0,0,0);
       width: 5px;
@@ -122,7 +127,7 @@ const Global = createGlobalStyle`
 export const Main = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<null | boolean>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [config, setConfig] = useState<Partial<IConfig> | null>(null);
+  const [config, setConfig] = useState<Partial<IConfig>>({});
   /**
    * @description this subscriber listens to see if the user logs in through dlive at all
    */
@@ -214,6 +219,7 @@ export const Main = () => {
   const renderChat = () => <Chat chat={[]} />;
   const renderUsers = () => <Users />;
   const renderCommands = () => <Commands />;
+  const renderThemes = () => <Themes />;
   const renderTimers = () => <Timers />;
   const renderLoginDlive = () => (
     <LoginDlive streamer={!!config ? !config.streamerAuthKey : true} />
@@ -221,56 +227,61 @@ export const Main = () => {
   const renderLogin = () => <Login />;
 
   return (
-    <Background>
-      <Global />
-      {isLoading ? null : (
-        <HashRouter basename='/'>
-          {isLoggedIn && (config !== null && !!config) ? (
-            (!!config.authKey ? config.authKey : '').length > 0 &&
-            (!!config.streamerAuthKey ? config.streamerAuthKey : '').length >
-              0 ? (
+    <ThemeContextProvider>
+      <Background>
+        <Global />
+        <TitleBar />
+        {isLoading ? null : (
+          <HashRouter basename='/'>
+            {isLoggedIn && (config !== null && !!config) ? (
+              (!!config.authKey ? config.authKey : '').length > 0 &&
+              (!!config.streamerAuthKey ? config.streamerAuthKey : '').length >
+                0 ? (
+                /**
+                 * @description user is logged into firebase & dlive
+                 */
+                <React.Fragment>
+                  <Menu />
+                  <div
+                    style={{
+                      width: 'calc(100vw - 104px)',
+                      height: 'calc(100vh - 70px)',
+                      marginLeft: '64px',
+                      marginTop: '28px',
+                      padding: '20px',
+                      position: 'relative'
+                    }}
+                  >
+                    <Route
+                      path='/commands'
+                      exact={true}
+                      render={renderCommands}
+                    />
+                    <Route path='/users' exact={true} render={renderUsers} />
+                    <Route path='/timers' exact={true} render={renderTimers} />
+                    <Route path='/themes' exact={true} render={renderThemes} />
+                    <Route path='/' exact={true} render={renderChat} />
+                  </div>
+                </React.Fragment>
+              ) : (
+                /**
+                 * @description user is logged into firebase but not dlive
+                 */
+                <React.Fragment>
+                  <Route path='/' exact={true} render={renderLoginDlive} />
+                </React.Fragment>
+              )
+            ) : isLoggedIn === null ? null : (
               /**
-               * @description user is logged into firebase & dlive
+               * @description user is neither logged into firebase nor dlive
                */
               <React.Fragment>
-                <Menu />
-                <div
-                  style={{
-                    width: 'calc(100vw - 104px)',
-                    height: 'calc(100vh - 40px)',
-                    marginLeft: '64px',
-                    padding: '20px',
-                    position: 'relative'
-                  }}
-                >
-                  <Route
-                    path='/commands'
-                    exact={true}
-                    render={renderCommands}
-                  />
-                  <Route path='/users' exact={true} render={renderUsers} />
-                  <Route path='/timers' exact={true} render={renderTimers} />
-                  <Route path='/' exact={true} render={renderChat} />
-                </div>
+                <Route path='/' exact={true} render={renderLogin} />
               </React.Fragment>
-            ) : (
-              /**
-               * @description user is logged into firebase but not dlive
-               */
-              <React.Fragment>
-                <Route path='/' exact={true} render={renderLoginDlive} />
-              </React.Fragment>
-            )
-          ) : isLoggedIn === null ? null : (
-            /**
-             * @description user is neither logged into firebase nor dlive
-             */
-            <React.Fragment>
-              <Route path='/' exact={true} render={renderLogin} />
-            </React.Fragment>
-          )}
-        </HashRouter>
-      )}
-    </Background>
+            )}
+          </HashRouter>
+        )}
+      </Background>
+    </ThemeContextProvider>
   );
 };
