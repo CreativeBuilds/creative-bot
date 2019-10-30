@@ -1,0 +1,174 @@
+{
+    "name": "Default Theme",
+    "author": "CreativeBuilds",
+    "version": "2.0.0",
+    "minVersion": "2.0.0",
+    "appearances": {
+        "dark": {
+            "accent": {
+                "backgroundColor": "#944ffeff",
+                "hoverColor": "#944ffeff",
+                "color": "#ffffffff"
+            },
+            "secondaryAccent": {
+                "backgroundColor": "#922ccedd",
+                "hoverColor": "#922ccedd",
+                "color": "#ffffffff"
+            },
+            "alternativeAccent": {
+                "backgroundColor": "#df1ebfff",
+                "hoverColor": "#df1ebfff",
+                "color": "#ffffffff"
+            },
+            "background": {
+                "primaryColor": "#383ee1",
+                "secondaryColor": "#df1ebf",
+                "deg": "45deg"
+            },
+            "titleBar": {
+                "color": "#f9f9f9ff",
+                "backgroundColor": "#00000059",
+                "hoverColor": "#00000029"
+            },
+            "sideBar": {
+                "backgroundColor": "#242424ff",
+                "hoverColor": "#323232ff"
+            },
+            "contentView": {
+                "backgroundColor": "#242424ff"
+            },
+            "title": {
+                "color": "#f1f1f1ff"
+            },
+            "text": {
+                "color": "#f1f1f1ff",
+                "disabledColor": "#969696ff"
+            },
+            "listItem": {
+                "color": "#f1f1f1ff",
+                "borderColor": "#545454ff",
+                "backgroundColor": "#242424ff",
+                "alternativeColor": "#383838ff"
+            },
+            "textInput": {
+                "color": "#f1f1f1ff",
+                "placeholderColor": "#42424259",
+                "backgroundColor": "#181818ff",
+                "disabledTextColor": "#646464ff"
+            },
+            "popup": {
+                "color": "#e1e1e1ff",
+                "backgroundColor": "#282828ff"
+            },
+            "popupTabView": {
+                "color": "#e1e1e1ff",
+                "backgroundColor": "#202020ff"
+            },
+            "popupButton": {
+                "color": "#ffffffff",
+                "backgroundColor": "#df1ebfff",
+                "invertedBackgroundColor": "#181818ff",
+                "destructivebackgroundColor": "#df1ebfff",
+                "destructiveColor": "#f1f1f1ff",
+                "disabledBackgroundColor": "#d1d1d1ff",
+                "disabledColor": "#e1e1e1ff"
+            },
+            "dropDownBox": {
+                "backgroundColor": "#161616ff",
+                "borderColor": "#545454ff",
+                "color": "#e1e1e1ff",
+                "hoverColor": "#969696ff",
+                "selectedColor": "#0011ff"
+            },
+            "seperator": {
+                "color": "#585858ff"
+            },
+            "selector": {
+                "color": "#1e90ffff"
+            }
+        },
+        "light": {
+            "accent": {
+                "backgroundColor": "#922cceff",
+                "hoverColor": "#922cceff",
+                "color": "#ffffffff"
+            },
+            "secondaryAccent": {
+                "backgroundColor": "#922ccedd",
+                "hoverColor": "#922ccedd",
+                "color": "#ffffffff"
+            },
+            "alternativeAccent": {
+                "backgroundColor": "#df1ebfff",
+                "hoverColor": "#df1ebfff",
+                "color": "#ffffffff"
+            },
+            "background": {
+                "primaryColor": "#383ee1",
+                "secondaryColor": "#df1ebf",
+                "deg": "45deg"
+            },
+            "titleBar": {
+                "color": "#ffffffff",
+                "backgroundColor": "#ffffff59",
+                "hoverColor": "#00000029"
+            },
+            "sideBar": {
+                "backgroundColor": "#f1f1f1ff",
+                "hoverColor": "#e1e1e1ff"
+            },
+            "contentView": {
+                "backgroundColor": "#f1f1f1ff"
+            },
+            "title": {
+                "color": "#181818ff"
+            },
+            "text": {
+                "color": "#242424ff",
+                "disabledColor": "#969696ff"
+            },
+            "listItem": {
+                "color": "#202020ff",
+                "borderColor": "#d1d1d1ff",
+                "backgroundColor": "#f1f1f1ff",
+                "alternativeColor": "#e1e1e1ff"
+            },
+            "textInput": {
+                "color": "#000000ff",
+                "placeholderColor": "#00000059",
+                "backgroundColor": "#ffffffff",
+                "disabledTextColor": "#ccccccff"
+            },
+            "popup": {
+                "color": "#161616ff",
+                "backgroundColor": "#f1f1f1"
+            },
+            "popupTabView": {
+                "color": "#161616ff",
+                "backgroundColor": "#d1d1d1ff"
+            },
+            "popupButton": {
+                "color": "#181818ff",
+                "backgroundColor": "#df1ebfff",
+                "invertedBackgroundColor": "#e1e1e1ff",
+                "destructivebackgroundColor": "#df1ebfff",
+                "destructiveColor": "#f1f1f1ff",
+                "disabledBackgroundColor": "#d1d1d1",
+                "disabledColor": "#e1e1e1"
+            },
+            "dropDownBox": {
+                "backgroundColor": "#e1e1e1ff",
+                "borderColor": "#a1a1a1ff",
+                "color": "#181818ff",
+                "hoverColor": "#969696ff",
+                "selectedColor": "#0011ff"
+            },
+            "seperator": {
+                "color": "#c1c1c1ff"
+            },
+            "selector": {
+                "color": "#1e90ffff"
+            }
+        }
+    }
+}

@@ -48,7 +48,7 @@ export const DeleteUserPopup = (props: IProps) => {
         {getPhrase('users_delete_popup_description')}
       </PopupDialogText>
       <PopupButtonWrapper>
-        <Button onClick={deleteUser}>
+        <Button onClick={deleteUser} destructive>
           {getPhrase('users_delete_popup_confirm')}
         </Button>
       </PopupButtonWrapper>

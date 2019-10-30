@@ -9,6 +9,7 @@ export interface IConfig {
   streamerAuthKey: null | string;
   commandPrefix: string;
   lang: string;
+  appearance: string;
   chatProfileShadows?: IChatColors;
   selectedSender?: IOption;
   pointsTimer?: number;
@@ -121,6 +122,12 @@ export interface IOldUser extends IUser {
   linoUsername?: string;
   blockchainUsername?: string;
 }
+
+declare module "*.json" {
+  const value: any;
+  export default value;
+}
+
 // export interface IUpdateChangeCustom extends IUpdateChange {
 //   obj: IUser;
 //   oldObj: IUser;

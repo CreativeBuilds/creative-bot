@@ -1,10 +1,22 @@
-import { filter, first, map } from 'rxjs/operators';
+import {
+  filter,
+  first,
+  map,
+  distinctUntilChanged,
+  mergeMap,
+  merge,
+  combineLatest
+} from 'rxjs/operators';
 import { db, rxDbChanges, Command } from './db/db';
 import { rxFireUsers, rxUsers } from './rxUsers';
 import { startRecentChat } from './recentChat';
 import { IDatabaseChange } from 'dexie-observable/api';
 import { rxUser } from './rxUser';
 import { firestore } from './firebase';
+import { rxChat } from './rxChat';
+import { rxTimers } from './rxTimers';
+import { Subscription } from 'rxjs';
+import { rxConfig } from './rxConfig';
 
 export const lastBackedUpUsersToCloud = 0;
 
@@ -37,6 +49,46 @@ export const backupUsersToCloud = async (usersArray: string[]) => {
         });
       };
       saveToFirestore();
+    });
+  });
+};
+
+export const startTimers = () => {
+  const listeners: Subscription[] = [];
+  const intervals: number[] = [];
+  const listener = rxTimers.pipe(distinctUntilChanged()).subscribe(timers => {
+    listeners.forEach(mListener => {
+      mListener.unsubscribe();
+    });
+    intervals.forEach((timeout: number) => {
+      clearInterval(timeout);
+    });
+    timers.forEach(timer => {
+      let total = 0;
+      if (!timer.enabled) {
+        return null;
+      }
+      console.log('INSIDE FOR EACH ', timer.enabled, timer.seconds);
+
+      const updateTotal = () => {
+        total++;
+      };
+
+      const removeFromTotal = (int: number) => {
+        total = total - int;
+      };
+
+      // For each timer listen to chat internally and determine if it should run
+
+      intervals.push(
+        setInterval(() => {
+          if ((total > timer.messages || !timer.messages) && timer.enabled) {
+            timer.run().catch(console.error);
+            removeFromTotal(timer.messages);
+            total = 0;
+          }
+        }, timer.seconds * 1000)
+      );
     });
   });
 };
@@ -95,6 +147,7 @@ export const start = async () => {
       });
   });
   startRecentChat();
+  startTimers();
   setInterval(() => {
     /**
      * @description every hour, fire the backupUsersToCloud function

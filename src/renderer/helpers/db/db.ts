@@ -16,7 +16,6 @@ import { getPhrase } from '../lang';
 /**
  * @desciption This is all the users who have been edited since the last save to firestore
  *
- * @docs https://www.npmjs.com/package/dexie
  */
 export const editedUsers: { [id: string]: boolean } = {};
 
@@ -301,7 +300,14 @@ export class Command implements ICommand {
             0,
             message.role
           );
-        if (mUser.points > this.cost) {
+        if (this.cost === 0) {
+          this.run({
+            commandName: commandName ? commandName : '',
+            variables,
+            message
+          }).catch(null);
+        }
+        if (mUser.points >= this.cost) {
           mUser
             .addPoints(-this.cost)
             .then(() => {

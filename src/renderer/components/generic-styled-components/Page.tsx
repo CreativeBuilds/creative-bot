@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { contentViewBackgroundColor, titleColor, textColor } from '@/renderer/helpers/appearance'
+import { ThemeSet } from 'styled-theming';
 
 /**
  * @description all styled components used across pages will be found here
@@ -17,9 +19,9 @@ export const PageMain = styled.div`
   height: -webkit-fill-available;
   /* padding: 10px; */
   border-radius: 10px;
-  background: ${(props: IDivStyles): string =>
-    props.background ? props.background : '#f1f1f1'};
-  color: ${(props: IDivStyles): string => (props.color ? props.color : '#000')};
+  background: ${(props: IDivStyles) : ThemeSet | string =>
+    props.background ? props.background : contentViewBackgroundColor ? contentViewBackgroundColor : '#f1f1f1'};
+  color: ${(props: IDivStyles): ThemeSet | string => (props.color ? props.color : textColor ? textColor : '#000')};
   display: flex;
   flex-direction: column;
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.15);
@@ -33,6 +35,7 @@ export const PageTitle = styled.div`
   width: -webkit-fill-available;
   padding: 10px;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15);
+  color: ${(props: IDivStyles) : ThemeSet | string => (props.color ? props.color : titleColor ? titleColor : '#000')};
   display: flex;
   position: relative;
   max-height: 36px;

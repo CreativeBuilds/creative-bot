@@ -46,7 +46,7 @@ export const RemoveTimerPopup = ({ closePopup, timer }: IProps) => {
       {getPhrase('remove_timer_warning')}
       <PopupDialogPadding />
       <PopupButtonWrapper>
-        <Button onClick={handleDelete}>
+        <Button onClick={handleDelete} destructive>
           {getPhrase('remove_timer_submit')}
         </Button>
       </PopupButtonWrapper>

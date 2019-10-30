@@ -1,5 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { ThemeSet } from 'styled-theming';
 import { FaShare } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Button } from '../generic-styled-components/Button';
@@ -7,6 +8,13 @@ import Select from 'react-select';
 import { sendMessage } from '@/renderer/helpers/dlive/sendMessage';
 import { getSelf } from '@/renderer/helpers/dlive/getSelf';
 import { IMe, IConfig, IOption } from '@/renderer';
+
+import { 
+  textInputBackgroundColor, 
+  textInputColor,
+  textInputPlaceholderColor,
+  textInputDisabledTextColor
+ } from '@/renderer/helpers/appearance';
 
 const ChatInputWrapper = styled.div`
   display: flex;
@@ -18,11 +26,12 @@ const ChatInputWrapper = styled.div`
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   overflow: hidden;
-
   height: 50px;
 `;
 
 interface IChatInputStyled {
+  textColor?: string;
+  backgroundColor?: string;
   hoverShadow?: string;
 }
 
@@ -39,7 +48,7 @@ const ChatInputStyled = styled.input`
   padding-right: 60px;
   font-size: 1em;
   box-shadow: 0px -2px 4px rgba(0, 0, 0, 0.15);
-  transition: all 0.15s ease-in-out;
+  /* transition: all 0.15s ease-in-out; */
   &:active,
   &:focus,
   &:hover {
@@ -48,6 +57,12 @@ const ChatInputStyled = styled.input`
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   overflow: hidden;
+  background: transparent;
+  background: ${(props: IChatInputStyled) : ThemeSet | string => props.backgroundColor ? props.backgroundColor : 
+    textInputBackgroundColor ? textInputBackgroundColor : '#ffffffff'};
+  color: ${(props: IChatInputStyled): ThemeSet | string => 
+      props.textColor ? props.textColor : 
+        textInputColor ? textInputColor : '#000000ff'}
 `;
 
 interface IChatInputSend {
@@ -56,6 +71,7 @@ interface IChatInputSend {
   disabled?: boolean;
   disabledColor?: string;
 }
+
 const ChatInputSend = styled.div`
   flex: 1;
   display: flex;
@@ -76,11 +92,13 @@ const ChatInputSend = styled.div`
         props.disabled
           ? 'unset'
           : 'drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.15))'};
-      color: ${(props: IChatInputSend): string =>
+      color: ${(props: IChatInputSend): ThemeSet | string =>
         props.disabled
           ? props.disabledColor
             ? props.disabledColor
-            : '#ccc'
+              : textInputDisabledTextColor 
+                ? textInputDisabledTextColor 
+                  : '#ccc'
           : props.colorHover
           ? props.colorHover
           : props.color
@@ -92,15 +110,17 @@ const ChatInputSend = styled.div`
     font-size: 30px;
     height: 30px;
     width: 30px;
-    color: ${(props: IChatInputSend): string =>
+    color: ${(props: IChatInputSend): ThemeSet | string =>
       props.disabled
         ? props.disabledColor
           ? props.disabledColor
-          : '#ccc'
+            : textInputDisabledTextColor 
+              ? textInputDisabledTextColor 
+                : '#ccc'
         : props.color
         ? props.color
         : 'inherit'};
-    transition: all 0.15s ease-in;
+    /* transition: all 0.15s ease-in; */
   }
 `;
 

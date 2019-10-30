@@ -1,10 +1,16 @@
 import * as React from 'react';
 import styled from 'styled-components';
+import { ThemeSet } from 'styled-theming';
 import { IChatColors, IChatObject } from '@/renderer';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Icon } from '../generic-styled-components/Icon';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
 import { InnerSubscriber } from 'rxjs/internal/InnerSubscriber';
+
+import { 
+  listItemColor,
+  listItemAlternativeColor,
+} from '@/renderer/helpers/appearance';
 
 interface IChatProps {
   alternateBackground?: string;
@@ -23,14 +29,14 @@ const Chat = styled.div`
     props.padTop ? '30px' : 'unset'};
   height: 55px;
   &:nth-child(even) {
-    background: ${(props: IChatProps): string =>
+    background: ${(props: IChatProps) : ThemeSet | string =>
       props.highlighted
         ? props.highlightedBackground
           ? props.highlightedBackground
           : '#922cce33'
         : props.alternateBackground
         ? props.alternateBackground
-        : '#e1e1e1'};
+        : listItemAlternativeColor ? listItemAlternativeColor : '#e1e1e1'};
   }
 `;
 
