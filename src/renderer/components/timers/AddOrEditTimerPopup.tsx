@@ -131,7 +131,7 @@ export const AddOrEditTimerPopup = (props: IProps) => {
       timerName.length > 0 &&
       !isNaN(timerSeconds) &&
       !isNaN(timerMessages) &&
-      timerSeconds >= 60
+      timerSeconds >= 5
     );
   };
 

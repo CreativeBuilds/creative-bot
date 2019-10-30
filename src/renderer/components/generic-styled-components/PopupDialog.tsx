@@ -26,6 +26,7 @@ export const PopupDialog = styled.div`
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
   padding: 10px;
+  padding-bottom: 50px;
   animation: ${fadeIn} 0.3s linear;
   animation-fill-mode: forwards;
 `;
