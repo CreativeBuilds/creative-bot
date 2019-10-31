@@ -257,7 +257,7 @@ export const ChatMessage = ({
       <FollowContent
         hidden={!isFollow()}
       >
-        {getPhrase('chat_followed')}
+        {'chat_followed'}
       </FollowContent>
       <GiftContent
         hidden={!isGift()}
