@@ -16,7 +16,7 @@ import {
 import { auth } from '../../helpers/firebase';
 import { createGlobalStyle } from 'styled-components';
 import { getPhrase } from '@/renderer/helpers/lang';
-import { 
+import {
   sideBarBackgroundColor,
   sideBarHoverColor,
   accentColor
@@ -60,21 +60,35 @@ const MenuComponent = (
   const GlobalOverRide = createGlobalStyle`
     #menu {
       Top: 28px !important;
-      background: ${(mProps: IGlobalOverRide) : ThemeSet | string =>
-        mProps.background ? mProps.background : sideBarBackgroundColor ? sideBarBackgroundColor : '#f1f1f1'} !important
+      background: ${(mProps: IGlobalOverRide): ThemeSet | string =>
+        mProps.background
+          ? mProps.background
+          : sideBarBackgroundColor
+          ? sideBarBackgroundColor
+          : '#f1f1f1'} !important
     }
     #menu-toggle {
-      background: ${(mProps: IGlobalOverRide) : ThemeSet | string =>
-        mProps.background ? mProps.background : sideBarBackgroundColor ? sideBarBackgroundColor : '#f1f1f1'} !important;
+      background: ${(mProps: IGlobalOverRide): ThemeSet | string =>
+        mProps.background
+          ? mProps.background
+          : sideBarBackgroundColor
+          ? sideBarBackgroundColor
+          : '#f1f1f1'} !important;
         & > span {
-          background: ${(mProps: IGlobalOverRide) : ThemeSet | string =>
-            mProps.textColor ? mProps.textColor : accentColor ? accentColor : '#922ccedd'} !important
+          background: ${(mProps: IGlobalOverRide): ThemeSet | string =>
+            mProps.textColor
+              ? mProps.textColor
+              : accentColor
+              ? accentColor
+              : '#922ccedd'} !important
         }
         *:hover > span{
-          background: ${(mProps: IGlobalOverRide) : ThemeSet | string =>
+          background: ${(mProps: IGlobalOverRide): ThemeSet | string =>
             mProps.colorHighlight
               ? mProps.colorHighlight
-              : sideBarHoverColor ? sideBarHoverColor :'#f1f1f1'} !important
+              : sideBarHoverColor
+              ? sideBarHoverColor
+              : '#f1f1f1'} !important
         }
     }
   
@@ -82,28 +96,40 @@ const MenuComponent = (
       > div {
         background-color: '#00000000' !important;
         &:hover{
-          background-color: ${(mProps: IGlobalOverRide) : ThemeSet | string =>
+          background-color: ${(mProps: IGlobalOverRide): ThemeSet | string =>
             mProps.backgroundHover
               ? mProps.backgroundHover
-              : sideBarHoverColor ? sideBarHoverColor :'#f1f1f1'} !important
+              : sideBarHoverColor
+              ? sideBarHoverColor
+              : '#f1f1f1'} !important
         }
         /**
          * This text/icon css is for when the selected view is not toggled or selected
          */
         & > div[class*='navtext--'] {
-          color: ${(mProps: IGlobalOverRide) : ThemeSet | string =>
-            mProps.textColor ? mProps.textColor : accentColor ? accentColor : '#922ccedd'} !important
+          color: ${(mProps: IGlobalOverRide): ThemeSet | string =>
+            mProps.textColor
+              ? mProps.textColor
+              : accentColor
+              ? accentColor
+              : '#922ccedd'} !important
         }
         & > div[class*='navicon--'] > svg {
-          color: ${(mProps: IGlobalOverRide) : ThemeSet | string =>
-            mProps.textColor ? mProps.textColor : accentColor ? accentColor : '#922ccedd'} !important
+          color: ${(mProps: IGlobalOverRide): ThemeSet | string =>
+            mProps.textColor
+              ? mProps.textColor
+              : accentColor
+              ? accentColor
+              : '#922ccedd'} !important
         }
       }
       &[class*='highlighted--'] > div {
-        background-color: ${(mProps: IGlobalOverRide) : ThemeSet | string =>
+        background-color: ${(mProps: IGlobalOverRide): ThemeSet | string =>
           mProps.backgroundHighlight
             ? mProps.backgroundHighlight
-            : accentColor ? accentColor : '#922ccedd' } !important;
+            : accentColor
+            ? accentColor
+            : '#922ccedd'} !important;
 
         /**
          * This text/icon css is for when the selected view is toggled or selected
@@ -126,9 +152,7 @@ const MenuComponent = (
 
   return (
     <React.Fragment>
-      <GlobalOverRide
-        colorHighlight={'#f1f1f1'}
-      />
+      <GlobalOverRide colorHighlight={'#f1f1f1'} />
       <SideNav onSelect={sideNavSelect} id={'menu'}>
         <Toggle id={'menu-toggle'} />
         <Nav
@@ -167,6 +191,14 @@ const MenuComponent = (
               ></FaList>
             </NavIcon>
             <NavText>{getPhrase('menu_commands')}</NavText>
+          </NavItem>
+          <NavItem eventKey='/custom_variables'>
+            <NavIcon>
+              <FaList
+                style={{ fontSize: '30px', width: '30px', height: '45px' }}
+              ></FaList>
+            </NavIcon>
+            <NavText>{getPhrase('menu_custom_variables')}</NavText>
           </NavItem>
           <NavItem eventKey='/timers'>
             <NavIcon>

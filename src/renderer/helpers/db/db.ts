@@ -3,7 +3,15 @@ import Dexie from 'dexie';
 import 'dexie-observable';
 import { BehaviorSubject } from 'rxjs';
 import { IDatabaseChange } from 'dexie-observable/api';
-import { IUser, ICommand, IChatObject, IConfig, IMe, ITimer } from '@/renderer';
+import {
+  IUser,
+  ICommand,
+  IChatObject,
+  IConfig,
+  IMe,
+  ITimer,
+  ICustomVariable
+} from '@/renderer';
 import { firestore } from '../firebase';
 import { rxUser } from '../rxUser';
 import { first, filter, tap, withLatestFrom } from 'rxjs/operators';
@@ -12,7 +20,7 @@ import { sendMessage } from '../dlive/sendMessage';
 import { rxMe } from '../rxMe';
 import { sendMessageWithConfig } from '../sendMessageWithConfig';
 import { getPhrase } from '../lang';
-
+import { rxCustomVariables } from '../rxCustomVariables';
 /**
  * @desciption This is all the users who have been edited since the last save to firestore
  *
@@ -103,6 +111,7 @@ export class User implements IUser {
    * @warning with the listener may reset the user
    */
   public delete() {
+    console.log('deleting user');
     rxUser.pipe(first()).subscribe(authUser => {
       if (!authUser) {
         return;
@@ -141,6 +150,7 @@ export class User implements IUser {
    * @description saves to the local db (does not instantly fire to firestore, but it will be cached for the 1 hour update window)
    */
   public async save() {
+    console.log('SAVING USER', this);
     return db.users.put(
       new User(
         this.id,
@@ -254,7 +264,38 @@ export class Command implements ICommand {
       message: IChatObject;
       reply: string;
     }): Promise<string> => {
-      return reply;
+      return rxCustomVariables
+        .pipe(first())
+        .toPromise()
+        .then(async custom_variables => {
+          const replace = async (i = 0): Promise<string> => {
+            const keys = Object.keys(custom_variables);
+
+            return new Promise(res => {
+              if (i === keys.length) {
+                // tslint:disable-next-line: no-void-expression
+                return res(reply);
+              }
+              const key = keys[i];
+              const str = `{${key}}`;
+              const run = custom_variables[key].run;
+              if (new RegExp(str, 'gi').test(reply) && run) {
+                return run(message).then((replacement: any) => {
+                  // tslint:disable-next-line: no-parameter-reassignment no-unsafe-any
+                  reply = reply.replace(new RegExp(str, 'gi'), replacement);
+
+                  // tslint:disable-next-line: no-void-expression
+                  return res(replace(i + 1));
+                });
+              } else {
+                // tslint:disable-next-line: no-void-expression
+                return res(replace(i + 1));
+              }
+            });
+          };
+
+          return replace(0);
+        });
     };
 
     const parsedMessage = getParsedMessage({
@@ -301,7 +342,7 @@ export class Command implements ICommand {
             message.role
           );
         if (this.cost === 0) {
-          this.run({
+          return this.run({
             commandName: commandName ? commandName : '',
             variables,
             message
@@ -413,6 +454,7 @@ export class Timer implements ITimer {
    * @description runs the command by getting the config and sending the reply after parsing
    */
   public async run() {
+    console.log('running timer');
     sendMessageWithConfig(this.reply);
   }
 

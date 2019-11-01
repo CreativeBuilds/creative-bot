@@ -53,45 +53,45 @@ export const backupUsersToCloud = async (usersArray: string[]) => {
   });
 };
 
-export const startTimers = () => {
-  const listeners: Subscription[] = [];
-  const intervals: number[] = [];
-  const listener = rxTimers.pipe(distinctUntilChanged()).subscribe(timers => {
-    listeners.forEach(mListener => {
-      mListener.unsubscribe();
-    });
-    intervals.forEach((timeout: number) => {
-      clearInterval(timeout);
-    });
-    timers.forEach(timer => {
-      let total = 0;
-      if (!timer.enabled) {
-        return null;
-      }
-      console.log('INSIDE FOR EACH ', timer.enabled, timer.seconds);
+// export const startTimers = () => {
+//   const listeners: Subscription[] = [];
+//   const intervals: number[] = [];
+//   const listener = rxTimers.pipe(distinctUntilChanged()).subscribe(timers => {
+//     listeners.forEach(mListener => {
+//       mListener.unsubscribe();
+//     });
+//     intervals.forEach((timeout: number) => {
+//       clearInterval(timeout);
+//     });
+//     timers.forEach(timer => {
+//       let total = 0;
+//       if (!timer.enabled) {
+//         return null;
+//       }
+//       console.log('INSIDE FOR EACH ', timer.enabled, timer.seconds);
 
-      const updateTotal = () => {
-        total++;
-      };
+//       const updateTotal = () => {
+//         total++;
+//       };
 
-      const removeFromTotal = (int: number) => {
-        total = total - int;
-      };
+//       const removeFromTotal = (int: number) => {
+//         total = total - int;
+//       };
 
-      // For each timer listen to chat internally and determine if it should run
+//       // For each timer listen to chat internally and determine if it should run
 
-      intervals.push(
-        setInterval(() => {
-          if ((total > timer.messages || !timer.messages) && timer.enabled) {
-            timer.run().catch(console.error);
-            removeFromTotal(timer.messages);
-            total = 0;
-          }
-        }, timer.seconds * 1000)
-      );
-    });
-  });
-};
+//       intervals.push(
+//         setInterval(() => {
+//           if ((total > timer.messages || !timer.messages) && timer.enabled) {
+//             timer.run().catch(console.error);
+//             removeFromTotal(timer.messages);
+//             total = 0;
+//           }
+//         }, timer.seconds * 1000)
+//       );
+//     });
+//   });
+// };
 
 /**
  * @description Function that inits all async calls
@@ -147,7 +147,6 @@ export const start = async () => {
       });
   });
   startRecentChat();
-  startTimers();
   setInterval(() => {
     /**
      * @description every hour, fire the backupUsersToCloud function

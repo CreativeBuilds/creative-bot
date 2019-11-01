@@ -17,12 +17,14 @@ export const recentChatters = new BehaviorSubject<{
  * @description will get the latest users and then loop through all recentChatters and give them points
  */
 const rewardRecentChatters = (config: Partial<IConfig>) => {
+  console.log('rewarding recent chatter');
   rxUsers
     .pipe(
       first(),
       withLatestFrom(recentChatters)
     )
     .subscribe(([users, mRecentChatters]) => {
+      console.log('recent chatters', mRecentChatters);
       Object.keys(mRecentChatters).forEach(username => {
         console.log('RECENT CHATTER', mRecentChatters);
         // tslint:disable-next-line: no-suspicious-comment
@@ -90,6 +92,6 @@ export const startRecentChat = () => {
     }
     currentLoop = setInterval(() => {
       rewardRecentChatters(config);
-    }, 1000 * 10);
+    }, 1000 * 60);
   });
 };

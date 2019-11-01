@@ -30,6 +30,13 @@ import { Commands } from './commands/Commands';
 import { Timers } from './timers/Timers';
 import { rxTimers } from '../helpers/rxTimers';
 import { sendMessageWithConfig } from '../helpers/sendMessageWithConfig';
+import { Timer } from '../helpers/db/db';
+import { Custom_Variables } from './custom_variables/Custom_variables';
+import {
+  accentColor,
+  accentHoverColor,
+  popupButtonDisabledBackgroundColor
+} from '../helpers/appearance';
 
 start().catch(null);
 
@@ -54,8 +61,7 @@ rxEvents.subscribe((event: IRXEvent | undefined) => {
 const timerIntervals: number[] = [];
 let totalMessagesPassed = 0;
 
-rxTimers.subscribe((allTimers: ITimer[]) => {
-  console.log('timers', allTimers);
+rxTimers.subscribe((allTimers: Timer[]) => {
   timerIntervals.forEach(interval => {
     clearInterval(interval);
   });
@@ -64,11 +70,10 @@ rxTimers.subscribe((allTimers: ITimer[]) => {
     timerIntervals.push(
       setInterval(() => {
         if (lastSentAt <= totalMessagesPassed - timer.messages) {
-          console.log('ENOUGH MESSAGES HAVE PASSED');
           sendMessageWithConfig(timer.reply);
           lastSentAt = totalMessagesPassed;
         }
-      }, 500000000)
+      }, timer.seconds * 1000)
     );
   });
 });
@@ -117,6 +122,35 @@ const Global = createGlobalStyle`
     &::-webkit-scrollbar-thumb{
       background: #ccc;
       border-radius: 15px;
+    }
+  }
+  .toggler {
+    &.react-toggle--checked .react-toggle-track {
+      background-color: ${accentColor} !important ;
+    }
+    &.react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
+      background-color: ${accentHoverColor} !important ;
+    } 
+    &.react-toggle .react-toggle-track {
+      background-color: ${popupButtonDisabledBackgroundColor} ;
+    }
+    &.react-toggle:hover:not(.react-toggle--disabled) .react-toggle-track {
+      background-color: ${popupButtonDisabledBackgroundColor} ;
+    }
+    &.react-toggle--focus .react-toggle-thumb {
+      -webkit-box-shadow:none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+    }
+
+    &.react-toggle:active:not(.react-toggle--disabled) .react-toggle-thumb {
+      -webkit-box-shadow: none;
+      -moz-box-shadow: none;
+      box-shadow: none;
+    }
+
+    &.react-toggle--checked .react-toggle-thumb {
+      border-color: ${accentColor};
     }
   }
 `;
@@ -218,6 +252,7 @@ export const Main = () => {
 
   const renderChat = () => <Chat chat={[]} />;
   const renderUsers = () => <Users />;
+  const renderCustomVariables = () => <Custom_Variables />;
   const renderCommands = () => <Commands />;
   const renderThemes = () => <Themes />;
   const renderTimers = () => <Timers />;
@@ -256,6 +291,11 @@ export const Main = () => {
                       path='/commands'
                       exact={true}
                       render={renderCommands}
+                    />
+                    <Route
+                      path='/custom_variables'
+                      exact={true}
+                      render={renderCustomVariables}
                     />
                     <Route path='/users' exact={true} render={renderUsers} />
                     <Route path='/timers' exact={true} render={renderTimers} />

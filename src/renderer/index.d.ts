@@ -106,6 +106,12 @@ export interface ITimer {
   messages: number;
 }
 
+export interface ICustomVariable {
+  name: string;
+  replyString: string;
+  isEval: boolean | null;
+}
+
 export interface ISize {
   width: number;
   height: number;
@@ -123,7 +129,7 @@ export interface IOldUser extends IUser {
   blockchainUsername?: string;
 }
 
-declare module "*.json" {
+declare module '*.json' {
   const value: any;
   export default value;
 }

@@ -125,7 +125,7 @@ export const rxUsers = rxDbChanges
     filter(x => !!x),
     first(),
     switchMap(() => {
-      return rxDbChanges;
+      return rxDbChanges.pipe(first());
     })
   )
   .pipe(
@@ -141,9 +141,6 @@ export const rxUsers = rxDbChanges
   )
   .pipe(
     withLatestFrom(userMap),
-    tap(() => {
-      console.log('updating rxUsers');
-    }),
     map(([changeArr, UserMap]) => {
       const cloneUserMap: { [id: string]: User } = { ...UserMap };
       if (!UserMap) {
@@ -163,7 +160,6 @@ export const rxUsers = rxDbChanges
 
           // The user is being deleted
           delete cloneUserMap[curUser.username];
-          console.log('deleted user from the map', curUser.username);
         } else {
           // tslint:disable-next-line: prefer-object-spread no-unsafe-any
           const curUser: IUser = Object.assign({ obj: {} }, change).obj;
