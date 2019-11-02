@@ -5,6 +5,7 @@ import { IChatColors, IChatObject } from '@/renderer';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Icon } from '../generic-styled-components/Icon';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
+import { InnerSubscriber } from 'rxjs/internal/InnerSubscriber';
 
 import { 
   listItemColor,
@@ -67,6 +68,41 @@ const ChatContent = styled.div`
   padding-right: 15px;
   word-wrap: break-word;
 `;
+const StickerContent = styled.div`
+  flex: 1;
+  max-height: 75px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 17px;
+  padding-left: 15px;
+  padding-right: 15px;
+  word-wrap: break-word;
+`;
+const FollowContent = styled.div`
+  flex: 1;
+  max-height: 75px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 17px;
+  padding-left: 15px;
+  padding-right: 15px;
+  word-wrap: break-word;
+`;
+const GiftContent = styled.div`
+  flex: 1;
+  max-height: 75px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 17px;
+  padding-left: 15px;
+  padding-right: 15px;
+  word-wrap: break-word;
+`;
+const ChatSticker = styled.img`
+  padding-top: 2px;
+  max-width: 60px;
+  max-height: 60px;
+`;
 
 const ChatUsername = styled.div`
   position: absolute;
@@ -122,7 +158,71 @@ export const ChatMessage = ({
     setDeletedButShow(!deletedButShow);
   };
 
-  /**
+  const isSticker = () => {
+    if (!message.content){
+      return false;
+    } else { 
+      if (message.content.search(/^[:]emote/gi) >-1) {
+        return true;
+      } else{
+        return false;  
+      }
+    };
+  };
+  const isGift = () => {
+    if (!message.content ){
+      return false;
+    };  
+    if (message.type == 'Gift'){
+      return true;
+    };  
+    return false;
+  };
+
+  const isFollow = () => {
+      if (!message.content ){
+        return false;
+      };  
+      if (message.type == 'Follow'){
+        return true;
+      };  
+      return false;
+    };
+  
+  const isSub = () => {
+    if (!message.content ){
+      return false;
+    };  
+    if (message.type == 'Subscription'){
+     return true; 
+    };  
+    return false;
+  };
+
+
+  const isChat = () => {
+    if (!message.content ){
+      return false;
+    };  
+      
+    return (isGift() || isFollow() || isSticker() || isSub());
+  };
+
+  const stickerUrl = (): string => {
+    var stickerLink:string=''
+    if (!message.content){
+      return"";
+    } else {
+      var sticker = message.content;
+      if (isSticker) {
+        stickerLink = "https://images.prd.dlivecdn.com/emote/" + sticker.substring(sticker.lastIndexOf("/")+1, sticker.length-1);
+      };
+    };
+    console.log("Sticker tag",sticker)
+    console.log("StickerLink: ",stickerLink)
+    return stickerLink; 
+  };
+    /**
    * @description will return a chat message row, if the message is deleted then it will show text
    * saying that the message was removed
    *
@@ -139,11 +239,31 @@ export const ChatMessage = ({
           src={message.sender.avatar}
         />
       )}
-      <ChatContent>
+      <ChatContent 
+        hidden={!isChat()}
+      >
         {message.deleted && !deletedButShow
           ? getPhrase('chat_deleted')
           : message.content}
       </ChatContent>
+      
+      <StickerContent
+        hidden={!isSticker()}
+      >
+        <ChatSticker 
+          src={stickerUrl()}     
+        />
+      </StickerContent>
+      <FollowContent
+        hidden={!isFollow()}
+      >
+        {'chat_followed'}
+      </FollowContent>
+      <GiftContent
+        hidden={!isGift()}
+      >
+      {'Just Donated!'}
+      </GiftContent>
       {message.deleted ? (
         <Icon
           style={{ position: 'absolute', right: '10px', top: '19px' }}
@@ -156,6 +276,7 @@ export const ChatMessage = ({
           )}
         </Icon>
       ) : null}
+      {console.log(message)}
     </Chat>
   );
 };
