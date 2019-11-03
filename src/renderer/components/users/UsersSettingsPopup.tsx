@@ -332,7 +332,7 @@ export const UserSettingsPopup = (props: IProps) => {
           onClick={hasChanged() ? saveConfig : () => null}
           style={{ zIndex: 4, position: 'static' }}
         >
-          Save Settings
+          {getPhrase('users_settings_save')}
         </Button>
       </PopupButtonWrapper>
     </PopupDialog>

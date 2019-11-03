@@ -11,7 +11,8 @@ import {
   FaSignOutAlt,
   FaQuoteRight,
   FaImage,
-  FaImages
+  FaImages,
+  FaCode
 } from 'react-icons/fa';
 import { auth } from '../../helpers/firebase';
 import { createGlobalStyle } from 'styled-components';
@@ -194,9 +195,9 @@ const MenuComponent = (
           </NavItem>
           <NavItem eventKey='/custom_variables'>
             <NavIcon>
-              <FaList
+              <FaCode
                 style={{ fontSize: '30px', width: '30px', height: '45px' }}
-              ></FaList>
+              ></FaCode>
             </NavIcon>
             <NavText>{getPhrase('menu_custom_variables')}</NavText>
           </NavItem>

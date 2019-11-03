@@ -1,6 +1,6 @@
 import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { rxEvents } from './rxEvents';
-import { filter, switchMap, map } from 'rxjs/operators';
+import { filter, switchMap, map, tap } from 'rxjs/operators';
 import { IChatObject, IRXEvent } from '..';
 
 /**

@@ -42,13 +42,13 @@ export const RemoveVariablePopup = ({ closePopup, variable }: IProps) => {
         <FaTimes onClick={close}></FaTimes>
       </PopupDialogExitIcon>
       <PopupDialogTitle>
-        {getPhrase('remove_command_name')}, <b>{variable.name}</b>?
+        {getPhrase('remove_variable_name')}, <b>{variable.name}</b>?
       </PopupDialogTitle>
-      {getPhrase('remove_command_warning')}
+      {getPhrase('remove_variable_warning')}
       <PopupDialogPadding />
       <PopupButtonWrapper>
         <Button onClick={handleDelete} destructive>
-          {getPhrase('remove_command_submit')}
+          {getPhrase('remove_variable_submit')}
         </Button>
       </PopupButtonWrapper>
     </PopupDialog>

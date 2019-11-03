@@ -1,12 +1,12 @@
 import styled from 'styled-components';
 import { ThemeSet } from 'styled-theming';
 import { fadeIn } from '../animations/fadeIn';
-import { 
-  popupTextColor, 
+import {
+  popupTextColor,
   popupBackgroundColor,
   popupTabViewColor,
   popupTabViewBackgroundColor,
-  textInputBackgroundColor, 
+  textInputBackgroundColor,
   textInputColor,
   textInputPlaceholderColor,
   accentColor
@@ -24,7 +24,8 @@ interface IPropsDialog {
  */
 export const PopupDialog = styled.div`
   position: relative;
-  background: ${() : ThemeSet | string => popupBackgroundColor ? popupBackgroundColor : '#f1f1f1'};
+  background: ${(): ThemeSet | string =>
+    popupBackgroundColor ? popupBackgroundColor : '#f1f1f1'};
   min-width: ${(props: IPropsDialog) =>
     !!props.minWidth ? props.minWidth : '350px'};
   width: ${(props: IPropsDialog) => (!!props.width ? props.width : '350px')};
@@ -33,11 +34,10 @@ export const PopupDialog = styled.div`
     !!props.height ? props.height : 'fit-content'};
   max-height: 95%;
   overflow-y: auto;
-  color: ${() => popupTextColor ? popupTextColor : '#000'};
+  color: ${() => (popupTextColor ? popupTextColor : '#000')};
   box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.15);
   border-radius: 10px;
   padding: 10px;
-  padding-bottom: 50px;
   animation: ${fadeIn} 0.3s linear;
   animation-fill-mode: forwards;
 `;
@@ -126,6 +126,7 @@ export const PopupDialogText = styled.div`
 interface IInputProps {
   textColor?: string;
   backgroundColor?: string;
+  disabled?: boolean;
 }
 
 /**
@@ -143,12 +144,27 @@ export const PopupDialogInput = styled.input`
   &:active {
     outline: none !important;
   }
-  background:  ${(props: IInputProps): ThemeSet | string => 
-    props.backgroundColor ? props.backgroundColor : 
-      textInputBackgroundColor ? textInputBackgroundColor : '#ffffffff'};
-  color: ${(props: IInputProps): ThemeSet | string => 
-    props.textColor ? props.textColor : 
-      textInputColor ? textInputColor : '#000000ff'}
+  ${(props: IInputProps): string =>
+    props.disabled
+      ? `
+        &:hover, &:active{
+          cursor: normal;
+        }
+      `
+      : ''}
+  
+  background: ${(props: IInputProps): ThemeSet | string =>
+    props.backgroundColor
+      ? props.backgroundColor
+      : textInputBackgroundColor
+      ? textInputBackgroundColor
+      : '#ffffffff'};
+  color: ${(props: IInputProps): ThemeSet | string =>
+    props.textColor
+      ? props.textColor
+      : textInputColor
+      ? textInputColor
+      : '#000000ff'};
 `;
 
 export const PopupDialogPadding = styled.div`
@@ -196,7 +212,7 @@ export const PopupDialogInputInfo = styled.div`
  */
 export const PopupButtonWrapper = styled.div`
   display: flex;
-  position: absolute;
+  position: static;
   bottom: 15px;
   left: 0px;
   right: 0px;
@@ -235,8 +251,12 @@ export const PopupDialogTabPage = styled.div`
   height: min-content;
   border-radius: 10px;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
-  background: ${(props: IPopupDialogTabPage) : ThemeSet | string =>
-    props.background ? props.background : popupTabViewBackgroundColor ? popupTabViewBackgroundColor : '#e1e1e1'};
+  background: ${(props: IPopupDialogTabPage): ThemeSet | string =>
+    props.background
+      ? props.background
+      : popupTabViewBackgroundColor
+      ? popupTabViewBackgroundColor
+      : '#e1e1e1'};
   border-top-left-radius: 0px;
   z-index: 3;
 `;
@@ -261,11 +281,13 @@ export const PopupDialogTab = styled.div`
     props.selected
       ? 'font-weight: bold; box-shadow: 2px 2px 4px rgba(0,0,0,0.15)'
       : ''};
-  background: ${(props: IPopupDialogTab) : ThemeSet | string =>
+  background: ${(props: IPopupDialogTab): ThemeSet | string =>
     props.selected
       ? props.backgroundSelected
         ? props.backgroundSelected
-        : popupTabViewBackgroundColor ? popupTabViewBackgroundColor : '#e1e1e1'
+        : popupTabViewBackgroundColor
+        ? popupTabViewBackgroundColor
+        : '#e1e1e1'
       : props.background
       ? props.background
       : '#e9e9e9'};

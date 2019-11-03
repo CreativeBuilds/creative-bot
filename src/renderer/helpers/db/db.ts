@@ -76,6 +76,8 @@ export class User implements IUser {
   public points: number;
   public exp: number;
   public role: string;
+  public roomRole: string;
+  public isSubscribed: boolean;
 
   constructor(
     id: string,
@@ -85,7 +87,9 @@ export class User implements IUser {
     lino: number,
     points: number,
     exp: number,
-    role: string
+    role: string,
+    roomRole: string,
+    isSubscribed: boolean
   ) {
     this.id = id;
     this.displayname = displayname;
@@ -95,12 +99,24 @@ export class User implements IUser {
     this.points = points;
     this.exp = exp;
     this.role = role;
+    this.roomRole = roomRole;
+    this.isSubscribed = isSubscribed;
   }
 
   /**
    * @description add points to a user then auto save it to the local db
    */
-  public async addPoints(amount: number) {
+  public async addPoints(input: number | string) {
+    var amount;
+    if (typeof input === 'string') {
+      amount = parseInt(input);
+    } else {
+      amount = input;
+    }
+    console.log('amount', amount, typeof amount);
+    if (typeof amount !== 'number' || isNaN(amount)) {
+      return this.save();
+    }
     this.points += amount;
 
     return this.save();
@@ -160,16 +176,72 @@ export class User implements IUser {
         this.lino,
         this.points,
         this.exp,
-        this.role
+        this.role,
+        this.roomRole,
+        this.isSubscribed
       )
     );
+  }
+
+  /**
+   * @description updates the amount of lino saved for the user
+   */
+  public async setLino(lino: number | string, shouldSave: boolean = true) {
+    let amount;
+    if (typeof lino === 'string') {
+      amount = Number(lino);
+    } else {
+      amount = lino;
+    }
+    this.lino = Math.floor(amount * 1000);
+    if (shouldSave) {
+      return this.save();
+    } else {
+      return Promise.resolve(amount);
+    }
   }
 
   /**
    * @description converts the lino from an int state to how it looks on dlive
    */
   public getLino() {
+    if (this.displayname === 'Benjimen') {
+      console.log(this.lino, 'LINO REEE');
+    }
     return Math.floor(this.lino / 10000) * 10;
+  }
+
+  /**
+   * @description returns the permission level of the user 0 for viewer 1 for dedicated watcher 2 for sub 3 for mod 4 for owner/bot account
+   */
+  public getPermissionLevel() {
+    if (this.roomRole === 'Owner') {
+      return 4;
+    } else if (this.roomRole === 'Moderator') {
+      return 3;
+    } else if (this.role === 'Bot') {
+      return 4;
+    } else if (this.isSubscribed) {
+      return 2;
+    } else if (this.exp > 0) {
+      return 1;
+    } else {
+      return 0;
+    }
+  }
+
+  public getPermissionString() {
+    const level = this.getPermissionLevel();
+
+    return level === 1
+      ? 'Regular'
+      : level === 2
+      ? 'Subscriber'
+      : level === 3
+      ? 'Moderator'
+      : level === 4
+      ? 'Bot / Owner'
+      : 'Member';
   }
 }
 
@@ -339,7 +411,9 @@ export class Command implements ICommand {
             0,
             0,
             0,
-            message.role
+            message.role,
+            message.roomRole,
+            !!message.subscribing
           );
         if (this.cost === 0) {
           return this.run({

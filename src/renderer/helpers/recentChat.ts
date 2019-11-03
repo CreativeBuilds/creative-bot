@@ -14,29 +14,27 @@ export const recentChatters = new BehaviorSubject<{
 }>({});
 
 /**
+ *
  * @description will get the latest users and then loop through all recentChatters and give them points
  */
 const rewardRecentChatters = (config: Partial<IConfig>) => {
-  console.log('rewarding recent chatter');
   rxUsers
     .pipe(
       first(),
-      withLatestFrom(recentChatters)
+      withLatestFrom(recentChatters.pipe(first()))
     )
     .subscribe(([users, mRecentChatters]) => {
-      console.log('recent chatters', mRecentChatters);
       Object.keys(mRecentChatters).forEach(username => {
-        console.log('RECENT CHATTER', mRecentChatters);
         // tslint:disable-next-line: no-suspicious-comment
         /**
          * @TODO make the points that are added come from the config
          */
         const chat = mRecentChatters[username];
         const sender = chat.sender;
-        if (!sender || !chat.role) {
+        if (!sender || !chat.role || !chat.roomRole) {
           return;
         }
-        let user = !users[username]
+        const user = !users[username]
           ? new User(
               sender.username,
               sender.displayname,
@@ -45,20 +43,15 @@ const rewardRecentChatters = (config: Partial<IConfig>) => {
               0,
               0,
               0,
-              chat.role
+              chat.role,
+              chat.roomRole,
+              !!chat.subscribing
             )
-          : new User(
-              users[username].username,
-              sender.displayname,
-              users[username].username,
-              users[username].avatar,
-              users[username].lino,
-              users[username].points,
-              users[username].exp,
-              users[username].role
-            );
+          : users[username];
+        user.isSubscribed = !!chat.subscribing;
+        user.roomRole = chat.roomRole;
         console.log('adding 1 point to', username);
-        user.addPoints(1).catch(null);
+        user.addPoints(1).catch(err => console.error(err));
       });
       recentChatters.next({});
     });
@@ -92,6 +85,6 @@ export const startRecentChat = () => {
     }
     currentLoop = setInterval(() => {
       rewardRecentChatters(config);
-    }, 1000 * 60);
+    }, 1000 * 6);
   });
 };

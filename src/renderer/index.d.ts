@@ -87,6 +87,8 @@ export interface IUser {
   points: number;
   exp: number;
   role: string;
+  roomRole: string;
+  isSubscribed: boolean;
 }
 
 export interface ICommand {

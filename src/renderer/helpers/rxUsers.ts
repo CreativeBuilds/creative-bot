@@ -65,7 +65,9 @@ export const rxFireUsers = rxUser.pipe(
         lino: oldUser.lino ? oldUser.lino : 0,
         points: oldUser.points ? oldUser.points : 0,
         exp: oldUser.exp ? oldUser.exp : 0,
-        role: oldUser.role
+        role: oldUser.role,
+        roomRole: oldUser.roomRole || 'Member',
+        isSubscribed: oldUser.isSubscribed || false
       };
 
       return new User(
@@ -76,7 +78,9 @@ export const rxFireUsers = rxUser.pipe(
         user.lino,
         user.points,
         user.exp,
-        user.role
+        user.role,
+        user.roomRole || 'Member',
+        user.isSubscribed || false
       );
     });
   })
@@ -175,7 +179,9 @@ export const rxUsers = rxDbChanges
             curUser.lino,
             curUser.points,
             curUser.exp,
-            curUser.role
+            curUser.role,
+            curUser.roomRole,
+            curUser.isSubscribed
           );
         }
       });
@@ -185,6 +191,18 @@ export const rxUsers = rxDbChanges
       return UserMap;
     })
   );
+
+export const getUserById = async (id: string) => {
+  return rxUsers
+    .pipe(
+      first(),
+      filter(x => !!x),
+      map(users => {
+        return !!users[id] ? users[id] : null;
+      })
+    )
+    .toPromise();
+};
 
 /**
  * @description same thing as rxUsers but formats it into an array of User class objects

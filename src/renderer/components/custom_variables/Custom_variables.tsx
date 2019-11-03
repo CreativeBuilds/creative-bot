@@ -212,6 +212,16 @@ export const Custom_Variables = () => {
               justifyContent: 'center'
             }}
           >
+            {getPhrase('custom_variables_column_edit')}
+          </VariableColumn>
+          <VariableColumn
+            style={{
+              maxWidth: 'min-content',
+              minWidth: '50px',
+              display: 'flex',
+              justifyContent: 'center'
+            }}
+          >
             {getPhrase('custom_variables_column_remove')}
           </VariableColumn>
         </CommandsHeader>
@@ -248,7 +258,7 @@ export const Custom_Variables = () => {
                     }
                   );
                   const variable = sorted[index] as CustomVariable;
-                  const editCommandPopup = () => {
+                  const editVariablePopup = () => {
                     const mClosePopup = () => {
                       setPopup(null);
                     };
@@ -318,6 +328,21 @@ export const Custom_Variables = () => {
                             <FaToggleOff onClick={swapEnable} size='25px' />
                           </Icon>
                         )}
+                      </VariableColumn>
+                      <VariableColumn
+                        style={{
+                          maxWidth: 'min-content',
+                          minWidth: '50px',
+                          display: 'flex',
+                          justifyContent: 'center'
+                        }}
+                      >
+                        <Icon>
+                          <FaEdit
+                            size='20px'
+                            onClick={editVariablePopup}
+                          ></FaEdit>
+                        </Icon>
                       </VariableColumn>
                       <VariableColumn
                         style={{

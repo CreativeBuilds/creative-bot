@@ -1,6 +1,6 @@
 import { BehaviorSubject, empty, ObservableInput } from 'rxjs';
 import { ICustomVariable, IChatObject } from '..';
-import { rxUsers } from './rxUsers';
+import { rxUsers, getUserById } from './rxUsers';
 import { filter, switchMap, map, first } from 'rxjs/operators';
 import { collectionData } from 'rxfire/firestore';
 import { firestore } from './firebase';
@@ -21,10 +21,27 @@ export class CustomVariable implements ICustomVariable {
   public run = (message: IChatObject) => {
     const replyString = this.replyString;
     const isEval = this.isEval;
+    const GetUserById = getUserById;
+    let user_variables: string[] = [];
+    if (!!message.content) {
+      user_variables = message.content.split(' ');
+      user_variables.shift();
+    }
+
+    console.log(
+      !!message.content ? message.content.split(' ') : [],
+      user_variables
+    );
 
     return new Promise(res => {
-      // tslint:disable-next-line: no-eval no-void-expression
-      return res(!isEval ? replyString : eval(replyString));
+      try {
+        // tslint:disable-next-line: no-eval no-void-expression
+        return res(!isEval ? replyString : eval(replyString));
+      } catch (err) {
+        console.error(err);
+
+        return res('An error has occured! Check console of bot (ctrl+shift+i)');
+      }
     });
   };
 
