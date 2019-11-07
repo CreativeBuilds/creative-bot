@@ -1,10 +1,10 @@
 import { BehaviorSubject, empty, ObservableInput } from 'rxjs';
 import { ICustomVariable, IChatObject, IUser } from '..';
-import { rxUsers, getUserById } from './rxUsers';
 import { filter, switchMap, map, first } from 'rxjs/operators';
 import { collectionData } from 'rxfire/firestore';
 import { firestore } from './firebase';
 import { rxUser } from './rxUser';
+import { getUserById } from './db/db';
 
 // tslint:disable-next-line: completed-docs
 export class CustomVariable implements ICustomVariable {

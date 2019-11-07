@@ -1,4 +1,5 @@
 import * as firebase from 'firebase';
+// import 'firebase/analytics';
 import { async } from 'rxjs/internal/scheduler/async';
 /**
  * @description Init login to firestore

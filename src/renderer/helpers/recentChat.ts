@@ -2,9 +2,8 @@ import { rxChat } from './rxChat';
 import { BehaviorSubject } from 'rxjs';
 import { withLatestFrom, first } from 'rxjs/operators';
 import { rxConfig } from './rxConfig';
-import { rxUsers } from './rxUsers';
 import { IConfig, IChatObject } from '..';
-import { User } from './db/db';
+import { User, rxUsers } from './db/db';
 
 /**
  * @description this is a behavior subject mapped by the ids of the users who have chatted recently. This will be wipped every setInterval (min 1 minute)
@@ -64,6 +63,7 @@ export const startRecentChat = () => {
   rxChat
     .pipe(withLatestFrom(recentChatters))
     .subscribe(([chat, mEditedUsers]) => {
+      console.log('loop de loop');
       if (typeof chat === 'boolean') {
         return;
       }

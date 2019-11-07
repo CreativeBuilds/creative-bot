@@ -10,8 +10,7 @@ import styled from 'styled-components';
 import { List } from 'react-virtualized/dist/commonjs/List';
 import { AutoSizer } from 'react-virtualized/dist/commonjs/AutoSizer';
 import { ISize, IListRenderer } from '@/renderer';
-import { User } from '@/renderer/helpers/db/db';
-import { rxUsersArray } from '@/renderer/helpers/rxUsers';
+import { User, rxUsersArray } from '@/renderer/helpers/db/db';
 import { sortBy, reverse } from 'lodash';
 import {
   FaAngleDown,

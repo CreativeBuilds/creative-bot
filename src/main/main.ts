@@ -60,7 +60,7 @@ function createWindow(): void {
         loginWindow = null;
         loginWindow = undefined;
       } catch (err) {
-        return;
+        (() => null)();
       }
     }
 
@@ -81,7 +81,7 @@ function createWindow(): void {
     let but = document.getElementsByClassName('login-form-button')[0];
     let first = true;
     but.addEventListener('click', (e)=>{
-      if(first) {but.setAttribute('onclick', '()=>{}');return first = false};
+      if(first) {but.setAttribute('onclick', '()=>{}');return first = false; setTimeout(() => {first = true}, 7000)};
       e.stopPropagation();
     })`;
       loginWindow.webContents.executeJavaScript(injectJs).catch(err => null);

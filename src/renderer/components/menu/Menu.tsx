@@ -22,6 +22,7 @@ import {
   sideBarHoverColor,
   accentColor
 } from '@/renderer/helpers/appearance';
+import { clearDatabase } from '../../helpers/db/db';
 // import styled from 'styled-components';
 
 // tslint:disable-next-line: use-default-type-parameter
@@ -41,6 +42,8 @@ const MenuComponent = (
     if (selected === '/logout') {
       await auth.signOut();
       window.location.hash = '';
+      await clearDatabase();
+      window.location.reload();
     } else {
       props.history.push(selected);
     }

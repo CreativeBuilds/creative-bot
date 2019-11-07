@@ -7,8 +7,7 @@ import {
   merge,
   combineLatest
 } from 'rxjs/operators';
-import { db, rxDbChanges, Command } from './db/db';
-import { rxFireUsers, rxUsers } from './rxUsers';
+import { db, rxDbChanges, Command, rxUsers, rxFireUsers } from './db/db';
 import { startRecentChat } from './recentChat';
 import { IDatabaseChange } from 'dexie-observable/api';
 import { rxUser } from './rxUser';
