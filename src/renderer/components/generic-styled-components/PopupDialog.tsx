@@ -183,6 +183,9 @@ export const PopupDialogInputWrapper = styled.div`
   width: 85%;
   margin: auto;
   margin-bottom: 10px;
+  & > div[class*='-container'] {
+    width: 100%;
+  }
 `;
 /**
  * @description Name above input slot

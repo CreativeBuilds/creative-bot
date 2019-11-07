@@ -15,6 +15,8 @@ import { FaTimes } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Button } from '../generic-styled-components/Button';
 import { rxCommands } from '@/renderer/helpers/rxCommands';
+import Select from 'react-select';
+import { ISelectOption } from '@/renderer';
 
 interface IProps {
   closePopup: Function;
@@ -33,6 +35,9 @@ export const AddOrEditCommandPopup = (props: IProps) => {
   );
   const [commandCost, setCommandCost] = React.useState(
     props.command ? props.command.cost : 0
+  );
+  const [commandPermissions, setCommandPermissions] = React.useState(
+    props.command ? props.command.permissions : []
   );
 
   const [commands, setCommands] = React.useState<{ [id: string]: Command }>({});
@@ -67,7 +72,7 @@ export const AddOrEditCommandPopup = (props: IProps) => {
     const newCommand = new Command(
       commandName,
       commandName,
-      [],
+      commandPermissions,
       commandReply,
       commandCost
     );
@@ -86,14 +91,15 @@ export const AddOrEditCommandPopup = (props: IProps) => {
     if (
       commandName === command.name &&
       commandReply === command.reply &&
-      commandCost === command.cost
+      commandCost === command.cost &&
+      commandPermissions === command.permissions
     ) {
       return;
     }
     const newCommand = new Command(
       commandName,
       commandName,
-      command.permissions,
+      commandPermissions,
       commandReply,
       commandCost
     );
@@ -114,7 +120,8 @@ export const AddOrEditCommandPopup = (props: IProps) => {
       if (
         commandName === command.name &&
         commandReply === command.reply &&
-        commandCost === command.cost
+        commandCost === command.cost &&
+        commandPermissions === command.permissions
       ) {
         return false;
       }
@@ -135,6 +142,12 @@ export const AddOrEditCommandPopup = (props: IProps) => {
     setCommandCost(parseInt(e.target.value, undefined));
   };
 
+  const updateCommandPermissions = (
+    value: ISelectOption<0 | 1 | 2 | 3 | 4>[]
+  ) => {
+    setCommandPermissions(value);
+  };
+
   return (
     <PopupDialog
       style={{
@@ -152,6 +165,26 @@ export const AddOrEditCommandPopup = (props: IProps) => {
           ? `${getPhrase('edit_command_name')}, ${props.command.name}`
           : getPhrase('new_command_name')}
       </PopupDialogTitle>
+      <PopupDialogInputWrapper>
+        <PopupDialogInputName>
+          {getPhrase('new_command_info_title')}
+        </PopupDialogInputName>
+        <Select
+          value={commandPermissions}
+          isMulti={true}
+          onChange={updateCommandPermissions}
+          options={[
+            { label: 'Viewer', value: 0 },
+            { label: 'Loyal Viewer', value: 1 },
+            { label: 'Subscriber', value: 2 },
+            { label: 'Moderator', value: 3 },
+            { label: 'Owner / Bot', value: 4 }
+          ]}
+        />
+        <PopupDialogInputInfo>
+          {getPhrase('new_command_permissions_info')}
+        </PopupDialogInputInfo>
+      </PopupDialogInputWrapper>
       <PopupDialogInputWrapper>
         <PopupDialogInputName>
           {getPhrase('new_command_name_title')}
@@ -205,7 +238,6 @@ export const AddOrEditCommandPopup = (props: IProps) => {
           {getPhrase('new_command_cost_info')}
         </PopupDialogInputInfo>
       </PopupDialogInputWrapper>
-      <PopupDialogPadding />
       <PopupButtonWrapper>
         <Button
           disabled={!canSubmit()}

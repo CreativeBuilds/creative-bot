@@ -1,5 +1,5 @@
 import { BehaviorSubject, empty, ObservableInput } from 'rxjs';
-import { ICustomVariable, IChatObject } from '..';
+import { ICustomVariable, IChatObject, IUser } from '..';
 import { rxUsers, getUserById } from './rxUsers';
 import { filter, switchMap, map, first } from 'rxjs/operators';
 import { collectionData } from 'rxfire/firestore';
@@ -18,7 +18,7 @@ export class CustomVariable implements ICustomVariable {
   }
 
   // tslint:disable-next-line: promise-function-async
-  public run = (message: IChatObject) => {
+  public run = (message: IChatObject, sender: IUser) => {
     const replyString = this.replyString;
     const isEval = this.isEval;
     const GetUserById = getUserById;

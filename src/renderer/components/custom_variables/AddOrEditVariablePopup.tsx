@@ -201,7 +201,6 @@ export const AddOrEditVariablePopup = (props: IProps) => {
           {getPhrase('new_variable_isEval_info')}
         </PopupDialogInputInfo>
       </PopupDialogInputWrapper>
-      <PopupDialogPadding />
       <PopupButtonWrapper>
         <Button
           disabled={!canSubmit()}

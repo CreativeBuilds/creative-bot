@@ -10,7 +10,8 @@ import {
   IConfig,
   IMe,
   ITimer,
-  ICustomVariable
+  ICustomVariable,
+  ISelectOption
 } from '@/renderer';
 import { firestore } from '../firebase';
 import { rxUser } from '../rxUser';
@@ -21,6 +22,7 @@ import { rxMe } from '../rxMe';
 import { sendMessageWithConfig } from '../sendMessageWithConfig';
 import { getPhrase } from '../lang';
 import { rxCustomVariables } from '../rxCustomVariables';
+import { rxUsers } from '../rxUsers';
 /**
  * @desciption This is all the users who have been edited since the last save to firestore
  *
@@ -214,34 +216,55 @@ export class User implements IUser {
   /**
    * @description returns the permission level of the user 0 for viewer 1 for dedicated watcher 2 for sub 3 for mod 4 for owner/bot account
    */
-  public getPermissionLevel() {
+  public getPermissionLevel(): Array<0 | 1 | 2 | 3 | 4> {
+    const roles: Array<0 | 1 | 2 | 3 | 4> = [];
+
     if (this.roomRole === 'Owner') {
-      return 4;
-    } else if (this.roomRole === 'Moderator') {
-      return 3;
-    } else if (this.role === 'Bot') {
-      return 4;
-    } else if (this.isSubscribed) {
-      return 2;
-    } else if (this.exp > 0) {
-      return 1;
-    } else {
-      return 0;
+      roles.push(4);
     }
+    if (this.roomRole === 'Moderator') {
+      roles.push(3);
+    }
+    if (this.role === 'Bot') {
+      roles.push(4);
+    }
+    if (this.isSubscribed) {
+      roles.push(2);
+    }
+    if (this.exp > 0) {
+      roles.push(1);
+    }
+    roles.push(0);
+
+    return roles;
   }
 
-  public getPermissionString() {
-    const level = this.getPermissionLevel();
+  public getPermissionStrings() {
+    const roles = this.getPermissionLevel();
 
-    return level === 1
-      ? 'Regular'
-      : level === 2
-      ? 'Subscriber'
-      : level === 3
-      ? 'Moderator'
-      : level === 4
-      ? 'Bot / Owner'
-      : 'Member';
+    return roles.reduce(
+      (
+        acc: Array<
+          'Regular' | 'Subscriber' | 'Moderator' | 'Bot / Owner' | 'Member'
+        >,
+        level
+      ) => {
+        acc.push(
+          level === 1
+            ? 'Regular'
+            : level === 2
+            ? 'Subscriber'
+            : level === 3
+            ? 'Moderator'
+            : level === 4
+            ? 'Bot / Owner'
+            : 'Member'
+        );
+
+        return acc;
+      },
+      []
+    );
   }
 }
 
@@ -252,7 +275,7 @@ export class User implements IUser {
 export class Command implements ICommand {
   public id: string;
   public name: string;
-  public permissions: any[];
+  public permissions: ISelectOption<0 | 1 | 2 | 3 | 4>[];
   public reply: string;
   public cost: number;
   public enabled: boolean;
@@ -294,6 +317,10 @@ export class Command implements ICommand {
     this.save();
   }
 
+  public getPermissionLevels() {
+    return this.permissions.map(item => item.value);
+  }
+
   /**
    * @description saves the command to firestore
    */
@@ -329,56 +356,103 @@ export class Command implements ICommand {
     variables: string[];
     message: IChatObject;
   }) {
-    const getParsedMessage = async ({
-      message: mMessage,
-      reply
-    }: {
-      message: IChatObject;
-      reply: string;
-    }): Promise<string> => {
-      return rxCustomVariables
-        .pipe(first())
-        .toPromise()
-        .then(async custom_variables => {
-          const replace = async (i = 0): Promise<string> => {
-            const keys = Object.keys(custom_variables);
+    rxUsers.pipe(first()).subscribe(users => {
+      let user = users[message.sender.username];
+      if (!user) {
+        user = new User(
+          message.sender.id,
+          message.sender.displayname,
+          message.sender.username,
+          message.sender.avatar,
+          0,
+          0,
+          0,
+          message.role,
+          message.roomRole,
+          !!message.subscribing
+        );
+        user.save();
+      }
 
-            return new Promise(res => {
-              if (i === keys.length) {
-                // tslint:disable-next-line: no-void-expression
-                return res(reply);
-              }
-              const key = keys[i];
-              const str = `{${key}}`;
-              const run = custom_variables[key].run;
-              if (new RegExp(str, 'gi').test(reply) && run) {
-                return run(message).then((replacement: any) => {
-                  // tslint:disable-next-line: no-parameter-reassignment no-unsafe-any
-                  reply = reply.replace(new RegExp(str, 'gi'), replacement);
+      let level = user.getPermissionLevel();
 
+      const canPass = (): boolean => {
+        let permLevels = this.getPermissionLevels();
+
+        return permLevels.reduce((acc: false | true, item) => {
+          if (user.getPermissionLevel().includes(4) || acc === true) {
+            return true;
+          }
+          return user.getPermissionLevel().includes(item);
+        }, false);
+      };
+
+      if (!canPass() && this.getPermissionLevels().length > 0) {
+        // console.log(
+        //   'can pass',
+        //   canPass(),
+        //   this.getPermissionLevels(),
+        //   user.getPermissionLevel(),
+        //   user.displayname.toUpperCase()
+        // );
+        sendMessageWithConfig(
+          `@${message.sender.displayname} you do not have permission to run this command!`
+        );
+
+        return;
+      }
+
+      const getParsedMessage = async ({
+        message: mMessage,
+        reply
+      }: {
+        message: IChatObject;
+        reply: string;
+      }): Promise<string> => {
+        return rxCustomVariables
+          .pipe(first())
+          .toPromise()
+          .then(async custom_variables => {
+            const replace = async (i = 0): Promise<string> => {
+              const keys = Object.keys(custom_variables);
+
+              return new Promise(res => {
+                if (i === keys.length) {
+                  // tslint:disable-next-line: no-void-expression
+                  return res(reply);
+                }
+                const key = keys[i];
+                const str = `{${key}}`;
+                const run = custom_variables[key].run;
+                if (new RegExp(str, 'gi').test(reply) && run) {
+                  return run(message, user).then((replacement: any) => {
+                    // tslint:disable-next-line: no-parameter-reassignment no-unsafe-any
+                    reply = reply.replace(new RegExp(str, 'gi'), replacement);
+
+                    // tslint:disable-next-line: no-void-expression
+                    return res(replace(i + 1));
+                  });
+                } else {
                   // tslint:disable-next-line: no-void-expression
                   return res(replace(i + 1));
-                });
-              } else {
-                // tslint:disable-next-line: no-void-expression
-                return res(replace(i + 1));
-              }
-            });
-          };
+                }
+              });
+            };
 
-          return replace(0);
-        });
-    };
+            return replace(0);
+          });
+      };
 
-    const parsedMessage = getParsedMessage({
-      message,
-      reply: this.reply
-    }).catch(null);
-    parsedMessage
-      .then(msgToSend => {
-        sendMessageWithConfig(msgToSend);
-      })
-      .catch(null);
+      const parsedMessage = getParsedMessage({
+        message,
+        reply: this.reply
+      }).catch(null);
+      parsedMessage
+        .then(msgToSend => {
+          sendMessageWithConfig(msgToSend);
+        })
+        .catch(null);
+    });
   }
 
   /**

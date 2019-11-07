@@ -6,7 +6,7 @@ import { Login } from './login/Login';
 import { rxUser } from '../helpers/rxUser';
 import { Background } from './Background';
 import { TitleBar } from './TitleBar';
-import { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import { filter, skip, first, withLatestFrom, flatMap } from 'rxjs/operators';
 import { Menu } from './menu/Menu';
 import { Chat } from './chat/Chat';
@@ -37,6 +37,8 @@ import {
   accentHoverColor,
   popupButtonDisabledBackgroundColor
 } from '../helpers/appearance';
+import { rxLang } from '../helpers/rxLang';
+import { Loading } from './generic-styled-components/Loading';
 
 start().catch(null);
 
@@ -98,6 +100,15 @@ rxMessages
       command.checkAndRun(message);
     });
   });
+
+const Center = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+`;
 
 /**
  * @description any css that should globally affect all pages should be here
@@ -162,6 +173,32 @@ export const Main = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<null | boolean>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [config, setConfig] = useState<Partial<IConfig>>({});
+  const [wordMapLoaded, setWordMapLoaded] = useState(false);
+  const [langLoaded, setLangLoaded] = useState(false);
+
+  useEffect(() => {
+    const listen1 = rxLang
+      .pipe(
+        filter(x => !!x),
+        first()
+      )
+      .subscribe(() => {
+        setLangLoaded(true);
+      });
+    const listen2 = rxWordMap
+      .pipe(
+        filter(x => !!x),
+        first()
+      )
+      .subscribe(() => {
+        setWordMapLoaded(true);
+      });
+
+    return () => {
+      listen1.unsubscribe();
+      listen2.unsubscribe();
+    };
+  }, []);
   /**
    * @description this subscriber listens to see if the user logs in through dlive at all
    */
@@ -266,7 +303,11 @@ export const Main = () => {
       <Background>
         <Global />
         <TitleBar />
-        {isLoading ? null : (
+        {isLoading || (!wordMapLoaded || !langLoaded) ? (
+          <Center>
+            <Loading />
+          </Center>
+        ) : (
           <HashRouter basename='/'>
             {isLoggedIn && (config !== null && !!config) ? (
               (!!config.authKey ? config.authKey : '').length > 0 &&

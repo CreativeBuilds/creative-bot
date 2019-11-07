@@ -131,6 +131,11 @@ export interface IOldUser extends IUser {
   blockchainUsername?: string;
 }
 
+export interface ISelectOption<T = string> {
+  label: string;
+  value: T;
+}
+
 declare module '*.json' {
   const value: any;
   export default value;

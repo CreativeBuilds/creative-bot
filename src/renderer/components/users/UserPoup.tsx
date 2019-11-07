@@ -16,6 +16,7 @@ import {
 import { FaTimes } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Button } from '../generic-styled-components/Button';
+import Select from 'react-select';
 
 interface IProps {
   user: User;
@@ -122,9 +123,12 @@ export const UserPopup = (props: IProps) => {
                 <PopupDialogInputName>
                   {getPhrase('user_popup_permissions')}
                 </PopupDialogInputName>
-                <PopupDialogInput
-                  value={user.getPermissionString()}
-                  disabled={true}
+                <Select
+                  value={user
+                    .getPermissionStrings()
+                    .map(item => ({ label: item, value: item }))}
+                  isDisabled={true}
+                  isMulti={true}
                 />
               </PopupDialogInputWrapper>
               <PopupDialogInputWrapper>
