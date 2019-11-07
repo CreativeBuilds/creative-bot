@@ -7,7 +7,14 @@ import { rxUser } from '../helpers/rxUser';
 import { Background } from './Background';
 import { TitleBar } from './TitleBar';
 import styled, { createGlobalStyle } from 'styled-components';
-import { filter, skip, first, withLatestFrom, flatMap } from 'rxjs/operators';
+import {
+  filter,
+  skip,
+  first,
+  withLatestFrom,
+  flatMap,
+  tap
+} from 'rxjs/operators';
 import { Menu } from './menu/Menu';
 import { Chat } from './chat/Chat';
 import { LoginDlive } from './logindlive/LoginDlive';
@@ -63,6 +70,7 @@ rxEvents.subscribe((event: IRXEvent | undefined) => {
 const timerIntervals: number[] = [];
 let totalMessagesPassed = 0;
 
+// TIMERS ARE RUNNING
 rxTimers.subscribe((allTimers: Timer[]) => {
   timerIntervals.forEach(interval => {
     clearInterval(interval);
@@ -71,8 +79,11 @@ rxTimers.subscribe((allTimers: Timer[]) => {
     let lastSentAt = totalMessagesPassed;
     timerIntervals.push(
       setInterval(() => {
-        if (lastSentAt <= totalMessagesPassed - timer.messages) {
-          sendMessageWithConfig(timer.reply);
+        if (
+          lastSentAt <= totalMessagesPassed - timer.messages &&
+          timer.enabled
+        ) {
+          timer.run().catch(null);
           lastSentAt = totalMessagesPassed;
         }
       }, timer.seconds * 1000)
@@ -174,28 +185,30 @@ export const Main = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [config, setConfig] = useState<Partial<IConfig>>({});
   const [wordMapLoaded, setWordMapLoaded] = useState(false);
-  const [langLoaded, setLangLoaded] = useState(false);
 
   useEffect(() => {
-    const listen1 = rxLang
-      .pipe(
-        filter(x => !!x),
-        first()
-      )
-      .subscribe(() => {
-        setLangLoaded(true);
-      });
+    let listener = setTimeout(() => {
+      if (!wordMapLoaded) {
+        window.location.reload();
+      }
+    }, 5000);
+
+    return () => {
+      clearTimeout(listener);
+    };
+  }, [wordMapLoaded]);
+
+  useEffect(() => {
     const listen2 = rxWordMap
       .pipe(
-        filter(x => !!x),
+        filter(x => (!!x ? Object.keys(x).length > 0 : false)),
         first()
       )
-      .subscribe(() => {
+      .subscribe(map => {
         setWordMapLoaded(true);
       });
 
     return () => {
-      listen1.unsubscribe();
       listen2.unsubscribe();
     };
   }, []);
@@ -303,8 +316,9 @@ export const Main = () => {
       <Background>
         <Global />
         <TitleBar />
-        {isLoading || (!wordMapLoaded || !langLoaded) ? (
+        {isLoading || !wordMapLoaded ? (
           <Center>
+            {console.log(isLoading, wordMapLoaded)}
             <Loading />
           </Center>
         ) : (
