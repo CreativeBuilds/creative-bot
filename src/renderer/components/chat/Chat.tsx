@@ -6,7 +6,7 @@ import {
   PageContent,
   PageTitleRight
 } from '../generic-styled-components/Page';
-import { SelectWrap } from '../generic-styled-components/Select'
+import { SelectWrap, botSelectStyles } from '../generic-styled-components/Select'
 import { ChatInput } from './chatInput';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { FaUserAlt, FaMicrophone } from 'react-icons/fa';

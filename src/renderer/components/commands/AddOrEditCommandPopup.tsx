@@ -11,13 +11,13 @@ import {
   PopupDialogPadding,
   PopupButtonWrapper
 } from '../generic-styled-components/popupDialog';
-import { SelectWrap } from '../generic-styled-components/Select'
+import { SelectWrap, selectStyles } from '../generic-styled-components/Select'
 import { FaTimes } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Button } from '../generic-styled-components/button';
 import { rxCommands } from '@/renderer/helpers/rxCommands';
 import Select from 'react-select';
-import { ISelectOption } from '@/renderer';
+import { ISelectOption} from '@/renderer';
 
 interface IProps {
   closePopup: Function;
@@ -172,6 +172,7 @@ export const AddOrEditCommandPopup = (props: IProps) => {
         </PopupDialogInputName>
         <SelectWrap width={'100%'}>
           <Select
+            styles={selectStyles}
             value={commandPermissions}
             isMulti={true}
             onChange={updateCommandPermissions}

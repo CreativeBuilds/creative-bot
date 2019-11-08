@@ -74,10 +74,10 @@
                 "disabledColor": "#383838ff"
             },
             "dropDownBox": {
-                "backgroundColor": "#161616ff",
+                "backgroundColor": "#101010ff",
                 "borderColor": "#545454ff",
                 "color": "#e1e1e1ff",
-                "hoverColor": "#969696ff",
+                "hoverColor": "#585858ff",
                 "selectedColor": "#0011ff"
             },
             "seperator": {

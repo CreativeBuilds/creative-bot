@@ -23,6 +23,14 @@ import { rxEventsFromMain } from '../helpers/eventHandler';
 
 import ThemeProvider, { ThemeContextProvider } from './themeContext';
 
+import {
+  dropDownBoxBackgroundColor,
+  dropDownBoxBorderColor,
+  dropDownBoxHoverColor,
+  dropDownBoxColor,
+  dropDownBoxSelectedColor
+} from '@/renderer/helpers/appearance';
+
 import { rxWordMap } from '../helpers/rxWordMap';
 import { rxEvents } from '../helpers/rxEvents';
 import { rxConfig, updateConfig } from '../helpers/rxConfig';
@@ -174,6 +182,18 @@ const Global = createGlobalStyle`
 
     &.react-toggle--checked .react-toggle-thumb {
       border-color: ${accentColor};
+    }
+
+    [class*='css-'] {
+      [class*='-menu'] {
+        color: ${dropDownBoxColor};
+        background: ${dropDownBoxBackgroundColor};
+        [class*='-option'] {
+            &:hover, &:active {
+                background: ${dropDownBoxHoverColor};
+            }
+        }
+      }
     }
   }
 `;
