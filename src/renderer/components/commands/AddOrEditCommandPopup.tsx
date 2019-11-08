@@ -11,6 +11,7 @@ import {
   PopupDialogPadding,
   PopupButtonWrapper
 } from '../generic-styled-components/popupDialog';
+import { SelectWrap } from '../generic-styled-components/Select'
 import { FaTimes } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Button } from '../generic-styled-components/button';
@@ -169,18 +170,20 @@ export const AddOrEditCommandPopup = (props: IProps) => {
         <PopupDialogInputName>
           {getPhrase('new_command_info_title')}
         </PopupDialogInputName>
-        <Select
-          value={commandPermissions}
-          isMulti={true}
-          onChange={updateCommandPermissions}
-          options={[
-            { label: 'Viewer', value: 0 },
-            { label: 'Loyal Viewer', value: 1 },
-            { label: 'Subscriber', value: 2 },
-            { label: 'Moderator', value: 3 },
-            { label: 'Owner / Bot', value: 4 }
-          ]}
-        />
+        <SelectWrap width={'100%'}>
+          <Select
+            value={commandPermissions}
+            isMulti={true}
+            onChange={updateCommandPermissions}
+            options={[
+              { label: 'Viewer', value: 0 },
+              { label: 'Loyal Viewer', value: 1 },
+              { label: 'Subscriber', value: 2 },
+              { label: 'Moderator', value: 3 },
+              { label: 'Owner / Bot', value: 4 }
+            ]}
+          />
+        </ SelectWrap>
         <PopupDialogInputInfo>
           {getPhrase('new_command_permissions_info')}
         </PopupDialogInputInfo>

@@ -10,6 +10,7 @@ import {
   PopupDialogInputInfo,
   PopupDialogInputName
 } from '../generic-styled-components/popupDialog';
+import { SelectWrap } from '../generic-styled-components/Select'
 import { FaTimes } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Button } from '../generic-styled-components/button';
@@ -116,20 +117,22 @@ export const ChatTTSSettings = ({
           <PopupDialogInputName>
             {getPhrase('chat_tts_options')}
           </PopupDialogInputName>
-          <Select
-            value={allowedTTSDonations}
-            isMulti={true}
-            onChange={updateAllowedTTSDonations}
-            menuPortalTarget={document.body}
-            options={[
-              { label: 'Lemon', value: 'LEMON' },
-              { label: 'Ice Cream', value: 'ICE_CREAM' },
-              { label: 'Diamond', value: 'DIAMOND' },
-              { label: 'Ninjaghini', value: 'NINJAGHINI' },
-              { label: 'Ninjet', value: 'NINJET' }
-            ]}
-            isDisabled={!hasTTSDonations}
-          />
+          <SelectWrap width={'100%'}>
+            <Select
+              value={allowedTTSDonations}
+              isMulti={true}
+              onChange={updateAllowedTTSDonations}
+              menuPortalTarget={document.body}
+              options={[
+                { label: 'Lemon', value: 'LEMON' },
+                { label: 'Ice Cream', value: 'ICE_CREAM' },
+                { label: 'Diamond', value: 'DIAMOND' },
+                { label: 'Ninjaghini', value: 'NINJAGHINI' },
+                { label: 'Ninjet', value: 'NINJET' }
+              ]}
+              isDisabled={!hasTTSDonations}
+            />
+          </SelectWrap>
           <PopupDialogInputInfo>
             {getPhrase('chat_tts_options_info')}
           </PopupDialogInputInfo>

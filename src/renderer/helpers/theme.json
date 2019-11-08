@@ -70,8 +70,8 @@
                 "invertedBackgroundColor": "#181818ff",
                 "destructivebackgroundColor": "#df1ebfff",
                 "destructiveColor": "#f1f1f1ff",
-                "disabledBackgroundColor": "#d1d1d1ff",
-                "disabledColor": "#e1e1e1ff"
+                "disabledBackgroundColor": "#121212ff",
+                "disabledColor": "#383838ff"
             },
             "dropDownBox": {
                 "backgroundColor": "#161616ff",
