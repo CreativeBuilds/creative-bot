@@ -6,6 +6,7 @@ import {
   PageContent,
   PageTitleRight
 } from '../generic-styled-components/Page';
+import { SelectWrap } from '../generic-styled-components/Select'
 import { ChatInput } from './chatInput';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { FaUserAlt, FaMicrophone } from 'react-icons/fa';
@@ -49,59 +50,6 @@ const ScrollTo = styled.div`
   height: 0px;
   width: 0px;
   overflow: hidden;
-`;
-
-interface ISelectProps {
-  textColor?: string;
-  borderColor?: string;
-  selectedColor?: string;
-  backgroundColor?: string;
-}
-
-const SelectWrap = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  height: min-conent;
-  padding-left: 10px;
-  width: 170px;
-  font-size: 1em !important;
-  & > div {
-    width: 160px;
-    &:hover {
-      cursor: pointer;
-    }
-  }
-  [class*='-placeholder'],
-  [class*='-singleValue'] {
-    font-size: 0.8em !important;
-  }
-  [class*='-control'] {
-    min-height: 33px;
-    max-height: 33px;
-    background: ${(props: ISelectProps): ThemeSet | string =>
-      props.backgroundColor
-        ? props.backgroundColor
-        : dropDownBoxBackgroundColor
-        ? dropDownBoxBackgroundColor
-        : '#ffffffff'};
-    border-color: ${(props: ISelectProps): ThemeSet | string =>
-      props.borderColor
-        ? props.borderColor
-        : dropDownBoxBorderColor
-        ? dropDownBoxBorderColor
-        : '#727272ff'};
-  }
-  [class*='-singleValue'] {
-    color: ${(props: ISelectProps): ThemeSet | string =>
-      props.textColor
-        ? props.textColor
-        : dropDownBoxColor
-        ? dropDownBoxColor
-        : '#f1f1f1ff'};
-  }
 `;
 
 const CurrentlyConnected = styled.div`
@@ -276,7 +224,7 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
     <PageMain>
       <PageTitle>
         {getPhrase('chat_name')}{' '}
-        <SelectWrap>
+        <SelectWrap paddingLeft={'20px'}>
           <Select
             menuPlacement='bottom'
             options={[

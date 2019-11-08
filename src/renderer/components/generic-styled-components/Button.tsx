@@ -29,7 +29,9 @@ export const Button = styled.button`
   disabled -> inverted -> color */
   background: ${(props: IButton): ThemeSet | string =>
     props.disabled
-      ? '#d1d1d1'
+      ? popupButtonDisabledBackgroundColor 
+      ? popupButtonDisabledBackgroundColor 
+      : '#d1d1d1'
       : props.inverted
       ? popupButtonInvertedBackgroundColor 
       ? popupButtonInvertedBackgroundColor 
@@ -49,7 +51,9 @@ export const Button = styled.button`
   /** Makes color light gray on disbaled */
   color: ${(props: IButton): ThemeSet | string =>
     props.disabled 
-    ? '#e1e1e1' 
+    ? popupButtonDisabledColor 
+    ? popupButtonDisabledColor 
+    : '#e1e1e1' 
     : props.inverted 
     ? popupButtonColor 
     ? popupButtonColor 
