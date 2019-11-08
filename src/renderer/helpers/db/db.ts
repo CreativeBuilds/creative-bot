@@ -740,7 +740,7 @@ const userMap = new BehaviorSubject<{ [id: string]: User } | null>(null);
  * @description Get all the current users in the local database
  * and convert them to User class objects.
  */
-let getCurrentLocal = () => {
+export let getCurrentLocal = () => {
   db.users
     .toArray()
     .then(users => {

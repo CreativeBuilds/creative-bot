@@ -314,6 +314,30 @@ export const Main = () => {
               sender.getLino() + inLino(donation.gift, donation.amount) / 1000
             )
             .catch(null);
+          // Check the config to see what they should get for points
+          const settings = {
+            ...config.donationSettings,
+            lemons: 1,
+            icecream: 10,
+            diamond: 100,
+            ninja: 1000,
+            ninjet: 10000
+          };
+          if (donation.gift === 'LEMON') {
+            sender.addPoints(settings.lemons).catch(null);
+          }
+          if (donation.gift === 'ICE_CREAM') {
+            sender.addPoints(settings.icecream).catch(null);
+          }
+          if (donation.gift === 'DIAMOND') {
+            sender.addPoints(settings.diamond).catch(null);
+          }
+          if (donation.gift === 'NINJAGHINI') {
+            sender.addPoints(settings.ninja).catch(null);
+          }
+          if (donation.gift === 'NINJET') {
+            sender.addPoints(settings.ninjet).catch(null);
+          }
         }
 
         // say dono here

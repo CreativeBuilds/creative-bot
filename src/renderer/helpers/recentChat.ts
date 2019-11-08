@@ -3,7 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { withLatestFrom, first } from 'rxjs/operators';
 import { rxConfig } from './rxConfig';
 import { IConfig, IChatObject } from '..';
-import { User, rxUsers } from './db/db';
+import { User, rxUsers, getCurrentLocal } from './db/db';
 
 /**
  * @description this is a behavior subject mapped by the ids of the users who have chatted recently. This will be wipped every setInterval (min 1 minute)
@@ -47,6 +47,9 @@ const rewardRecentChatters = (config: Partial<IConfig>) => {
               !!chat.subscribing
             )
           : users[username];
+        if (!users[username]) {
+          getCurrentLocal();
+        }
         user.isSubscribed = !!chat.subscribing;
         user.roomRole = chat.roomRole;
         console.log('adding 1 point to', username);
