@@ -27,7 +27,6 @@ export const SelectWrap = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    height: min-content;
     padding-left: ${(props: ISelectProps): string => props.paddingLeft ? props.paddingLeft : '0px'};
     padding-top: ${(props: ISelectProps): string => props.paddingTop ? props.paddingTop : '0px'};
     padding-right: ${(props: ISelectProps): string => props.paddingRight ? props.paddingRight : '0px'};
@@ -55,7 +54,6 @@ export const SelectWrap = styled.div`
     }
     [class*='-control'] {
       min-height: 33px;
-      max-height: 33px;
       background: ${(props: ISelectProps): ThemeSet | string =>
         props.backgroundColor
           ? props.backgroundColor
