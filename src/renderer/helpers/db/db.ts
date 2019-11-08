@@ -149,16 +149,30 @@ export class User implements IUser {
     console.log('deleting user');
     rxUser.pipe(first()).subscribe(authUser => {
       if (!authUser) {
-        return;
+        return console.log('NO AUTH USER');
       }
-      db.users.delete(this.username).catch(null);
-      firestore
-        .collection('users')
-        .doc(authUser.uid)
-        .collection('users')
-        .doc(this.username)
-        .delete()
-        .catch(null);
+      console.log('this username', this.username);
+      db.users
+        .delete(this.username)
+        .then(() => {
+          return firestore
+            .collection('users')
+            .doc(authUser.uid)
+            .collection('users')
+            .doc(this.username)
+            .delete();
+        })
+        .then(() => {
+          rxUsers.pipe(first()).subscribe(users => {
+            const USERS = { ...users };
+            delete USERS[this.username];
+            console.log('pushing to rxUsers', USERS, USERS[this.username]);
+            rxUsers.next(USERS);
+          });
+        })
+        .catch(err => {
+          console.error(err);
+        });
     });
   }
 
@@ -212,7 +226,7 @@ export class User implements IUser {
     } else {
       amount = lino;
     }
-    this.lino = Math.floor(amount * 1000);
+    this.lino = Math.floor(amount * 100) * 10;
     if (shouldSave) {
       return this.save();
     } else {
@@ -675,7 +689,7 @@ export const rxFireUsers = rxUser.pipe(
     /**
      * @description maps over all the database users and converts them to the new class based users
      */
-    return users.map(oldUser => {
+    return users.map((oldUser: IOldUser) => {
       const user: IUser = {
         id: oldUser.username
           ? oldUser.username
@@ -726,26 +740,31 @@ const userMap = new BehaviorSubject<{ [id: string]: User } | null>(null);
  * @description Get all the current users in the local database
  * and convert them to User class objects.
  */
-db.users
-  .toArray()
-  .then(users => {
-    /**
-     * @description userMap.next sends the map of users from the local database to userMap
-     * for a start value
-     *
-     * @note this only happens once and then will no longer update the BehaviorSubject when the
-     * database updates
-     */
-    userMap.next(
-      users.reduce((acc: { [id: string]: User }, curr) => {
-        acc[curr.username] = curr;
+let getCurrentLocal = () => {
+  db.users
+    .toArray()
+    .then(users => {
+      /**
+       * @description userMap.next sends the map of users from the local database to userMap
+       * for a start value
+       *
+       * @note this only happens once and then will no longer update the BehaviorSubject when the
+       * database updates
+       */
+      userMap.next(
+        users.reduce((acc: { [id: string]: User }, curr) => {
+          acc[curr.username] = curr;
 
-        return acc;
-      }, {})
-    );
-  })
-  .catch(null);
-
+          return acc;
+        }, {})
+      );
+    })
+    .catch(null);
+};
+setInterval(() => {
+  getCurrentLocal();
+}, 1000 * 60 * 60);
+getCurrentLocal();
 /**
  * @description gets all the users in a map format.
  * If you want all the users this is what you should subscribe to, or you can use rxUsersArray

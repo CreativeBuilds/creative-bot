@@ -37,7 +37,7 @@ import { Commands } from './commands/commands';
 import { Timers } from './timers/timers';
 import { rxTimers } from '../helpers/rxTimers';
 import { sendMessageWithConfig } from '../helpers/sendMessageWithConfig';
-import { Timer } from '../helpers/db/db';
+import { Timer, rxUsers, User } from '../helpers/db/db';
 import { Custom_Variables } from './custom_variables/custom_variables';
 import {
   accentColor,
@@ -185,6 +185,7 @@ export const Main = () => {
   const [isLoggedIn, setIsLoggedIn] = useState<null | boolean>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [config, setConfig] = useState<Partial<IConfig>>({});
+  const [users, setUsers] = useState<{ [id: string]: User }>({});
   const [wordMapLoaded, setWordMapLoaded] = useState(false);
   const [donations, setDonations] = useState<IGiftObject[]>([]);
   const [soundIsRunning, setSoundIsRunning] = useState<boolean>(false);
@@ -239,6 +240,28 @@ export const Main = () => {
     }, 1500);
   };
 
+  const inLino = (gift: IGiftObject['gift'], amount: string) => {
+    let multiplier = 9.01e2;
+    switch (gift) {
+      case 'ICE_CREAM':
+        multiplier = 9.01e3;
+        break;
+      case 'DIAMOND':
+        multiplier = 9.01e4;
+        break;
+      case 'NINJAGHINI':
+        multiplier = 9.01e5;
+        break;
+      case 'NINJET':
+        multiplier = 9.01e6;
+        break;
+      default:
+        multiplier = 9.01e2;
+        break;
+    }
+    return parseInt(amount) * multiplier;
+  };
+
   const newSound = (message: IGiftObject) => {
     if (soundIsRunning) {
       setTimeout(() => {
@@ -264,6 +287,16 @@ export const Main = () => {
   // }, []);
 
   useEffect(() => {
+    const listener = rxUsers.pipe(filter(x => !!x)).subscribe(mUsers => {
+      setUsers(mUsers);
+    });
+
+    return () => {
+      listener.unsubscribe();
+    };
+  }, []);
+
+  useEffect(() => {
     const listener = rxDonations
       .pipe(
         skip(1),
@@ -273,28 +306,30 @@ export const Main = () => {
         if (!donation) {
           return;
         }
-        console.log('got donations ', donation);
+
+        const sender = users[donation.sender.username];
+        if (!!sender) {
+          sender
+            .setLino(
+              sender.getLino() + inLino(donation.gift, donation.amount) / 1000
+            )
+            .catch(null);
+        }
+
         // say dono here
         // Check to see if the streamer wants this sound played
         if (config.hasTTSDonations) {
-          console.log('has tts enabled');
           if (config.allowedTTSDonations) {
-            console.log('allowed tts donations exists');
             if (
               config.allowedTTSDonations
                 .map(item => item.value)
                 .includes(donation.gift)
             ) {
-              console.log('includes the item');
               newSound(donation);
-            } else {
-              console.log('does not include the item');
             }
           } else {
             newSound(donation);
           }
-        } else {
-          console.log('tts disabled');
         }
       });
 

@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { List } from 'react-virtualized/dist/commonjs/List';
 import { AutoSizer } from 'react-virtualized/dist/commonjs/AutoSizer';
 import { ISize, IListRenderer } from '@/renderer';
-import { User, rxUsersArray } from '@/renderer/helpers/db/db';
+import { User, rxUsersArray, rxUsers } from '@/renderer/helpers/db/db';
 import { sortBy, reverse } from 'lodash';
 import {
   FaAngleDown,
@@ -152,8 +152,12 @@ export const Users = () => {
   const [searchText, setSearchtext] = React.useState<string>('');
 
   React.useEffect(() => {
-    const listener = rxUsersArray.subscribe(users => {
-      setAllUsers(users);
+    const listener = rxUsers.subscribe(users => {
+      setAllUsers(
+        Object.keys(users).map(username => {
+          return users[username];
+        })
+      );
     });
 
     return () => {
@@ -260,7 +264,9 @@ export const Users = () => {
   return (
     <PageMain>
       <PageTitleCustom>
-        <div>{getPhrase('users_name')}</div>{' '}
+        <div>
+          {getPhrase('users_name')} - {allUsers.length}
+        </div>{' '}
         <PageTitleRightCustom>
           <StyledInput
             onChange={updateSearchText}
