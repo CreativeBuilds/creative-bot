@@ -62,7 +62,8 @@
             },
             "popupTabView": {
                 "color": "#e1e1e1ff",
-                "backgroundColor": "#202020ff"
+                "backgroundColor": "#202020ff",
+                "secondaryBackgroundColor": "#343434ff"
             },
             "popupButton": {
                 "color": "#ffffffff",
@@ -145,7 +146,8 @@
             },
             "popupTabView": {
                 "color": "#161616ff",
-                "backgroundColor": "#d1d1d1ff"
+                "backgroundColor": "#c9c9c9ff",
+                "secondaryBackgroundColor": "#e1e1e1ff"
             },
             "popupButton": {
                 "color": "#181818ff",
