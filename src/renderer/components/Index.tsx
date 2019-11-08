@@ -187,20 +187,121 @@ export const Main = () => {
   const [config, setConfig] = useState<Partial<IConfig>>({});
   const [wordMapLoaded, setWordMapLoaded] = useState(false);
   const [donations, setDonations] = useState<IGiftObject[]>([]);
+  const [soundIsRunning, setSoundIsRunning] = useState<boolean>(false);
 
-  useEffect(() => {
-    const listener = rxDonations.subscribe(donation => {
-      if (!donation) {
+  const giftType = (message: IGiftObject) => {
+    if (message.gift === 'LEMON') {
+      return 'lemon';
+    } else if (message.gift === 'ICE_CREAM') {
+      return 'ice cream';
+    } else if (message.gift === 'DIAMOND') {
+      return 'diamond!';
+    } else if (message.gift === 'NINJAGHINI') {
+      return 'ninjaghini!';
+    } else if (message.gift === 'NINJET') {
+      return 'ninjet!';
+    }
+  };
+
+  const sayMsg = (val: string) => {
+    if (soundIsRunning) {
+      setTimeout(() => {
+        sayMsg(val);
+      }, 1000);
+    }
+    setSoundIsRunning(true);
+    console.log('SOUND STARTED');
+    let utter: SpeechSynthesisUtterance | null = new SpeechSynthesisUtterance();
+    utter.text = val;
+    utter.volume =
+      (typeof config.tts_Amplitude === 'number' ? config.tts_Amplitude : 100) /
+      100;
+    utter.pitch =
+      (typeof config.tts_Pitch === 'number' ? config.tts_Pitch : 100) / 100;
+    utter.rate =
+      (typeof config.tts_Speed === 'number' ? config.tts_Speed : 100) / 100;
+    utter.onstart = () => {
+      console.log('UTTER STARTED');
+    };
+    // utter.addEventListener('end', () => {
+    //   console.log('END REEEEEEEEE');
+    // });
+    utter.onend = () => {
+      console.log('SOUND ENDED');
+      setSoundIsRunning(false);
+      utter = null;
+    };
+    setTimeout(() => {
+      if (!utter) {
         return;
       }
-      console.log('GOT A NEW DONATION', donation);
-      setDonations([donation].concat(donations));
-    });
+      speechSynthesis.speak(utter);
+    }, 1500);
+  };
+
+  const newSound = (message: IGiftObject) => {
+    if (soundIsRunning) {
+      setTimeout(() => {
+        newSound(message);
+      }, 1000);
+    } else if (message.message ? message.message.length > 0 : false) {
+      sayMsg(
+        `${message.sender.displayname} just donated ${
+          message.amount
+        } ${giftType(message)} ${message.message ? message.message : ''}`
+      );
+    } else {
+      sayMsg(
+        `${message.sender.displayname} just donated ${
+          message.amount
+        } ${giftType(message)}!`
+      );
+    }
+  };
+
+  // useEffect(() => {
+  //   sayMsg('oof');
+  // }, []);
+
+  useEffect(() => {
+    const listener = rxDonations
+      .pipe(
+        skip(1),
+        filter(x => !!x)
+      )
+      .subscribe(donation => {
+        if (!donation) {
+          return;
+        }
+        console.log('got donations ', donation);
+        // say dono here
+        // Check to see if the streamer wants this sound played
+        if (config.hasTTSDonations) {
+          console.log('has tts enabled');
+          if (config.allowedTTSDonations) {
+            console.log('allowed tts donations exists');
+            if (
+              config.allowedTTSDonations
+                .map(item => item.value)
+                .includes(donation.gift)
+            ) {
+              console.log('includes the item');
+              newSound(donation);
+            } else {
+              console.log('does not include the item');
+            }
+          } else {
+            newSound(donation);
+          }
+        } else {
+          console.log('tts disabled');
+        }
+      });
 
     return () => {
       listener.unsubscribe();
     };
-  });
+  }, [config, soundIsRunning]);
 
   useEffect(() => {
     let listener = setTimeout(() => {

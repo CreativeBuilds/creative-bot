@@ -7,7 +7,6 @@ import { IRXEvent, IChatObject, IGiftObject } from '..';
  * @description sends back the latest donation
  */
 export const rxDonations = new BehaviorSubject<IGiftObject | null>(null);
-
 rxEvents
   .pipe(
     filter((x: IRXEvent): boolean => {

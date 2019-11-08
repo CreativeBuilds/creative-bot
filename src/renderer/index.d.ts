@@ -21,6 +21,14 @@ export interface IConfig {
     ninja?: number;
     ninjet?: number;
   };
+  tts_Amplitude?: number;
+  tts_Pitch?: number;
+  tts_Speed?: number;
+  hasTTSDonations?: boolean;
+  allowedTTSDonations?: ISelectOption<
+    'LEMON' | 'ICE_CREAM' | 'DIAMOND' | 'NINJAGHINI' | 'NINJET'
+  >[];
+  hasTTSDonationMessages?: boolean;
 }
 
 export interface IEvent {
@@ -67,8 +75,10 @@ export interface IChatObject {
 
 export interface IGiftObject extends IChatObject {
   gift: 'LEMON' | 'ICE_CREAM' | 'DIAMOND' | 'NINJAGHINI' | 'NINJET';
-  amount: number;
+  amount: string;
   message?: string;
+  expireDuration: number;
+  recentCount: number;
 }
 export interface IChatColors {
   owner: string;

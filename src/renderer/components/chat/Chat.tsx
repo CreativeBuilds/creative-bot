@@ -8,7 +8,7 @@ import {
 } from '../generic-styled-components/Page';
 import { ChatInput } from './chatInput';
 import { getPhrase } from '@/renderer/helpers/lang';
-import { FaUserAlt } from 'react-icons/fa';
+import { FaUserAlt, FaMicrophone } from 'react-icons/fa';
 import { Icon } from '../generic-styled-components/Icon';
 import { ChatChangeAccounts } from './ChatChangeAccounts';
 import { rxStoredMessages } from '@/renderer/helpers/rxChat';
@@ -22,6 +22,7 @@ import Select from 'react-select';
 import { getSelf } from '@/renderer/helpers/dlive/getSelf';
 import { shell } from 'electron';
 import { IConfig, IMe, IChatObject, IOption } from '@/renderer';
+import { ChatTTSSettings } from './chatTTSSettings';
 
 import {
   dropDownBoxBackgroundColor,
@@ -127,6 +128,7 @@ let AllMessages: IChatObject[] = [];
  */
 export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
   const [userControlOverlay, setUserControlOverlay] = React.useState(false);
+  const [ttsControlOverlay, setTTSControlOverlay] = React.useState(false);
   const [messages, setMessages] = React.useState<IChatObject[]>([]);
   const [config, setConfig] = React.useState<Partial<IConfig>>({});
   const [botAccount, setBotAccount] = React.useState<IMe>();
@@ -182,6 +184,21 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
       )
       .subscribe((mConfig: Partial<IConfig>): void => {
         setConfig(mConfig);
+        if (!mConfig.allowedTTSDonations) {
+          updateConfig({
+            ...mConfig,
+            allowedTTSDonations: [
+              { label: 'Ninjet', value: 'NINJET' },
+              { label: 'Ninjaghini', value: 'NINJAGHINI' },
+              { label: 'Diamond', value: 'DIAMOND' }
+            ]
+          }).catch(null);
+        } else if (!mConfig.hasTTSDonationMessages) {
+          updateConfig({
+            ...mConfig,
+            hasTTSDonationMessages: true
+          });
+        }
         if (!!mConfig.selectedSender) {
           setSelectSender(mConfig.selectedSender);
         }
@@ -237,8 +254,15 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
     setUserControlOverlay(true);
   };
 
+  const openTTSControl = () => {
+    setTTSControlOverlay(true);
+  };
+
   const closeUserControl = () => {
     setUserControlOverlay(false);
+  };
+  const closeTTSControl = () => {
+    setTTSControlOverlay(false);
   };
 
   const openTab = () => {
@@ -270,6 +294,9 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
           />
         </SelectWrap>
         <PageTitleRight>
+          <Icon onClick={openTTSControl} style={{ paddingRight: '10px' }}>
+            <FaMicrophone></FaMicrophone>
+          </Icon>
           <Icon onClick={openUserControl}>
             <FaUserAlt></FaUserAlt>
           </Icon>
@@ -319,6 +346,9 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
       </PageContent>
       {userControlOverlay ? (
         <ChatChangeAccounts closeUserControl={closeUserControl} />
+      ) : null}
+      {ttsControlOverlay ? (
+        <ChatTTSSettings config={config} closeTTSControl={closeTTSControl} />
       ) : null}
     </PageMain>
   );
