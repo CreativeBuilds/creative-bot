@@ -22,8 +22,8 @@ import {
   FaToggleOff
 } from 'react-icons/fa';
 import { AddOrEditVariablePopup } from './AddOrEditVariablePopup';
-import { PopupDialogBackground } from '../generic-styled-components/PopupDialog';
-import { RemoveVariablePopup } from './RemoveVariablePopup';
+import { PopupDialogBackground } from '../generic-styled-components/popupDialog';
+import { RemoveVariablePopup } from './removeVariablePopup';
 
 import {
   listItemColor,

@@ -21,15 +21,15 @@ import {
   FaToggleOn,
   FaToggleOff
 } from 'react-icons/fa';
-import { AddOrEditTimerPopup } from './AddOrEditTimerPopup';
-import { PopupDialogBackground } from '../generic-styled-components/PopupDialog';
-import { RemoveTimerPopup } from './RemoveTimerPopup';
+import { AddOrEditTimerPopup } from './addOrEditTimerPopup';
+import { PopupDialogBackground } from '../generic-styled-components/popupDialog';
+import { RemoveTimerPopup } from './removeTimerPopup';
 
-import { 
+import {
   listItemColor,
   listItemBorderColor,
   listItemBackgroundColor,
-  listItemAlternativeColor,
+  listItemAlternativeColor
 } from '@/renderer/helpers/appearance';
 
 const PageContentCustom = styled(PageContent)`
@@ -82,13 +82,25 @@ const TimersHeader = styled.div`
   left: 0;
   padding-left: 10px;
   border-top: 1px solid
-    ${(props: ITimerHeader) : ThemeSet | string =>
-      props.borderColor ? props.borderColor : listItemBorderColor ? listItemBorderColor : '#d1d1d1'};
+    ${(props: ITimerHeader): ThemeSet | string =>
+      props.borderColor
+        ? props.borderColor
+        : listItemBorderColor
+        ? listItemBorderColor
+        : '#d1d1d1'};
   border-bottom: 1px solid
-    ${(props: ITimerHeader) : ThemeSet | string =>
-      props.borderColor ? props.borderColor : listItemBorderColor ? listItemBorderColor : '#d1d1d1'};
-  background: ${(props: ITimerHeader) : ThemeSet | string =>
-    props.background ? props.background : listItemAlternativeColor ? listItemAlternativeColor : '#e1e1e1'};
+    ${(props: ITimerHeader): ThemeSet | string =>
+      props.borderColor
+        ? props.borderColor
+        : listItemBorderColor
+        ? listItemBorderColor
+        : '#d1d1d1'};
+  background: ${(props: ITimerHeader): ThemeSet | string =>
+    props.background
+      ? props.background
+      : listItemAlternativeColor
+      ? listItemAlternativeColor
+      : '#e1e1e1'};
 `;
 
 interface ITimerRow {
@@ -105,14 +117,18 @@ const TimerRow = styled.div`
   & > div:nth-child(1) {
     padding-left: 10px;
   }
-  background: ${(props: ITimerRow) : ThemeSet | string =>
+  background: ${(props: ITimerRow): ThemeSet | string =>
     props.alternate
       ? props.alternateBackground
         ? props.alternateBackground
-        :  listItemAlternativeColor ? listItemAlternativeColor : '#e1e1e1'
+        : listItemAlternativeColor
+        ? listItemAlternativeColor
+        : '#e1e1e1'
       : props.backgroundColor
       ? props.backgroundColor
-      :  listItemBackgroundColor ? listItemBackgroundColor : '#f1f1f1'};
+      : listItemBackgroundColor
+      ? listItemBackgroundColor
+      : '#f1f1f1'};
 `;
 
 /**

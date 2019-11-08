@@ -2,9 +2,9 @@ import { HashRouter, Route } from 'react-router-dom';
 import * as React from 'react';
 // tslint:disable-next-line: no-duplicate-imports
 import { useState, useEffect } from 'react';
-import { Login } from './login/Login';
+import { Login } from './login/login';
 import { rxUser } from '../helpers/rxUser';
-import { Background } from './Background';
+import { Background } from './background';
 import { TitleBar } from './TitleBar';
 import styled, { createGlobalStyle } from 'styled-components';
 import {
@@ -16,36 +16,37 @@ import {
   tap
 } from 'rxjs/operators';
 import { Menu } from './menu/Menu';
-import { Chat } from './chat/Chat';
-import { LoginDlive } from './logindlive/LoginDlive';
+import { Chat } from './chat/chat';
+import { LoginDlive } from './logindlive/loginDlive';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import { rxEventsFromMain } from '../helpers/eventHandler';
 
-import ThemeProvider, { ThemeContextProvider } from './ThemeContext';
+import ThemeProvider, { ThemeContextProvider } from './themeContext';
 
 import { rxWordMap } from '../helpers/rxWordMap';
 import { rxEvents } from '../helpers/rxEvents';
 import { rxConfig, updateConfig } from '../helpers/rxConfig';
 import { rxChat, rxMessages } from '../helpers/rxChat';
 import { Users } from './users/Users';
-import { Themes } from './themes/Themes';
+import { Themes } from './themes/themes';
 import { start } from '../helpers/start';
-import { IRXEvent, IConfig, IEvent, ITimer } from '..';
+import { IRXEvent, IConfig, IEvent, ITimer, IGiftObject } from '..';
 import { rxCommands } from '../helpers/rxCommands';
 import { rxMe } from '../helpers/rxMe';
-import { Commands } from './commands/Commands';
-import { Timers } from './timers/Timers';
+import { Commands } from './commands/commands';
+import { Timers } from './timers/timers';
 import { rxTimers } from '../helpers/rxTimers';
 import { sendMessageWithConfig } from '../helpers/sendMessageWithConfig';
 import { Timer } from '../helpers/db/db';
-import { Custom_Variables } from './custom_variables/Custom_variables';
+import { Custom_Variables } from './custom_variables/custom_variables';
 import {
   accentColor,
   accentHoverColor,
   popupButtonDisabledBackgroundColor
 } from '../helpers/appearance';
 import { rxLang } from '../helpers/rxLang';
-import { Loading } from './generic-styled-components/Loading';
+import { Loading } from './generic-styled-components/loading';
+import { rxDonations } from '../helpers/rxDonations';
 
 start().catch(null);
 
@@ -185,13 +186,29 @@ export const Main = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [config, setConfig] = useState<Partial<IConfig>>({});
   const [wordMapLoaded, setWordMapLoaded] = useState(false);
+  const [donations, setDonations] = useState<IGiftObject[]>([]);
+
+  useEffect(() => {
+    const listener = rxDonations.subscribe(donation => {
+      if (!donation) {
+        return;
+      }
+      console.log('GOT A NEW DONATION', donation);
+      setDonations([donation].concat(donations));
+    });
+
+    return () => {
+      listener.unsubscribe();
+    };
+  });
 
   useEffect(() => {
     let listener = setTimeout(() => {
       if (!wordMapLoaded) {
+        console.log('RELOADING WINDOW');
         window.location.reload();
       }
-    }, 5000);
+    }, 50000);
 
     return () => {
       clearTimeout(listener);
@@ -201,7 +218,13 @@ export const Main = () => {
   useEffect(() => {
     const listen2 = rxWordMap
       .pipe(
+        tap(item => {
+          console.log('Word map 1', item);
+        }),
         filter(x => (!!x ? Object.keys(x).length > 0 : false)),
+        tap(() => {
+          console.log('Word map 2');
+        }),
         first()
       )
       .subscribe(map => {

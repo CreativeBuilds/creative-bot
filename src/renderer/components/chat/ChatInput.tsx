@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { ThemeSet } from 'styled-theming';
 import { FaShare } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
-import { Button } from '../generic-styled-components/Button';
+import { Button } from '../generic-styled-components/button';
 import Select from 'react-select';
 import { sendMessage } from '@/renderer/helpers/dlive/sendMessage';
 import { getSelf } from '@/renderer/helpers/dlive/getSelf';

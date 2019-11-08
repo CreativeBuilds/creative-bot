@@ -6,7 +6,7 @@ import {
   PageContent,
   PageTitleRight
 } from '../generic-styled-components/Page';
-import { ChatInput } from './ChatInput';
+import { ChatInput } from './chatInput';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { FaUserAlt } from 'react-icons/fa';
 import { Icon } from '../generic-styled-components/Icon';
@@ -14,7 +14,7 @@ import { ChatChangeAccounts } from './ChatChangeAccounts';
 import { rxStoredMessages } from '@/renderer/helpers/rxChat';
 
 import { reverse } from 'lodash';
-import { ChatMessage } from './ChatMessage';
+import { ChatMessage } from './chatMessage';
 import styled from 'styled-components';
 import { rxConfig, updateConfig } from '@/renderer/helpers/rxConfig';
 import { filter, distinctUntilChanged } from 'rxjs/operators';
@@ -23,15 +23,15 @@ import { getSelf } from '@/renderer/helpers/dlive/getSelf';
 import { shell } from 'electron';
 import { IConfig, IMe, IChatObject, IOption } from '@/renderer';
 
-import { 
-  dropDownBoxBackgroundColor, 
-  dropDownBoxBorderColor, 
-  dropDownBoxHoverColor, 
-  dropDownBoxColor, 
+import {
+  dropDownBoxBackgroundColor,
+  dropDownBoxBorderColor,
+  dropDownBoxHoverColor,
+  dropDownBoxColor,
   dropDownBoxSelectedColor,
   accentColor,
   listItemColor,
-  listItemAlternativeColor,
+  listItemAlternativeColor
 } from '@/renderer/helpers/appearance';
 
 const ChatMessages = styled.div`
@@ -80,17 +80,26 @@ const SelectWrap = styled.div`
   [class*='-control'] {
     min-height: 33px;
     max-height: 33px;
-    background: ${(props: ISelectProps): ThemeSet | string => 
-      props.backgroundColor ? props.backgroundColor : 
-        dropDownBoxBackgroundColor ? dropDownBoxBackgroundColor : '#ffffffff'};
-    border-color: ${(props: ISelectProps): ThemeSet | string => 
-      props.borderColor ? props.borderColor : 
-        dropDownBoxBorderColor ? dropDownBoxBorderColor : '#727272ff'};
+    background: ${(props: ISelectProps): ThemeSet | string =>
+      props.backgroundColor
+        ? props.backgroundColor
+        : dropDownBoxBackgroundColor
+        ? dropDownBoxBackgroundColor
+        : '#ffffffff'};
+    border-color: ${(props: ISelectProps): ThemeSet | string =>
+      props.borderColor
+        ? props.borderColor
+        : dropDownBoxBorderColor
+        ? dropDownBoxBorderColor
+        : '#727272ff'};
   }
   [class*='-singleValue'] {
-    color: ${(props: ISelectProps): ThemeSet | string => 
-      props.textColor ? props.textColor : 
-        dropDownBoxColor ? dropDownBoxColor : '#f1f1f1ff'};
+    color: ${(props: ISelectProps): ThemeSet | string =>
+      props.textColor
+        ? props.textColor
+        : dropDownBoxColor
+        ? dropDownBoxColor
+        : '#f1f1f1ff'};
   }
 `;
 

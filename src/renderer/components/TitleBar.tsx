@@ -4,19 +4,26 @@ import { ThemeSet } from 'styled-theming';
 const { remote } = require('electron');
 const { app } = remote;
 import { Icon } from './generic-styled-components/Icon';
-import { FaMinus, FaRegWindowMaximize, FaWindowMaximize, FaTimes, FaBug, FaAdjust } from 'react-icons/fa';
-import { useTheme } from './ThemeContext';
+import {
+  FaMinus,
+  FaRegWindowMaximize,
+  FaWindowMaximize,
+  FaTimes,
+  FaBug,
+  FaAdjust
+} from 'react-icons/fa';
+import { useTheme } from './themeContext';
 
-import { 
-    titleBarTextColor, 
-    titleBarBackgroundColor, 
-    titleBarHoverColor 
+import {
+  titleBarTextColor,
+  titleBarBackgroundColor,
+  titleBarHoverColor
 } from '@/renderer/helpers/appearance';
 
 interface IProps {
-    textColor?: string;
-    hoverColor?: string;
-    backgroundColor?: string;
+  textColor?: string;
+  hoverColor?: string;
+  backgroundColor?: string;
 }
 
 /**
@@ -30,9 +37,12 @@ const Bar = styled.div`
   top: 0;
   right: 0;
   display: inline-flex;
-  background-color: ${(props: IProps): ThemeSet | string => 
-    props.backgroundColor ? props.backgroundColor : 
-        titleBarBackgroundColor ? titleBarBackgroundColor :'#ffffff59'};
+  background-color: ${(props: IProps): ThemeSet | string =>
+    props.backgroundColor
+      ? props.backgroundColor
+      : titleBarBackgroundColor
+      ? titleBarBackgroundColor
+      : '#ffffff59'};
   z-index: 9999;
 `;
 
@@ -55,152 +65,171 @@ const DraggableArea = styled.div`
  * @description Application Version Title for TitleBar
  */
 const VersionTitle = styled.div`
-    text-align: center;
-    vertical-align: middle;
-    color: ${(props: IProps): ThemeSet | string => 
-        props.textColor ? props.textColor : 
-            titleBarTextColor ? titleBarTextColor : '#f9f9f9ff'};
-    display: inline-block;
-    position: absolute;
-    left: 15px;
-    top: 3.2px;
-    margin-top: auto;
-    margin-bottom: auto;
+  text-align: center;
+  vertical-align: middle;
+  color: ${(props: IProps): ThemeSet | string =>
+    props.textColor
+      ? props.textColor
+      : titleBarTextColor
+      ? titleBarTextColor
+      : '#f9f9f9ff'};
+  display: inline-block;
+  position: absolute;
+  left: 15px;
+  top: 3.2px;
+  margin-top: auto;
+  margin-bottom: auto;
 `;
 
 /**
  * @description Application Title for TitleBar
  */
 const AppTitle = styled.div`
-    text-align: center;
-    vertical-align: middle;
-    color: ${(props: IProps): ThemeSet | string => 
-        props.textColor ? props.textColor : 
-            titleBarTextColor ? titleBarTextColor : '#f9f9f9ff'};
-    margin: auto;
-    padding-left: 204px;
+  text-align: center;
+  vertical-align: middle;
+  color: ${(props: IProps): ThemeSet | string =>
+    props.textColor
+      ? props.textColor
+      : titleBarTextColor
+      ? titleBarTextColor
+      : '#f9f9f9ff'};
+  margin: auto;
+  padding-left: 204px;
 `;
 
 /**
  * @description Container for Window Action Buttons
  */
 const ActionButtonsContainer = styled.div`
-    float: right;
-    height: 100%;
-    display: inline-flex;
+  float: right;
+  height: 100%;
+  display: inline-flex;
 `;
 
 /**
  * @description Container for Window Action Buttons
  */
 const ActionButtonContainer = styled.div`
-    display: inline-flex;
-    width: 42px;
-    height: 100%;
-    cursor: pointer;
-    z-index: 9999;
-    &:hover {
-        background-color: ${(props: IProps): ThemeSet | string => 
-            props.hoverColor ? props.hoverColor : 
-                titleBarHoverColor ? titleBarHoverColor : '#00000029'};
-    };
+  display: inline-flex;
+  width: 42px;
+  height: 100%;
+  cursor: pointer;
+  z-index: 9999;
+  &:hover {
+    background-color: ${(props: IProps): ThemeSet | string =>
+      props.hoverColor
+        ? props.hoverColor
+        : titleBarHoverColor
+        ? titleBarHoverColor
+        : '#00000029'};
+  }
 
-    & > div {
-        & > svg {
-            color: ${(props: IProps): ThemeSet | string => 
-                props.textColor ? props.textColor : 
-                    titleBarTextColor ? titleBarTextColor : '#f9f9f9ff'} !important;
-        }
+  & > div {
+    & > svg {
+      color: ${(props: IProps): ThemeSet | string =>
+        props.textColor
+          ? props.textColor
+          : titleBarTextColor
+          ? titleBarTextColor
+          : '#f9f9f9ff'} !important;
     }
+  }
 `;
 
 /**
  * @description Button Optimized for Windows Actions
  */
-const WindowActionButton = ({icon, onClick = function() {}} : {icon: Object, onClick?: () => void}) => {
-    return(
-        <ActionButtonContainer onClick={onClick}>
-            <Icon style={{ margin: 'auto' }}>
-                {icon}
-            </Icon>
-        </ActionButtonContainer>
-    );
-}
+const WindowActionButton = ({
+  icon,
+  onClick = function() {}
+}: {
+  icon: Object;
+  onClick?: () => void;
+}) => {
+  return (
+    <ActionButtonContainer onClick={onClick}>
+      <Icon style={{ margin: 'auto' }}>{icon}</Icon>
+    </ActionButtonContainer>
+  );
+};
 
 /**
  * @description Custom TitleBar that replaces the default one that the OS Provided
  */
 export const TitleBar = () => {
+  const themeToggle = useTheme();
 
-    const themeToggle = useTheme();
+  /**
+   * @description Toggle the Dev Tools from Electron in the current
+   */
+  const showDevTools = () => {
+    remote.getCurrentWindow().webContents.toggleDevTools();
+  };
 
-    /**
-    * @description Toggle the Dev Tools from Electron in the current 
-    */
-    const showDevTools = () => {
-        remote.getCurrentWindow().webContents.toggleDevTools();
-    };
+  /**
+   * @description Allow user to minimize the current Window
+   */
+  const minimize = () => {
+    remote.getCurrentWindow().minimize();
+  };
 
-    /**
-    * @description Allow user to minimize the current Window
-    */
-    const minimize = () => {
-        remote.getCurrentWindow().minimize();
-    };
+  /**
+   * @description Allow user to maximize the current Window
+   */
+  const maximize = () => {
+    if (remote.getCurrentWindow().isMaximized()) {
+      remote.getCurrentWindow().unmaximize();
+    } else {
+      remote.getCurrentWindow().maximize();
+    }
 
-    /**
-    * @description Allow user to maximize the current Window
-    */
-    const maximize = () => {
-        if (remote.getCurrentWindow().isMaximized()) {
-        remote.getCurrentWindow().unmaximize();
-        } else {
-        remote.getCurrentWindow().maximize();
-        }
+    setMaximized(isMaximized());
+  };
 
-        setMaximized(isMaximized());
-    };
+  /**
+   * @description Checks if current window is maximized or not
+   */
+  const isMaximized = () => {
+    return remote.getCurrentWindow().isMaximized();
+  };
 
-    /**
-    * @description Checks if current window is maximized or not
-    */
-    const isMaximized = () => {
-        return remote.getCurrentWindow().isMaximized();
-    };
+  /**
+   * @description Gets maximized icon depending if unmaximized or maximized
+   */
+  const getMaximizedIcon = () => {
+    return isMaximize ? <FaWindowMaximize /> : <FaRegWindowMaximize />;
+  };
 
-    /**
-    * @description Gets maximized icon depending if unmaximized or maximized
-    */
-    const getMaximizedIcon = () => {
-        return isMaximize ? (
-            <FaWindowMaximize />
-        ) : (
-            <FaRegWindowMaximize />
-        );
-    };
+  // Declared maximized values (ables us to change the icon when maximzed or not)
+  const [isMaximize, setMaximized] = React.useState(isMaximized());
 
-    // Declared maximized values (ables us to change the icon when maximzed or not)
-    const [isMaximize, setMaximized] =  React.useState(isMaximized());
+  /**
+   * @description Closes current window
+   */
+  const close = () => {
+    remote.getCurrentWindow().close();
+  };
 
-    /**
-    * @description Closes current window
-    */
-    const close = () => {
-        remote.getCurrentWindow().close();
-    };
-
-    return(
-        <Bar>
-            <DraggableArea />
-            <VersionTitle>{process.env.npm_package_version}</VersionTitle>
-            <AppTitle>CreativeBot</AppTitle>
-            <ActionButtonsContainer>
-                <WindowActionButton icon={<FaAdjust />} onClick={() => { themeToggle.toggle(); }}/>
-                <WindowActionButton icon={<FaBug />} onClick={() => showDevTools()}/>
-                <WindowActionButton icon={<FaMinus />} onClick={() => minimize()}/>
-                <WindowActionButton icon={getMaximizedIcon()} onClick={() => maximize()}/>
-                <WindowActionButton icon={<FaTimes />} onClick={() => close()}/>
-            </ActionButtonsContainer>
-        </Bar>
-    );
+  return (
+    <Bar>
+      <DraggableArea />
+      <VersionTitle>{process.env.npm_package_version}</VersionTitle>
+      <AppTitle>CreativeBot</AppTitle>
+      <ActionButtonsContainer>
+        <WindowActionButton
+          icon={<FaAdjust />}
+          onClick={() => {
+            themeToggle.toggle();
+          }}
+        />
+        <WindowActionButton icon={<FaBug />} onClick={() => showDevTools()} />
+        <WindowActionButton icon={<FaMinus />} onClick={() => minimize()} />
+        <WindowActionButton
+          icon={getMaximizedIcon()}
+          onClick={() => maximize()}
+        />
+        <WindowActionButton icon={<FaTimes />} onClick={() => close()} />
+      </ActionButtonsContainer>
+    </Bar>
+  );
 };

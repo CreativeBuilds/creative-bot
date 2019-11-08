@@ -65,6 +65,11 @@ export interface IChatObject {
   deleted?: boolean;
 }
 
+export interface IGiftObject extends IChatObject {
+  gift: 'LEMON' | 'ICE_CREAM' | 'DIAMOND' | 'NINJAGHINI' | 'NINJET';
+  amount: number;
+  message?: string;
+}
 export interface IChatColors {
   owner: string;
   bot: string;

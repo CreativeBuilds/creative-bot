@@ -29,7 +29,7 @@
   "license": "MIT",
   "dependencies": {
     "@trendmicro/react-sidenav": "^0.4.5",
-    "@types/lodash": "^4.14.138",
+    "@types/lodash": "^4.14.145",
     "@types/react-select": "^3.0.8",
     "@types/react-virtualized": "^9.21.5",
     "@types/styled-theming": "^2.2.2",
@@ -56,7 +56,7 @@
   },
   "devDependencies": {
     "@types/mocha": "^5.2.5",
-    "@types/react": "^16.9.2",
+    "@types/react": "^16.9.11",
     "@types/react-dom": "^16.9.4",
     "@types/react-router-dom": "^4.3.1",
     "@types/react-toggle": "^4.0.2",

@@ -21,15 +21,15 @@ import {
   FaToggleOn,
   FaToggleOff
 } from 'react-icons/fa';
-import { AddOrEditCommandPopup } from './AddOrEditCommandPopup';
-import { PopupDialogBackground } from '../generic-styled-components/PopupDialog';
+import { AddOrEditCommandPopup } from './addOrEditCommandPopup';
+import { PopupDialogBackground } from '../generic-styled-components/popupDialog';
 import { RemoveCommandPopup } from './RemoveCommandPopup';
 
-import { 
+import {
   listItemColor,
   listItemBorderColor,
   listItemBackgroundColor,
-  listItemAlternativeColor,
+  listItemAlternativeColor
 } from '@/renderer/helpers/appearance';
 
 const PageContentCustom = styled(PageContent)`
@@ -82,13 +82,25 @@ const CommandsHeader = styled.div`
   left: 0;
   padding-left: 10px;
   border-top: 1px solid
-    ${(props: ICommandHeader) : ThemeSet | string =>
-      props.borderColor ? props.borderColor : listItemBorderColor ? listItemBorderColor : '#d1d1d1'};
+    ${(props: ICommandHeader): ThemeSet | string =>
+      props.borderColor
+        ? props.borderColor
+        : listItemBorderColor
+        ? listItemBorderColor
+        : '#d1d1d1'};
   border-bottom: 1px solid
-    ${(props: ICommandHeader) : ThemeSet | string =>
-      props.borderColor ? props.borderColor : listItemBorderColor ? listItemBorderColor : '#d1d1d1'};
-  background: ${(props: ICommandHeader) : ThemeSet | string =>
-    props.background ? props.background : listItemAlternativeColor ? listItemAlternativeColor : '#e1e1e1'};
+    ${(props: ICommandHeader): ThemeSet | string =>
+      props.borderColor
+        ? props.borderColor
+        : listItemBorderColor
+        ? listItemBorderColor
+        : '#d1d1d1'};
+  background: ${(props: ICommandHeader): ThemeSet | string =>
+    props.background
+      ? props.background
+      : listItemAlternativeColor
+      ? listItemAlternativeColor
+      : '#e1e1e1'};
 `;
 
 interface ICommandRow {
@@ -105,14 +117,18 @@ const CommandRow = styled.div`
   & > div:nth-child(1) {
     padding-left: 10px;
   }
-  background: ${(props: ICommandRow) : ThemeSet | string =>
+  background: ${(props: ICommandRow): ThemeSet | string =>
     props.alternate
       ? props.alternateBackground
         ? props.alternateBackground
-        :  listItemAlternativeColor ? listItemAlternativeColor : '#e1e1e1'
+        : listItemAlternativeColor
+        ? listItemAlternativeColor
+        : '#e1e1e1'
       : props.backgroundColor
       ? props.backgroundColor
-      :  listItemBackgroundColor ? listItemBackgroundColor : '#f1f1f1'};
+      : listItemBackgroundColor
+      ? listItemBackgroundColor
+      : '#f1f1f1'};
 `;
 
 /**

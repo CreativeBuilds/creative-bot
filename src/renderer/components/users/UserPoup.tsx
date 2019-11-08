@@ -12,10 +12,10 @@ import {
   PopupDialogInput,
   PopupDialogTabPage,
   PopupButtonWrapper
-} from '../generic-styled-components/PopupDialog';
+} from '../generic-styled-components/popupDialog';
 import { FaTimes } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
-import { Button } from '../generic-styled-components/Button';
+import { Button } from '../generic-styled-components/button';
 import Select from 'react-select';
 
 interface IProps {

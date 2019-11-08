@@ -10,10 +10,10 @@ import {
   PopupDialogInputInfo,
   PopupDialogPadding,
   PopupButtonWrapper
-} from '../generic-styled-components/PopupDialog';
+} from '../generic-styled-components/popupDialog';
 import { FaTimes } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
-import { Button } from '../generic-styled-components/Button';
+import { Button } from '../generic-styled-components/button';
 import { rxCommands } from '@/renderer/helpers/rxCommands';
 import Select from 'react-select';
 import { ISelectOption } from '@/renderer';

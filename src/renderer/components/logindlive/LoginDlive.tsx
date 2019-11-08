@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components';
-import { Button } from '../generic-styled-components/Button';
+import { Button } from '../generic-styled-components/button';
 import { ipcRenderer } from 'electron';
 import { sendToMain } from '@/renderer/helpers/eventHandler';
 import {
@@ -13,7 +13,7 @@ import {
   PopupDialogInput,
   PopupDialogInputInfo,
   PopupButtonWrapper
-} from '../generic-styled-components/PopupDialog';
+} from '../generic-styled-components/popupDialog';
 import { FaLongArrowAltLeft } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
 

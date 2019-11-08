@@ -20,6 +20,7 @@ export const rxWordMap = new BehaviorSubject<
  *
  */
 function getMapRefs() {
+  console.log('getting map refs');
   word_map_ref
     .get()
     .then(async (collection: firebase.firestore.QuerySnapshot) => {

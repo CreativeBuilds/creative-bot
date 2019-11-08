@@ -10,8 +10,8 @@ import {
   PopupDialogInputInfo,
   PopupDialogBackIcon,
   PopupButtonWrapper
-} from '../generic-styled-components/PopupDialog';
-import { Button } from '../generic-styled-components/Button';
+} from '../generic-styled-components/popupDialog';
+import { Button } from '../generic-styled-components/button';
 import * as validator from 'email-validator';
 import { createUser, auth } from '@/renderer/helpers/firebase';
 import { FaLongArrowAltLeft } from 'react-icons/fa';
