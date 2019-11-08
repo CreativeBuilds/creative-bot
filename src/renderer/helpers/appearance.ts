@@ -258,7 +258,7 @@ export const popupTabViewBackgroundColor = theme('mode', {
 });
 
 /**
- * @description Appearances Popup TabView Background Color
+ * @description Appearances Popup TabView Secondary Background Color
  */
 export const popupTabViewSecondaryBackgroundColor = theme('mode', {
     light: themeData.appearances.light.popupTabView.secondaryBackgroundColor,
