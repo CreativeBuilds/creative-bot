@@ -2,6 +2,7 @@ import { rxConfig } from './rxConfig';
 import { filter, first, withLatestFrom } from 'rxjs/operators';
 import { sendMessage } from './dlive/sendMessage';
 import { rxMe } from './rxMe';
+import { User } from './db/db';
 
 /**
  * @description will use rxConfig, wait till it has a streamerAuthKey and authKey then send the message
@@ -29,4 +30,25 @@ export const sendMessageWithConfig = (message: string) => {
         subscribing: true
       }).catch(null);
     });
+};
+
+let timeouts: { [id: string]: number } = {};
+
+export const sendEventMessageWithConfig = (
+  message: string,
+  type: string,
+  user: User
+) => {
+  const timeout = { ...timeouts }[`${user.username}:${type}`];
+  if (!!timeout) {
+    try {
+      clearTimeout(timeout);
+    } catch (err) {
+      (() => null)();
+    }
+  }
+  timeouts[user.username] = setTimeout(() => {
+    sendMessageWithConfig(message.replace('$USER', user.displayname));
+    delete timeouts[`${user.username}:${type}`];
+  }, 2000);
 };

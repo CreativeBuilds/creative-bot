@@ -1,6 +1,6 @@
 {
   "name": "creative-bot-2",
-  "version": "2.0.0-canary",
+  "version": "2.0.1",
   "description": "New version of CreativeBot",
   "main": "./dist/main.bundle.js",
   "scripts": {
@@ -9,7 +9,8 @@
     "prod": "rimraf dist && cross-env NODE_ENV=production webpack --progress --colors",
     "test": "mocha -r ts-node/register -r tsconfig-paths/register \"test/**/*.ts\"",
     "build:win": "electron-builder build --win --x64",
-    "build:mac": "electron-builder build --mac --x64"
+    "build:mac": "electron-builder build --mac --x64",
+    "gh-publish": "electron-builder --x64 -p always"
   },
   "build": {
     "appId": "com.creativebuilds.creativebot",
@@ -36,9 +37,11 @@
     "dexie": "^2.0.4",
     "dexie-observable": "^1.0.0-beta.5",
     "electron-debug": "^3.0.1",
+    "electron-updater": "^4.2.0",
     "email-validator": "^2.0.4",
     "firebase": "^7.1.0",
     "graphql-request": "^1.8.2",
+    "localforage": "^1.7.3",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-icons": "^3.8.0",
@@ -69,6 +72,7 @@
     "css-loader": "^1.0.1",
     "electron": "^3.1.2",
     "electron-builder": "^20.38.5",
+    "electron-log": "^3.0.9",
     "eslint": "^5.3.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-import-resolver-webpack": "^0.11.0",
@@ -84,7 +88,7 @@
     "source-map-loader": "^0.2.4",
     "spectron": "^5.0.0",
     "style-loader": "^0.23.1",
-    "ts-loader": "^5.3.3",
+    "ts-loader": "^6.2.1",
     "ts-node": "^7.0.1",
     "tsconfig-paths": "^3.7.0",
     "tslint": "^5.20.1",
@@ -95,17 +99,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Devtography/electron-react-typescript-webpack-boilerplate"
+    "url": "git+https://github.com/creativebuilds/creative-bot"
+  },
+  "directories": {
+    "output": "out"
   },
   "keywords": [
-    "boilerplate",
-    "Electron",
-    "React",
-    "Typescript",
-    "Webpack"
+    "Dlive",
+    "chatbot",
+    "nodejs",
+    "javascript"
   ],
   "bugs": {
-    "url": "https://github.com/Devtography/electron-react-typescript-webpack-boilerplate/issues"
+    "url": "https://github.com/creativebuilds/creative-bot/issues"
   },
-  "homepage": "https://github.com/Devtography/electron-react-typescript-webpack-boilerplate#readme"
+  "homepage": "https://github.com/creativebuilds/creative-bot#readme"
 }

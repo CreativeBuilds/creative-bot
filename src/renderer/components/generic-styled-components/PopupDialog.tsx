@@ -9,7 +9,8 @@ import {
   textInputBackgroundColor,
   textInputColor,
   textInputPlaceholderColor,
-  accentColor
+  accentColor,
+  popupButtonDisabledBackgroundColor
 } from '@/renderer/helpers/appearance';
 
 interface IPropsDialog {
@@ -280,20 +281,12 @@ export const PopupDialogTab = styled.div`
   font-size: 1.1em;
   /* transition: all 0.15s ease-in-out; */
   z-index: ${(props: IPopupDialogTab): number => (props.selected ? 3 : 2)};
-  ${(props: IPopupDialogTab): string =>
+  /* ${(props: IPopupDialogTab): string =>
     props.selected
       ? 'font-weight: bold; box-shadow: 2px 2px 4px rgba(0,0,0,0.15)'
-      : ''};
+      : ''}; */
   background: ${(props: IPopupDialogTab): ThemeSet | string =>
-    props.selected
-      ? props.backgroundSelected
-        ? props.backgroundSelected
-        : popupTabViewBackgroundColor
-        ? popupTabViewBackgroundColor
-        : '#e1e1e1'
-      : props.background
-      ? props.background
-      : '#e9e9e9'};
+    props.selected ? popupTabViewBackgroundColor : popupBackgroundColor};
   color: ${(props: IPopupDialogTab): string =>
     props.selected ? 'inherit' : '#aaa'};
   border-top-left-radius: 5px;

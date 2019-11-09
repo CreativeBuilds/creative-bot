@@ -184,7 +184,7 @@ export const AddOrEditCommandPopup = (props: IProps) => {
               { label: 'Owner / Bot', value: 4 }
             ]}
           />
-        </ SelectWrap>
+        </SelectWrap>
         <PopupDialogInputInfo>
           {getPhrase('new_command_permissions_info')}
         </PopupDialogInputInfo>

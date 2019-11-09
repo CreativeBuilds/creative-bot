@@ -4,10 +4,14 @@ import * as url from 'url';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { IEvent } from '@/renderer';
-import * as electronDebug from 'electron-debug';
+import { autoUpdater } from 'electron-updater';
+import * as log from 'electron-log';
 //electronDebug({ showDevTools: false, isEnabled: true });
 
 let mainWindow: Electron.BrowserWindow | null;
+
+autoUpdater.logger = log;
+log.info('App starting...');
 
 const rxEventHandler = new BehaviorSubject({ name: 'start', data: {} });
 
@@ -154,6 +158,9 @@ function createWindow(): void {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
+  autoUpdater.checkForUpdates().catch(err => {
+    log.debug(err);
+  });
 }
 
 // This method will be called when Electron has finished
@@ -176,6 +183,10 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow();
   }
+});
+
+autoUpdater.on('update-downloaded', info => {
+  autoUpdater.quitAndInstall();
 });
 
 // In this file you can include the rest of your app"s specific main process

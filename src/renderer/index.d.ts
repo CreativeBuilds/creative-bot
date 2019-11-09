@@ -3,6 +3,7 @@ import {
   IUpdateChange,
   IDeleteChange
 } from 'dexie-observable/api';
+import { User } from './helpers/db/db';
 
 export interface IConfig {
   authKey: null | string;
@@ -20,6 +21,18 @@ export interface IConfig {
     diamond?: number;
     ninja?: number;
     ninjet?: number;
+  };
+  eventConfig?: {
+    enableDebounceEvents?: boolean; //spam filter
+    enableEventMessages?: boolean; //global toggle for all event messages
+    onDiamond?: string;
+    onFollow?: string;
+    onGiftedSub?: string;
+    onIcecream?: string;
+    onLemon?: string;
+    onNinja?: string;
+    onNinjet?: string;
+    onSub?: string;
   };
   tts_Amplitude?: number;
   tts_Pitch?: number;
@@ -80,6 +93,17 @@ export interface IGiftObject extends IChatObject {
   expireDuration: number;
   recentCount: number;
 }
+
+export interface IFollowObject extends IChatObject {}
+
+export interface ISubObject extends IChatObject {
+  month: string;
+}
+
+export interface IGiftedSubObject extends IChatObject {
+  receiver?: string;
+  gifter?: IUser;
+}
 export interface IChatColors {
   owner: string;
   bot: string;
@@ -92,7 +116,10 @@ export interface IOption {
   label: string;
   value: string;
 }
-
+export interface IChange {
+  name: 'addUser' | 'removeUser';
+  data: User | null;
+}
 export interface IUser {
   id: string;
   displayname: string;

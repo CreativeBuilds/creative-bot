@@ -28,3 +28,6 @@ Thumbs.db
 # OS X files
 .DS_Store
 ._*
+
+# Misc
+publisher.json

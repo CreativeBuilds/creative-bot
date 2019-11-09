@@ -1,86 +1,36 @@
-import Dexie from 'dexie';
-// tslint:disable-next-line: no-import-side-effect
-import 'dexie-observable';
-import { BehaviorSubject, ObservableInput } from 'rxjs';
-import { IDatabaseChange } from 'dexie-observable/api';
+import localforage from 'localforage';
 import {
   IUser,
-  ICommand,
+  IOldUser,
   IChatObject,
-  IConfig,
-  IMe,
-  ITimer,
-  ICustomVariable,
   ISelectOption,
-  IOldUser
+  ICommand,
+  ITimer,
+  IChange
 } from '@/renderer';
-import { firestore } from '../firebase';
 import { rxUser } from '../rxUser';
-import {
-  first,
-  filter,
-  tap,
-  withLatestFrom,
-  map,
-  switchMap,
-  distinctUntilChanged
-} from 'rxjs/operators';
+import { first, filter, switchMap, map } from 'rxjs/operators';
+import { firestore } from '../firebase';
+import { ObservableInput, BehaviorSubject } from 'rxjs';
+import { collectionData } from 'rxfire/firestore';
 import { sendMessageWithConfig } from '../sendMessageWithConfig';
 import { getPhrase } from '../lang';
 import { rxCustomVariables } from '../rxCustomVariables';
-import { collectionData } from 'rxfire/firestore';
 
 /**
- * @desciption This is all the users who have been edited since the last save to firestore
- *
+ * @description second db try
  */
-export const editedUsers: { [id: string]: boolean } = {};
 
-/**
- * @description a BehaviorSubject that will emit IDatabseChanges when they occur in the db
- */
-export const rxDbChanges = new BehaviorSubject<IDatabaseChange[]>([]);
-
-/**
- * @description Creates a custom version of dexie that ties the class object to the IUser properties
- */
-// tslint:disable-next-line: completed-docs
-class MyDatabase extends Dexie {
-  public users: Dexie.Table<User, string>;
-
-  constructor() {
-    super('CreativeBot');
-    this.version(1).stores({
-      users: '++id,displayname,username,avatar,lino,points,exp,role'
-    });
-
-    this.users = this.table('users');
-    this.open().catch(e => console.error(e));
-  }
-}
-
-/**
- * @description creates the database
- */
-console.log('THIS SHOULD GET MADE');
-export const db = new MyDatabase();
-
-console.log('DB GETTING LOADED');
-
-export const clearDatabase = async () => {
-  return db.tables.forEach(table => {
-    table.clear();
-  });
-};
-
-/**
- * @description when something in the database changes, push it to rxDbChanges
- */
-db.on('changes', changes => {
-  // tslint:disable-next-line: no-console
-  console.log('changes', changes);
-  rxDbChanges.next(changes);
+localforage.config({
+  name: 'CreativeBot2',
+  version: 1,
+  storeName: 'users',
+  description: 'Stores the info for users'
 });
+
+interface ITestObject {
+  test: number;
+}
 
 /**
  * @description Returns a user object that has mmultiple functions on it for updating variables like points
@@ -151,25 +101,29 @@ export class User implements IUser {
       if (!authUser) {
         return console.log('NO AUTH USER');
       }
-      console.log('this username', this.username);
-      db.users
-        .delete(this.username)
-        .then(() => {
-          return firestore
+      rxUsers.pipe(first()).subscribe(users => {
+        const dupe = { ...users };
+        try {
+          delete dupe[this.username];
+        } catch (err) {
+          console.log(
+            'an error has occured while removing the user from rxUsers',
+            err
+          );
+        }
+        rxUsers.next(dupe);
+        rxDbChanges.next({ name: 'removeUser', data: null });
+      });
+      localforage
+        .removeItem(this.username)
+        .then(() =>
+          firestore
             .collection('users')
             .doc(authUser.uid)
             .collection('users')
             .doc(this.username)
-            .delete();
-        })
-        .then(() => {
-          rxUsers.pipe(first()).subscribe(users => {
-            const USERS = { ...users };
-            delete USERS[this.username];
-            console.log('pushing to rxUsers', USERS, USERS[this.username]);
-            rxUsers.next(USERS);
-          });
-        })
+            .delete()
+        )
         .catch(err => {
           console.error(err);
         });
@@ -200,7 +154,7 @@ export class User implements IUser {
    */
   public async save() {
     console.log('SAVING USER', this);
-    return db.users.put(
+    return insertUserToDB(
       new User(
         this.id,
         this.displayname,
@@ -298,6 +252,78 @@ export class User implements IUser {
     );
   }
 }
+
+/**
+ * @description returns an array of User (class) objects directly from firestore
+ * @warning DO NOT SUBSCRIBE TO THIS IN COMPONENTS
+ */
+export const rxFireUsers = rxUser.pipe(
+  filter(x => !!x),
+  /**
+   * @description this switchmap takes the current user id and returns a firestore reference using that uid
+   * to get the firestore users.
+   *
+   * @note Everything down the line will update if a user in the firestore database updates
+   */
+  switchMap(
+    (user): ObservableInput<any> => {
+      if (!user) {
+        return [];
+      }
+
+      const firestoreReference = firestore
+        .collection('users')
+        .doc(user.uid)
+        .collection('users');
+
+      return collectionData(firestoreReference);
+    }
+  ),
+  map((users: IOldUser[]): User[] => {
+    /**
+     * @description maps over all the database users and converts them to the new class based users
+     */
+    return users.map((oldUser: IOldUser) => {
+      const user: IUser = {
+        id: oldUser.username
+          ? oldUser.username
+          : oldUser.blockchainUsername
+          ? oldUser.blockchainUsername
+          : '',
+        displayname: oldUser.displayname
+          ? oldUser.displayname
+          : oldUser.dliveUsername
+          ? oldUser.dliveUsername
+          : '',
+        username: oldUser.username
+          ? oldUser.username
+          : oldUser.blockchainUsername
+          ? oldUser.blockchainUsername
+          : '',
+        avatar: oldUser.avatar ? oldUser.avatar : '',
+        lino: oldUser.lino ? oldUser.lino : 0,
+        points: oldUser.points ? oldUser.points : 0,
+        exp: oldUser.exp ? oldUser.exp : 0,
+        role: oldUser.role,
+        roomRole: oldUser.roomRole || 'Member',
+        isSubscribed: oldUser.isSubscribed || false
+      };
+
+      return new User(
+        user.id,
+        user.displayname,
+        user.username,
+        user.avatar,
+        user.lino,
+        user.points,
+        user.exp,
+        user.role,
+        user.roomRole || 'Member',
+        user.isSubscribed || false
+      );
+    });
+  })
+);
 
 /**
  * @description is the Command class for all commands
@@ -503,8 +529,7 @@ export class Command implements ICommand {
     const commandName = variables.shift();
 
     const sender = message.sender;
-    db.users
-      .get(sender.username)
+    getUserById(sender.username)
       .then(user => {
         const mUser =
           user ||
@@ -654,223 +679,64 @@ export class Timer implements ITimer {
   }
 }
 
-/**
- * @description converts all users in the local database to be User objects when they are returned by any query
- */
-db.users.mapToClass(User);
-
-/**
- * @description returns an array of User (class) objects directly from firestore
- * @warning DO NOT SUBSCRIBE TO THIS IN COMPONENTS
- */
-export const rxFireUsers = rxUser.pipe(
-  filter(x => !!x),
-  /**
-   * @description this switchmap takes the current user id and returns a firestore reference using that uid
-   * to get the firestore users.
-   *
-   * @note Everything down the line will update if a user in the firestore database updates
-   */
-  switchMap(
-    (user): ObservableInput<any> => {
-      if (!user) {
-        return [];
-      }
-
-      const firestoreReference = firestore
-        .collection('users')
-        .doc(user.uid)
-        .collection('users');
-
-      return collectionData(firestoreReference);
-    }
-  ),
-  map((users: IOldUser[]): User[] => {
-    /**
-     * @description maps over all the database users and converts them to the new class based users
-     */
-    return users.map((oldUser: IOldUser) => {
-      const user: IUser = {
-        id: oldUser.username
-          ? oldUser.username
-          : oldUser.blockchainUsername
-          ? oldUser.blockchainUsername
-          : '',
-        displayname: oldUser.displayname
-          ? oldUser.displayname
-          : oldUser.dliveUsername
-          ? oldUser.dliveUsername
-          : '',
-        username: oldUser.username
-          ? oldUser.username
-          : oldUser.blockchainUsername
-          ? oldUser.blockchainUsername
-          : '',
-        avatar: oldUser.avatar ? oldUser.avatar : '',
-        lino: oldUser.lino ? oldUser.lino : 0,
-        points: oldUser.points ? oldUser.points : 0,
-        exp: oldUser.exp ? oldUser.exp : 0,
-        role: oldUser.role,
-        roomRole: oldUser.roomRole || 'Member',
-        isSubscribed: oldUser.isSubscribed || false
-      };
-
-      return new User(
-        user.id,
-        user.displayname,
-        user.username,
-        user.avatar,
-        user.lino,
-        user.points,
-        user.exp,
-        user.role,
-        user.roomRole || 'Member',
-        user.isSubscribed || false
-      );
-    });
-  })
-);
-
-/**
- * @description this is the userMap (local variable to store all users)
- */
-const userMap = new BehaviorSubject<{ [id: string]: User } | null>(null);
-
-/**
- * @description Get all the current users in the local database
- * and convert them to User class objects.
- */
-let getCurrentLocal = () => {
-  db.users
-    .toArray()
-    .then(users => {
-      /**
-       * @description userMap.next sends the map of users from the local database to userMap
-       * for a start value
-       *
-       * @note this only happens once and then will no longer update the BehaviorSubject when the
-       * database updates
-       */
-      userMap.next(
-        users.reduce((acc: { [id: string]: User }, curr) => {
-          acc[curr.username] = curr;
-
-          return acc;
-        }, {})
-      );
-    })
-    .catch(null);
-};
-setInterval(() => {
-  getCurrentLocal();
-}, 1000 * 60 * 60);
-getCurrentLocal();
-/**
- * @description gets all the users in a map format.
- * If you want all the users this is what you should subscribe to, or you can use rxUsersArray
- */
 export const rxUsers = new BehaviorSubject<{ [id: string]: User }>({});
 
-rxDbChanges
-  .pipe(
-    switchMap(() => {
-      return userMap;
-    })
-  )
-  .pipe(
-    filter(x => !!x),
-    first(),
-    switchMap(() => {
-      return rxDbChanges.pipe(first());
-    })
-  )
-  .pipe(
-    map((changeArr: IDatabaseChange[]) => {
-      return changeArr.reduce((acc: IDatabaseChange[], curr) => {
-        if (curr.table === 'users') {
-          acc.push(curr);
-        }
+export const rxDbChanges = new BehaviorSubject<IChange | null>(null);
 
-        return acc;
-      }, []);
-    })
-  )
-  .pipe(
-    tap(users => console.log('db changed 1', users)),
-    withLatestFrom(userMap),
-    tap(users => console.log('user map updated 2')),
-    map(([changeArr, UserMap]) => {
-      const cloneUserMap: { [id: string]: User } = { ...UserMap };
-      if (!UserMap) {
-        userMap.next({});
+export const insertUserToDB = async (user: User) => {
+  rxUsers.pipe(first()).subscribe(users => {
+    const dupe = { ...users };
+    dupe[user.username] = user;
+    rxUsers.next(dupe);
+  });
+  rxDbChanges.next({ name: 'addUser', data: user });
 
-        return {};
-      }
-      changeArr.forEach(change => {
-        console.log('change', change);
-        if (change.type === 3) {
-          // tslint:disable-next-line: prefer-object-spread no-unsafe-any
-          const curUser: Partial<IUser> = Object.assign({ oldObj: {} }, change)
-            .oldObj;
+  return localforage.setItem(user.username, user).catch(null);
+};
 
-          if (!curUser.username) {
-            return;
-          }
+export const getUserFromDB = async (id: string): Promise<User> => {
+  return localforage
+    .getItem(id)
+    .then(
+      (user: IUser) =>
+        new User(
+          user.id,
+          user.displayname,
+          user.username,
+          user.avatar,
+          user.lino,
+          user.points,
+          user.exp,
+          user.role,
+          user.roomRole,
+          user.isSubscribed
+        )
+    );
+};
 
-          // The user is being deleted
-          delete cloneUserMap[curUser.username];
-        } else {
-          // tslint:disable-next-line: prefer-object-spread no-unsafe-any
-          const curUser: IUser = Object.assign({ obj: {} }, change).obj;
-          if (!curUser || !curUser.username) {
-            return console.log('NO CURRENT USER');
-          }
+export const getUsersFromDB = () => {
+  return localforage.keys().then(async (keys: string[]) => {
+    const promises = keys.map(getUserFromDB);
 
-          cloneUserMap[curUser.username] = new User(
-            curUser.id,
-            curUser.displayname,
-            curUser.username,
-            curUser.avatar,
-            curUser.lino,
-            curUser.points,
-            curUser.exp,
-            curUser.role,
-            curUser.roomRole,
-            curUser.isSubscribed
-          );
-        }
-      });
-      console.log('pushing update to userMap');
-      userMap.next(cloneUserMap);
-
-      return UserMap;
-    })
-  )
-  .subscribe(usermap => rxUsers.next(usermap));
-// .pipe(distinctUntilChanged())
+    return Promise.all(promises);
+  });
+};
 
 export const getUserById = async (id: string) => {
   return rxUsers
-    .pipe(
-      first(),
-      filter(x => !!x),
-      map(users => {
-        return !!users[id] ? users[id] : null;
-      })
-    )
-    .toPromise();
+    .pipe(first())
+    .toPromise()
+    .then(users => {
+      return users[id];
+    });
 };
 
-/**
- * @description same thing as rxUsers but formats it into an array of User class objects
- */
-export const rxUsersArray = rxUsers.pipe(
-  map((mUserMap: { [username: string]: User }): User[] => {
-    const userArray: User[] = [];
-    Object.keys(mUserMap).forEach(username => {
-      userArray.push(mUserMap[username]);
-    });
+export const clearDatabase = async () => {
+  return localforage.clear();
+};
 
-    return userArray;
-  })
-);
+export const rxUsersArray = new BehaviorSubject<User[]>([]);
+
+rxUsers.subscribe(users => {
+  rxUsersArray.next(Object.keys(users).map(key => users[key]));
+});
