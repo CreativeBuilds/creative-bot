@@ -37,7 +37,8 @@ import { Commands } from './commands/commands';
 import { Timers } from './timers/timers';
 import { rxTimers } from '../helpers/rxTimers';
 import { sendMessageWithConfig, sendEventMessageWithConfig } from '../helpers/sendMessageWithConfig';
-import { Timer, rxUsers, User } from '../helpers/db/db';
+import { Timer } from '../helpers/db/db';
+import {rxUsers, User} from '../helpers/db/db';
 import { Custom_Variables } from './custom_variables/custom_variables';
 import {
   accentColor,

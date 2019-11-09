@@ -41,6 +41,8 @@
     "export-name": false,
     "no-reserved-keywords": false,
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "warn",
+    "no-console": false,
+    "completed-docs": false
   }
 }

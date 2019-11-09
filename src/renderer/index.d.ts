@@ -3,6 +3,7 @@ import {
   IUpdateChange,
   IDeleteChange
 } from 'dexie-observable/api';
+import { User } from './helpers/db/db';
 
 export interface IConfig {
   authKey: null | string;
@@ -115,7 +116,10 @@ export interface IOption {
   label: string;
   value: string;
 }
-
+export interface IChange {
+  name: 'addUser' | 'removeUser';
+  data: User | null;
+}
 export interface IUser {
   id: string;
   displayname: string;

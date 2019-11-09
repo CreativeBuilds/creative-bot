@@ -5,9 +5,9 @@ import {
   distinctUntilChanged,
   mergeMap,
   merge,
-  combineLatest
+  combineLatest,
+  skip
 } from 'rxjs/operators';
-import { db, rxDbChanges, Command, rxUsers, rxFireUsers } from './db/db';
 import { startRecentChat } from './recentChat';
 import { IDatabaseChange } from 'dexie-observable/api';
 import { rxUser } from './rxUser';
@@ -16,6 +16,7 @@ import { rxChat } from './rxChat';
 import { rxTimers } from './rxTimers';
 import { Subscription } from 'rxjs';
 import { rxConfig } from './rxConfig';
+import { insertUserToDB, rxFireUsers, rxUsers, rxDbChanges } from './db/db';
 
 export const lastBackedUpUsersToCloud = 0;
 
@@ -106,9 +107,11 @@ export const start = async () => {
    */
   rxFireUsers.subscribe(async users => {
     try {
-      await db.users.bulkAdd(users).catch(err => {
-        console.log('its fine');
+      const promises = users.map(user => {
+        return insertUserToDB(user);
       });
+
+      await Promise.all(promises);
     } catch (err) {
       (() => null)();
     }
@@ -121,28 +124,15 @@ export const start = async () => {
      * @description this will save the user id to an object, that will be looped over every hour to update
      * the user to firestore
      */
-    listener = rxDbChanges
-      .pipe(
-        map((changes: IDatabaseChange[]): IDatabaseChange[] => {
-          return changes.reduce(
-            (acc: IDatabaseChange[], curr): IDatabaseChange[] => {
-              if (curr.table.toLowerCase() === 'users') {
-                acc.push(curr);
-              }
-
-              return acc;
-            },
-            []
-          );
-        }, filter((changes: IDatabaseChange[]) => changes.length > 0))
-      )
-      .subscribe(changes => {
-        changes.forEach(change => {
-          changedUsers[change.key] = true;
-          if (change.type === 3) {
-            delete changedUsers[change.key];
-          }
-        });
+    listener = rxDbChanges.pipe(skip(1))
+      .subscribe(change => {
+        if(!change) return;
+        if(!change.data?.username) return;
+        if(change.name === 'addUser') {
+          changedUsers[change.data?.username] = true;
+        } else if(change.name === 'removeUser' ) {
+          delete changedUsers[change.data?.username];
+        }
       });
   });
   startRecentChat();

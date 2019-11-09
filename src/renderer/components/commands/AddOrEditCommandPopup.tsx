@@ -11,7 +11,7 @@ import {
   PopupDialogPadding,
   PopupButtonWrapper
 } from '../generic-styled-components/popupDialog';
-import { SelectWrap } from '../generic-styled-components/Select'
+import { SelectWrap } from '../generic-styled-components/Select';
 import { FaTimes } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Button } from '../generic-styled-components/button';
@@ -183,7 +183,7 @@ export const AddOrEditCommandPopup = (props: IProps) => {
               { label: 'Owner / Bot', value: 4 }
             ]}
           />
-        </ SelectWrap>
+        </SelectWrap>
         <PopupDialogInputInfo>
           {getPhrase('new_command_permissions_info')}
         </PopupDialogInputInfo>
