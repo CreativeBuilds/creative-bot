@@ -36,7 +36,7 @@ import { rxMe } from '../helpers/rxMe';
 import { Commands } from './commands/commands';
 import { Timers } from './timers/timers';
 import { rxTimers } from '../helpers/rxTimers';
-import { sendMessageWithConfig } from '../helpers/sendMessageWithConfig';
+import { sendMessageWithConfig, sendEventMessageWithConfig } from '../helpers/sendMessageWithConfig';
 import { Timer, rxUsers, User } from '../helpers/db/db';
 import { Custom_Variables } from './custom_variables/custom_variables';
 import {
@@ -47,6 +47,9 @@ import {
 import { rxLang } from '../helpers/rxLang';
 import { Loading } from './generic-styled-components/loading';
 import { rxDonations } from '../helpers/rxDonations';
+import { rxFollows } from '../helpers/rxFollows';
+import { rxGiftedSubs } from '../helpers/rxGiftedSubs';
+import { rxSubs } from '../helpers/rxSubs';
 
 start().catch(null);
 
@@ -302,6 +305,7 @@ export const Main = () => {
         skip(1),
         filter(x => !!x)
       )
+      // tslint:disable-next-line: cyclomatic-complexity
       .subscribe(donation => {
         if (!donation) {
           return;
@@ -316,13 +320,14 @@ export const Main = () => {
             .catch(null);
           // Check the config to see what they should get for points
           const settings = {
-            ...config.donationSettings,
             lemons: 1,
             icecream: 10,
             diamond: 100,
             ninja: 1000,
-            ninjet: 10000
+            ninjet: 10000,
+            ...config.donationSettings
           };
+
           if (donation.gift === 'LEMON') {
             sender.addPoints(settings.lemons).catch(null);
           }
@@ -338,6 +343,25 @@ export const Main = () => {
           if (donation.gift === 'NINJET') {
             sender.addPoints(settings.ninjet).catch(null);
           }
+
+          if(config.eventConfig?.enableEventMessages) {
+            if (donation.gift === 'LEMON') {
+              sendEventMessageWithConfig(!!config.eventConfig?.onLemon ? config.eventConfig?.onLemon : '', donation.gift, sender);
+            }
+            if (donation.gift === 'ICE_CREAM') {
+              sendEventMessageWithConfig(!!config.eventConfig?.onIcecream ? config.eventConfig?.onIcecream : '', donation.gift, sender);
+            }
+            if (donation.gift === 'DIAMOND') {
+              sendEventMessageWithConfig(!!config.eventConfig?.onDiamond ? config.eventConfig?.onDiamond : '', donation.gift, sender);
+            }
+            if (donation.gift === 'NINJAGHINI') {
+              sendEventMessageWithConfig(!!config.eventConfig?.onNinja ? config.eventConfig?.onNinja : '', donation.gift, sender);
+            }
+            if (donation.gift === 'NINJET') {
+              sendEventMessageWithConfig(!!config.eventConfig?.onNinjet ? config.eventConfig?.onNinjet : '', donation.gift, sender);
+            }
+          }
+
         }
 
         // say dono here
@@ -361,6 +385,57 @@ export const Main = () => {
       listener.unsubscribe();
     };
   }, [config, soundIsRunning]);
+
+  useEffect(() => {
+    const listener = rxFollows.pipe(skip(1), filter(x => !!x)).subscribe(follow => {
+      if(!follow) {
+        return;
+      }
+      const sender = users[follow.sender.username];
+
+      if(config.eventConfig?.enableEventMessages) {
+        sendEventMessageWithConfig(!!config.eventConfig?.onFollow ? config.eventConfig?.onFollow : '', 'FOLLOW', sender);
+      }
+    });
+
+    return () => {
+      listener.unsubscribe();
+    }
+  }, [config]);
+
+  useEffect(() => {
+    const listener = rxGiftedSubs.pipe(skip(1), filter(x => !!x)).subscribe(giftedSub => {
+      if(!giftedSub) {
+        return;
+      }
+      const sender = users[giftedSub.sender.username];
+
+      if(config.eventConfig?.enableEventMessages) {
+        sendEventMessageWithConfig(!!config.eventConfig?.onFollow ? config.eventConfig?.onFollow : '', 'GIFTEDSUB', sender);
+      }
+    });
+
+    return () => {
+      listener.unsubscribe();
+    }
+  }, [config]);
+
+  useEffect(() => {
+    const listener = rxSubs.pipe(skip(1), filter(x => !!x)).subscribe(giftedSub => {
+      if(!giftedSub) {
+        return;
+      }
+      const sender = users[giftedSub.sender.username];
+
+      if(config.eventConfig?.enableEventMessages) {
+        sendEventMessageWithConfig(!!config.eventConfig?.onFollow ? config.eventConfig?.onFollow : '', 'SUB', sender);
+      }
+    });
+
+    return () => {
+      listener.unsubscribe();
+    }
+  }, [config]);
 
   useEffect(() => {
     let listener = setTimeout(() => {

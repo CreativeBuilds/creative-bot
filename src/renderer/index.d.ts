@@ -21,6 +21,18 @@ export interface IConfig {
     ninja?: number;
     ninjet?: number;
   };
+  eventConfig?: {
+    enableDebounceEvents?: boolean; //spam filter
+    enableEventMessages?: boolean; //global toggle for all event messages
+    onDiamond?: string;
+    onFollow?: string;
+    onGiftedSub?: string;
+    onIcecream?: string;
+    onLemon?: string;
+    onNinja?: string;
+    onNinjet?: string;
+    onSub?: string;
+  };
   tts_Amplitude?: number;
   tts_Pitch?: number;
   tts_Speed?: number;
@@ -79,6 +91,17 @@ export interface IGiftObject extends IChatObject {
   message?: string;
   expireDuration: number;
   recentCount: number;
+}
+
+export interface IFollowObject extends IChatObject {}
+
+export interface ISubObject extends IChatObject {
+  month: string;
+}
+
+export interface IGiftedSubObject extends IChatObject {
+  receiver?: string;
+  gifter?: IUser;
 }
 export interface IChatColors {
   owner: string;

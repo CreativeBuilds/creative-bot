@@ -9,7 +9,7 @@ import {
 import { SelectWrap } from '../generic-styled-components/Select'
 import { ChatInput } from './chatInput';
 import { getPhrase } from '@/renderer/helpers/lang';
-import { FaUserAlt, FaMicrophone } from 'react-icons/fa';
+import { FaUserAlt, FaMicrophone, FaCommentAlt } from 'react-icons/fa';
 import { Icon } from '../generic-styled-components/Icon';
 import { ChatChangeAccounts } from './ChatChangeAccounts';
 import { rxStoredMessages } from '@/renderer/helpers/rxChat';
@@ -35,6 +35,7 @@ import {
   listItemColor,
   listItemAlternativeColor
 } from '@/renderer/helpers/appearance';
+import { ChatMessageSettings } from './chatMessageSettings';
 
 const ChatMessages = styled.div`
   display: flex;
@@ -77,6 +78,7 @@ let AllMessages: IChatObject[] = [];
 export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
   const [userControlOverlay, setUserControlOverlay] = React.useState(false);
   const [ttsControlOverlay, setTTSControlOverlay] = React.useState(false);
+  const [messageControl, setMessageControl] = React.useState(false);
   const [messages, setMessages] = React.useState<IChatObject[]>([]);
   const [config, setConfig] = React.useState<Partial<IConfig>>({});
   const [botAccount, setBotAccount] = React.useState<IMe>();
@@ -206,11 +208,19 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
     setTTSControlOverlay(true);
   };
 
+  const openMessageControl = () => {
+    setMessageControl(true);
+  };
+
   const closeUserControl = () => {
     setUserControlOverlay(false);
   };
   const closeTTSControl = () => {
     setTTSControlOverlay(false);
+  };
+
+  const closeMessageControl = () => {
+    setMessageControl(false);
   };
 
   const openTab = () => {
@@ -244,6 +254,9 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
         <PageTitleRight>
           <Icon onClick={openTTSControl} style={{ paddingRight: '10px' }}>
             <FaMicrophone></FaMicrophone>
+          </Icon>
+          <Icon onClick={openMessageControl} style={{ paddingRight: '10px' }}>
+            <FaCommentAlt></FaCommentAlt>
           </Icon>
           <Icon onClick={openUserControl}>
             <FaUserAlt></FaUserAlt>
@@ -297,6 +310,12 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
       ) : null}
       {ttsControlOverlay ? (
         <ChatTTSSettings config={config} closeTTSControl={closeTTSControl} />
+      ) : null}
+      {messageControl ? (
+        <ChatMessageSettings
+          config={config}
+          closeMessageControl={closeMessageControl}
+        />
       ) : null}
     </PageMain>
   );
