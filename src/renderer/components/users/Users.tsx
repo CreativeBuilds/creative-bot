@@ -299,7 +299,7 @@ export const Users = () => {
               )
             ) : null}
           </UsersColumn>
-          <UsersColumn hover={true} onClick={toggleLevel}>
+          {/* <UsersColumn hover={true} onClick={toggleLevel}>
             {getPhrase('users_column_level')}{' '}
             {filter === 'exp' ? (
               isFlipped('exp') ? (
@@ -308,7 +308,7 @@ export const Users = () => {
                 <FaAngleUp size={15} style={{ paddingLeft: '5px' }} />
               )
             ) : null}
-          </UsersColumn>
+          </UsersColumn> */}
           <UsersColumn hover={true} onClick={togglePoints}>
             {getPhrase('users_column_points')}{' '}
             {filter === 'points' ? (
@@ -320,7 +320,7 @@ export const Users = () => {
             ) : null}
           </UsersColumn>
           <UsersColumn hover={true} onClick={toggleLino}>
-            {getPhrase('users_column_lino')}{' '}
+            {getPhrase('users_column_lemons')}{' '}
             {filter === 'lino' ? (
               isFlipped('lino') ? (
                 <FaAngleDown size={15} style={{ paddingLeft: '5px' }} />
@@ -400,7 +400,7 @@ export const Users = () => {
                   return (
                     <UserRow style={style} key={key} alternate={!!(index % 2)}>
                       <UsersColumn>{user.displayname}</UsersColumn>
-                      <UsersColumn>1</UsersColumn>
+                      {/* <UsersColumn>1</UsersColumn> */}
                       <UsersColumn>{user.points}</UsersColumn>
                       <UsersColumn>{user.getLino()}</UsersColumn>
                       <UsersColumn

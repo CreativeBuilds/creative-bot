@@ -3,6 +3,7 @@ import { filter, first, withLatestFrom } from 'rxjs/operators';
 import { sendMessage } from './dlive/sendMessage';
 import { rxMe } from './rxMe';
 import { User } from './db/db';
+import { IMe } from '..';
 
 /**
  * @description will use rxConfig, wait till it has a streamerAuthKey and authKey then send the message
@@ -23,10 +24,12 @@ export const sendMessageWithConfig = (message: string) => {
       if (!config) {
         return;
       }
+      // tslint:disable-next-line: prefer-type-cast
+      const ME = me as IMe;
       sendMessage(config.authKey, {
         message,
         roomRole: 'Moderator',
-        streamer: me.username,
+        streamer: ME.username,
         subscribing: true
       }).catch(null);
     });
@@ -47,7 +50,7 @@ export const sendEventMessageWithConfig = (
       (() => null)();
     }
   }
-  timeouts[user.username] = setTimeout(() => {
+  timeouts[`${user.username}:${type}`] = setTimeout(() => {
     sendMessageWithConfig(message.replace('$USER', user.displayname));
     delete timeouts[`${user.username}:${type}`];
   }, 2000);

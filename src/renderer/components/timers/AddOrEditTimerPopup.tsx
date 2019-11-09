@@ -101,7 +101,6 @@ export const AddOrEditTimerPopup = (props: IProps) => {
       timerSeconds,
       timerMessages
     );
-    console.log('NEW TIMER', newTimer);
     newTimer.save();
     props.closePopup();
   };
@@ -250,7 +249,7 @@ export const AddOrEditTimerPopup = (props: IProps) => {
               ? !!props.timer
                 ? handleEdit
                 : handleCreate
-              : () => console.log('HELLO WORLD WEEE')
+              : () => null
           }
           style={{ zIndex: 4, position: 'static' }}
         >

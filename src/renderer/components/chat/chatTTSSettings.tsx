@@ -10,7 +10,7 @@ import {
   PopupDialogInputInfo,
   PopupDialogInputName
 } from '../generic-styled-components/popupDialog';
-import { SelectWrap, selectStyles } from '../generic-styled-components/Select'
+import { SelectWrap, selectStyles } from '../generic-styled-components/Select';
 import { FaTimes } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Button } from '../generic-styled-components/button';
@@ -40,7 +40,6 @@ export const ChatTTSSettings = ({
   >(config.allowedTTSDonations ? config.allowedTTSDonations : []);
 
   React.useEffect(() => {
-    console.log('got config', config, config.allowedTTSDonations);
     setHasTTSDonations(!!config.hasTTSDonations);
 
     setAllowedTTSDonations(
@@ -123,7 +122,7 @@ export const ChatTTSSettings = ({
               value={allowedTTSDonations}
               isMulti={true}
               onChange={updateAllowedTTSDonations}
-              /*menuPortalTarget={document.body}*/
+              menuPortalTarget={document.body}
               options={[
                 { label: 'Lemon', value: 'LEMON' },
                 { label: 'Ice Cream', value: 'ICE_CREAM' },

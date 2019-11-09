@@ -28,11 +28,6 @@ export class CustomVariable implements ICustomVariable {
       user_variables.shift();
     }
 
-    console.log(
-      !!message.content ? message.content.split(' ') : [],
-      user_variables
-    );
-
     return new Promise(res => {
       try {
         // tslint:disable-next-line: no-eval no-void-expression

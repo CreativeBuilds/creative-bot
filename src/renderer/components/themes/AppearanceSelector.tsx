@@ -156,14 +156,11 @@ export const AppearanceSelector = (
   return (
     <SelectorContainer>
       {React.Children.toArray(props.children).map(function(element, idx) {
-        console.log(index);
         return React.cloneElement(element, {
           id: idx,
           onSelected: function() {
             setIndex(idx);
             themeToggle.setTheme(idx == 0 ? 'light' : 'dark');
-            //console.log(element.props.title);
-            //console.log(theme(element.props.title.toLowerCase()));
           },
           selected: index == idx ? true : false
         });

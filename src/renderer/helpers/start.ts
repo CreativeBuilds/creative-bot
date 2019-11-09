@@ -68,7 +68,6 @@ export const backupUsersToCloud = async (usersArray: string[]) => {
 //       if (!timer.enabled) {
 //         return null;
 //       }
-//       console.log('INSIDE FOR EACH ', timer.enabled, timer.seconds);
 
 //       const updateTotal = () => {
 //         total++;

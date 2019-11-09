@@ -60,6 +60,9 @@ export interface IRXEvent {
 export interface IMe {
   displayname: string;
   username: string;
+  livestream: {
+    createdAt: string;
+  };
 }
 
 export interface ISender {

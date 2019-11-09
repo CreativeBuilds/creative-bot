@@ -194,7 +194,7 @@ export const Custom_Variables = () => {
           <VariableColumn style={{ flex: 1 }}>
             {getPhrase('custom_variables_column_string')}
           </VariableColumn>
-          <VariableColumn
+          {/* <VariableColumn
             style={{
               maxWidth: 'min-content',
               minWidth: '75px',
@@ -203,7 +203,7 @@ export const Custom_Variables = () => {
             }}
           >
             {getPhrase('custom_variables_column_toggle')}
-          </VariableColumn>
+          </VariableColumn> */}
           <VariableColumn
             style={{
               maxWidth: 'min-content',
@@ -311,7 +311,7 @@ export const Custom_Variables = () => {
                       <VariableColumn style={{ flex: 1 }}>
                         {variable.replyString}
                       </VariableColumn>
-                      <VariableColumn
+                      {/* <VariableColumn
                         style={{
                           maxWidth: 'min-content',
                           minWidth: '75px',
@@ -328,7 +328,7 @@ export const Custom_Variables = () => {
                             <FaToggleOff onClick={swapEnable} size='25px' />
                           </Icon>
                         )}
-                      </VariableColumn>
+                      </VariableColumn> */}
                       <VariableColumn
                         style={{
                           maxWidth: 'min-content',

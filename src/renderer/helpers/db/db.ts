@@ -6,7 +6,8 @@ import {
   ISelectOption,
   ICommand,
   ITimer,
-  IChange
+  IChange,
+  IConfig
 } from '@/renderer';
 import { rxUser } from '../rxUser';
 import { first, filter, switchMap, map } from 'rxjs/operators';
@@ -16,6 +17,10 @@ import { collectionData } from 'rxfire/firestore';
 import { sendMessageWithConfig } from '../sendMessageWithConfig';
 import { getPhrase } from '../lang';
 import { rxCustomVariables } from '../rxCustomVariables';
+import {lino as LINO} from '../lino/lino';
+import { rxConfig } from '../rxConfig';
+import { getSelf } from '../dlive/getSelf';
+import moment from 'moment';
 
 /**
  * @description second db try
@@ -82,7 +87,6 @@ export class User implements IUser {
     } else {
       amount = input;
     }
-    console.log('amount', amount, typeof amount);
     if (typeof amount !== 'number' || isNaN(amount)) {
       return this.save();
     }
@@ -96,20 +100,16 @@ export class User implements IUser {
    * @warning with the listener may reset the user
    */
   public delete() {
-    console.log('deleting user');
     rxUser.pipe(first()).subscribe(authUser => {
       if (!authUser) {
-        return console.log('NO AUTH USER');
+        return
       }
       rxUsers.pipe(first()).subscribe(users => {
         const dupe = { ...users };
         try {
           delete dupe[this.username];
         } catch (err) {
-          console.log(
-            'an error has occured while removing the user from rxUsers',
-            err
-          );
+          (()=>null)();
         }
         rxUsers.next(dupe);
         rxDbChanges.next({ name: 'removeUser', data: null });
@@ -153,7 +153,6 @@ export class User implements IUser {
    * @description saves to the local db (does not instantly fire to firestore, but it will be cached for the 1 hour update window)
    */
   public async save() {
-    console.log('SAVING USER', this);
     return insertUserToDB(
       new User(
         this.id,
@@ -192,9 +191,6 @@ export class User implements IUser {
    * @description converts the lino from an int state to how it looks on dlive
    */
   public getLino() {
-    if (this.displayname === 'Benjimen') {
-      console.log(this.lino, 'LINO REEE');
-    }
     return Math.floor(this.lino / 10000) * 10;
   }
 
@@ -445,13 +441,6 @@ export class Command implements ICommand {
       };
 
       if (!canPass() && this.getPermissionLevels().length > 0) {
-        // console.log(
-        //   'can pass',
-        //   canPass(),
-        //   this.getPermissionLevels(),
-        //   user.getPermissionLevel(),
-        //   user.displayname.toUpperCase()
-        // );
         sendMessageWithConfig(
           `@${message.sender.displayname} you do not have permission to run this command!`
         );
@@ -505,7 +494,37 @@ export class Command implements ICommand {
         reply: this.reply
       }).catch(null);
       parsedMessage
-        .then(msgToSend => {
+        .then(async msgToSend => {
+          if(msgToSend.includes('{user}')){
+            msgToSend = msgToSend.replace('{user}', message.sender.displayname);
+          }
+          let user = await getUserById(message.sender.username);
+          if(msgToSend.includes('{points}')){
+            msgToSend = msgToSend.replace('{points}', user?.points ? `${user?.points}` : '0');
+          }
+          if(msgToSend.includes('{lino}')){
+            let bank = await LINO.query.getAccountBank(message.sender.username);
+            msgToSend = msgToSend.replace('{lino}', bank.saving.amount);
+          }
+          if(msgToSend.includes('{streamer}')){
+            const firebaseUser = await rxUser.pipe(first()).toPromise();
+            if(!!firebaseUser) {
+              const streamerRef = await firestore.collection('config').doc(firebaseUser.uid).get();
+              const streamer = streamerRef.data();
+              if(!!streamer) {
+                // tslint:disable-next-line: no-unsafe-any
+                msgToSend = msgToSend.replace('{streamer}', streamer.streamerDisplayName);
+              }
+            }
+          }
+          if(msgToSend.includes('{uptime}')) {
+            const config = await rxConfig.pipe(first()).toPromise();
+            if(!!config) {
+              // tslint:disable-next-line: no-unsafe-any
+              const self = await getSelf(config.streamerAuthKey);
+              msgToSend = msgToSend.replace('{uptime}', moment(self?.livestream?.createdAt).fromNow())
+            }
+          }
           sendMessageWithConfig(msgToSend);
         })
         .catch(null);
@@ -634,7 +653,6 @@ export class Timer implements ITimer {
    * @description saves the command to firestore
    */
   public save() {
-    console.log('saving timer', this);
     rxUser
       .pipe(
         filter(x => !!x),
@@ -644,7 +662,6 @@ export class Timer implements ITimer {
         if (!user) {
           return;
         }
-        console.log(this.name, this.toJSON());
         firestore
           .collection('users')
           .doc(user.uid)
@@ -658,7 +675,6 @@ export class Timer implements ITimer {
    * @description runs the command by getting the config and sending the reply after parsing
    */
   public async run() {
-    console.log('running timer');
     sendMessageWithConfig(this.reply);
   }
 

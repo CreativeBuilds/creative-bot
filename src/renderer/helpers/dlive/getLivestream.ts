@@ -4,7 +4,7 @@ import { IMe } from '@/renderer';
 /**
  * @description Send request to dlive for info on a auth token
  */
-export const getSelf = async (authToken: string): Promise<IMe> => {
+export const getLivestream = async (authToken: string): Promise<IMe> => {
   // tslint:disable-next-line: promise-must-complete
   return new Promise((res, rej) => {
     const options = {
@@ -25,9 +25,7 @@ export const getSelf = async (authToken: string): Promise<IMe> => {
         me {
             username
             displayname
-            livestream {
-              createdAt
-            }
+            livestream
         }
       }
     `;

@@ -276,11 +276,6 @@ export const Commands = () => {
                       command.enable();
                     }
                   };
-
-                  if (command.name === 'discord') {
-                    console.log('COMMAND', command);
-                  }
-
                   return (
                     <CommandRow
                       style={{

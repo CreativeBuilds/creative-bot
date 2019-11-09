@@ -13,20 +13,23 @@ import { getSelf } from './dlive/getSelf';
 /**
  * @description rxMe is the equivlenet of calling getSelf to dlive but instead of using api calls it will call only when the streamerAuthKey in rxConfig updates
  */
-export const rxMe = new BehaviorSubject<IMe>({ username: '', displayname: '' });
+export const rxMe = new BehaviorSubject<IMe>({
+  username: '',
+  displayname: '',
+  livestream: {
+    createdAt: '0'
+  }
+});
 
 rxConfig
   .pipe(
     filter(x => !!x),
     distinctUntilChanged((x, y) => {
-      console.log('x and y', x, y);
-
       return (
         { streamerAuthKey: null, ...x }.streamerAuthKey ===
         { streamerAuthKey: null, ...y }.streamerAuthKey
       );
     }),
-    tap(x => console.log('PASSED THE FLAT MAP')),
     map((config: Partial<IConfig>) => {
       if (!config.streamerAuthKey) {
         return empty();

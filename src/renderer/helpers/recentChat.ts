@@ -49,7 +49,6 @@ const rewardRecentChatters = (config: Partial<IConfig>) => {
           : users[username];
         user.isSubscribed = !!chat.subscribing;
         user.roomRole = chat.roomRole;
-        console.log('adding 1 point to', username);
         user.addPoints(1).catch(err => console.error(err));
       });
       recentChatters.next({});
@@ -63,7 +62,6 @@ export const startRecentChat = () => {
   rxChat
     .pipe(withLatestFrom(recentChatters))
     .subscribe(([chat, mEditedUsers]) => {
-      console.log('loop de loop');
       if (typeof chat === 'boolean') {
         return;
       }

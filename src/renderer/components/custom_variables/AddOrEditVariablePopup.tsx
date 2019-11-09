@@ -38,9 +38,9 @@ export const AddOrEditVariablePopup = (props: IProps) => {
   const [variableString, setVariableString] = React.useState(
     props.variable ? props.variable.replyString : ''
   );
-  const [isEval, setIsEval] = React.useState(
-    props.variable ? !!props.variable.isEval : false
-  );
+  // const [isEval, setIsEval] = React.useState(
+  //   props.variable ? !!props.variable.isEval : false
+  // );
 
   const [variables, setVariables] = React.useState<{
     [id: string]: CustomVariable;
@@ -66,7 +66,8 @@ export const AddOrEditVariablePopup = (props: IProps) => {
     const newVariable = new CustomVariable(
       variableName,
       variableString,
-      isEval
+      // isEval
+      false
     );
     newVariable.save();
     props.closePopup();
@@ -82,15 +83,16 @@ export const AddOrEditVariablePopup = (props: IProps) => {
     }
     if (
       variableName === variable.name &&
-      variableString === variable.replyString &&
-      isEval === variable.isEval
+      variableString === variable.replyString
+      // isEval === variable.isEval
     ) {
       return;
     }
     const newVariable = new CustomVariable(
       variableName,
       variableString,
-      isEval
+      // isEval
+      false
     );
     newVariable.save();
     props.closePopup();
@@ -108,8 +110,8 @@ export const AddOrEditVariablePopup = (props: IProps) => {
       }
       if (
         variableName === variable.name &&
-        variableString === variable.replyString &&
-        isEval === variable.isEval
+        variableString === variable.replyString
+        // isEval === variable.isEval
       ) {
         return false;
       }
@@ -126,9 +128,9 @@ export const AddOrEditVariablePopup = (props: IProps) => {
     setVariableString(e.target.value);
   };
 
-  const updateIsEval = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsEval(!isEval);
-  };
+  // const updateIsEval = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setIsEval(!isEval);
+  // };
 
   return (
     <PopupDialog
@@ -187,7 +189,7 @@ export const AddOrEditVariablePopup = (props: IProps) => {
           {getPhrase('new_variable_reply_info')}
         </PopupDialogInputInfo>
       </PopupDialogInputWrapper>
-      <PopupDialogInputWrapper>
+      {/* <PopupDialogInputWrapper>
         <PopupDialogInputName>
           {getPhrase('new_variable_isEval_title')}
         </PopupDialogInputName>
@@ -200,7 +202,7 @@ export const AddOrEditVariablePopup = (props: IProps) => {
         <PopupDialogInputInfo>
           {getPhrase('new_variable_isEval_info')}
         </PopupDialogInputInfo>
-      </PopupDialogInputWrapper>
+      </PopupDialogInputWrapper> */}
       <PopupButtonWrapper>
         <Button
           disabled={!canSubmit()}

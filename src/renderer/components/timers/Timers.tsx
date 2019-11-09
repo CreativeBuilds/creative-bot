@@ -273,10 +273,6 @@ export const Timers = () => {
                     }
                   };
 
-                  if (timer.name === 'discord') {
-                    console.log('COMMAND', timer);
-                  }
-
                   return (
                     <TimerRow
                       style={{

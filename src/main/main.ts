@@ -20,7 +20,6 @@ const rxEventHandler = new BehaviorSubject({ name: 'start', data: {} });
  */
 function createWindow(): void {
   // Create the browser window.
-  console.log(path.join(__dirname, '.icon-ico/icon.ico'));
   mainWindow = new BrowserWindow({
     height: 600,
     width: 800,
@@ -101,9 +100,7 @@ function createWindow(): void {
           return;
         }
         if (nUrl.startsWith('http://localhost')) {
-          // console.log('URL STARTS WITH THIS');
           const auth = nUrl.split('?auth=')[1];
-          // console.log('GOT AUTH', url.split('?=auth='));
           if (!auth) {
             loginWindow.close();
             oauthWindowStart(ifStreamer);
@@ -123,9 +120,7 @@ function createWindow(): void {
         return;
       }
       if (mUrl.startsWith('http://localhost')) {
-        // console.log('URL STARTS WITH THIS');
         const auth = mUrl.split('?auth=')[1];
-        // console.log('GOT AUTH', url.split('?=auth='));
         if (!auth) {
           loginWindow.close();
           oauthWindowStart(ifStreamer);

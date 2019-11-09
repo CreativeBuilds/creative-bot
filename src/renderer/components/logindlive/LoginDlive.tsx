@@ -43,7 +43,6 @@ interface IProps {
  */
 export const LoginDlive = ({ streamer }: IProps) => {
   const openLogin = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-    console.log('send login to main');
     sendToMain('openLogin', {});
   };
 

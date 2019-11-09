@@ -62,8 +62,6 @@ import { rxSubs } from '../helpers/rxSubs';
 
 start().catch(null);
 
-rxMe.subscribe(me => console.log('me', me));
-
 /**
  * @description subscribe to all events from dlive and if the payload message is unable to parse
  * then that means the authorization token is invalid
@@ -187,18 +185,27 @@ const Global = createGlobalStyle`
     &.react-toggle--checked .react-toggle-thumb {
       border-color: ${accentColor};
     }
-
-    [class*='css-'] {
-      [class*='-menu'] {
-        color: ${dropDownBoxColor};
-        background: ${dropDownBoxBackgroundColor};
-        [class*='-option'] {
-            &:hover, &:active {
-                background: ${dropDownBoxHoverColor};
-            }
+  }
+  [class*='-menu'] {
+    color: ${dropDownBoxColor}  !important;
+    background-color: ${dropDownBoxBackgroundColor} !important;
+    [class*='-option'] {
+      background-color: ${dropDownBoxBackgroundColor} !important;
+      
+        &:hover, &:active {
+            background: ${dropDownBoxHoverColor} !important;
         }
-      }
     }
+  }
+  [class*='-control'] {
+    min-height: 33px;
+    border-color: ${dropDownBoxBorderColor} !important;
+    box-shadow: none !important;
+    &:hover, &:active {
+      box-shadow: 0px 0px 3px ${dropDownBoxBorderColor} !important;
+      cursor: pointer;
+    }
+    
   }
 `;
 
@@ -235,7 +242,6 @@ export const Main = () => {
       }, 1000);
     }
     setSoundIsRunning(true);
-    console.log('SOUND STARTED');
     let utter: SpeechSynthesisUtterance | null = new SpeechSynthesisUtterance();
     utter.text = val;
     utter.volume =
@@ -245,14 +251,7 @@ export const Main = () => {
       (typeof config.tts_Pitch === 'number' ? config.tts_Pitch : 100) / 100;
     utter.rate =
       (typeof config.tts_Speed === 'number' ? config.tts_Speed : 100) / 100;
-    utter.onstart = () => {
-      console.log('UTTER STARTED');
-    };
-    // utter.addEventListener('end', () => {
-    //   console.log('END REEEEEEEEE');
-    // });
     utter.onend = () => {
-      console.log('SOUND ENDED');
       setSoundIsRunning(false);
       utter = null;
     };
@@ -332,7 +331,12 @@ export const Main = () => {
           return;
         }
 
+        if(!users[donation.sender.username]) {
+          users[donation.sender.username] = new User(donation.sender.username, donation.sender.displayname, donation.sender.username, donation.sender.avatar,0,0,0,donation.role, donation.roomRole, false)
+        }
+
         const sender = users[donation.sender.username];
+        
         if (!!sender) {
           sender
             .setLino(
@@ -461,7 +465,6 @@ export const Main = () => {
   useEffect(() => {
     let listener = setTimeout(() => {
       if (!wordMapLoaded) {
-        console.log('RELOADING WINDOW');
         window.location.reload();
       }
     }, 50000);
@@ -474,13 +477,7 @@ export const Main = () => {
   useEffect(() => {
     const listen2 = rxWordMap
       .pipe(
-        tap(item => {
-          console.log('Word map 1', item);
-        }),
         filter(x => (!!x ? Object.keys(x).length > 0 : false)),
-        tap(() => {
-          console.log('Word map 2');
-        }),
         first()
       )
       .subscribe(map => {
@@ -597,7 +594,6 @@ export const Main = () => {
         <TitleBar />
         {isLoading || !wordMapLoaded ? (
           <Center>
-            {console.log(isLoading, wordMapLoaded)}
             <Loading />
           </Center>
         ) : (

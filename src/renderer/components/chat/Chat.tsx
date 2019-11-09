@@ -6,7 +6,10 @@ import {
   PageContent,
   PageTitleRight
 } from '../generic-styled-components/Page';
-import { SelectWrap, botSelectStyles } from '../generic-styled-components/Select'
+import {
+  SelectWrap,
+  botSelectStyles
+} from '../generic-styled-components/Select';
 import { ChatInput } from './chatInput';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { FaUserAlt, FaMicrophone, FaCommentAlt } from 'react-icons/fa';
@@ -245,10 +248,11 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
               }
             ]}
             value={selectedSender}
-            menuPortalTarget={document.body}
+            menuPortalTarget={document.getElementById('app')}
             placeholder={getPhrase('chat_select_send_placeholder')}
             onChange={updateSelectSender}
             isSearchable={false}
+            styles={botSelectStyles}
           />
         </SelectWrap>
         <PageTitleRight>
@@ -295,11 +299,21 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
         <ChatInput
           selectedSender={selectedSender}
           botAccount={
-            !botAccount ? { username: '', displayname: '' } : botAccount
+            !botAccount
+              ? {
+                  username: '',
+                  displayname: '',
+                  livestream: { createdAt: '0' }
+                }
+              : botAccount
           }
           streamerAccount={
             !streamerAccount
-              ? { username: '', displayname: '' }
+              ? {
+                  username: '',
+                  displayname: '',
+                  livestream: { createdAt: '0' }
+                }
               : streamerAccount
           }
           config={config}

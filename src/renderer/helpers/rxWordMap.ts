@@ -20,11 +20,9 @@ export const rxWordMap = new BehaviorSubject<
  *
  */
 function getMapRefs() {
-  console.log('getting map refs');
   word_map_ref
     .get()
     .then(async (collection: firebase.firestore.QuerySnapshot) => {
-      console.log('INSIDE THE THEN', collection);
       const promiseArr: Promise<any>[] = [];
       const lang_map: { [id: string]: { [id: string]: string } } = {};
       collection.forEach(lang => {
@@ -51,13 +49,10 @@ function getMapRefs() {
             .catch(err => null)
         );
       });
-      await Promise.all(promiseArr).catch(err => {
-        console.log('Got error!', err);
-      });
+      await Promise.all(promiseArr).catch(null);
       rxWordMap.next(lang_map);
     })
     .catch(err => {
-      console.log('got err', err);
       setTimeout(() => {
         getMapRefs();
       }, 5000);
