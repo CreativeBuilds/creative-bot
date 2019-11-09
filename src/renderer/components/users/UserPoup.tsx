@@ -13,7 +13,7 @@ import {
   PopupDialogTabPage,
   PopupButtonWrapper
 } from '../generic-styled-components/popupDialog';
-import { SelectWrap } from '../generic-styled-components/Select'
+import { SelectWrap, selectStyles } from '../generic-styled-components/Select'
 import { FaTimes } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Button } from '../generic-styled-components/button';
@@ -126,6 +126,7 @@ export const UserPopup = (props: IProps) => {
                 </PopupDialogInputName>
                 <SelectWrap width={'100%'}>
                   <Select
+                    styles={selectStyles}
                     value={user
                       .getPermissionStrings()
                       .map(item => ({ label: item, value: item }))}

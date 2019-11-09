@@ -14,6 +14,7 @@ interface ISelectProps {
     textColor?: string;
     borderColor?: string;
     selectedColor?: string;
+    selectedTextColor?: string;
     backgroundColor?: string;
     width?: string;
     paddingLeft?: string;
@@ -31,11 +32,35 @@ export const SelectWrap = styled.div`
     padding-top: ${(props: ISelectProps): string => props.paddingTop ? props.paddingTop : '0px'};
     padding-right: ${(props: ISelectProps): string => props.paddingRight ? props.paddingRight : '0px'};
     padding-bottom: ${(props: ISelectProps): string => props.paddingBottom ? props.paddingBottom : '0px'};
-    width: ${(props: ISelectProps): string => props.width ? props.width : '175px'};
+    width: ${(props: ISelectProps): string => props.width ? props.width : '200px'};
     [class*='-container'] {
         width: 100%;
-        [class*='-menu'] {
-            color: Black !important;
+    }
+    [class*='-menu'] {
+
+        color: ${(props: ISelectProps): ThemeSet | string =>
+            props.textColor
+              ? props.textColor
+              : dropDownBoxColor
+              ? dropDownBoxColor
+              : '#f1f1f1ff'} !important;
+        background: ${(props: ISelectProps): ThemeSet | string =>
+            props.backgroundColor
+              ? props.backgroundColor
+              : dropDownBoxBackgroundColor
+              ? dropDownBoxBackgroundColor
+              : '#ffffffff'} !important;
+        [class*='-option'] {
+            &:hover, &:active {
+                background: ${(props: ISelectProps): ThemeSet | string =>
+                    props.selectedColor
+                    ? props.selectedColor
+                    : dropDownBoxHoverColor
+                    ? dropDownBoxHoverColor
+                    : '#4500ff'} !important;
+
+                color: #ffffff !important;
+            }
         }
     }
     font-size: 1em !important;
@@ -76,3 +101,23 @@ export const SelectWrap = styled.div`
           : '#f1f1f1ff'};
     }
   `;
+
+export const selectStyles = {
+    option: (provided: any, state: any) => ({
+      ...provided,
+      backgroundColor: dropDownBoxSelectedColor 
+        ? dropDownBoxSelectedColor 
+        : '#ffffff',
+    }),
+}
+
+export const botSelectStyles = {
+    menu: (provided: any, state: any) => ({
+      ...provided,
+      backgroundColor: dropDownBoxBackgroundColor,
+    }),
+    option: (provided: any, state: any) => ({ 
+        ...provided,
+        color: dropDownBoxColor
+    }),
+}
