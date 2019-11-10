@@ -20,6 +20,10 @@
                 "hoverColor": "#df1ebfff",
                 "color": "#ffffffff"
             },
+            "events": {
+                "color": "#e1e1e1",
+                "backgroundColor": "#922cce33"
+            },
             "background": {
                 "primaryColor": "#383ee1",
                 "secondaryColor": "#df1ebf",
@@ -103,6 +107,10 @@
                 "backgroundColor": "#df1ebfff",
                 "hoverColor": "#df1ebfff",
                 "color": "#ffffffff"
+            },
+            "events": {
+                "color": "#e1e1e1",
+                "backgroundColor": "#922cce33"
             },
             "background": {
                 "primaryColor": "#383ee1",

@@ -8,7 +8,10 @@ import { FaEyeSlash, FaEye } from 'react-icons/fa';
 
 import {
   listItemColor,
-  listItemAlternativeColor
+  listItemBackgroundColor,
+  listItemAlternativeColor,
+  eventColor,
+  eventBackgroundColor
 } from '@/renderer/helpers/appearance';
 
 interface IChatProps {
@@ -16,6 +19,7 @@ interface IChatProps {
   padTop?: boolean;
   highlighted?: boolean;
   highlightedBackground?: string;
+  isEvent?: boolean;
 }
 
 const Chat = styled.div`
@@ -27,12 +31,18 @@ const Chat = styled.div`
   padding-top: ${(props: IChatProps): string =>
     props.padTop ? '30px' : 'unset'};
   height: 55px;
+  background: ${(props: IChatProps): ThemeSet | string =>
+    props.isEvent ? eventBackgroundColor : 'transparent'};
+  color: ${(props: IChatProps): ThemeSet | string =>
+    props.isEvent ? eventColor : listItemColor};
   &:nth-child(even) {
     background: ${(props: IChatProps): ThemeSet | string =>
       props.highlighted
         ? props.highlightedBackground
           ? props.highlightedBackground
           : '#922cce33'
+        : props.isEvent
+        ? eventBackgroundColor
         : props.alternateBackground
         ? props.alternateBackground
         : listItemAlternativeColor
@@ -159,6 +169,72 @@ export const ChatMessage = ({
     setDeletedButShow(!deletedButShow);
   };
 
+  /**
+   * @description Boolean Checks if Message Type is a Event Based Message or Not
+   */
+  const isEvent = () => {
+    if (message.type === 'Gift') {
+      return true;
+    } else if (message.type === 'Follow') {
+      return true;
+    } else if (message.type === 'Subscription') {
+      return true;
+    } else if (message.type === 'Message') {
+      return false;
+    }
+  };
+
+  /**
+   * @description Checks if Gift Type is one of 5 Types and Displays the right emote
+   */
+  const giftEmoteType = (message: IGiftObject) => {
+    if (message.gift === 'LEMON') {
+      return '🍋';
+    } else if (message.gift === 'ICE_CREAM') {
+      return '🍦';
+    } else if (message.gift === 'DIAMOND') {
+      return '💎';
+    } else if (message.gift === 'NINJAGHINI') {
+      return '🐱‍👤🚗';
+    } else if (message.gift === 'NINJET') {
+      return '🐱‍👤✈';
+    }
+  };
+
+  /**
+   * @description Checks if Gift Type is one of 5 Types and Displays the right text
+   */
+  const giftType = (message: IGiftObject) => {
+    if (message.gift === 'LEMON') {
+      return 'Lemon';
+    } else if (message.gift === 'ICE_CREAM') {
+      return 'Ice Cream';
+    } else if (message.gift === 'DIAMOND') {
+      return 'Diamond';
+    } else if (message.gift === 'NINJAGHINI') {
+      return 'Ninjaghini';
+    } else if (message.gift === 'NINJET') {
+      return 'Ninjet';
+    }
+  };
+
+  /**
+   * @description Checks the type of message sent
+   */
+  const eventMessage = (): string => {
+    if (message.type === 'Gift') {
+      return `just donated ${(message as IGiftObject).amount} ${giftType(
+        message as IGiftObject
+      )} ${giftEmoteType(message as IGiftObject)}!`;
+    } else if (message.type === 'Follow') {
+      return 'Has Just Followed';
+    } else if (message.type === 'Subscription') {
+      return 'Has Just Subscribed';
+    } else {
+      return '';
+    }
+  };
+
   const isSticker = () => {
     if (!message.content) {
       return false;
@@ -204,11 +280,6 @@ export const ChatMessage = ({
     if (!message.content) {
       return false;
     }
-    console.log('IsChat: ', isChat());
-    console.log('IsSticker: ', isSticker());
-    console.log('IsFollow: ', isFollow());
-    console.log('IsGift: ', isGift());
-    console.log('IsSub: ', isSub());
 
     return isGift() || isFollow() || isSticker() || isSub();
   };
@@ -236,7 +307,11 @@ export const ChatMessage = ({
    * the user has the option to click an eyeball icon that will show the message
    */
   return (
-    <Chat padTop={!message.deleted || deletedButShow} highlighted={highlighted}>
+    <Chat
+      padTop={!message.deleted || deletedButShow}
+      highlighted={highlighted}
+      isEvent={isEvent()}
+    >
       {message.deleted && !deletedButShow ? null : (
         <ChatUsername>{message.sender.displayname}</ChatUsername>
       )}
@@ -258,29 +333,7 @@ export const ChatMessage = ({
       <FollowContent hidden={!isFollow()}>
         {getPhrase('just_followed')}
       </FollowContent>
-      <GiftContent hidden={!isGift()}>
-        {(() => {
-          const MESSAGE = message as IGiftObject;
-
-          const getType = (gift: IGiftObject['gift']) => {
-            return gift === 'LEMON'
-              ? getPhrase('LEMON')
-              : gift === 'ICE_CREAM'
-              ? getPhrase('ICE_CREAM')
-              : gift === 'DIAMOND'
-              ? getPhrase('DIAMOND')
-              : gift === 'NINJAGHINI'
-              ? getPhrase('NINJAGHINI')
-              : gift === 'NINJET'
-              ? getPhrase('NINJET')
-              : '';
-          };
-
-          return `${getPhrase('just_gifted')} ${MESSAGE.recentCount} ${getType(
-            MESSAGE.gift
-          )}!`;
-        })()}
-      </GiftContent>
+      <GiftContent hidden={!isGift()}>{eventMessage()}</GiftContent>
       {message.deleted ? (
         <Icon
           style={{ position: 'absolute', right: '10px', top: '19px' }}
