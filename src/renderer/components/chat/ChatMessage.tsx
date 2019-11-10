@@ -296,8 +296,6 @@ export const ChatMessage = ({
           sticker.substring(sticker.lastIndexOf('/') + 1, sticker.length - 1);
       }
     }
-    console.log('Sticker tag', sticker);
-    console.log('StickerLink: ', stickerLink);
     return stickerLink;
   };
   /**
@@ -346,7 +344,6 @@ export const ChatMessage = ({
           )}
         </Icon>
       ) : null}
-      {console.log('MSFG: ', message, isSticker(), isFollow(), isGift())}
     </Chat>
   );
 };
