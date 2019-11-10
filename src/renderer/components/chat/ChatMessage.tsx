@@ -1,14 +1,14 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { ThemeSet } from 'styled-theming';
-import { IChatColors, IChatObject } from '@/renderer';
+import { IChatColors, IChatObject, IGiftObject } from '@/renderer';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Icon } from '../generic-styled-components/Icon';
 import { FaEyeSlash, FaEye } from 'react-icons/fa';
 
-import { 
+import {
   listItemColor,
-  listItemAlternativeColor,
+  listItemAlternativeColor
 } from '@/renderer/helpers/appearance';
 
 interface IChatProps {
@@ -28,14 +28,16 @@ const Chat = styled.div`
     props.padTop ? '30px' : 'unset'};
   height: 55px;
   &:nth-child(even) {
-    background: ${(props: IChatProps) : ThemeSet | string =>
+    background: ${(props: IChatProps): ThemeSet | string =>
       props.highlighted
         ? props.highlightedBackground
           ? props.highlightedBackground
           : '#922cce33'
         : props.alternateBackground
         ? props.alternateBackground
-        : listItemAlternativeColor ? listItemAlternativeColor : '#e1e1e1'};
+        : listItemAlternativeColor
+        ? listItemAlternativeColor
+        : '#e1e1e1'};
   }
 `;
 
@@ -125,7 +127,7 @@ export const ChatMessage = ({
   },
   highlighted
 }: {
-  message: IChatObject;
+  message: IChatObject | IGiftObject;
   colors?: IChatColors;
   highlighted: boolean;
 }) => {
@@ -156,75 +158,76 @@ export const ChatMessage = ({
   const updateShow = () => {
     setDeletedButShow(!deletedButShow);
   };
-  
+
   const isSticker = () => {
-    if (!message.content){
+    if (!message.content) {
       return false;
-    } else { 
-      if (message.content.search(/^[:]emote/gi) >-1) {
+    } else {
+      if (message.content.search(/^[:]emote/gi) > -1) {
         return true;
-      } else{
-        return false;  
+      } else {
+        return false;
       }
-    };
+    }
   };
   const isGift = () => {
-    if (!message.type){
+    if (!message.type) {
       return false;
-    };  
-    if (message.type === 'Gift'){
+    }
+    if (message.type === 'Gift') {
       return true;
-    };  
+    }
     return false;
   };
 
   const isFollow = () => {
-      if (!message.type){
-        return false;
-      };  
-      if (message.type === 'Follow'){
-        return true;
-      };  
+    if (!message.type) {
       return false;
-    };
-  
-  const isSub = () => {
-    if (!message.type){
-      return false;
-    };  
-    if (message.type === 'Subscription'){
-     return true; 
-    };  
+    }
+    if (message.type === 'Follow') {
+      return true;
+    }
     return false;
   };
 
+  const isSub = () => {
+    if (!message.type) {
+      return false;
+    }
+    if (message.type === 'Subscription') {
+      return true;
+    }
+    return false;
+  };
 
   const isChat = () => {
-    if (!message.content ){
+    if (!message.content) {
       return false;
-    };  
-      console.log("IsChat: ", isChat())
-      console.log("IsSticker: ", isSticker())
-      console.log("IsFollow: ", isFollow())
-      console.log("IsGift: ",  isGift())
-      console.log("IsSub: ", isSub())
-    
-      return ( isGift() || isFollow() || isSticker() || isSub() );
+    }
+    console.log('IsChat: ', isChat());
+    console.log('IsSticker: ', isSticker());
+    console.log('IsFollow: ', isFollow());
+    console.log('IsGift: ', isGift());
+    console.log('IsSub: ', isSub());
+
+    return isGift() || isFollow() || isSticker() || isSub();
   };
 
   const stickerUrl = (): string => {
-    var stickerLink:string=''
-    if (!message.content){
-      return"";
+    var stickerLink: string = '';
+    if (!message.content) {
+      return '';
     } else {
       var sticker = message.content;
       if (isSticker()) {
-        stickerLink = "https://images.prd.dlivecdn.com/emote/" + sticker.substring(sticker.lastIndexOf("/")+1, sticker.length-1);
-      };
-    };
-    console.log("Sticker tag",sticker)
-    console.log("StickerLink: ",stickerLink)
-    return stickerLink; 
+        stickerLink =
+          'https://images.prd.dlivecdn.com/emote/' +
+          sticker.substring(sticker.lastIndexOf('/') + 1, sticker.length - 1);
+      }
+    }
+    console.log('Sticker tag', sticker);
+    console.log('StickerLink: ', stickerLink);
+    return stickerLink;
   };
   /**
    * @description will return a chat message row, if the message is deleted then it will show text
@@ -243,31 +246,40 @@ export const ChatMessage = ({
           src={message.sender.avatar}
         />
       )}
-      <ChatContent
-        hidden={isSticker() || isSub() || isFollow() || isGift() }
-      >
+      <ChatContent hidden={isSticker() || isSub() || isFollow() || isGift()}>
         {message.deleted && !deletedButShow
           ? getPhrase('chat_deleted')
           : message.content}
       </ChatContent>
-      
-      <StickerContent
-        hidden={!isSticker()}
-      >
-        <ChatSticker 
-          src={stickerUrl()}     
-          hidden={false}
-        />
+
+      <StickerContent hidden={!isSticker()}>
+        <ChatSticker src={stickerUrl()} hidden={false} />
       </StickerContent>
-      <FollowContent
-        hidden={!isFollow()}
-      >
-      just Followed!
+      <FollowContent hidden={!isFollow()}>
+        {getPhrase('just_followed')}
       </FollowContent>
-      <GiftContent
-        hidden={!isGift()}
-      >
-      Just Gifted {message.recentCount} {message.gift}!
+      <GiftContent hidden={!isGift()}>
+        {(() => {
+          const MESSAGE = message as IGiftObject;
+
+          const getType = (gift: IGiftObject['gift']) => {
+            return gift === 'LEMON'
+              ? getPhrase('LEMON')
+              : gift === 'ICE_CREAM'
+              ? getPhrase('ICE_CREAM')
+              : gift === 'DIAMOND'
+              ? getPhrase('DIAMOND')
+              : gift === 'NINJAGHINI'
+              ? getPhrase('NINJAGHINI')
+              : gift === 'NINJET'
+              ? getPhrase('NINJET')
+              : '';
+          };
+
+          return `${getPhrase('just_gifted')} ${MESSAGE.recentCount} ${getType(
+            MESSAGE.gift
+          )}!`;
+        })()}
       </GiftContent>
       {message.deleted ? (
         <Icon
@@ -281,8 +293,7 @@ export const ChatMessage = ({
           )}
         </Icon>
       ) : null}
-      {console.log("MSFG: ",message,isSticker(),isFollow(),isGift())}
-    
+      {console.log('MSFG: ', message, isSticker(), isFollow(), isGift())}
     </Chat>
   );
 };
