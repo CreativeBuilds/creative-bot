@@ -74,6 +74,22 @@ export const alternativeAccentTextColor = theme('mode', {
 });
 
 /**
+ * @description Event Text Color (Primary Use for Donos and Events)
+ */
+export const eventColor = theme('mode', {
+    light: themeData.appearances.light.events.color,
+    dark: themeData.appearances.dark.events.color
+});
+
+/**
+ * @description Event Background Color (Primary Use for Donos and Events)
+ */
+export const eventBackgroundColor = theme('mode', {
+    light: themeData.appearances.light.events.backgroundColor,
+    dark: themeData.appearances.dark.events.backgroundColor
+});
+
+/**
  * @description Appearances Primary Background Color
  */
 export const backgroundPrimaryColor = theme('mode', {
