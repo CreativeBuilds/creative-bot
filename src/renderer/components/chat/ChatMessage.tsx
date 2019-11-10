@@ -110,7 +110,6 @@ const GiftContent = styled.div`
   word-wrap: break-word;
 `;
 const ChatSticker = styled.img`
-  width: 48px;
   height: 48px;
   overflow: hidden;
 `;

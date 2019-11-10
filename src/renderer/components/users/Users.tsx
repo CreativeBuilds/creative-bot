@@ -37,6 +37,7 @@ import {
   listItemBackgroundColor,
   listItemAlternativeColor
 } from '@/renderer/helpers/appearance';
+import { Tracking } from '../tracking/tracking';
 
 const PageContentCustom = styled(PageContent)`
   padding: unset;
@@ -101,6 +102,9 @@ const UsersColumn = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   user-select: ${(props: IUserColumn): string =>
     props.hover ? 'none' : 'inherit'};
   &:hover {
@@ -263,6 +267,7 @@ export const Users = () => {
 
   return (
     <PageMain>
+      <Tracking path='/users' />
       <PageTitleCustom>
         <div>
           {getPhrase('users_name')} - {allUsers.length}

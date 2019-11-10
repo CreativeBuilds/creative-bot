@@ -15,6 +15,7 @@ import { FaTimes } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Button } from '../generic-styled-components/button';
 import { rxTimers } from '@/renderer/helpers/rxTimers';
+import { sendEvent } from '@/renderer/helpers/reactGA';
 
 interface IProps {
   closePopup: Function;
@@ -75,6 +76,7 @@ export const AddOrEditTimerPopup = (props: IProps) => {
       timerMessages
     );
     newTimer.save();
+    sendEvent('Timers', 'new').catch(null);
     props.closePopup();
   };
 
@@ -102,6 +104,7 @@ export const AddOrEditTimerPopup = (props: IProps) => {
       timerMessages
     );
     newTimer.save();
+    sendEvent('Timers', 'edit').catch(null);
     props.closePopup();
   };
 

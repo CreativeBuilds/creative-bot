@@ -19,6 +19,10 @@ import {
   titleBarBackgroundColor,
   titleBarHoverColor
 } from '@/renderer/helpers/appearance';
+import { backupUsersToCloud } from '../helpers/start';
+import { rxUser } from '../helpers/rxUser';
+import { first } from 'rxjs/operators';
+import { sendEvent } from '../helpers/reactGA';
 
 interface IProps {
   textColor?: string;
@@ -210,18 +214,18 @@ export const TitleBar = () => {
     remote.getCurrentWindow().close();
   };
 
+  const toggleIt = () => {
+    sendEvent('Theme', `saved`).catch(null);
+    themeToggle.toggle();
+  };
+
   return (
     <Bar>
       <DraggableArea />
       <VersionTitle>{process.env.npm_package_version}</VersionTitle>
       <AppTitle>CreativeBot</AppTitle>
       <ActionButtonsContainer>
-        <WindowActionButton
-          icon={<FaAdjust />}
-          onClick={() => {
-            themeToggle.toggle();
-          }}
-        />
+        <WindowActionButton icon={<FaAdjust />} onClick={toggleIt} />
         <WindowActionButton icon={<FaBug />} onClick={() => showDevTools()} />
         <WindowActionButton icon={<FaMinus />} onClick={() => minimize()} />
         <WindowActionButton

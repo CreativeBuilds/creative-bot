@@ -31,6 +31,7 @@ import {
   listItemBackgroundColor,
   listItemAlternativeColor
 } from '@/renderer/helpers/appearance';
+import { Tracking } from '../tracking/tracking';
 
 const PageContentCustom = styled(PageContent)`
   padding: unset;
@@ -58,6 +59,9 @@ const CommandsColumn = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   user-select: ${(props: ICommandColumn): string =>
     props.hover ? 'none' : 'inherit'};
   &:hover {
@@ -113,7 +117,7 @@ const CommandRow = styled.div`
   width: calc(100% - 5px);
   height: 40px;
   display: flex;
-  align-items: center;
+
   & > div:nth-child(1) {
     padding-left: 10px;
   }
@@ -158,6 +162,7 @@ export const Commands = () => {
 
   return (
     <PageMain>
+      <Tracking path='/commands' />
       <PageTitleCustom style={{ boxShadow: 'unset' }}>
         <div>{getPhrase('commands_name')}</div>
         <PageTitleRightCustom>
@@ -288,7 +293,7 @@ export const Commands = () => {
                       alternate={!!(index % 2)}
                     >
                       <CommandsColumn style={{ maxWidth: '130px' }}>
-                        {command.name}
+                        !{command.name}
                       </CommandsColumn>
                       <CommandsColumn style={{ maxWidth: '90px' }}>
                         {command.cost}

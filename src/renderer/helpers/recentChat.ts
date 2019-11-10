@@ -4,6 +4,7 @@ import { withLatestFrom, first } from 'rxjs/operators';
 import { rxConfig } from './rxConfig';
 import { IConfig, IChatObject } from '..';
 import { User, rxUsers } from './db/db';
+import { sendEvent } from './reactGA';
 
 /**
  * @description this is a behavior subject mapped by the ids of the users who have chatted recently. This will be wipped every setInterval (min 1 minute)
@@ -49,7 +50,9 @@ const rewardRecentChatters = (config: Partial<IConfig>) => {
           : users[username];
         user.isSubscribed = !!chat.subscribing;
         user.roomRole = chat.roomRole;
-        user.addPoints(1).catch(err => console.error(err));
+        user
+          .addPoints(config.points ? config.points : 5)
+          .catch(err => console.error(err));
       });
       recentChatters.next({});
     });
@@ -68,10 +71,12 @@ export const startRecentChat = () => {
       if (!chat || chat.type !== 'Message' || !chat.sender) {
         return;
       }
+      // new chat message
+      sendEvent('Chat', 'new').catch(null);
       mEditedUsers[chat.sender.username] = chat;
       recentChatters.next(mEditedUsers);
     });
-  let currentLoop;
+  let currentLoop: number;
 
   /**
    * @description subscribes to config and listens to changes for the loop time
@@ -81,8 +86,15 @@ export const startRecentChat = () => {
     if (!config) {
       return;
     }
+    if (!!currentLoop) {
+      try {
+        clearInterval(currentLoop);
+      } catch (err) {
+        (() => null)();
+      }
+    }
     currentLoop = setInterval(() => {
       rewardRecentChatters(config);
-    }, 1000 * 6);
+    }, (config.pointsTimer ? config.pointsTimer : 300) * 1000);
   });
 };

@@ -17,6 +17,7 @@ import { themeData } from '@/renderer/helpers/rxTheme';
 import { getPhrase } from '@/renderer/helpers/lang';
 
 import styled from 'styled-components';
+import { Tracking } from '../tracking/tracking';
 
 const AppearanceWrapper = styled.div`
   height: 140px;
@@ -29,6 +30,7 @@ const AppearanceWrapper = styled.div`
 export const Themes = (): React.ReactElement => {
   return (
     <PageMain>
+      <Tracking path='/themes' />
       <PageTitle>
         {getPhrase('themes_name')}
         {''}

@@ -31,6 +31,7 @@ import {
   listItemBackgroundColor,
   listItemAlternativeColor
 } from '@/renderer/helpers/appearance';
+import { Tracking } from '../tracking/tracking';
 
 const PageContentCustom = styled(PageContent)`
   padding: unset;
@@ -58,6 +59,9 @@ const TimersColumn = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   user-select: ${(props: ITimerColumn): string =>
     props.hover ? 'none' : 'inherit'};
   &:hover {
@@ -158,6 +162,7 @@ export const Timers = () => {
 
   return (
     <PageMain>
+      <Tracking path='/timers' />
       <PageTitleCustom style={{ boxShadow: 'unset' }}>
         <div>{getPhrase('timers_name')}</div>
         <PageTitleRightCustom>

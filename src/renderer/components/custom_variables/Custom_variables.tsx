@@ -36,6 +36,7 @@ import {
   CustomVariable
 } from '@/renderer/helpers/rxCustomVariables';
 import { map } from 'rxjs/operators';
+import { Tracking } from '../tracking/tracking';
 
 const PageContentCustom = styled(PageContent)`
   padding: unset;
@@ -63,6 +64,9 @@ const VariableColumn = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   user-select: ${(props: IVariableColumn): string =>
     props.hover ? 'none' : 'inherit'};
   &:hover {
@@ -176,6 +180,7 @@ export const Custom_Variables = () => {
 
   return (
     <PageMain>
+      <Tracking path='/custom_variables' />
       <PageTitleCustom style={{ boxShadow: 'unset' }}>
         <div>{getPhrase('custom_variables_name')}</div>
         <PageTitleRightCustom>

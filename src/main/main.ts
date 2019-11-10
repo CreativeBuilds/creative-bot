@@ -181,7 +181,7 @@ app.on('activate', () => {
 });
 
 autoUpdater.on('update-downloaded', info => {
-  autoUpdater.quitAndInstall();
+  autoUpdater.quitAndInstall(false, true);
 });
 
 // In this file you can include the rest of your app"s specific main process

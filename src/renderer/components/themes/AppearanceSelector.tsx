@@ -9,6 +9,7 @@ import { ThemeThumbnail } from './themeThumbnail';
 import { useTheme } from '../themeContext';
 import { IConfig } from '@/renderer';
 import { selectorColor } from '@/renderer/helpers/appearance';
+import { sendEvent } from '@/renderer/helpers/reactGA';
 
 interface IAppearanceItemProps {
   id?: number;
@@ -161,6 +162,9 @@ export const AppearanceSelector = (
           onSelected: function() {
             setIndex(idx);
             themeToggle.setTheme(idx == 0 ? 'light' : 'dark');
+            sendEvent('Theme', `saved`, `${idx == 0 ? 'light' : 'dark'}`).catch(
+              null
+            );
           },
           selected: index == idx ? true : false
         });

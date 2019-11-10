@@ -39,6 +39,7 @@ import {
   listItemAlternativeColor
 } from '@/renderer/helpers/appearance';
 import { ChatMessageSettings } from './chatMessageSettings';
+import { Tracking } from '../tracking/tracking';
 
 const ChatMessages = styled.div`
   display: flex;
@@ -235,6 +236,7 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
 
   return (
     <PageMain>
+      <Tracking path='/chat' />
       <PageTitle>
         {getPhrase('chat_name')}{' '}
         <SelectWrap paddingLeft={'20px'}>

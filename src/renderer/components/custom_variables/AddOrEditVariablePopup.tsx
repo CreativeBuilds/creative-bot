@@ -22,6 +22,7 @@ import {
 import { map } from 'rxjs/operators';
 import Toggle from 'react-toggle';
 import 'react-toggle/style.css';
+import { sendEvent } from '@/renderer/helpers/reactGA';
 
 interface IProps {
   closePopup: Function;
@@ -70,6 +71,7 @@ export const AddOrEditVariablePopup = (props: IProps) => {
       false
     );
     newVariable.save();
+    sendEvent('Custom Variables', 'new').catch(null);
     props.closePopup();
   };
 
@@ -95,6 +97,7 @@ export const AddOrEditVariablePopup = (props: IProps) => {
       false
     );
     newVariable.save();
+    sendEvent('Custom Variables', 'edit').catch(null);
     props.closePopup();
   };
 

@@ -9,12 +9,12 @@ import { sendMessage } from '@/renderer/helpers/dlive/sendMessage';
 import { getSelf } from '@/renderer/helpers/dlive/getSelf';
 import { IMe, IConfig, IOption } from '@/renderer';
 
-import { 
-  textInputBackgroundColor, 
+import {
+  textInputBackgroundColor,
   textInputColor,
   textInputPlaceholderColor,
   textInputDisabledTextColor
- } from '@/renderer/helpers/appearance';
+} from '@/renderer/helpers/appearance';
 
 const ChatInputWrapper = styled.div`
   display: flex;
@@ -58,11 +58,18 @@ const ChatInputStyled = styled.input`
   border-bottom-right-radius: 10px;
   overflow: hidden;
   background: transparent;
-  background: ${(props: IChatInputStyled) : ThemeSet | string => props.backgroundColor ? props.backgroundColor : 
-    textInputBackgroundColor ? textInputBackgroundColor : '#ffffffff'};
-  color: ${(props: IChatInputStyled): ThemeSet | string => 
-      props.textColor ? props.textColor : 
-        textInputColor ? textInputColor : '#000000ff'}
+  background: ${(props: IChatInputStyled): ThemeSet | string =>
+    props.backgroundColor
+      ? props.backgroundColor
+      : textInputBackgroundColor
+      ? textInputBackgroundColor
+      : '#ffffffff'};
+  color: ${(props: IChatInputStyled): ThemeSet | string =>
+    props.textColor
+      ? props.textColor
+      : textInputColor
+      ? textInputColor
+      : '#000000ff'};
 `;
 
 interface IChatInputSend {
@@ -96,9 +103,9 @@ const ChatInputSend = styled.div`
         props.disabled
           ? props.disabledColor
             ? props.disabledColor
-              : textInputDisabledTextColor 
-                ? textInputDisabledTextColor 
-                  : '#ccc'
+            : textInputDisabledTextColor
+            ? textInputDisabledTextColor
+            : '#ccc'
           : props.colorHover
           ? props.colorHover
           : props.color
@@ -114,9 +121,9 @@ const ChatInputSend = styled.div`
       props.disabled
         ? props.disabledColor
           ? props.disabledColor
-            : textInputDisabledTextColor 
-              ? textInputDisabledTextColor 
-                : '#ccc'
+          : textInputDisabledTextColor
+          ? textInputDisabledTextColor
+          : '#ccc'
         : props.color
         ? props.color
         : 'inherit'};

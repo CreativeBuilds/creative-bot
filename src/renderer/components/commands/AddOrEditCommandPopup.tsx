@@ -11,13 +11,14 @@ import {
   PopupDialogPadding,
   PopupButtonWrapper
 } from '../generic-styled-components/popupDialog';
-import { SelectWrap, selectStyles } from '../generic-styled-components/Select'
+import { SelectWrap, selectStyles } from '../generic-styled-components/Select';
 import { FaTimes } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Button } from '../generic-styled-components/button';
 import { rxCommands } from '@/renderer/helpers/rxCommands';
 import Select from 'react-select';
-import { ISelectOption} from '@/renderer';
+import { ISelectOption } from '@/renderer';
+import { sendEvent } from '@/renderer/helpers/reactGA';
 
 interface IProps {
   closePopup: Function;
@@ -78,6 +79,7 @@ export const AddOrEditCommandPopup = (props: IProps) => {
       commandCost
     );
     newCommand.save();
+    sendEvent('Commands', 'new').catch(null);
     props.closePopup();
   };
 
@@ -105,6 +107,7 @@ export const AddOrEditCommandPopup = (props: IProps) => {
       commandCost
     );
     newCommand.save();
+    sendEvent('Commands', 'edit').catch(null);
     props.closePopup();
   };
 

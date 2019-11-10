@@ -37,15 +37,18 @@ export const rxConfig = rxUser.pipe(
   switchMap((user: firebase.User) =>
     doc(firestore.collection('configs').doc(user.uid))
   ),
-  map((config: firebase.firestore.DocumentSnapshot) => {
-    if (!!config.data()) {
-      return config.data();
-    } else {
-      createBaseConfig().catch(err => null);
+  map(
+    (config: firebase.firestore.DocumentSnapshot): Partial<IConfig> => {
+      if (!!config.data()) {
+        // tslint:disable-next-line: prefer-type-cast
+        return config.data() as IConfig;
+      } else {
+        createBaseConfig().catch(err => null);
 
-      return null;
+        return {};
+      }
     }
-  })
+  )
 );
 
 /**

@@ -26,7 +26,7 @@ export const sendMessageWithConfig = (message: string) => {
       }
       // tslint:disable-next-line: prefer-type-cast
       const ME = me as IMe;
-      sendMessage(config.authKey, {
+      sendMessage(config?.authKey ? config?.authKey : '', {
         message,
         roomRole: 'Moderator',
         streamer: ME.username,

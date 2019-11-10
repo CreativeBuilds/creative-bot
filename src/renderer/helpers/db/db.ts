@@ -191,7 +191,7 @@ export class User implements IUser {
    * @description converts the lino from an int state to how it looks on dlive
    */
   public getLino() {
-    return Math.floor(this.lino / 10000) * 10;
+    return Math.floor(this.lino / 100) / 10;
   }
 
   /**
@@ -371,7 +371,19 @@ export class Command implements ICommand {
   }
 
   public getPermissionLevels() {
-    return this.permissions.map(item => item.value);
+    console.log("THIS PERMISSIONS", this.permissions);
+    if(!!this.permissions.length) {
+      console.log("THIS SHOULD PASS FOR OBJECTS");
+      this.permissions = [];
+    }
+    try {
+      return this.permissions.map(item => item.value);
+    } catch(err) {
+      this.permissions = [];
+      this.save();
+      return [];
+    }
+    
   }
 
   /**
@@ -530,7 +542,7 @@ export class Command implements ICommand {
                   .filter((v,i) => v !== "00" || i > 0)
                   .join(":");
           }
-            if(!!config) {
+            if(!!config && config.streamerAuthKey) {
               // tslint:disable-next-line: no-unsafe-any
               const self = await getSelf(config.streamerAuthKey);
               msgToSend = msgToSend.replace('{uptime}', toHHMMSS(`${(Date.now() - Number(self?.livestream?.createdAt))/1000}`));
@@ -748,6 +760,13 @@ export const getUsersFromDB = () => {
     return Promise.all(promises);
   });
 };
+
+getUsersFromDB().then(users => {
+  rxUsers.next(users.reduce((acc: {[id: string]: User}, user) => {
+    acc[user.username] = user;
+    return acc;
+  }, {}));
+}).catch(null);
 
 export const getUserById = async (id: string) => {
   return rxUsers

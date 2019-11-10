@@ -31,11 +31,11 @@ const start = (websocketServerLocation: string) => {
     .pipe(
       filter(x => !!x),
       filter(
-        (x: Partial<IConfig>): boolean => !!x.authKey && !!x.streamerAuthKey
+        (x: Partial<IConfig> | null): boolean => !!x?.authKey && !!x.streamerAuthKey
       ),
       distinctUntilChanged(
         (x, y) =>
-          x.authKey === y.authKey && x.streamerAuthKey === y.streamerAuthKey
+          x?.authKey === y?.authKey && x?.streamerAuthKey === y?.streamerAuthKey
       )
     )
     .subscribe((config: Partial<IConfig>) => {

@@ -16,7 +16,8 @@ import { rxChat } from './rxChat';
 import { rxTimers } from './rxTimers';
 import { Subscription } from 'rxjs';
 import { rxConfig } from './rxConfig';
-import { insertUserToDB, rxFireUsers, rxUsers, rxDbChanges } from './db/db';
+import { insertUserToDB, rxFireUsers, rxUsers, rxDbChanges, getUsersFromDB, User } from './db/db';
+import { sendEvent } from './reactGA';
 
 export const lastBackedUpUsersToCloud = 0;
 
@@ -32,8 +33,10 @@ export const backupUsersToCloud = async (usersArray: string[]) => {
    *
    * @note this only happens once because first() will close the listener after it gets the initial data
    */
+  
   rxUsers.pipe(first()).subscribe(usersMap => {
     usersArray.forEach((username): void => {
+      sendEvent('Users', 'saved').catch(null);
       const saveToFirestore = () => {
         rxUser.pipe(first()).subscribe(authUser => {
           if (!authUser) {
@@ -52,46 +55,6 @@ export const backupUsersToCloud = async (usersArray: string[]) => {
     });
   });
 };
-
-// export const startTimers = () => {
-//   const listeners: Subscription[] = [];
-//   const intervals: number[] = [];
-//   const listener = rxTimers.pipe(distinctUntilChanged()).subscribe(timers => {
-//     listeners.forEach(mListener => {
-//       mListener.unsubscribe();
-//     });
-//     intervals.forEach((timeout: number) => {
-//       clearInterval(timeout);
-//     });
-//     timers.forEach(timer => {
-//       let total = 0;
-//       if (!timer.enabled) {
-//         return null;
-//       }
-
-//       const updateTotal = () => {
-//         total++;
-//       };
-
-//       const removeFromTotal = (int: number) => {
-//         total = total - int;
-//       };
-
-//       // For each timer listen to chat internally and determine if it should run
-
-//       intervals.push(
-//         setInterval(() => {
-//           if ((total > timer.messages || !timer.messages) && timer.enabled) {
-//             timer.run().catch(console.error);
-//             removeFromTotal(timer.messages);
-//             total = 0;
-//           }
-//         }, timer.seconds * 1000)
-//       );
-//     });
-//   });
-// };
-
 /**
  * @description Function that inits all async calls
  * 1. Grab latest users from firestore and add them to local db
@@ -105,12 +68,25 @@ export const start = async () => {
    * @description subscribe to the firestore users and if they update, update all users in the database with the new data. Then subscribe to rxDbChanges (local db changes) and for any user that updates, save the user id for later
    */
   rxFireUsers.subscribe(async users => {
+    sendEvent('Users', 'fetched').catch(null);
     try {
-      const promises = users.map(user => {
-        return insertUserToDB(user);
-      });
-
-      await Promise.all(promises);
+      await getUsersFromDB().then(async currUsers => {
+        let usernames = currUsers.map(user => user.username);
+        // tslint:disable-next-line: no-unsafe-any
+        const promises = users.reduce((acc: User[], user) => {
+          if(!!user.username) {
+            if(!usernames.includes(user.username)){
+              acc.push(user);
+            }
+          }
+          return acc;
+        } ,[]).map(user => {
+          return insertUserToDB(user);
+        });
+  
+        await Promise.all(promises);
+      })
+      
     } catch (err) {
       (() => null)();
     }

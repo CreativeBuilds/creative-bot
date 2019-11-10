@@ -21,6 +21,7 @@ import { LoginDlive } from './logindlive/loginDlive';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import { rxEventsFromMain } from '../helpers/eventHandler';
 
+
 import ThemeProvider, { ThemeContextProvider } from './themeContext';
 
 import {
@@ -59,6 +60,8 @@ import { rxDonations } from '../helpers/rxDonations';
 import { rxFollows } from '../helpers/rxFollows';
 import { rxGiftedSubs } from '../helpers/rxGiftedSubs';
 import { rxSubs } from '../helpers/rxSubs';
+import { Tracking } from './tracking/tracking';
+import { sendEvent } from '../helpers/reactGA';
 
 start().catch(null);
 
@@ -95,6 +98,7 @@ rxTimers.subscribe((allTimers: Timer[]) => {
           timer.enabled
         ) {
           timer.run().catch(null);
+          sendEvent('Timers', 'ran').catch(null);
           lastSentAt = totalMessagesPassed;
         }
       }, timer.seconds * 1000)
@@ -340,7 +344,7 @@ export const Main = () => {
         if (!!sender) {
           sender
             .setLino(
-              sender.getLino() + inLino(donation.gift, donation.amount) / 1000
+              sender.getLino() + (inLino(donation.gift, donation.amount) / 1000)
             )
             .catch(null);
           // Check the config to see what they should get for points
@@ -576,7 +580,7 @@ export const Main = () => {
     };
   }, []);
 
-  const renderChat = () => <Chat chat={[]} />;
+  const renderChat = () => <Chat chat={[]} />; 
   const renderUsers = () => <Users />;
   const renderCustomVariables = () => <Custom_Variables />;
   const renderCommands = () => <Commands />;
