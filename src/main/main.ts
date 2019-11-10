@@ -3,9 +3,9 @@ import * as path from 'path';
 import * as url from 'url';
 import { BehaviorSubject } from 'rxjs';
 import { filter } from 'rxjs/operators';
-import { IEvent } from '@/renderer';
 import { autoUpdater } from 'electron-updater';
 import * as log from 'electron-log';
+import { IEvent } from '../renderer';
 //electronDebug({ showDevTools: false, isEnabled: true });
 
 let mainWindow: Electron.BrowserWindow | null;
@@ -153,6 +153,12 @@ function createWindow(): void {
     // when you should delete the corresponding element.
     mainWindow = null;
   });
+  log.debug('Checking for downloads');
+  setInterval(() => {
+    autoUpdater.checkForUpdates().catch(err => {
+      log.debug(err);
+    });
+  }, 1000 * 60 * 30);
   autoUpdater.checkForUpdates().catch(err => {
     log.debug(err);
   });
@@ -180,7 +186,20 @@ app.on('activate', () => {
   }
 });
 
+autoUpdater.on('checking-for-update', () => {
+  log.debug('CHECKING');
+});
+
+autoUpdater.on('update-available', () => {
+  log.debug('Update available');
+});
+
+autoUpdater.on('update-not-available', () => {
+  log.debug('Update NOT available');
+});
+
 autoUpdater.on('update-downloaded', info => {
+  log.debug('finished downloading');
   autoUpdater.quitAndInstall(false, true);
 });
 

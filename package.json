@@ -11,22 +11,9 @@
     "test": "mocha -r ts-node/register -r tsconfig-paths/register \"test/**/*.ts\"",
     "build:win": "electron-builder build --win --x64",
     "build:mac": "electron-builder build --mac --x64",
-    "gh-publish": "electron-builder --x64 -p always"
+    "gh-publish": "npm run prod && electron-builder --x64 -p always"
   },
-  "build": {
-    "appId": "com.creativebuilds.creativebot",
-    "productName": "CreativeBot 2",
-    "directories": {
-      "app": "./dist/",
-      "output": "./out/"
-    },
-    "win": {
-      "target": "nsis",
-      "asar": false,
-      "certificateSubjectName": "CreativeBuilds"
-    },
-    "buildVersion": "2.0.0"
-  },
+  "generateUpdatesFilesForAllChannels": true,
   "author": "CreativeBuilds",
   "license": "MIT",
   "dependencies": {
@@ -73,7 +60,7 @@
     "ajv": "^6.6.2",
     "copy-pkg-json-webpack-plugin": "0.0.38",
     "copy-webpack-plugin": "^5.0.5",
-    "cross-env": "^5.2.0",
+    "cross-env": "^5.2.1",
     "css-loader": "^1.0.1",
     "electron": "^3.1.2",
     "electron-builder": "^20.38.5",
