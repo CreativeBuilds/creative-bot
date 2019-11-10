@@ -8,7 +8,7 @@ import {
   ITimer,
   IChange,
   IConfig
-} from '@/renderer';
+} from '../../';
 import { rxUser } from '../rxUser';
 import { first, filter, switchMap, map } from 'rxjs/operators';
 import { firestore } from '../firebase';
@@ -371,9 +371,7 @@ export class Command implements ICommand {
   }
 
   public getPermissionLevels() {
-    console.log("THIS PERMISSIONS", this.permissions);
     if(!!this.permissions.length) {
-      console.log("THIS SHOULD PASS FOR OBJECTS");
       this.permissions = [];
     }
     try {

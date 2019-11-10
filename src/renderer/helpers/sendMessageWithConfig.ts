@@ -31,7 +31,9 @@ export const sendMessageWithConfig = (message: string) => {
         roomRole: 'Moderator',
         streamer: ME.username,
         subscribing: true
-      }).catch(null);
+      }).catch(err => {
+        console.error(err);
+      });
     });
 };
 

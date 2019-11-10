@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { getUA, pageview } from '@/renderer/helpers/reactGA';
 import { withRouter, WithRouterProps, RouteComponentProps } from 'react-router';
+import { pageview } from '../../helpers/reactGA';
 
 /**
  * @description simple module for tracking how many active users there are
@@ -10,7 +10,6 @@ interface IProps extends RouteComponentProps {
 }
 const TrackingComponent = (props: IProps) => {
   React.useEffect(() => {
-    console.log('ON PAGE VIEW', window.location.hash);
     pageview(props.path);
   }, []);
 

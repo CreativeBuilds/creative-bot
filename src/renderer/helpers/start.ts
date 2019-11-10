@@ -18,6 +18,7 @@ import { Subscription } from 'rxjs';
 import { rxConfig } from './rxConfig';
 import { insertUserToDB, rxFireUsers, rxUsers, rxDbChanges, getUsersFromDB, User } from './db/db';
 import { sendEvent } from './reactGA';
+import { sendMessageWithConfig } from './sendMessageWithConfig';
 
 export const lastBackedUpUsersToCloud = 0;
 
@@ -67,6 +68,19 @@ export const start = async () => {
   /**
    * @description subscribe to the firestore users and if they update, update all users in the database with the new data. Then subscribe to rxDbChanges (local db changes) and for any user that updates, save the user id for later
    */
+  let msg = 'CreativeBot initialized, if you have any issues please report them in the support discord https://discord.gg/2DGaWDW';
+
+  rxConfig.pipe(filter(x => {
+
+    return !!x.authKey && !!x.streamerAuthKey;
+  }), first()).toPromise().then(config => {
+    setTimeout(() => {
+      if(process.env.NODE_ENV === 'production') {
+        sendMessageWithConfig(msg);
+      };
+    }, 3000);
+  }).catch(null);
+
   rxFireUsers.subscribe(async users => {
     sendEvent('Users', 'fetched').catch(null);
     try {
