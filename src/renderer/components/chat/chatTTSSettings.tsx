@@ -41,7 +41,7 @@ export const ChatTTSSettings = ({
 
   React.useEffect(() => {
     setHasTTSDonations(!!config.hasTTSDonations);
-
+    setHasTTSDonationMessages(!!config.hasTTSDonationMessages);
     setAllowedTTSDonations(
       config.allowedTTSDonations ? config.allowedTTSDonations : []
     );
@@ -61,13 +61,13 @@ export const ChatTTSSettings = ({
     );
   };
 
-  const updateHasTTSDonationMeessages = (
+  const updateHasTTSDonationMessages = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     updateConfig({
       ...config,
       hasTTSDonationMessages: !config.hasTTSDonationMessages
-    }).catch(null);
+    }).catch(console.error);
   };
 
   return (
@@ -105,7 +105,7 @@ export const ChatTTSSettings = ({
           <Toggle
             checked={hasTTSDonationMessages}
             icons={false}
-            onChange={updateHasTTSDonationMeessages}
+            onChange={updateHasTTSDonationMessages}
             className={'toggler'}
           />
           <PopupDialogInputInfo>

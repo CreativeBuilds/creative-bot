@@ -99,6 +99,9 @@ export const AddOrEditCommandPopup = (props: IProps) => {
     ) {
       return;
     }
+    if (command.name !== commandName) {
+      command.delete();
+    }
     const newCommand = new Command(
       commandName,
       commandName,
@@ -135,7 +138,7 @@ export const AddOrEditCommandPopup = (props: IProps) => {
   };
 
   const updateCommandName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCommandName(e.target.value);
+    setCommandName(e.target.value.replace(' ', '-'));
   };
 
   const updateCommandReply = (e: React.ChangeEvent<HTMLInputElement>) => {

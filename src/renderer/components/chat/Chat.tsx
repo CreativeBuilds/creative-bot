@@ -138,7 +138,10 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
       )
       .subscribe((mConfig: Partial<IConfig>): void => {
         setConfig(mConfig);
-        if (!mConfig.allowedTTSDonations) {
+        if (
+          !mConfig.allowedTTSDonations &&
+          typeof mConfig.allowedTTSDonations === 'undefined'
+        ) {
           updateConfig({
             ...mConfig,
             allowedTTSDonations: [
@@ -147,7 +150,11 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
               { label: 'Diamond', value: 'DIAMOND' }
             ]
           }).catch(null);
-        } else if (!mConfig.hasTTSDonationMessages) {
+        }
+        if (
+          !mConfig.hasTTSDonationMessages &&
+          typeof mConfig.hasTTSDonationMessages === 'undefined'
+        ) {
           updateConfig({
             ...mConfig,
             hasTTSDonationMessages: true
