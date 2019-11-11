@@ -31,8 +31,8 @@ interface IProps {
  * @descritpion Edit user popup
  */
 export const UserSettingsPopup = (props: IProps) => {
-  const [payoutRate, setPayoutRate] = React.useState(1);
-  const [payoutAmount, setPayoutAmount] = React.useState(1);
+  const [payoutRate, setPayoutRate] = React.useState(5);
+  const [payoutAmount, setPayoutAmount] = React.useState(5);
 
   const [perLemon, setPerLemon] = React.useState(1);
   const [perIcecream, setPerIcecream] = React.useState(1);
@@ -80,8 +80,8 @@ export const UserSettingsPopup = (props: IProps) => {
         const donationSettings: IConfig['donationSettings'] = {
           ...config.donationSettings
         };
-        setPayoutRate(Math.floor((config.pointsTimer || 60) / 60));
-        setPayoutAmount(config.points || 1);
+        setPayoutRate(Math.floor((config.pointsTimer || 300) / 60));
+        setPayoutAmount(config.points || 5);
 
         setPerLemon(donationSettings.lemons || 1);
         setPerIcecream(donationSettings.icecream || 10);
