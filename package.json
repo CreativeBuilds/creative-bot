@@ -1,6 +1,6 @@
 {
   "name": "creative-bot-2",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "New version of CreativeBot",
   "main": "./dist/main.bundle.js",
   "scripts": {

@@ -120,13 +120,14 @@ export const ChatMessageSettings = ({
   }
 
   const updateSendEventMessages = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("SHOULD BE UPDATED EVENT MESSAGES", !(eventConfig?.enableEventMessages));
     updateConfig({
       ...config,
       eventConfig: {
         ...eventConfig,
-        enableEventMessages: !eventConfig?.enableEventMessages
+        enableEventMessages: !(eventConfig?.enableEventMessages)
       }
-    }).catch(null);
+    }).catch(console.error);
   };
 
   const updateLemonMessage = (e: React.ChangeEvent<HTMLInputElement>) => {

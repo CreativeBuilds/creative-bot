@@ -129,12 +129,12 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
   React.useEffect(() => {
     const listener = rxConfig
       .pipe(
-        filter((mConfig: Partial<IConfig>) => !!mConfig),
-        distinctUntilChanged(
-          (x, y) =>
-            x.chatProfileShadows === y.chatProfileShadows &&
-            x.selectedSender === y.selectedSender
-        )
+        filter((mConfig: Partial<IConfig>) => !!mConfig)
+        // distinctUntilChanged(
+        //   (x, y) =>
+        //     x.chatProfileShadows === y.chatProfileShadows &&
+        //     x.selectedSender === y.selectedSender
+        // )
       )
       .subscribe((mConfig: Partial<IConfig>): void => {
         setConfig(mConfig);
