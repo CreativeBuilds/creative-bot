@@ -129,16 +129,19 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
   React.useEffect(() => {
     const listener = rxConfig
       .pipe(
-        filter((mConfig: Partial<IConfig>) => !!mConfig),
-        distinctUntilChanged(
-          (x, y) =>
-            x.chatProfileShadows === y.chatProfileShadows &&
-            x.selectedSender === y.selectedSender
-        )
+        filter((mConfig: Partial<IConfig>) => !!mConfig)
+        // distinctUntilChanged(
+        //   (x, y) =>
+        //     x.chatProfileShadows === y.chatProfileShadows &&
+        //     x.selectedSender === y.selectedSender
+        // )
       )
       .subscribe((mConfig: Partial<IConfig>): void => {
         setConfig(mConfig);
-        if (!mConfig.allowedTTSDonations) {
+        if (
+          !mConfig.allowedTTSDonations &&
+          typeof mConfig.allowedTTSDonations === 'undefined'
+        ) {
           updateConfig({
             ...mConfig,
             allowedTTSDonations: [
@@ -147,7 +150,11 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
               { label: 'Diamond', value: 'DIAMOND' }
             ]
           }).catch(null);
-        } else if (!mConfig.hasTTSDonationMessages) {
+        }
+        if (
+          !mConfig.hasTTSDonationMessages &&
+          typeof mConfig.hasTTSDonationMessages === 'undefined'
+        ) {
           updateConfig({
             ...mConfig,
             hasTTSDonationMessages: true

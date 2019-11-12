@@ -124,9 +124,9 @@ export const ChatMessageSettings = ({
       ...config,
       eventConfig: {
         ...eventConfig,
-        enableEventMessages: !eventConfig?.enableEventMessages
+        enableEventMessages: !(eventConfig?.enableEventMessages)
       }
-    }).catch(null);
+    }).catch(console.error);
   };
 
   const updateLemonMessage = (e: React.ChangeEvent<HTMLInputElement>) => {
