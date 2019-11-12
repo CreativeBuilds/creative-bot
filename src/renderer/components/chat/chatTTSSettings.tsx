@@ -96,7 +96,16 @@ export const ChatTTSSettings = ({
     }).catch(null);
   };
 
-  const hasChanged = (): boolean => {
+  const updateTTSTweaks = () => {
+    updateConfig({
+      ...config,
+      tts_Amplitude: ttsAmplitude,
+      tts_Pitch: ttsPitch,
+      tts_Speed: ttsSpeed
+    }).catch(null);
+  }
+
+  const ttsTweakshasChanged = (): boolean => {
     return ttsAmplitude !== config?.tts_Amplitude || ttsPitch !== config?.tts_Pitch || ttsSpeed !== config?.tts_Speed;
   };
 
@@ -221,16 +230,9 @@ export const ChatTTSSettings = ({
                     {getPhrase('tts_btn_testtts')}
                   </Button>
                   <Button   
-                    disabled={!hasChanged()}     
+                    disabled={!ttsTweakshasChanged()}     
                     style={{ zIndex: 4, position: 'static', marginTop: '10px' }}
-                    onClick={() => {
-                      updateConfig({
-                        ...config,
-                        tts_Amplitude: ttsAmplitude,
-                        tts_Pitch: ttsPitch,
-                        tts_Speed: ttsSpeed
-                      }).catch(null);
-                    }}
+                    onClick={ttsTweakshasChanged() ? updateTTSTweaks : () => null}
                   >
                     {getPhrase('tts_btn_saveconfig')}
                   </Button>
