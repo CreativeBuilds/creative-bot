@@ -60,6 +60,9 @@
         "backgroundColor": "#181818ff",
         "disabledTextColor": "#646464ff"
       },
+      "slider": {
+        "railBackground": "#383838ff"
+      },
       "popup": {
         "color": "#e1e1e1ff",
         "backgroundColor": "#282828ff"
@@ -147,6 +150,9 @@
         "placeholderColor": "#00000059",
         "backgroundColor": "#ffffffff",
         "disabledTextColor": "#ccccccff"
+      },
+      "slider": {
+        "railBackground": "#999999ff"
       },
       "popup": {
         "color": "#161616ff",

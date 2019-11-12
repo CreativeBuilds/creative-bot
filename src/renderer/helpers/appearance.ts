@@ -242,6 +242,14 @@ export const textInputDisabledTextColor = theme('mode', {
 });
 
 /**
+ * @description Appearances Slider Rail Background Color
+ */
+export const sliderRailBackgroundColor = theme('mode', {
+    light: themeData.appearances.light.slider.railBackground,
+    dark: themeData.appearances.dark.slider.railBackground
+});
+
+/**
  * @description Appearances Popup Text Color
  */
 export const popupTextColor = theme('mode', {
