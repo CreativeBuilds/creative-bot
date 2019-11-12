@@ -15,7 +15,6 @@ interface ISliderProps {
     minValue: number;
     maxValue: number;
     value: number;
-    onChange?: () => void;
     onValueChanged?: (e: number) => void;
 }
 
