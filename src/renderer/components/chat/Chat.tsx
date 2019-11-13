@@ -27,6 +27,7 @@ import { getSelf } from '@/renderer/helpers/dlive/getSelf';
 import { shell } from 'electron';
 import { IConfig, IMe, IChatObject, IOption } from '@/renderer';
 import { ChatTTSSettings } from './chatTTSSettings';
+import { ChatStickerLibrary } from './ChatStickerLibrary';
 
 import {
   dropDownBoxBackgroundColor,
@@ -83,6 +84,7 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
   const [userControlOverlay, setUserControlOverlay] = React.useState(false);
   const [ttsControlOverlay, setTTSControlOverlay] = React.useState(false);
   const [messageControl, setMessageControl] = React.useState(false);
+  const [stickerLibraryOverlay, setSickerLibraryOverlay] = React.useState(false);
   const [messages, setMessages] = React.useState<IChatObject[]>([]);
   const [config, setConfig] = React.useState<Partial<IConfig>>({});
   const [botAccount, setBotAccount] = React.useState<IMe>();
@@ -219,6 +221,10 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
     setTTSControlOverlay(true);
   };
 
+  const openStickerLibrary = () => {
+    setSickerLibraryOverlay(true);
+  };
+
   const openMessageControl = () => {
     setMessageControl(true);
   };
@@ -226,8 +232,13 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
   const closeUserControl = () => {
     setUserControlOverlay(false);
   };
+
   const closeTTSControl = () => {
     setTTSControlOverlay(false);
+  };
+
+  const closeStickerLibrary = () => {
+    setSickerLibraryOverlay(false);
   };
 
   const closeMessageControl = () => {
@@ -326,6 +337,7 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
               : streamerAccount
           }
           config={config}
+          onStickerClick={() => { openStickerLibrary(); }}
         />
       </PageContent>
       {userControlOverlay ? (
@@ -333,6 +345,9 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
       ) : null}
       {ttsControlOverlay ? (
         <ChatTTSSettings config={config} closeTTSControl={closeTTSControl} />
+      ) : null}
+      {stickerLibraryOverlay ? (
+        <ChatStickerLibrary closeStickerLibrary={closeStickerLibrary} />
       ) : null}
       {messageControl ? (
         <ChatMessageSettings
