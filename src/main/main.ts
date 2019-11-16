@@ -6,6 +6,12 @@ import { filter } from 'rxjs/operators';
 import { autoUpdater } from 'electron-updater';
 import * as log from 'electron-log';
 import { IEvent } from '../renderer';
+
+process.on('uncaughtException', function (error) {
+  // Handle the error
+  log.debug(error);
+})
+
 //electronDebug({ showDevTools: false, isEnabled: true });
 
 let mainWindow: Electron.BrowserWindow | null;
@@ -46,7 +52,12 @@ function createWindow(): void {
     if (!mainWindow) {
       return;
     }
-    mainWindow.webContents.send('event', { name, data });
+    try {
+      mainWindow.webContents.send('event', { name, data });
+    } catch(err) {
+      log.debug(err);
+    }
+    
   };
 
   ipcMain.on('event', (event: any, data: IEvent) => {
@@ -63,7 +74,7 @@ function createWindow(): void {
         loginWindow = null;
         loginWindow = undefined;
       } catch (err) {
-        (() => null)();
+        log.debug(err);
       }
     }
 
@@ -96,22 +107,27 @@ function createWindow(): void {
     loginWindow.webContents.on(
       'did-fail-load',
       (mEvent, e, desc, nUrl, isMainFrame) => {
-        if (!loginWindow || !mainWindow) {
-          return;
-        }
-        if (nUrl.startsWith('http://localhost')) {
-          const auth = nUrl.split('?auth=')[1];
-          if (!auth) {
-            loginWindow.close();
-            oauthWindowStart(ifStreamer);
-          } else {
-            // We got auth string boiiiiss time to set it on the
-            sendToWin(ifStreamer ? 'newAuthKeyStreamer' : 'newAuthKey', {
-              key: auth
-            });
-            loginWindow.close();
+        try {
+          if (!loginWindow || !mainWindow) {
+            return;
           }
+          if (nUrl.startsWith('http://localhost')) {
+            const auth = nUrl.split('?auth=')[1];
+            if (!auth) {
+              loginWindow.close();
+              oauthWindowStart(ifStreamer);
+            } else {
+              // We got auth string boiiiiss time to set it on the
+              sendToWin(ifStreamer ? 'newAuthKeyStreamer' : 'newAuthKey', {
+                key: auth
+              });
+              loginWindow.close();
+            }
+          }
+        } catch(err) {
+          log.debug(err);
         }
+        
       }
     );
 

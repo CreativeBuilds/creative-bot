@@ -27,15 +27,30 @@ export const rxCommands = rxUser.pipe(
   ),
   map((commands: ICommand[]) =>
     commands.map(
-      (command): Command =>
-        new Command(
+      (command): Command => {
+        let newCommand = new Command(
           command.name,
           command.name,
           command.permissions || [],
           command.reply,
           command.cost || 0,
           command.enabled
-        )
+        );
+        if (newCommand.name.includes(' ')) {
+          newCommand.delete();
+          newCommand = new Command(
+            command.name.replace(' ', '-'),
+            command.name.replace(' ', '-'),
+            command.permissions || [],
+            command.reply,
+            command.cost || 0,
+            command.enabled
+          );
+          newCommand.save();
+        }
+
+        return newCommand;
+      }
     )
   )
 );
