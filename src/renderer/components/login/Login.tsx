@@ -174,7 +174,7 @@ const Login = () => {
   };
 
   return (
-    <LoginMain>
+    <LoginMain> 
       <PopupDialog width={'350px'} minHeight={'300px'}>
         {resetEmailSent === true ? (
           <React.Fragment>
@@ -198,12 +198,16 @@ const Login = () => {
             <PopupDialogBackIcon>
               <FaLongArrowAltLeft onClick={closeForgotPassword} />
             </PopupDialogBackIcon>
-            <PopupDialogTitle center>Forgot Password</PopupDialogTitle>
+            <PopupDialogTitle center>
+              {getPhrase('password_reset_title')}
+            </PopupDialogTitle>
             <PopupDialogText style={{ marginBottom: '10px' }}>
               {getPhrase('password_reset_email_will_send')}
             </PopupDialogText>
             <PopupDialogInputWrapper>
-              <PopupDialogInputName>Email</PopupDialogInputName>
+              <PopupDialogInputName>
+                {getPhrase('login_email_title')}
+              </PopupDialogInputName>
               <PopupDialogInput value={email} onChange={updateEmail} />
               <PopupDialogInputInfo
                 error
@@ -328,7 +332,7 @@ const Login = () => {
                 {getPhrase('login_invalid_password')}
               </PopupDialogInputInfo>
               <ForgotPassword onClick={openForgotPassword}>
-                Forgot Password?
+                {getPhrase('password_reset_prompt')}
               </ForgotPassword>
             </PopupDialogInputWrapper>
             <PopupButtonWrapper>

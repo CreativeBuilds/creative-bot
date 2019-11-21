@@ -20,7 +20,7 @@ import { Chat } from './chat/chat';
 import { LoginDlive } from './logindlive/loginDlive';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import { rxEventsFromMain } from '../helpers/eventHandler';
-
+import { Online, Offline } from 'react-detect-offline';
 
 import ThemeProvider, { ThemeContextProvider } from './themeContext';
 
@@ -45,9 +45,12 @@ import { rxMe } from '../helpers/rxMe';
 import { Commands } from './commands/commands';
 import { Timers } from './timers/timers';
 import { rxTimers } from '../helpers/rxTimers';
-import { sendMessageWithConfig, sendEventMessageWithConfig } from '../helpers/sendMessageWithConfig';
+import {
+  sendMessageWithConfig,
+  sendEventMessageWithConfig
+} from '../helpers/sendMessageWithConfig';
 import { Timer } from '../helpers/db/db';
-import {rxUsers, User} from '../helpers/db/db';
+import { rxUsers, User } from '../helpers/db/db';
 import { Custom_Variables } from './custom_variables/custom_variables';
 import {
   accentColor,
@@ -62,6 +65,11 @@ import { rxGiftedSubs } from '../helpers/rxGiftedSubs';
 import { rxSubs } from '../helpers/rxSubs';
 import { Tracking } from './tracking/tracking';
 import { sendEvent } from '../helpers/reactGA';
+import {
+  PopupDialog,
+  PopupDialogText,
+  PopupDialogTitle
+} from '../components/generic-styled-components/PopupDialog';
 
 start().catch(null);
 
@@ -224,6 +232,7 @@ export const Main = () => {
   const [wordMapLoaded, setWordMapLoaded] = useState(false);
   const [donations, setDonations] = useState<IGiftObject[]>([]);
   const [soundIsRunning, setSoundIsRunning] = useState<boolean>(false);
+  const [wasOffline, setWasOffline] = useState<boolean>(false);
 
   const giftType = (message: IGiftObject) => {
     if (message.gift === 'LEMON') {
@@ -335,16 +344,27 @@ export const Main = () => {
           return;
         }
 
-        if(!users[donation.sender.username]) {
-          users[donation.sender.username] = new User(donation.sender.username, donation.sender.displayname, donation.sender.username, donation.sender.avatar,0,0,0,donation.role, donation.roomRole, false)
+        if (!users[donation.sender.username]) {
+          users[donation.sender.username] = new User(
+            donation.sender.username,
+            donation.sender.displayname,
+            donation.sender.username,
+            donation.sender.avatar,
+            0,
+            0,
+            0,
+            donation.role,
+            donation.roomRole,
+            false
+          );
         }
 
         const sender = users[donation.sender.username];
-        
+
         if (!!sender) {
           sender
             .setLino(
-              sender.getLino() + (inLino(donation.gift, donation.amount) / 1000)
+              sender.getLino() + inLino(donation.gift, donation.amount) / 1000
             )
             .catch(null);
           // Check the config to see what they should get for points
@@ -373,24 +393,53 @@ export const Main = () => {
             sender.addPoints(settings.ninjet).catch(null);
           }
 
-          if(config.eventConfig?.enableEventMessages) {
+          if (config.eventConfig?.enableEventMessages) {
             if (donation.gift === 'LEMON') {
-              sendEventMessageWithConfig(!!config.eventConfig?.onLemon ? config.eventConfig?.onLemon : '', donation.gift, sender);
+              sendEventMessageWithConfig(
+                !!config.eventConfig?.onLemon
+                  ? config.eventConfig?.onLemon
+                  : '',
+                donation.gift,
+                sender
+              );
             }
             if (donation.gift === 'ICE_CREAM') {
-              sendEventMessageWithConfig(!!config.eventConfig?.onIcecream ? config.eventConfig?.onIcecream : '', donation.gift, sender);
+              sendEventMessageWithConfig(
+                !!config.eventConfig?.onIcecream
+                  ? config.eventConfig?.onIcecream
+                  : '',
+                donation.gift,
+                sender
+              );
             }
             if (donation.gift === 'DIAMOND') {
-              sendEventMessageWithConfig(!!config.eventConfig?.onDiamond ? config.eventConfig?.onDiamond : '', donation.gift, sender);
+              sendEventMessageWithConfig(
+                !!config.eventConfig?.onDiamond
+                  ? config.eventConfig?.onDiamond
+                  : '',
+                donation.gift,
+                sender
+              );
             }
             if (donation.gift === 'NINJAGHINI') {
-              sendEventMessageWithConfig(!!config.eventConfig?.onNinja ? config.eventConfig?.onNinja : '', donation.gift, sender);
+              sendEventMessageWithConfig(
+                !!config.eventConfig?.onNinja
+                  ? config.eventConfig?.onNinja
+                  : '',
+                donation.gift,
+                sender
+              );
             }
             if (donation.gift === 'NINJET') {
-              sendEventMessageWithConfig(!!config.eventConfig?.onNinjet ? config.eventConfig?.onNinjet : '', donation.gift, sender);
+              sendEventMessageWithConfig(
+                !!config.eventConfig?.onNinjet
+                  ? config.eventConfig?.onNinjet
+                  : '',
+                donation.gift,
+                sender
+              );
             }
           }
-
         }
 
         // say dono here
@@ -416,54 +465,81 @@ export const Main = () => {
   }, [config, soundIsRunning]);
 
   useEffect(() => {
-    const listener = rxFollows.pipe(skip(1), filter(x => !!x)).subscribe(follow => {
-      if(!follow) {
-        return;
-      }
-      const sender = users[follow.sender.username];
+    const listener = rxFollows
+      .pipe(
+        skip(1),
+        filter(x => !!x)
+      )
+      .subscribe(follow => {
+        if (!follow) {
+          return;
+        }
+        const sender = users[follow.sender.username];
 
-      if(config.eventConfig?.enableEventMessages) {
-        sendEventMessageWithConfig(!!config.eventConfig?.onFollow ? config.eventConfig?.onFollow : '', 'FOLLOW', sender);
-      }
-    });
+        if (config.eventConfig?.enableEventMessages) {
+          sendEventMessageWithConfig(
+            !!config.eventConfig?.onFollow ? config.eventConfig?.onFollow : '',
+            'FOLLOW',
+            sender
+          );
+        }
+      });
 
     return () => {
       listener.unsubscribe();
-    }
+    };
   }, [config]);
 
   useEffect(() => {
-    const listener = rxGiftedSubs.pipe(skip(1), filter(x => !!x)).subscribe(giftedSub => {
-      if(!giftedSub) {
-        return;
-      }
-      const sender = users[giftedSub.sender.username];
+    const listener = rxGiftedSubs
+      .pipe(
+        skip(1),
+        filter(x => !!x)
+      )
+      .subscribe(giftedSub => {
+        if (!giftedSub) {
+          return;
+        }
+        const sender = users[giftedSub.sender.username];
 
-      if(config.eventConfig?.enableEventMessages) {
-        sendEventMessageWithConfig(!!config.eventConfig?.onFollow ? config.eventConfig?.onFollow : '', 'GIFTEDSUB', sender);
-      }
-    });
+        if (config.eventConfig?.enableEventMessages) {
+          sendEventMessageWithConfig(
+            !!config.eventConfig?.onFollow ? config.eventConfig?.onFollow : '',
+            'GIFTEDSUB',
+            sender
+          );
+        }
+      });
 
     return () => {
       listener.unsubscribe();
-    }
+    };
   }, [config]);
 
   useEffect(() => {
-    const listener = rxSubs.pipe(skip(1), filter(x => !!x)).subscribe(giftedSub => {
-      if(!giftedSub) {
-        return;
-      }
-      const sender = users[giftedSub.sender.username];
+    const listener = rxSubs
+      .pipe(
+        skip(1),
+        filter(x => !!x)
+      )
+      .subscribe(giftedSub => {
+        if (!giftedSub) {
+          return;
+        }
+        const sender = users[giftedSub.sender.username];
 
-      if(config.eventConfig?.enableEventMessages) {
-        sendEventMessageWithConfig(!!config.eventConfig?.onFollow ? config.eventConfig?.onFollow : '', 'SUB', sender);
-      }
-    });
+        if (config.eventConfig?.enableEventMessages) {
+          sendEventMessageWithConfig(
+            !!config.eventConfig?.onFollow ? config.eventConfig?.onFollow : '',
+            'SUB',
+            sender
+          );
+        }
+      });
 
     return () => {
       listener.unsubscribe();
-    }
+    };
   }, [config]);
 
   useEffect(() => {
@@ -580,7 +656,7 @@ export const Main = () => {
     };
   }, []);
 
-  const renderChat = () => <Chat chat={[]} />; 
+  const renderChat = () => <Chat chat={[]} />;
   const renderUsers = () => <Users />;
   const renderCustomVariables = () => <Custom_Variables />;
   const renderCommands = () => <Commands />;
@@ -591,71 +667,129 @@ export const Main = () => {
   );
   const renderLogin = () => <Login />;
 
+  const Main = styled.div`
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  `;
+
   return (
     <ThemeContextProvider>
       <Background>
         <Global />
         <TitleBar />
-        {isLoading || !wordMapLoaded ? (
+        <Offline>
+          <SetIfOffline setWasOffline={setWasOffline} />
           <Center>
-            <Loading />
+            <Main>
+              <PopupDialog width={'350px'} minHeight={'300px'}>
+                <PopupDialogTitle>Offline</PopupDialogTitle>
+                <PopupDialogText>
+                  It appears you're offline, please reconnect to the internet.
+                </PopupDialogText>
+              </PopupDialog>
+            </Main>
           </Center>
-        ) : (
-          <HashRouter basename='/'>
-            {isLoggedIn && (config !== null && !!config) ? (
-              (!!config.authKey ? config.authKey : '').length > 0 &&
-              (!!config.streamerAuthKey ? config.streamerAuthKey : '').length >
-                0 ? (
-                /**
-                 * @description user is logged into firebase & dlive
-                 */
-                <React.Fragment>
-                  <Menu />
-                  <div
-                    style={{
-                      width: 'calc(100vw - 104px)',
-                      height: 'calc(100vh - 70px)',
-                      marginLeft: '64px',
-                      marginTop: '28px',
-                      padding: '20px',
-                      position: 'relative'
-                    }}
-                  >
-                    <Route
-                      path='/commands'
-                      exact={true}
-                      render={renderCommands}
-                    />
-                    <Route
-                      path='/custom_variables'
-                      exact={true}
-                      render={renderCustomVariables}
-                    />
-                    <Route path='/users' exact={true} render={renderUsers} />
-                    <Route path='/timers' exact={true} render={renderTimers} />
-                    <Route path='/themes' exact={true} render={renderThemes} />
-                    <Route path='/' exact={true} render={renderChat} />
-                  </div>
-                </React.Fragment>
-              ) : (
-                /**
-                 * @description user is logged into firebase but not dlive
-                 */
-                <React.Fragment>
-                  <Route path='/' exact={true} render={renderLoginDlive} />
-                </React.Fragment>
-              )
-            ) : isLoggedIn === null ? null : (
-              /**
-               * @description user is neither logged into firebase nor dlive
-               */
-              <React.Fragment>
-                <Route path='/' exact={true} render={renderLogin} />
-              </React.Fragment>
-            )}
-          </HashRouter>
-        )}
+        </Offline>
+        <Online>
+          <ReloadIfWasOffline wasOffline={wasOffline} />
+          {isLoading || !wordMapLoaded ? (
+            <Center>
+              <Loading />
+            </Center>
+          ) : (
+            <React.Fragment>
+              <HashRouter basename='/'>
+                {isLoggedIn && config !== null && !!config ? (
+                  (!!config.authKey ? config.authKey : '').length > 0 &&
+                  (!!config.streamerAuthKey ? config.streamerAuthKey : '')
+                    .length > 0 ? (
+                    /**
+                     * @description user is logged into firebase & dlive
+                     */
+                    <React.Fragment>
+                      <Menu />
+                      <div
+                        style={{
+                          width: 'calc(100vw - 104px)',
+                          height: 'calc(100vh - 70px)',
+                          marginLeft: '64px',
+                          marginTop: '28px',
+                          padding: '20px',
+                          position: 'relative'
+                        }}
+                      >
+                        <Route
+                          path='/commands'
+                          exact={true}
+                          render={renderCommands}
+                        />
+                        <Route
+                          path='/custom_variables'
+                          exact={true}
+                          render={renderCustomVariables}
+                        />
+                        <Route
+                          path='/users'
+                          exact={true}
+                          render={renderUsers}
+                        />
+                        <Route
+                          path='/timers'
+                          exact={true}
+                          render={renderTimers}
+                        />
+                        <Route
+                          path='/themes'
+                          exact={true}
+                          render={renderThemes}
+                        />
+                        <Route path='/' exact={true} render={renderChat} />
+                      </div>
+                    </React.Fragment>
+                  ) : (
+                    /**
+                     * @description user is logged into firebase but not dlive
+                     */
+                    <React.Fragment>
+                      <Route path='/' exact={true} render={renderLoginDlive} />
+                    </React.Fragment>
+                  )
+                ) : isLoggedIn === null ? null : (
+                  /**
+                   * @description user is neither logged into firebase nor dlive
+                   */
+                  <React.Fragment>
+                    <Route path='/' exact={true} render={renderLogin} />
+                  </React.Fragment>
+                )}
+              </HashRouter>
+            </React.Fragment>
+          )}
+        </Online>
       </Background>
     </ThemeContextProvider>
   );
+};
+
+interface ISetIfOffline {
+  setWasOffline: (bool: boolean) => void;
+}
+
+const SetIfOffline = (props: ISetIfOffline) => {
+  props.setWasOffline(true);
+  return null;
+};
+
+interface IReload {
+  wasOffline: boolean;
+}
+
+const ReloadIfWasOffline = (props: IReload) => {
+  if (props.wasOffline) {
+    window.location.reload();
+  }
+  return null;
 };
