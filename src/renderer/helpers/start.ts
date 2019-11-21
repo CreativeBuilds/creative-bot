@@ -9,14 +9,20 @@ import {
   skip
 } from 'rxjs/operators';
 import { startRecentChat } from './recentChat';
-import { IDatabaseChange } from 'dexie-observable/api';
 import { rxUser } from './rxUser';
 import { firestore } from './firebase';
 import { rxChat } from './rxChat';
 import { rxTimers } from './rxTimers';
 import { Subscription } from 'rxjs';
 import { rxConfig } from './rxConfig';
-import { insertUserToDB, rxFireUsers, rxUsers, rxDbChanges, getUsersFromDB, User } from './db/db';
+import {
+  insertUserToDB,
+  rxFireUsers,
+  rxUsers,
+  rxDbChanges,
+  getUsersFromDB,
+  User
+} from './db/db';
 import { sendEvent } from './reactGA';
 import { sendMessageWithConfig } from './sendMessageWithConfig';
 
@@ -34,7 +40,7 @@ export const backupUsersToCloud = async (usersArray: string[]) => {
    *
    * @note this only happens once because first() will close the listener after it gets the initial data
    */
-  
+
   rxUsers.pipe(first()).subscribe(usersMap => {
     usersArray.forEach((username): void => {
       sendEvent('Users', 'saved').catch(null);
@@ -68,18 +74,25 @@ export const start = async () => {
   /**
    * @description subscribe to the firestore users and if they update, update all users in the database with the new data. Then subscribe to rxDbChanges (local db changes) and for any user that updates, save the user id for later
    */
-  let msg = 'CreativeBot initialized, if you have any issues please report them in the support discord https://discord.gg/2DGaWDW';
+  let msg =
+    'CreativeBot initialized, if you have any issues please report them in the support discord https://discord.gg/2DGaWDW';
 
-  rxConfig.pipe(filter(x => {
-
-    return !!x.authKey && !!x.streamerAuthKey;
-  }), first()).toPromise().then(config => {
-    setTimeout(() => {
-      if(process.env.NODE_ENV === 'production') {
-        sendMessageWithConfig(msg);
-      };
-    }, 3000);
-  }).catch(null);
+  rxConfig
+    .pipe(
+      filter(x => {
+        return !!x.authKey && !!x.streamerAuthKey;
+      }),
+      first()
+    )
+    .toPromise()
+    .then(config => {
+      setTimeout(() => {
+        if (process.env.NODE_ENV === 'production') {
+          sendMessageWithConfig(msg);
+        }
+      }, 3000);
+    })
+    .catch(null);
 
   rxFireUsers.subscribe(async users => {
     sendEvent('Users', 'fetched').catch(null);
@@ -87,20 +100,21 @@ export const start = async () => {
       await getUsersFromDB().then(async currUsers => {
         let usernames = currUsers.map(user => user.username);
         // tslint:disable-next-line: no-unsafe-any
-        const promises = users.reduce((acc: User[], user) => {
-          if(!!user.username) {
-            if(!usernames.includes(user.username)){
-              acc.push(user);
+        const promises = users
+          .reduce((acc: User[], user) => {
+            if (!!user.username) {
+              if (!usernames.includes(user.username)) {
+                acc.push(user);
+              }
             }
-          }
-          return acc;
-        } ,[]).map(user => {
-          return insertUserToDB(user);
-        });
-  
+            return acc;
+          }, [])
+          .map(user => {
+            return insertUserToDB(user);
+          });
+
         await Promise.all(promises);
-      })
-      
+      });
     } catch (err) {
       (() => null)();
     }
@@ -113,16 +127,15 @@ export const start = async () => {
      * @description this will save the user id to an object, that will be looped over every hour to update
      * the user to firestore
      */
-    listener = rxDbChanges.pipe(skip(1))
-      .subscribe(change => {
-        if(!change) return;
-        if(!change.data?.username) return;
-        if(change.name === 'addUser') {
-          changedUsers[change.data?.username] = true;
-        } else if(change.name === 'removeUser' ) {
-          delete changedUsers[change.data?.username];
-        }
-      });
+    listener = rxDbChanges.pipe(skip(1)).subscribe(change => {
+      if (!change) return;
+      if (!change.data?.username) return;
+      if (change.name === 'addUser') {
+        changedUsers[change.data?.username] = true;
+      } else if (change.name === 'removeUser') {
+        delete changedUsers[change.data?.username];
+      }
+    });
   });
   startRecentChat();
   setInterval(() => {

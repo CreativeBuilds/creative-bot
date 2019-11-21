@@ -16,6 +16,8 @@ import * as validator from 'email-validator';
 import { createUser, auth } from '@/renderer/helpers/firebase';
 import { FaLongArrowAltLeft } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
+import { accentColor } from '@/renderer/helpers/appearance';
+import { firebase } from '@/renderer/helpers/firebase';
 
 /**
  * @description The main div for the login screeen
@@ -39,12 +41,21 @@ const LoginInputWrapper = styled.div`
   margin: auto;
 `;
 
+const ForgotPassword = styled(PopupDialogInputInfo)`
+  color: ${accentColor};
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
 /**
  * @description returns the login page in its entirety and handles if the user is logged in or not.
  */
 const Login = () => {
   const [create, setCreate] = React.useState(false);
   const [login, setLogin] = React.useState(false);
+  const [passwordReset, setPasswordReset] = React.useState(false);
+  const [resetEmailSent, setResetEmailSent] = React.useState(false);
 
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -131,6 +142,10 @@ const Login = () => {
     return password.length < 8 || !validator.validate(email) || passwordError;
   };
 
+  const isDisabledReset = (): boolean => {
+    return !validator.validate(email);
+  };
+
   /**
    * @description sends user back to the initial start screen
    */
@@ -139,10 +154,74 @@ const Login = () => {
     setLogin(false);
   };
 
+  const openForgotPassword = (): void => {
+    setPasswordReset(true);
+  };
+
+  const closeForgotPassword = (): void => {
+    setPasswordReset(false);
+  };
+
+  const resetPassword = () => {
+    firebase.auth().sendPasswordResetEmail(email);
+    setResetEmailSent(true);
+    setPasswordReset(false);
+  };
+
+  const closeResetConfirm = (): void => {
+    setPasswordReset(false);
+    setResetEmailSent(false);
+  };
+
   return (
     <LoginMain>
       <PopupDialog width={'350px'} minHeight={'300px'}>
-        {create === true ? (
+        {resetEmailSent === true ? (
+          <React.Fragment>
+            <PopupDialogBackIcon>
+              <FaLongArrowAltLeft onClick={closeResetConfirm} />
+            </PopupDialogBackIcon>
+            <PopupDialogTitle center>
+              {getPhrase('password_reset_sent')}
+            </PopupDialogTitle>
+            <PopupDialogText style={{ marginBottom: '10px' }}>
+              {getPhrase('password_reset_check_email')}
+            </PopupDialogText>
+            <PopupButtonWrapper>
+              <Button onClick={closeResetConfirm}>
+                {getPhrase('Sounds Good!')}
+              </Button>
+            </PopupButtonWrapper>
+          </React.Fragment>
+        ) : passwordReset === true ? (
+          <React.Fragment>
+            <PopupDialogBackIcon>
+              <FaLongArrowAltLeft onClick={closeForgotPassword} />
+            </PopupDialogBackIcon>
+            <PopupDialogTitle center>Forgot Password</PopupDialogTitle>
+            <PopupDialogText style={{ marginBottom: '10px' }}>
+              {getPhrase('password_reset_email_will_send')}
+            </PopupDialogText>
+            <PopupDialogInputWrapper>
+              <PopupDialogInputName>Email</PopupDialogInputName>
+              <PopupDialogInput value={email} onChange={updateEmail} />
+              <PopupDialogInputInfo
+                error
+                isHidden={validator.validate(email) || email.length === 0}
+              >
+                {getPhrase('login_email_error')}
+              </PopupDialogInputInfo>
+            </PopupDialogInputWrapper>
+            <PopupButtonWrapper>
+              <Button
+                onClick={isDisabledReset() ? (): null => null : resetPassword}
+                disabled={isDisabledReset()}
+              >
+                {getPhrase('password_reset_send_reset')}
+              </Button>
+            </PopupButtonWrapper>
+          </React.Fragment>
+        ) : create === true ? (
           <React.Fragment>
             <PopupDialogBackIcon>
               <FaLongArrowAltLeft onClick={backToMain} />
@@ -248,6 +327,9 @@ const Login = () => {
               <PopupDialogInputInfo error={true} isHidden={!passwordError}>
                 {getPhrase('login_invalid_password')}
               </PopupDialogInputInfo>
+              <ForgotPassword onClick={openForgotPassword}>
+                Forgot Password?
+              </ForgotPassword>
             </PopupDialogInputWrapper>
             <PopupButtonWrapper>
               <Button
