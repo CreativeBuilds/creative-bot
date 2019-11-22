@@ -153,6 +153,12 @@ export interface ITimer {
   messages: number;
 }
 
+export interface IEmote {
+  id: string;
+  dliveid: string;
+  url: string;
+}
+
 export interface ICustomVariable {
   name: string;
   replyString: string;

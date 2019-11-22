@@ -4,7 +4,8 @@ import { ThemeSet } from 'styled-theming';
 import { IChatColors, IChatObject, IGiftObject } from '@/renderer';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Icon } from '../generic-styled-components/Icon';
-import { FaEyeSlash, FaEye } from 'react-icons/fa';
+import { FaEyeSlash, FaEye, FaPlus } from 'react-icons/fa';
+import { AdvancedDiv, HoverStyle } from '../generic-styled-components/AdvancedDiv';
 
 import {
   listItemColor,
@@ -122,6 +123,32 @@ const ChatUsername = styled.div`
   border-bottom: 1px dashed;
 `;
 
+const StickerContainer = styled.div`
+    display: inline-flex;
+    position: relative;
+`;
+
+const StickerAddCircle = styled.div`
+      display: flex;
+      position: absolute;
+      height: 36px;
+      width: 36px;
+      background-color: rgba(255,255,255,0.7);
+      border-radius: 50%;
+      left: 12.5%;
+      top: 12.5%;
+
+      svg {
+        stroke: #000000;
+        fill: #000000;
+        text-align: center;
+        vertical-align: middle;
+        margin: auto;
+      }
+
+      box-shadow: 1px 0px 5px 1px #000000
+`;
+
 /**
  * @description the actual line for content
  */
@@ -134,16 +161,19 @@ export const ChatMessage = ({
     moderator: `rgba(6,172,0,0.65)`,
     viewer: `rgba(255,255,255,0)`
   },
-  highlighted
+  highlighted,
+  onAddStickerClick = (message) => {}
 }: {
   message: IChatObject | IGiftObject;
   colors?: IChatColors;
   highlighted: boolean;
+  onAddStickerClick?: (e?: IChatObject | IGiftObject) => void;
 }) => {
   /**
    * @description state for when a message is deleted, the user has the option to check to see what the message was by clicking on the eyeball
    */
   const [deletedButShow, setDeletedButShow] = React.useState(false);
+  const [isHoveringOnSticker, setHoveringOnSticker] = React.useState<Boolean>(false);
 
   const determineBoxShadow = (): string => {
     // const sender = message.sender;
@@ -297,6 +327,18 @@ export const ChatMessage = ({
     }
     return stickerLink;
   };
+
+  const stickerHoverStyle = (): HoverStyle => {
+    var style: HoverStyle = new HoverStyle();
+    style.hasBorder = false;
+    style.borderColor = '#ffffff';
+    style.borderWidth = '2px';
+    style.borderType = 'solid';
+    style.borderRadius = '0px';
+    style.cursor = 'pointer';
+    return style;
+  }
+
   /**
    * @description will return a chat message row, if the message is deleted then it will show text
    * saying that the message was removed
@@ -325,7 +367,16 @@ export const ChatMessage = ({
       </ChatContent>
 
       <StickerContent hidden={!isSticker()}>
-        <ChatSticker src={stickerUrl()} hidden={false} />
+        <AdvancedDiv 
+          hoverStyle={stickerHoverStyle()}
+          onHover={(e) => { setHoveringOnSticker(!!e); }}
+          onClick={() => onAddStickerClick(message)}
+          >
+          <StickerContainer>
+            {isHoveringOnSticker ? <StickerAddCircle> <FaPlus /> </StickerAddCircle> : null}
+            <ChatSticker src={stickerUrl()} hidden={false} />
+          </StickerContainer>
+        </AdvancedDiv>
       </StickerContent>
       <FollowContent hidden={!isFollow()}>
         {getPhrase('just_followed')}

@@ -18,6 +18,7 @@ import {
 import { FaTimes } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Button } from '../generic-styled-components/button';
+import { AdvancedDiv, HoverStyle } from '../generic-styled-components/AdvancedDiv';
 
 /**
  * @description the popup for managing dlive accounts
@@ -28,7 +29,7 @@ export const ChatStickerLibrary = ({
   closeStickerLibrary(): void;
 }) => {
 
-  const [tab, setTab] = React.useState('all');
+  const [tab, setTab] = React.useState('saved');
 
   const isPage = (type: string): boolean => tab === type;
 
@@ -39,6 +40,17 @@ export const ChatStickerLibrary = ({
   const goToSaved = () => {
     setTab('saved');
   };
+
+  const stickerHoverStyle = (): HoverStyle => {
+    var style: HoverStyle = new HoverStyle();
+    style.hasBorder = false;
+    style.borderColor = '#ffffff';
+    style.borderWidth = '2px';
+    style.borderType = 'solid';
+    style.borderRadius = '0px';
+    style.cursor = 'pointer';
+    return style;
+  }
 
   return (
     <PopupDialogBackground>
@@ -57,12 +69,6 @@ export const ChatStickerLibrary = ({
         <PopupDialogTabWrapper>
           <PopupDialogTabHeaderWrapper>
             <PopupDialogTab 
-              onClick={isPage('all') ? () => null : goToAll}
-              selected={isPage('all')}
-            >
-              All
-            </PopupDialogTab>
-            <PopupDialogTab 
               onClick={isPage('saved') ? () => null : goToSaved}
               selected={isPage('saved')}
             >
@@ -71,17 +77,14 @@ export const ChatStickerLibrary = ({
           </PopupDialogTabHeaderWrapper>
         </PopupDialogTabWrapper>
         <PopupDialogTabPage>
-            {isPage('all') ? (
-              <React.Fragment>
-                <PopupDialogInputWrapper>
-                    This Test
-                </PopupDialogInputWrapper>
-              </React.Fragment>
-            ): 
-            isPage('saved') ? (
+            {isPage('saved') ? (
                 <React.Fragment>
                   <PopupDialogInputWrapper>
-                      This Test
+                      <AdvancedDiv hoverStyle={stickerHoverStyle()}>
+                        <div style={{width: '64px', height: '64px', backgroundColor: '#ff0000' }}>
+
+                        </div>
+                      </AdvancedDiv>
                   </PopupDialogInputWrapper>
                 </React.Fragment>
               ): null}

@@ -6,6 +6,7 @@ import {
   ISelectOption,
   ICommand,
   ITimer,
+  IEmote,
   IChange,
   IConfig
 } from '../../';
@@ -692,6 +693,7 @@ export class Timer implements ITimer {
           .catch(null);
       });
   }
+
   /**
    * @description runs the command by getting the config and sending the reply after parsing
    */
@@ -714,6 +716,71 @@ export class Timer implements ITimer {
         .catch(null);
     });
   }
+}
+
+// tslint:disable-next-line: completed-docs
+export class Emote implements IEmote {
+  public id: string;  
+  public dliveid: string;
+  public url: string;
+
+  constructor(
+    id: string,
+    dliveid: string,
+    url: string
+  ) {
+    this.id = id;
+    this.dliveid = dliveid;
+    this.url = url;
+  }
+
+  public toJSON() {
+    return {
+      id: this.id,
+      dliveid: this.dliveid,
+      url: this.url
+    };
+  }
+  
+  /**
+   * @description saves the command to firestore
+   */
+  public save() {
+    rxUser
+      .pipe(
+        filter(x => !!x),
+        first()
+      )
+      .subscribe(user => {
+        if (!user) {
+          return;
+        }
+        firestore
+          .collection('users')
+          .doc(user.uid)
+          .collection('emotes')
+          .doc(this.dliveid)
+          .set(this.toJSON())
+          .catch(null);
+      });
+  }
+
+  public delete() {
+    rxUser.pipe(first()).subscribe(authUser => {
+      if (!authUser) {
+        return;
+      }
+
+      firestore
+        .collection('users')
+        .doc(authUser.uid)
+        .collection('emotes')
+        .doc(this.dliveid)
+        .delete()
+        .catch(null);
+    });
+  }
+
 }
 
 export const rxUsers = new BehaviorSubject<{ [id: string]: User }>({});
