@@ -361,7 +361,28 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
         <ChatTTSSettings config={config} closeTTSControl={closeTTSControl} />
       ) : null}
       {stickerLibraryOverlay ? (
-        <ChatStickerLibrary closeStickerLibrary={closeStickerLibrary} />
+        <ChatStickerLibrary 
+          selectedSender={selectedSender}
+          botAccount={
+            !botAccount
+              ? {
+                  username: '',
+                  displayname: '',
+                  livestream: { createdAt: '0' }
+                }
+              : botAccount
+          }
+          streamerAccount={
+            !streamerAccount
+              ? {
+                  username: '',
+                  displayname: '',
+                  livestream: { createdAt: '0' }
+                }
+              : streamerAccount
+          }
+          config={config} 
+          close={closeStickerLibrary} />
       ) : null}
       {addStickerOverlay ? (
         <ChatAddStickerPopup 

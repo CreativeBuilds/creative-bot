@@ -16,12 +16,16 @@ import {
   PopupDialogTabPage,
   PopupDialogInput
 } from '../generic-styled-components/popupDialog';
-import { FaTimes, FaSadTear } from 'react-icons/fa';
+import { FaTimes, FaSadTear, FaShare, FaGrinBeam  } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Button } from '../generic-styled-components/button';
 import { Emote } from '@/renderer/helpers/db/db';
 import { rxEmotes } from '@/renderer/helpers/rxEmote';
 import { AdvancedDiv, HoverStyle } from '../generic-styled-components/AdvancedDiv';
+import { EmoteItem } from '../generic-styled-components/Emote';
+import { sendEvent } from '@/renderer/helpers/reactGA';
+import { IChatColors, IChatObject, IGiftObject, IOption, IMe, IConfig } from '@/renderer';
+import { sendMessage } from '@/renderer/helpers/dlive/sendMessage';
 
 
 export const NoStickerContainer = styled.div`
@@ -43,34 +47,30 @@ export const NoStickerContainer = styled.div`
      }
 `;
 
-const StickerItem = styled.div`
-    border-radius: 4px;
-    display: block;
-
-    img {
-      max-height: 75px;
-      max-width: 100%;
-      border-radius: 4px;
-    }
-`;
-
 const CollectionView = styled.div`
-  display: grid;
   margin-left: 0;
   margin-right: 0;
   width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  max-height: 400px;
+  height: 400px;
 `;
 
 /**
  * @description the popup for managing dlive accounts
  */
 export const ChatStickerLibrary = ({
-  closeStickerLibrary
+  selectedSender,
+  config,
+  botAccount,
+  streamerAccount,
+  close
 }: {
-  closeStickerLibrary(): void;
+  selectedSender: IOption;
+  config: Partial<IConfig>;
+  botAccount: IMe;
+  streamerAccount: IMe;
+  close(): void;
 }) => {
 
   const [tab, setTab] = React.useState('saved');
@@ -103,16 +103,23 @@ export const ChatStickerLibrary = ({
     };
   }, []);
 
-  const stickerHoverStyle = (): HoverStyle => {
-    var style: HoverStyle = new HoverStyle();
-    style.hasBorder = true;
-    style.borderColor = '#ffffff';
-    style.borderWidth = '2px';
-    style.borderType = 'solid';
-    style.borderRadius = '4px';
-    style.cursor = 'pointer';
-    return style;
-  }
+  const sendMessageToStream = (sticker: string): void => {
+    const currentSelected = selectedSender.value;
+    if (!config.streamerAuthKey || !config.authKey) {
+      return;
+    }
+    sendMessage(
+      currentSelected === 'streamer' ? config.streamerAuthKey : config.authKey,
+      {
+        message: sticker,
+        roomRole: currentSelected === 'streamer' ? 'Owner' : 'Member',
+        streamer: streamerAccount.username,
+        subscribing: true
+      }
+    ).catch(null);
+
+    close();
+  };
 
   return (
     <PopupDialogBackground>
@@ -125,7 +132,7 @@ export const ChatStickerLibrary = ({
         }}
       >
         <PopupDialogExitIcon>
-          <FaTimes onClick={closeStickerLibrary}></FaTimes>
+          <FaTimes onClick={close}></FaTimes>
         </PopupDialogExitIcon>
         <PopupDialogTitle>Sticker Library</PopupDialogTitle>
         <PopupDialogTabWrapper>
@@ -144,17 +151,16 @@ export const ChatStickerLibrary = ({
                   <PopupDialogInputWrapper>               
                     <CollectionView>
                       {Emotes.length > 0 ? Emotes.map(emote =>
-                        <AdvancedDiv hoverStyle={stickerHoverStyle()} aStyle={{
-                          'max-width': '75px',
-                          'max-height': '75px',
-                          'margin': '5px',
-                          'display': 'inline-block'
-                        }}
-                        >
-                          <StickerItem>
-                            <img src={emote.url} />
-                          </StickerItem>
-                        </AdvancedDiv>
+                        <EmoteItem 
+                          id={emote.id} 
+                          dliveId={emote.dliveid} 
+                          url={emote.url}
+                          icon={<FaShare />} 
+                          hasBorder={true} 
+                          canDelete={false} 
+                          onDelete={() => {}} 
+                          onClick={() => { sendMessageToStream(emote.dliveid); }}
+                        />
                       ) :
                       <NoStickerContainer>
                         <FaSadTear />

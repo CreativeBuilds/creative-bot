@@ -6,6 +6,7 @@ import { getPhrase } from '@/renderer/helpers/lang';
 import { Icon } from '../generic-styled-components/Icon';
 import { FaEyeSlash, FaEye, FaPlus } from 'react-icons/fa';
 import { AdvancedDiv, HoverStyle } from '../generic-styled-components/AdvancedDiv';
+import { EmoteItem } from '../generic-styled-components/Emote';
 
 import {
   listItemColor,
@@ -173,7 +174,6 @@ export const ChatMessage = ({
    * @description state for when a message is deleted, the user has the option to check to see what the message was by clicking on the eyeball
    */
   const [deletedButShow, setDeletedButShow] = React.useState(false);
-  const [isHoveringOnSticker, setHoveringOnSticker] = React.useState<Boolean>(false);
 
   const determineBoxShadow = (): string => {
     // const sender = message.sender;
@@ -328,17 +328,6 @@ export const ChatMessage = ({
     return stickerLink;
   };
 
-  const stickerHoverStyle = (): HoverStyle => {
-    var style: HoverStyle = new HoverStyle();
-    style.hasBorder = false;
-    style.borderColor = '#ffffff';
-    style.borderWidth = '2px';
-    style.borderType = 'solid';
-    style.borderRadius = '0px';
-    style.cursor = 'pointer';
-    return style;
-  }
-
   /**
    * @description will return a chat message row, if the message is deleted then it will show text
    * saying that the message was removed
@@ -367,16 +356,7 @@ export const ChatMessage = ({
       </ChatContent>
 
       <StickerContent hidden={!isSticker()}>
-        <AdvancedDiv 
-          hoverStyle={stickerHoverStyle()}
-          onHover={(e) => { setHoveringOnSticker(!!e); }}
-          onClick={() => onAddStickerClick(message)}
-          >
-          <StickerContainer>
-            {isHoveringOnSticker ? <StickerAddCircle> <FaPlus /> </StickerAddCircle> : null}
-            <ChatSticker src={stickerUrl()} hidden={false} />
-          </StickerContainer>
-        </AdvancedDiv>
+        <EmoteItem id={''} dliveId={''} url={stickerUrl()} height={'50px'} onClick={() => onAddStickerClick(message)} />
       </StickerContent>
       <FollowContent hidden={!isFollow()}>
         {getPhrase('just_followed')}
