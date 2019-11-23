@@ -52,8 +52,10 @@ interface IAdvancedDivProps {
  * @description Generic Hover for AdvancedDiv
  */
 const HoverDiv = styled.div`
-    padding: 0px;
+    padding: 2px;
     margin: 0px;
+    width: 100%;
+    height: 100%;
 
     &:Hover {
         border-width: ${(props: IHoverDivProps): string => props.hasBorder ? props.borderWidth ? props.borderWidth : '2px' : '0px'};

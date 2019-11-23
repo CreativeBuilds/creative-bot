@@ -99,22 +99,26 @@ export const ChatAddStickerPopup = ({
 
   const cleanId = (): string => {
     if (message?.content != null) {
-      if (message?.content.indexOf(':') > 0) {
-        return message?.content.replace(message?.content.substring(0, message?.content.indexOf(':')), '')
-      } else {
-        return message?.content;
-      }
+      var idStr = message?.content.replace(message?.content.substring(0, message?.content.indexOf(':')), '')
+      console.log(idStr);
+      return idStr;
     } else {
       return '';
     }
   }
+
+  const getStickerId = (id: string): string => {
+    var routes = id.replace(/[:]/gi, '').split('/');
+    var imageRoute = routes[routes.length - 1];
+    return imageRoute;
+  };
 
   /**
    * @description handles the creation of a new Emote, saves it
    */
   const handleCreate = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     const newEmote = new Emote(
-      cleanId(),
+      getStickerId(cleanId()),
       stickerDliveId(),
       stickerUrl()
     );

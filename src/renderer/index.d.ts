@@ -159,6 +159,14 @@ export interface IEmote {
   url: string;
 }
 
+export interface IQuote {
+  quoteId: string;
+  quote: string;
+  quoteBy: string;
+  event: string;
+  date: string;
+}
+
 export interface ICustomVariable {
   name: string;
   replyString: string;

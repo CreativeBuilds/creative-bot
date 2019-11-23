@@ -43,6 +43,27 @@ export const NoStickerContainer = styled.div`
      }
 `;
 
+const StickerItem = styled.div`
+    border-radius: 4px;
+    display: block;
+
+    img {
+      max-height: 75px;
+      max-width: 100%;
+      border-radius: 4px;
+    }
+`;
+
+const CollectionView = styled.div`
+  display: grid;
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  max-height: 400px;
+`;
+
 /**
  * @description the popup for managing dlive accounts
  */
@@ -84,11 +105,11 @@ export const ChatStickerLibrary = ({
 
   const stickerHoverStyle = (): HoverStyle => {
     var style: HoverStyle = new HoverStyle();
-    style.hasBorder = false;
+    style.hasBorder = true;
     style.borderColor = '#ffffff';
     style.borderWidth = '2px';
     style.borderType = 'solid';
-    style.borderRadius = '0px';
+    style.borderRadius = '4px';
     style.cursor = 'pointer';
     return style;
   }
@@ -120,17 +141,27 @@ export const ChatStickerLibrary = ({
         <PopupDialogTabPage>
             {isPage('saved') ? (
                 <React.Fragment>
-                  <PopupDialogInputWrapper>
-                      {Emotes.length > 0 ? Emotes.map(i => <AdvancedDiv hoverStyle={stickerHoverStyle()}>
-                        <div style={{width: '64px', height: '64px', backgroundColor: '#ff0000' }}>
-
-                        </div>
-                      </AdvancedDiv>) :
+                  <PopupDialogInputWrapper>               
+                    <CollectionView>
+                      {Emotes.length > 0 ? Emotes.map(emote =>
+                        <AdvancedDiv hoverStyle={stickerHoverStyle()} aStyle={{
+                          'max-width': '75px',
+                          'max-height': '75px',
+                          'margin': '5px',
+                          'display': 'inline-block'
+                        }}
+                        >
+                          <StickerItem>
+                            <img src={emote.url} />
+                          </StickerItem>
+                        </AdvancedDiv>
+                      ) :
                       <NoStickerContainer>
                         <FaSadTear />
                         <h2>No Stickers</h2>
                       </NoStickerContainer>
                       }
+                    </CollectionView>
                   </PopupDialogInputWrapper>
                 </React.Fragment>
               ): null}
