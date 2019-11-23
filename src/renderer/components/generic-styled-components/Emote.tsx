@@ -146,8 +146,8 @@ export const EmoteItem = ({
       <AdvancedDiv 
           hoverStyle={stickerHoverStyle()} 
           aStyle={{
-              'max-width': width,
-              'max-height': height,
+              maxWidth: width,
+              maxHeight: height,
               'margin': '5px',
               'display': 'inline-block'
           }}
