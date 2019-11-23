@@ -18,11 +18,14 @@ import {
 } from '../generic-styled-components/popupDialog';
 import { IChatColors, IChatObject, IGiftObject, IOption, IMe, IConfig } from '@/renderer';
 import { sendMessage } from '@/renderer/helpers/dlive/sendMessage';
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes, FaHandMiddleFinger } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Button } from '../generic-styled-components/button';
 import { AdvancedDiv, HoverStyle } from '../generic-styled-components/AdvancedDiv';
 import { Panel, PanelTitle, PanelSubtitle } from '../generic-styled-components/Panel'
+import { Emote } from '@/renderer/helpers/db/db';
+import { rxEmotes } from '@/renderer/helpers/rxEmote';
+import { sendEvent } from '@/renderer/helpers/reactGA';
 
 export const StickerImage = styled.img`
     border-radius: 10px;
@@ -52,6 +55,35 @@ export const ChatAddStickerPopup = ({
     close: () => void;
 }) => {
 
+  const [emotes, setEmotes] = React.useState<{ [id: string]: Emote }>({});
+
+  /**
+   * @description load all current timers and then store them in a map to check to see if the edit/added one already exists to throw error
+   */
+  React.useEffect(() => {
+    const listener = rxEmotes.subscribe((mEmotes: Emote[]) => {
+      setEmotes(
+        mEmotes.reduce((acc: { [id: string]: Emote }, emote: Emote) => {
+          acc[emote.dliveid] = emote;
+
+          return acc;
+        }, {})
+      );
+    });
+
+    return () => {
+      listener.unsubscribe();
+    };
+  }, []);
+
+  const stickerDliveId = (): string => {
+    if (message?.content != null) {
+      return message?.content;
+    } else {
+      return '';
+    }
+  }
+
   const stickerUrl = (): string => {
     var stickerLink: string = '';
     if (!message?.content) {
@@ -65,12 +97,34 @@ export const ChatAddStickerPopup = ({
     return stickerLink;
   };
 
-  const sendStickerToLibrary = () => {
-    sendMessageToStream();
+  const cleanId = (): string => {
+    if (message?.content != null) {
+      if (message?.content.indexOf(':') > 0) {
+        return message?.content.replace(message?.content.substring(0, message?.content.indexOf(':')), '')
+      } else {
+        return message?.content;
+      }
+    } else {
+      return '';
+    }
+  }
+
+  /**
+   * @description handles the creation of a new Emote, saves it
+   */
+  const handleCreate = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const newEmote = new Emote(
+      cleanId(),
+      stickerDliveId(),
+      stickerUrl()
+    );
+    newEmote.save();
+    //sendEvent('Emotes', 'new').catch(null);
     close();
   };
 
-  const addStickerToLibrary = () => {
+  const sendStickerToLibrary = () => {
+    sendMessageToStream();
     close();
   };
 
@@ -121,7 +175,7 @@ export const ChatAddStickerPopup = ({
           <Button onClick={() => sendStickerToLibrary()} inverted>
             Send Sticker
           </Button>
-          <Button onClick={() => addStickerToLibrary()}>
+          <Button onClick={handleCreate}>
             Add To Library
           </Button>
         </PopupButtonWrapper>

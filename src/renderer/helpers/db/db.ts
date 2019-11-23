@@ -759,7 +759,7 @@ export class Emote implements IEmote {
           .collection('users')
           .doc(user.uid)
           .collection('emotes')
-          .doc(this.dliveid)
+          .doc(this.id)
           .set(this.toJSON())
           .catch(null);
       });
@@ -775,7 +775,7 @@ export class Emote implements IEmote {
         .collection('users')
         .doc(authUser.uid)
         .collection('emotes')
-        .doc(this.dliveid)
+        .doc(this.id)
         .delete()
         .catch(null);
     });

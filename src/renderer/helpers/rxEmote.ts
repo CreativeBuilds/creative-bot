@@ -7,7 +7,7 @@ import { IEmote } from '..';
 import { Emote } from './db/db';
 
 /**
- * @description rxEmotes is the behavior subject for getting the layout of all timers
+ * @description rxEmotes is the behavior subject for getting the layout of all emotes
  * @note this pulls directly from firebase and not local database as it doesn't update very much therefore, should not need to be hindered by using local db like users
  */
 export const rxEmotes = rxUser.pipe(
