@@ -21,8 +21,6 @@ export const rxEmotes = rxUser.pipe(
           .collection('users')
           .doc(authUser.uid)
           .collection('emotes');
-
-        console.log(ref);
   
         return collectionData(ref);
       }

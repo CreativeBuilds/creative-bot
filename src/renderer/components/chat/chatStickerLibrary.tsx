@@ -94,8 +94,6 @@ export const ChatStickerLibrary = ({
       setEmotes(
         mEmotes
       );
-
-      console.log(mEmotes);
     });
 
     return () => {
