@@ -121,6 +121,10 @@ export const ChatStickerLibrary = ({
     close();
   };
 
+  const handleDelete = (e: Emote) => {
+    e.delete();
+  };
+
   return (
     <PopupDialogBackground>
       <PopupDialog
@@ -157,8 +161,8 @@ export const ChatStickerLibrary = ({
                           url={emote.url}
                           icon={<FaShare />} 
                           hasBorder={true} 
-                          canDelete={false} 
-                          onDelete={() => {}} 
+                          canDelete={true} 
+                          onDelete={() => { handleDelete(emote); }} 
                           onClick={() => { sendMessageToStream(emote.dliveid); }}
                         />
                       ) :

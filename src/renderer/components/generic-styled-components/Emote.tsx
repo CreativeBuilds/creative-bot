@@ -16,7 +16,7 @@ import {
   PopupDialogTabPage,
   PopupDialogInput
 } from '../generic-styled-components/popupDialog';
-import { FaShare, FaPlus } from 'react-icons/fa';
+import { FaShare, FaPlus, FaTimes } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Emote } from '@/renderer/helpers/db/db';
 import { rxEmotes } from '@/renderer/helpers/rxEmote';
@@ -39,6 +39,7 @@ const StickerItem = styled.div`
       max-width: ${(props: IStickerProps): string => 
         props.frameWidth ? props.frameWidth : '100%'};
       border-radius: 4px;
+      user-select: none;
     }
 `;
 
@@ -61,6 +62,11 @@ const StickerShareCircle = styled.div`
       margin: auto;
       display: flex;
 
+      &:hover {
+        cursor: pointer;
+        background-color: rgba(180,180,180,0.9);
+      }
+
       svg {
         stroke: #000000;
         fill: #000000;
@@ -70,6 +76,33 @@ const StickerShareCircle = styled.div`
       }
 
       box-shadow: 1px 0px 5px 1px #000000
+      z-index: 998;
+`;
+
+const DeleteCircleButton = styled.div`
+      height: 20px;
+      width: 20px;
+      background-color: rgba(255,255,255,0.9);
+      border-radius: 50%;
+      margin-left: auto;
+      display: flex;
+      padding: 1px;
+
+      &:hover {
+        cursor: pointer;
+        background-color: rgba(180,180,180,0.9);
+      }
+
+      svg {
+        stroke: #f12154D1;
+        fill: #f12154D1;
+        text-align: center;
+        vertical-align: middle;
+        margin: auto;
+      }
+
+      box-shadow: 1px 0px 5px 1px #000000
+      z-index: 999;
 `;
 
 export const EmoteItem = ({
@@ -105,7 +138,7 @@ export const EmoteItem = ({
       style.borderWidth = '2px';
       style.borderType = 'solid';
       style.borderRadius = '4px';
-      style.cursor = 'pointer';
+      style.cursor = 'auto';
       return style;
     }
   
@@ -119,16 +152,24 @@ export const EmoteItem = ({
               'display': 'inline-block'
           }}
           onHover={(e) => { setHoveringOnSticker(!!e); }}
-          onClick={onClick}
           >
           <StickerItem frameWidth={width} frameHeight={height}>
             <img src={url} />
             {isHoveringOnSticker ?
             <StickerCircleContainer>
-              <StickerShareCircle>
+              <StickerShareCircle onClick={onClick}>
                 {icon}
               </StickerShareCircle>
             </StickerCircleContainer>
+            : null}
+            {isHoveringOnSticker ?
+                canDelete ?
+                <StickerCircleContainer>
+                    <DeleteCircleButton onClick={onDelete}>
+                        <FaTimes />
+                    </DeleteCircleButton>
+                </StickerCircleContainer> 
+                : null
             : null}
           </StickerItem>
         </AdvancedDiv>
