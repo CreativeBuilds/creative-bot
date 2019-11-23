@@ -31,7 +31,7 @@ import { sendMessage } from '@/renderer/helpers/dlive/sendMessage';
 export const NoStickerContainer = styled.div`
     margin-left: auto;
     margin-right: auto;
-    margin-top: 25%;
+    margin-top: 35%;
     margin-bottom: 10%;
 
     > svg {
@@ -43,7 +43,7 @@ export const NoStickerContainer = styled.div`
      }
 
      h2 {
-       
+      text-align: center;
      }
 `;
 
