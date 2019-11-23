@@ -156,6 +156,7 @@ export const ChatStickerLibrary = ({
                     <CollectionView>
                       {Emotes.length > 0 ? Emotes.map(emote =>
                         <EmoteItem 
+                          key={emote.id}
                           id={emote.id} 
                           dliveId={emote.dliveid} 
                           url={emote.url}
