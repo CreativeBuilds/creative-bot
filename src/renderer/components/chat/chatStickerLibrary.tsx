@@ -136,14 +136,14 @@ export const ChatStickerLibrary = ({
         <PopupDialogExitIcon>
           <FaTimes onClick={close}></FaTimes>
         </PopupDialogExitIcon>
-        <PopupDialogTitle>Sticker Library</PopupDialogTitle>
+        <PopupDialogTitle>{getPhrase('stickerlibrary_title')}</PopupDialogTitle>
         <PopupDialogTabWrapper>
           <PopupDialogTabHeaderWrapper>
             <PopupDialogTab 
               onClick={isPage('saved') ? () => null : goToSaved}
               selected={isPage('saved')}
             >
-              Saved
+              {getPhrase('stickerlibrary_tab_saved')}
             </PopupDialogTab>
           </PopupDialogTabHeaderWrapper>
         </PopupDialogTabWrapper>
@@ -167,7 +167,7 @@ export const ChatStickerLibrary = ({
                       ) :
                       <NoStickerContainer>
                         <FaSadTear />
-                        <h2>No Stickers</h2>
+                        <h2>{getPhrase('stickerlibrary_warning_nostickers')}</h2>
                       </NoStickerContainer>
                       }
                     </CollectionView>

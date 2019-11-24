@@ -161,26 +161,26 @@ export const ChatAddStickerPopup = ({
         <PopupDialogExitIcon>
           <FaTimes onClick={close}></FaTimes>
         </PopupDialogExitIcon>
-        <PopupDialogTitle>Add Sticker </PopupDialogTitle>
+        <PopupDialogTitle>{getPhrase('addsticker_title')}</PopupDialogTitle>
         <PopupDialogInputWrapper>
           <StickerImage src={stickerUrl()}/>
         </PopupDialogInputWrapper>
         <PopupDialogInputWrapper>
           <Panel>
-            <PanelTitle>Sticker URL: </PanelTitle>
+            <PanelTitle>{getPhrase('addsticker_title_stickerurl')}: </PanelTitle>
             <PanelSubtitle>{stickerUrl()}</PanelSubtitle>
           </Panel>
           <Panel>
-            <PanelTitle>Sticker ID: </PanelTitle>
+            <PanelTitle>{getPhrase('addsticker_title_stickerid')}: </PanelTitle>
             <PanelSubtitle>{message?.content}</PanelSubtitle>
           </Panel>
         </PopupDialogInputWrapper>
         <PopupButtonWrapper>
           <Button onClick={() => sendStickerToLibrary()} inverted>
-            Send Sticker
+          {getPhrase('addsticker_button_sendsticker')}
           </Button>
           <Button onClick={handleCreate}>
-            Add To Library
+          {getPhrase('addsticker_button_addtolibrary')}
           </Button>
         </PopupButtonWrapper>
       </PopupDialog>
