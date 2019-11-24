@@ -81,8 +81,8 @@ export const UserSettingsPopup = (props: IProps) => {
           ...config.donationSettings
         };
         setPayoutRate(Math.floor((config.pointsTimer || 300) / 60));
-        setPayoutAmount(config.points !== undefined ? config.points : 5);
 
+        setPayoutAmount(config.points !== undefined ? config.points : 5);
         setPerLemon(donationSettings.lemons !== undefined ? donationSettings.lemons : 1);
         setPerIcecream(donationSettings.icecream !== undefined ? donationSettings.icecream : 10);
         setPerDiamond(donationSettings.diamond !== undefined ? donationSettings.diamond : 100);
