@@ -119,6 +119,10 @@ export const ChatMessageSettings = ({
     setTab('other');
   }
 
+  const goToConfigs = () => {
+    setTab('configs');
+  }
+
   const updateSendEventMessages = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateConfig({
       ...config,
@@ -224,6 +228,12 @@ export const ChatMessageSettings = ({
             >
               {getPhrase('chat_custom_messages_other')}
             </PopupDialogTab>
+            <PopupDialogTab
+              onClick={isPage('configs') ? () => null : goToConfigs}
+              selected={isPage('configs')}
+            >
+              Config
+            </PopupDialogTab>
           </PopupDialogTabHeaderWrapper>
         </PopupDialogTabWrapper>
         <PopupDialogTabPage>
@@ -303,6 +313,51 @@ export const ChatMessageSettings = ({
                   value={subMessage}
                   onChange={updateSubMessage}
                 />
+              </PopupDialogInputWrapper>
+            </React.Fragment>
+          ) : isPage('configs') ? (
+            <React.Fragment>
+              <PopupDialogInputWrapper>
+                <PopupDialogInputName>
+                  Enable Stickers
+                </PopupDialogInputName>
+                <Toggle
+                  checked={true}
+                  icons={false}
+                  onChange={() => {}}
+                  className={'toggler'}
+                />
+                <PopupDialogInputInfo>
+                  Enable or Disable stickers in chat
+                </PopupDialogInputInfo>
+              </PopupDialogInputWrapper>
+              <PopupDialogInputWrapper>
+                <PopupDialogInputName>
+                  Enable Stickers as Text
+                </PopupDialogInputName>
+                <Toggle
+                  checked={false}
+                  icons={false}
+                  onChange={() => {}}
+                  className={'toggler'}
+                />
+                <PopupDialogInputInfo>
+                  Allows the ability to display Stickers as Text in Chat
+                </PopupDialogInputInfo>
+              </PopupDialogInputWrapper>
+              <PopupDialogInputWrapper>
+                <PopupDialogInputName>
+                  Enable Events In Chat
+                </PopupDialogInputName>
+                <Toggle
+                  checked={true}
+                  icons={false}
+                  onChange={() => {}}
+                  className={'toggler'}
+                />
+                <PopupDialogInputInfo>
+                  Allows the ability to display Events like Donations in Chat
+                </PopupDialogInputInfo>
               </PopupDialogInputWrapper>
             </React.Fragment>
           ) : null}
