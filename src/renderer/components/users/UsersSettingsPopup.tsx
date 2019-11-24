@@ -81,13 +81,13 @@ export const UserSettingsPopup = (props: IProps) => {
           ...config.donationSettings
         };
         setPayoutRate(Math.floor((config.pointsTimer || 300) / 60));
-        setPayoutAmount(config.points || 5);
+        setPayoutAmount(config.points !== undefined ? config.points : 5);
 
-        setPerLemon(donationSettings.lemons || 1);
-        setPerIcecream(donationSettings.icecream || 10);
-        setPerDiamond(donationSettings.diamond || 100);
-        setPerNinjaghini(donationSettings.ninja || 1000);
-        setPerNinjet(donationSettings.ninjet || 10000);
+        setPerLemon(donationSettings.lemons !== undefined ? donationSettings.lemons : 1);
+        setPerIcecream(donationSettings.icecream !== undefined ? donationSettings.icecream : 10);
+        setPerDiamond(donationSettings.diamond !== undefined ? donationSettings.diamond : 100);
+        setPerNinjaghini(donationSettings.ninja !== undefined ? donationSettings.ninja : 1000);
+        setPerNinjet(donationSettings.ninjet !== undefined ? donationSettings.ninjet : 10000);
 
         setLoading(false);
         setOldConfig(config);
@@ -102,9 +102,9 @@ export const UserSettingsPopup = (props: IProps) => {
   const hasChanged = (): boolean => {
     return (
       payoutRate !==
-        (!!oldConfig.pointsTimer
-          ? Math.floor(oldConfig.pointsTimer / 60)
-          : 1) ||
+      (!!oldConfig.pointsTimer
+        ? Math.floor(oldConfig.pointsTimer / 60)
+        : 1) ||
       payoutAmount !== oldConfig.points ||
       perLemon !== { ...oldDonationSettings }.lemons ||
       perIcecream !== { ...oldDonationSettings }.icecream ||
