@@ -70,6 +70,8 @@ import {
   PopupDialogText,
   PopupDialogTitle
 } from '../components/generic-styled-components/PopupDialog';
+import { Testing } from './testing/Testing';
+import { auth } from '../helpers/firebase';
 
 start().catch(null);
 
@@ -648,6 +650,7 @@ export const Main = () => {
      *              skips the first as its the default value and will trigger the login screen
      */
     const listener = rxUser.pipe(skip(1)).subscribe((user: firebase.User) => {
+      console.log('user', user, !!user, !!user === null);
       setIsLoggedIn(!!user);
     });
 
@@ -661,6 +664,7 @@ export const Main = () => {
   const renderCustomVariables = () => <Custom_Variables />;
   const renderCommands = () => <Commands />;
   const renderThemes = () => <Themes />;
+  const renderTesting = () => <Testing />;
   const renderTimers = () => <Timers />;
   const renderLoginDlive = () => (
     <LoginDlive streamer={!!config ? !config.streamerAuthKey : true} />
@@ -719,8 +723,7 @@ export const Main = () => {
                           marginTop: '28px',
                           padding: '20px',
                           position: 'relative'
-                        }}
-                      >
+                        }}>
                         <Route
                           path='/commands'
                           exact={true}
@@ -746,6 +749,11 @@ export const Main = () => {
                           exact={true}
                           render={renderThemes}
                         />
+                        <Route
+                          path='/testing'
+                          exact={true}
+                          render={renderTesting}
+                        />
                         <Route path='/' exact={true} render={renderChat} />
                       </div>
                     </React.Fragment>
@@ -757,12 +765,14 @@ export const Main = () => {
                       <Route path='/' exact={true} render={renderLoginDlive} />
                     </React.Fragment>
                   )
-                ) : isLoggedIn === null ? null : (
+                ) : typeof isLoggedIn !== 'boolean' ? (
+                  <div>Hi world</div>
+                ) : (
                   /**
                    * @description user is neither logged into firebase nor dlive
                    */
                   <React.Fragment>
-                    <Route path='/' exact={true} render={renderLogin} />
+                    <Route path='/' render={renderLogin} />
                   </React.Fragment>
                 )}
               </HashRouter>
