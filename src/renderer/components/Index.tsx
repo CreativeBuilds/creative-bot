@@ -476,15 +476,36 @@ export const Main = () => {
         if (!follow) {
           return;
         }
-        const sender = users[follow.sender.username];
 
-        if (config.eventConfig?.enableEventMessages) {
-          sendEventMessageWithConfig(
-            !!config.eventConfig?.onFollow ? config.eventConfig?.onFollow : '',
-            'FOLLOW',
-            sender
+        if (!users[follow.sender.username]) {
+          users[follow.sender.username] = new User(
+            follow.sender.id,
+            follow.sender.displayname,
+            follow.sender.username,
+            follow.sender.avatar,
+            0,
+            0,
+            0,
+            follow.role,
+            follow.roomRole,
+            !!follow.subscribing
           );
         }
+        const sender = users[follow.sender.username];
+        sender
+          .save()
+          .then(() => {
+            if (config.eventConfig?.enableEventMessages) {
+              sendEventMessageWithConfig(
+                !!config.eventConfig?.onFollow
+                  ? config.eventConfig?.onFollow
+                  : '',
+                'FOLLOW',
+                sender
+              );
+            }
+          })
+          .catch(null);
       });
 
     return () => {
@@ -528,6 +549,22 @@ export const Main = () => {
         if (!giftedSub) {
           return;
         }
+
+        if (!users[giftedSub.sender.username]) {
+          users[giftedSub.sender.username] = new User(
+            giftedSub.sender.id,
+            giftedSub.sender.displayname,
+            giftedSub.sender.username,
+            giftedSub.sender.avatar,
+            0,
+            0,
+            0,
+            giftedSub.role,
+            giftedSub.roomRole,
+            !!giftedSub.subscribing
+          );
+        }
+
         const sender = users[giftedSub.sender.username];
 
         if (config.eventConfig?.enableEventMessages) {
@@ -545,7 +582,7 @@ export const Main = () => {
   }, [config]);
 
   useEffect(() => {
-    let listener = setTimeout(() => {
+    const listener = setTimeout(() => {
       if (!wordMapLoaded) {
         window.location.reload();
       }
@@ -650,7 +687,6 @@ export const Main = () => {
      *              skips the first as its the default value and will trigger the login screen
      */
     const listener = rxUser.pipe(skip(1)).subscribe((user: firebase.User) => {
-      console.log('user', user, !!user, !!user === null);
       setIsLoggedIn(!!user);
     });
 
