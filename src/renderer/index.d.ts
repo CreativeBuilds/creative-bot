@@ -148,6 +148,20 @@ export interface ITimer {
   messages: number;
 }
 
+export interface IEmote {
+  id: string;
+  dliveid: string;
+  url: string;
+}
+
+export interface IQuote {
+  quoteId: string;
+  quote: string;
+  quoteBy: string;
+  event: string;
+  date: string;
+}
+
 export interface ICustomVariable {
   name: string;
   replyString: string;

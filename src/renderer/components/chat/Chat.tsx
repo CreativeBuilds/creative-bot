@@ -25,8 +25,10 @@ import { filter, distinctUntilChanged } from 'rxjs/operators';
 import Select from 'react-select';
 import { getSelf } from '@/renderer/helpers/dlive/getSelf';
 import { shell } from 'electron';
-import { IConfig, IMe, IChatObject, IOption } from '@/renderer';
+import { IConfig, IMe, IChatObject, IGiftObject , IOption } from '@/renderer';
 import { ChatTTSSettings } from './chatTTSSettings';
+import { ChatStickerLibrary } from './ChatStickerLibrary';
+import { ChatAddStickerPopup } from './chatAddStickerPopup'
 
 import {
   dropDownBoxBackgroundColor,
@@ -83,6 +85,8 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
   const [userControlOverlay, setUserControlOverlay] = React.useState(false);
   const [ttsControlOverlay, setTTSControlOverlay] = React.useState(false);
   const [messageControl, setMessageControl] = React.useState(false);
+  const [stickerLibraryOverlay, setStickerLibraryOverlay] = React.useState(false);
+  const [addStickerOverlay, setAddStickerOverlay] = React.useState(false);
   const [messages, setMessages] = React.useState<IChatObject[]>([]);
   const [config, setConfig] = React.useState<Partial<IConfig>>({});
   const [botAccount, setBotAccount] = React.useState<IMe>();
@@ -91,6 +95,7 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
     value: 'bot',
     label: getPhrase('chat_select_send_bot')
   });
+  const [message, setMessage] = React.useState<IChatObject | IGiftObject | undefined>();
 
   const updateSelectSender = (val: IOption) => {
     updateConfig({ selectedSender: val }).catch(console.error);
@@ -219,6 +224,15 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
     setTTSControlOverlay(true);
   };
 
+  const openStickerLibrary = () => {
+    setStickerLibraryOverlay(true);
+  };
+
+  const openAddStickerPopup = (e?: IChatObject | IGiftObject) => {
+    setAddStickerOverlay(true);
+    setMessage(e);
+  };
+
   const openMessageControl = () => {
     setMessageControl(true);
   };
@@ -226,8 +240,18 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
   const closeUserControl = () => {
     setUserControlOverlay(false);
   };
+
   const closeTTSControl = () => {
     setTTSControlOverlay(false);
+  };
+
+  const closeStickerLibrary = () => {
+    setStickerLibraryOverlay(false);
+  };
+
+
+  const closeAddStickerPopup = () => {
+    setAddStickerOverlay(false);
   };
 
   const closeMessageControl = () => {
@@ -300,6 +324,7 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
                 }
                 key={message.id}
                 message={message}
+                onAddStickerClick={openAddStickerPopup}
               />
             ))
           )}
@@ -326,6 +351,7 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
               : streamerAccount
           }
           config={config}
+          onStickerClick={() => { openStickerLibrary(); }}
         />
       </PageContent>
       {userControlOverlay ? (
@@ -333,6 +359,55 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
       ) : null}
       {ttsControlOverlay ? (
         <ChatTTSSettings config={config} closeTTSControl={closeTTSControl} />
+      ) : null}
+      {stickerLibraryOverlay ? (
+        <ChatStickerLibrary 
+          selectedSender={selectedSender}
+          botAccount={
+            !botAccount
+              ? {
+                  username: '',
+                  displayname: '',
+                  livestream: { createdAt: '0' }
+                }
+              : botAccount
+          }
+          streamerAccount={
+            !streamerAccount
+              ? {
+                  username: '',
+                  displayname: '',
+                  livestream: { createdAt: '0' }
+                }
+              : streamerAccount
+          }
+          config={config} 
+          close={closeStickerLibrary} />
+      ) : null}
+      {addStickerOverlay ? (
+        <ChatAddStickerPopup 
+          message={message} 
+          close={closeAddStickerPopup}
+          selectedSender={selectedSender}
+          botAccount={
+            !botAccount
+              ? {
+                  username: '',
+                  displayname: '',
+                  livestream: { createdAt: '0' }
+                }
+              : botAccount
+          }
+          streamerAccount={
+            !streamerAccount
+              ? {
+                  username: '',
+                  displayname: '',
+                  livestream: { createdAt: '0' }
+                }
+              : streamerAccount
+          }
+          config={config} />
       ) : null}
       {messageControl ? (
         <ChatMessageSettings

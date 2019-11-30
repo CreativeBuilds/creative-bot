@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { ThemeSet } from 'styled-theming';
-import { FaShare } from 'react-icons/fa';
+import { FaShare, FaGrinBeam } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Button } from '../generic-styled-components/button';
 import Select from 'react-select';
@@ -15,6 +15,7 @@ import {
   textInputPlaceholderColor,
   textInputDisabledTextColor
 } from '@/renderer/helpers/appearance';
+import { defaultProps } from 'react-select/src/Select';
 
 const ChatInputWrapper = styled.div`
   display: flex;
@@ -131,6 +132,58 @@ const ChatInputSend = styled.div`
   }
 `;
 
+const ChatInputStickers = styled.div`
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: 42px;
+  bottom: 0;
+
+  width: 50px;
+  height: 45px;
+
+  &:hover {
+    cursor: ${(props: IChatInputSend): string =>
+      props.disabled ? 'unset' : 'pointer'};
+    & > svg {
+      filter: ${(props: IChatInputSend): string =>
+        props.disabled
+          ? 'unset'
+          : 'drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.15))'};
+      color: ${(props: IChatInputSend): ThemeSet | string =>
+        props.disabled
+          ? props.disabledColor
+            ? props.disabledColor
+            : textInputDisabledTextColor
+            ? textInputDisabledTextColor
+            : '#ccc'
+          : props.colorHover
+          ? props.colorHover
+          : props.color
+          ? props.color
+          : 'inherit'};
+    }
+  }
+  & > svg {
+    font-size: 30px;
+    height: 30px;
+    width: 30px;
+    color: ${(props: IChatInputSend): ThemeSet | string =>
+      props.disabled
+        ? props.disabledColor
+          ? props.disabledColor
+          : textInputDisabledTextColor
+          ? textInputDisabledTextColor
+          : '#ccc'
+        : props.color
+        ? props.color
+        : 'inherit'};
+    /* transition: all 0.15s ease-in; */
+  }
+`;
+
 const ChatInputSelect = styled.div`
   display: flex;
   flex-direction: row;
@@ -158,12 +211,14 @@ export const ChatInput = ({
   selectedSender,
   config,
   botAccount,
-  streamerAccount
+  streamerAccount,
+  onStickerClick
 }: {
   selectedSender: IOption;
   config: Partial<IConfig>;
   botAccount: IMe;
   streamerAccount: IMe;
+  onStickerClick?: () => void;
 }): React.ReactElement => {
   const [text, setText] = React.useState('');
 
@@ -188,6 +243,13 @@ export const ChatInput = ({
     // sendMessage()
     setText('');
   };
+
+  const sendStickerToStream = (): void => {
+    if (onStickerClick) {
+      onStickerClick();
+    }
+  }
+
   /**
    * @description checks to see if the user hit the enter button, if they did, send the message
    */
@@ -207,6 +269,12 @@ export const ChatInput = ({
           onChange={updateText}
           onKeyDown={checkForEnter}
         />
+        <ChatInputStickers
+          color={'#df1ebfcc'}
+          colorHover={'#df1ebf'}
+        >
+          <FaGrinBeam onClick={sendStickerToStream} />
+        </ChatInputStickers>
         <ChatInputSend
           disabled={text.length === 0}
           color={'#df1ebfcc'}

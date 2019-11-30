@@ -4,7 +4,9 @@ import { ThemeSet } from 'styled-theming';
 import { IChatColors, IChatObject, IGiftObject } from '@/renderer';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Icon } from '../generic-styled-components/Icon';
-import { FaEyeSlash, FaEye } from 'react-icons/fa';
+import { FaEyeSlash, FaEye, FaPlus } from 'react-icons/fa';
+import { AdvancedDiv, HoverStyle } from '../generic-styled-components/AdvancedDiv';
+import { EmoteItem } from '../generic-styled-components/Emote';
 
 import {
   listItemColor,
@@ -122,6 +124,32 @@ const ChatUsername = styled.div`
   border-bottom: 1px dashed;
 `;
 
+const StickerContainer = styled.div`
+    display: inline-flex;
+    position: relative;
+`;
+
+const StickerAddCircle = styled.div`
+      display: flex;
+      position: absolute;
+      height: 36px;
+      width: 36px;
+      background-color: rgba(255,255,255,0.7);
+      border-radius: 50%;
+      left: 12.5%;
+      top: 12.5%;
+
+      svg {
+        stroke: #000000;
+        fill: #000000;
+        text-align: center;
+        vertical-align: middle;
+        margin: auto;
+      }
+
+      box-shadow: 1px 0px 5px 1px #000000
+`;
+
 /**
  * @description the actual line for content
  */
@@ -134,11 +162,13 @@ export const ChatMessage = ({
     moderator: `rgba(6,172,0,0.65)`,
     viewer: `rgba(255,255,255,0)`
   },
-  highlighted
+  highlighted,
+  onAddStickerClick = (message) => {}
 }: {
   message: IChatObject | IGiftObject;
   colors?: IChatColors;
   highlighted: boolean;
+  onAddStickerClick?: (e?: IChatObject | IGiftObject) => void;
 }) => {
   /**
    * @description state for when a message is deleted, the user has the option to check to see what the message was by clicking on the eyeball
@@ -297,6 +327,7 @@ export const ChatMessage = ({
     }
     return stickerLink;
   };
+
   /**
    * @description will return a chat message row, if the message is deleted then it will show text
    * saying that the message was removed
@@ -325,7 +356,7 @@ export const ChatMessage = ({
       </ChatContent>
 
       <StickerContent hidden={!isSticker()}>
-        <ChatSticker src={stickerUrl()} hidden={false} />
+        <EmoteItem id={''} dliveId={''} url={stickerUrl()} height={'50px'} onClick={() => onAddStickerClick(message)} />
       </StickerContent>
       <FollowContent hidden={!isFollow()}>
         {getPhrase('just_followed')}
