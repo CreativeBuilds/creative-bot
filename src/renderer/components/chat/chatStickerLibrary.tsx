@@ -5,46 +5,38 @@ import {
   PopupDialog,
   PopupDialogExitIcon,
   PopupDialogTitle,
-  PopupDialogText,
-  PopupButtonWrapper,
   PopupDialogInputWrapper,
-  PopupDialogInputInfo,
-  PopupDialogInputName,
   PopupDialogTabWrapper,
   PopupDialogTabHeaderWrapper,
   PopupDialogTab,
-  PopupDialogTabPage,
-  PopupDialogInput
+  PopupDialogTabPage
 } from '../generic-styled-components/popupDialog';
-import { FaTimes, FaSadTear, FaShare, FaGrinBeam  } from 'react-icons/fa';
+import { FaTimes, FaSadTear, FaShare } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
-import { Button } from '../generic-styled-components/button';
 import { Emote } from '@/renderer/helpers/db/db';
-import { rxEmotes } from '@/renderer/helpers/rxEmote';
-import { AdvancedDiv, HoverStyle } from '../generic-styled-components/AdvancedDiv';
 import { EmoteItem } from '../generic-styled-components/Emote';
-import { sendEvent } from '@/renderer/helpers/reactGA';
-import { IChatColors, IChatObject, IGiftObject, IOption, IMe, IConfig } from '@/renderer';
+import { IOption, IMe, IConfig } from '@/renderer';
 import { sendMessage } from '@/renderer/helpers/dlive/sendMessage';
-
+import { Loading } from '../generic-styled-components/loading';
+import { useEmotes } from '@/renderer/custom_hooks/useEmotes';
 
 export const NoStickerContainer = styled.div`
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 35%;
+  margin-bottom: 10%;
+
+  > svg {
+    width: 96px;
+    height: 96px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 35%;
-    margin-bottom: 10%;
+    display: block;
+  }
 
-    > svg {
-        width: 96px;
-        height: 96px;
-        margin-left: auto;
-        margin-right: auto;
-        display: block;
-     }
-
-     h2 {
-      text-align: center;
-     }
+  h2 {
+    text-align: center;
+  }
 `;
 
 const CollectionView = styled.div`
@@ -72,9 +64,10 @@ export const ChatStickerLibrary = ({
   streamerAccount: IMe;
   close(): void;
 }) => {
-
   const [tab, setTab] = React.useState('saved');
-  const [Emotes, setEmotes] = React.useState<Emote[]>([]);
+  // const emotes: Emote[] = [];
+  // const loadingEmotes = true;
+  const { emotes, loadingEmotes } = useEmotes();
 
   const isPage = (type: string): boolean => tab === type;
 
@@ -85,21 +78,6 @@ export const ChatStickerLibrary = ({
   const goToSaved = () => {
     setTab('saved');
   };
-
-  /**
-   * @description load all current timers and then store them in a map to check to see if the edit/added one already exists to throw error
-   */
-  React.useEffect(() => {
-    const listener = rxEmotes.subscribe((mEmotes: Emote[]) => {
-      setEmotes(
-        mEmotes
-      );
-    });
-
-    return () => {
-      listener.unsubscribe();
-    };
-  }, []);
 
   const sendMessageToStream = (sticker: string): void => {
     const currentSelected = selectedSender.value;
@@ -131,50 +109,65 @@ export const ChatStickerLibrary = ({
           minHeight: 'min-content',
           width: '425px',
           minWidth: '425px'
-        }}
-      >
+        }}>
         <PopupDialogExitIcon>
           <FaTimes onClick={close}></FaTimes>
         </PopupDialogExitIcon>
         <PopupDialogTitle>{getPhrase('stickerlibrary_title')}</PopupDialogTitle>
         <PopupDialogTabWrapper>
           <PopupDialogTabHeaderWrapper>
-            <PopupDialogTab 
+            <PopupDialogTab
               onClick={isPage('saved') ? () => null : goToSaved}
-              selected={isPage('saved')}
-            >
+              selected={isPage('saved')}>
               {getPhrase('stickerlibrary_tab_saved')}
             </PopupDialogTab>
           </PopupDialogTabHeaderWrapper>
         </PopupDialogTabWrapper>
         <PopupDialogTabPage>
-            {isPage('saved') ? (
-                <React.Fragment>
-                  <PopupDialogInputWrapper>               
-                    <CollectionView>
-                      {Emotes.length > 0 ? Emotes.map(emote =>
-                        <EmoteItem 
-                          key={emote.id}
-                          id={emote.id} 
-                          dliveId={emote.dliveid} 
-                          url={emote.url}
-                          icon={<FaShare />} 
-                          hasBorder={true} 
-                          canDelete={true} 
-                          onDelete={() => { handleDelete(emote); }} 
-                          onClick={() => { sendMessageToStream(emote.dliveid); }}
-                        />
-                      ) :
-                      <NoStickerContainer>
-                        <FaSadTear />
-                        <h2>{getPhrase('stickerlibrary_warning_nostickers')}</h2>
-                      </NoStickerContainer>
-                      }
-                    </CollectionView>
-                  </PopupDialogInputWrapper>
-                </React.Fragment>
-              ): null}
-          </PopupDialogTabPage>
+          {isPage('saved') ? (
+            <React.Fragment>
+              <PopupDialogInputWrapper>
+                <CollectionView>
+                  {emotes.length > 0 ? (
+                    emotes.map(emote => (
+                      <EmoteItem
+                        key={emote.id}
+                        id={emote.id}
+                        dliveId={emote.dliveid}
+                        url={emote.url}
+                        icon={<FaShare />}
+                        canDelete={true}
+                        onDelete={() => {
+                          handleDelete(emote);
+                        }}
+                        onClick={() => {
+                          sendMessageToStream(emote.dliveid);
+                        }}
+                      />
+                    ))
+                  ) : !loadingEmotes ? (
+                    <NoStickerContainer>
+                      <FaSadTear />
+                      <h2>{getPhrase('stickerlibrary_warning_nostickers')}</h2>
+                    </NoStickerContainer>
+                  ) : (
+                    <NoStickerContainer
+                      style={{
+                        display: 'flex',
+                        flex: 1,
+                        margin: 0,
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        height: '100%'
+                      }}>
+                      <Loading />
+                    </NoStickerContainer>
+                  )}
+                </CollectionView>
+              </PopupDialogInputWrapper>
+            </React.Fragment>
+          ) : null}
+        </PopupDialogTabPage>
       </PopupDialog>
     </PopupDialogBackground>
   );

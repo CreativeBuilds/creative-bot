@@ -91,9 +91,9 @@ const Loader = styled.div`
   }
 `;
 
-export const Loading = () => {
+export const Loading = ({ style = {} }: { style?: React.CSSProperties }) => {
   return (
-    <Loader className='lds-roller'>
+    <Loader style={style} className='lds-roller'>
       <div></div>
       <div></div>
       <div></div>
