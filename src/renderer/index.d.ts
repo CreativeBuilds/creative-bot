@@ -71,7 +71,13 @@ export interface ISender {
 }
 
 export interface IChatObject {
-  type: string;
+  type:
+    | 'Follow'
+    | 'Subscription'
+    | 'Message'
+    | 'Gift'
+    | 'GiftSubReceive'
+    | 'Delete';
   id: string;
   content?: string;
   createdAt: string;

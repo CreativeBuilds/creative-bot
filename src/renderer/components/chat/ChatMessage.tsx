@@ -205,15 +205,15 @@ export const ChatMessage = ({
    */
   const giftType = (message: IGiftObject) => {
     if (message.gift === 'LEMON') {
-      return 'Lemon';
+      return `Lemon${message.amount !== '1' ? 's' : ''}`;
     } else if (message.gift === 'ICE_CREAM') {
-      return 'Ice Cream';
+      return `Ice Cream${message.amount !== '1' ? 's' : ''}`;
     } else if (message.gift === 'DIAMOND') {
-      return 'Diamond';
+      return `Diamond${message.amount !== '1' ? 's' : ''}`;
     } else if (message.gift === 'NINJAGHINI') {
-      return 'Ninjaghini';
+      return `Ninjaghini${message.amount !== '1' ? 's' : ''}`;
     } else if (message.gift === 'NINJET') {
-      return 'Ninjet';
+      return `Ninjet${message.amount !== '1' ? 's' : ''}`;
     }
   };
 
@@ -307,8 +307,7 @@ export const ChatMessage = ({
     <Chat
       padTop={!message.deleted || deletedButShow}
       highlighted={highlighted}
-      isEvent={isEvent()}
-    >
+      isEvent={isEvent()}>
       {message.deleted && !deletedButShow ? null : (
         <ChatUsername>{message.sender.displayname}</ChatUsername>
       )}
@@ -334,8 +333,7 @@ export const ChatMessage = ({
       {message.deleted ? (
         <Icon
           style={{ position: 'absolute', right: '10px', top: '19px' }}
-          onClick={updateShow}
-        >
+          onClick={updateShow}>
           {deletedButShow ? (
             <FaEye size={'18px'} />
           ) : (

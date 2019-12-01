@@ -25,19 +25,10 @@ import { filter, distinctUntilChanged } from 'rxjs/operators';
 import Select from 'react-select';
 import { getSelf } from '@/renderer/helpers/dlive/getSelf';
 import { shell } from 'electron';
-import { IConfig, IMe, IChatObject, IOption } from '@/renderer';
+import { IConfig, IMe, IChatObject, IOption, IGiftObject } from '@/renderer';
 import { ChatTTSSettings } from './chatTTSSettings';
 
-import {
-  dropDownBoxBackgroundColor,
-  dropDownBoxBorderColor,
-  dropDownBoxHoverColor,
-  dropDownBoxColor,
-  dropDownBoxSelectedColor,
-  accentColor,
-  listItemColor,
-  listItemAlternativeColor
-} from '@/renderer/helpers/appearance';
+import { accentColor } from '@/renderer/helpers/appearance';
 import { ChatMessageSettings } from './chatMessageSettings';
 import { Tracking } from '../tracking/tracking';
 
@@ -96,22 +87,64 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
     updateConfig({ selectedSender: val }).catch(console.error);
   };
 
+  const filteredMessages = () => {
+    const Donations: { [id: string]: IGiftObject } = {};
+    const Remove: string[] = [];
+    return reverse(
+      reverse(
+        AllMessages.sort((a, b) => Number(b.createdAt) - Number(a.createdAt))
+      )
+        .reduce((acc, message) => {
+          if (message.type !== 'Gift') {
+            acc.push(message);
+
+            return acc;
+          } else {
+            const gift: IGiftObject = { ...message } as IGiftObject;
+            const key = `${gift.sender.username}:${gift.gift}`;
+
+            if (!!Donations[key]) {
+              const lastGift = { ...Donations[key] };
+              gift.amount = String(
+                Number(lastGift.amount) + Number(gift.amount)
+              );
+              Remove.push(lastGift.id);
+              Donations[key] = { ...gift };
+              acc.push(Donations[key]);
+            } else {
+              Donations[key] = { ...gift };
+              acc.push(Donations[key]);
+            }
+
+            return acc;
+          }
+        }, [] as Array<IChatObject | IGiftObject>)
+        .reduce((acc, message) => {
+          if (!Remove.includes(message.id)) {
+            acc.push(message);
+          }
+
+          return acc;
+        }, [] as Array<IChatObject>)
+    );
+  };
+
   const updateMessages = (mChat: IChatObject) => {
     AllMessages = [mChat].concat(AllMessages);
     if (AllMessages.length > 100) {
       AllMessages.pop();
     }
-    setMessages(AllMessages);
+
+    setMessages(filteredMessages());
   };
 
   const DeleteMessage = (id: string) => {
     AllMessages = AllMessages.map(message => {
       return { ...message, ...(id === message.id ? { deleted: true } : {}) };
     });
-    setMessages(AllMessages);
+    setMessages(filteredMessages());
   };
-
-  /**
+  /**mKey
    * @description will try and trigger auto scroll to bottom
    */
   React.useEffect(() => {
@@ -289,19 +322,21 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
         </CurrentlyConnected>
         <ChatMessages>
           {reverse(
-            messages.map(message => (
-              <ChatMessage
-                highlighted={
-                  !!streamerAccount
-                    ? (message.content || '')
-                        .toLowerCase()
-                        .includes(streamerAccount.displayname.toLowerCase())
-                    : false
-                }
-                key={message.id}
-                message={message}
-              />
-            ))
+            messages
+              .sort((a, b) => Number(b.createdAt) - Number(a.createdAt))
+              .map(message => (
+                <ChatMessage
+                  highlighted={
+                    !!streamerAccount
+                      ? (message.content || '')
+                          .toLowerCase()
+                          .includes(streamerAccount.displayname.toLowerCase())
+                      : false
+                  }
+                  key={message.id}
+                  message={message}
+                />
+              ))
           )}
           <ScrollTo id='scroll-to' />
         </ChatMessages>

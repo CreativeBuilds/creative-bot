@@ -71,14 +71,10 @@ export const ChatMessageSettings = ({
       : `Holy smokes! You're the best $USER! 😲 Thanks for that ninjet!`
   );
   const [followMessage, setFollowMessage] = React.useState(
-    !!eventConfig
-      ? eventConfig.onFollow
-      : 'Thank you for the follow $USER!'
+    !!eventConfig ? eventConfig.onFollow : 'Thank you for the follow $USER!'
   );
   const [subMessage, setSubMessage] = React.useState(
-    !!eventConfig
-      ? eventConfig.onSub
-      : 'Thank you for subscribing $USER!'
+    !!eventConfig ? eventConfig.onSub : 'Thank you for subscribing $USER!'
   );
   const [giftedSubMessage, setGiftedSubMessage] = React.useState(
     !!eventConfig
@@ -87,9 +83,7 @@ export const ChatMessageSettings = ({
   );
 
   React.useEffect(() => {
-    setSendEventMessages(
-      eventConfig?.enableEventMessages
-    );
+    setSendEventMessages(eventConfig?.enableEventMessages);
   }, [eventConfig]);
 
   React.useEffect(() => {
@@ -117,14 +111,14 @@ export const ChatMessageSettings = ({
 
   const goToOther = () => {
     setTab('other');
-  }
+  };
 
   const updateSendEventMessages = (e: React.ChangeEvent<HTMLInputElement>) => {
     updateConfig({
       ...config,
       eventConfig: {
         ...eventConfig,
-        enableEventMessages: !(eventConfig?.enableEventMessages)
+        enableEventMessages: !eventConfig?.enableEventMessages
       }
     }).catch(console.error);
   };
@@ -162,21 +156,33 @@ export const ChatMessageSettings = ({
   };
 
   const hasChanged = (): boolean => {
-    return lemonMessage !== eventConfig?.onLemon || icecreamMessage !== eventConfig?.onIcecream || diamondMessage !== eventConfig?.onDiamond || ninjaMessage !== eventConfig?.onNinja || ninjetMessage !== eventConfig?.onNinjet || followMessage !== eventConfig?.onFollow || subMessage !== eventConfig?.onSub || giftedSubMessage !== eventConfig?.onGiftedSub;
+    return (
+      lemonMessage !== eventConfig?.onLemon ||
+      icecreamMessage !== eventConfig?.onIcecream ||
+      diamondMessage !== eventConfig?.onDiamond ||
+      ninjaMessage !== eventConfig?.onNinja ||
+      ninjetMessage !== eventConfig?.onNinjet ||
+      followMessage !== eventConfig?.onFollow ||
+      subMessage !== eventConfig?.onSub ||
+      giftedSubMessage !== eventConfig?.onGiftedSub
+    );
   };
 
   const saveSettings = () => {
-    updateConfig({...config, eventConfig: {
-      ...eventConfig,
-      onDiamond: diamondMessage,
-      onFollow: followMessage,
-      onGiftedSub: giftedSubMessage,
-      onIcecream: icecreamMessage,
-      onLemon: lemonMessage,
-      onNinja: ninjaMessage,
-      onNinjet: ninjetMessage,
-      onSub: subMessage
-    }}).catch(null);
+    updateConfig({
+      ...config,
+      eventConfig: {
+        ...eventConfig,
+        onDiamond: diamondMessage,
+        onFollow: followMessage,
+        onGiftedSub: giftedSubMessage,
+        onIcecream: icecreamMessage,
+        onLemon: lemonMessage,
+        onNinja: ninjaMessage,
+        onNinjet: ninjetMessage,
+        onSub: subMessage
+      }
+    }).catch(null);
   };
 
   return (
@@ -188,8 +194,7 @@ export const ChatMessageSettings = ({
           width: '425px',
           minWidth: '425px',
           overflow: 'auto'
-        }}
-      >
+        }}>
         <PopupDialogExitIcon>
           <FaTimes onClick={closeMessageControl}></FaTimes>
         </PopupDialogExitIcon>
@@ -212,16 +217,14 @@ export const ChatMessageSettings = ({
         </PopupDialogInputWrapper>
         <PopupDialogTabWrapper>
           <PopupDialogTabHeaderWrapper>
-            <PopupDialogTab 
+            <PopupDialogTab
               onClick={isPage('donations') ? () => null : goToDonations}
-              selected={isPage('donations')}
-            >
+              selected={isPage('donations')}>
               {getPhrase('chat_custom_messages_donations')}
             </PopupDialogTab>
             <PopupDialogTab
               onClick={isPage('other') ? () => null : goToOther}
-              selected={isPage('other')}
-            >
+              selected={isPage('other')}>
               {getPhrase('chat_custom_messages_other')}
             </PopupDialogTab>
           </PopupDialogTabHeaderWrapper>
@@ -286,7 +289,7 @@ export const ChatMessageSettings = ({
                   onChange={updateFollowMessage}
                 />
               </PopupDialogInputWrapper>
-              <PopupDialogInputWrapper>
+              {/* <PopupDialogInputWrapper>
                 <PopupDialogInputName>
                   {getPhrase('chat_custom_messages_other_gifted')}
                 </PopupDialogInputName>
@@ -294,7 +297,7 @@ export const ChatMessageSettings = ({
                   value={giftedSubMessage}
                   onChange={updateGiftedSubMessage}
                 />
-              </PopupDialogInputWrapper>
+              </PopupDialogInputWrapper> */}
               <PopupDialogInputWrapper>
                 <PopupDialogInputName>
                   {getPhrase('chat_custom_messages_other_sub')}
@@ -310,10 +313,8 @@ export const ChatMessageSettings = ({
         <PopupButtonWrapper>
           <Button
             disabled={!hasChanged()}
-            
             onClick={hasChanged() ? saveSettings : () => null}
-            style={{ zIndex: 4, position: 'static', marginTop: '10px' }}
-          >
+            style={{ zIndex: 4, position: 'static', marginTop: '10px' }}>
             {getPhrase('chat_custom_messages_save')}
           </Button>
         </PopupButtonWrapper>
