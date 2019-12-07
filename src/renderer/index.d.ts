@@ -10,6 +10,8 @@ export interface IConfig {
   selectedSender?: IOption;
   pointsTimer?: number;
   points?: number;
+  enableStickers?: boolean;
+  enableStickersAsText?: boolean;
   donationSettings?: {
     lemons?: number;
     icecream?: number;

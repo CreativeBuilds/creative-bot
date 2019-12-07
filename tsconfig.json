@@ -19,7 +19,6 @@
     "noImplicitThis": true,
     "strictNullChecks": true,
     "sourceMap": true,
-    "prefer-template": false,
     "target": "es2018"
   },
   "exclude": ["node_modules"]

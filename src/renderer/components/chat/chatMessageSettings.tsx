@@ -86,6 +86,9 @@ export const ChatMessageSettings = ({
       : 'Thank you for gifting a sub, $USER!'
   );
 
+  const [enableStickerMessages, setEnableStickerMessages] = React.useState(config.enableStickers ? config.enableStickers : true);
+  const [enableStickersAsText, setStickersAsText] = React.useState(config.enableStickersAsText ? config.enableStickersAsText : false);
+
   React.useEffect(() => {
     setSendEventMessages(
       eventConfig?.enableEventMessages
@@ -165,12 +168,33 @@ export const ChatMessageSettings = ({
     setGiftedSubMessage(e.target.value);
   };
 
+  const updateEnableStickerMessages = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEnableStickerMessages(!enableStickerMessages)
+  };
+
+  const updateStickersAsText = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setStickersAsText(!enableStickersAsText)
+  };
+
   const hasChanged = (): boolean => {
-    return lemonMessage !== eventConfig?.onLemon || icecreamMessage !== eventConfig?.onIcecream || diamondMessage !== eventConfig?.onDiamond || ninjaMessage !== eventConfig?.onNinja || ninjetMessage !== eventConfig?.onNinjet || followMessage !== eventConfig?.onFollow || subMessage !== eventConfig?.onSub || giftedSubMessage !== eventConfig?.onGiftedSub;
+    return lemonMessage !== eventConfig?.onLemon || 
+    icecreamMessage !== eventConfig?.onIcecream || 
+    diamondMessage !== eventConfig?.onDiamond || 
+    ninjaMessage !== eventConfig?.onNinja || 
+    ninjetMessage !== eventConfig?.onNinjet || 
+    followMessage !== eventConfig?.onFollow || 
+    subMessage !== eventConfig?.onSub || 
+    giftedSubMessage !== eventConfig?.onGiftedSub ||
+    enableStickerMessages !== config?.enableStickers ||
+    enableStickersAsText !== config?.enableStickersAsText;
   };
 
   const saveSettings = () => {
-    updateConfig({...config, eventConfig: {
+    updateConfig({
+      ...config, 
+      enableStickers: enableStickerMessages,
+      enableStickersAsText: enableStickersAsText,
+      eventConfig: {
       ...eventConfig,
       onDiamond: diamondMessage,
       onFollow: followMessage,
@@ -322,9 +346,9 @@ export const ChatMessageSettings = ({
                   Enable Stickers
                 </PopupDialogInputName>
                 <Toggle
-                  checked={true}
+                  checked={enableStickerMessages}
                   icons={false}
-                  onChange={() => {}}
+                  onChange={updateEnableStickerMessages}
                   className={'toggler'}
                 />
                 <PopupDialogInputInfo>
@@ -336,27 +360,13 @@ export const ChatMessageSettings = ({
                   Enable Stickers as Text
                 </PopupDialogInputName>
                 <Toggle
-                  checked={false}
+                  checked={enableStickersAsText}
                   icons={false}
-                  onChange={() => {}}
+                  onChange={updateStickersAsText}
                   className={'toggler'}
                 />
                 <PopupDialogInputInfo>
                   Allows the ability to display Stickers as Text in Chat
-                </PopupDialogInputInfo>
-              </PopupDialogInputWrapper>
-              <PopupDialogInputWrapper>
-                <PopupDialogInputName>
-                  Enable Events In Chat
-                </PopupDialogInputName>
-                <Toggle
-                  checked={true}
-                  icons={false}
-                  onChange={() => {}}
-                  className={'toggler'}
-                />
-                <PopupDialogInputInfo>
-                  Allows the ability to display Events like Donations in Chat
                 </PopupDialogInputInfo>
               </PopupDialogInputWrapper>
             </React.Fragment>

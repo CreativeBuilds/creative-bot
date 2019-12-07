@@ -263,6 +263,7 @@ export const PopupDialogTabPage = styled.div`
       ? popupTabViewBackgroundColor
       : '#e1e1e1'};
   border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
   z-index: 3;
 `;
 
@@ -280,6 +281,7 @@ export const PopupDialogTab = styled.div`
   min-width: min-content;
   padding: 5px;
   font-size: 1.1em;
+  
   /* transition: all 0.15s ease-in-out; */
   z-index: ${(props: IPopupDialogTab): number => (props.selected ? 3 : 2)};
   /* ${(props: IPopupDialogTab): string =>
@@ -292,6 +294,8 @@ export const PopupDialogTab = styled.div`
     props.selected ? 'inherit' : '#aaa'};
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
+
+  box-shadow: ${(props: IPopupDialogTab): string => props.selected ? '2.3px -2.3px 5px rgba(0,0,0,0.15)' : '0px'};
 
   &:hover {
     cursor: ${(props: IPopupDialogTab): string =>
