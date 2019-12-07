@@ -7,12 +7,12 @@ import { autoUpdater } from 'electron-updater';
 import * as log from 'electron-log';
 import { IEvent } from '../renderer';
 
-process.on('uncaughtException', function (error) {
+process.on('uncaughtException', function(error) {
   // Handle the error
   log.debug(error);
-})
+});
 
-//electronDebug({ showDevTools: false, isEnabled: true });
+// electronDebug({ showDevTools: false, isEnabled: true });
 
 let mainWindow: Electron.BrowserWindow | null;
 
@@ -54,10 +54,9 @@ function createWindow(): void {
     }
     try {
       mainWindow.webContents.send('event', { name, data });
-    } catch(err) {
+    } catch (err) {
       log.debug(err);
     }
-    
   };
 
   ipcMain.on('event', (event: any, data: IEvent) => {
@@ -124,10 +123,9 @@ function createWindow(): void {
               loginWindow.close();
             }
           }
-        } catch(err) {
+        } catch (err) {
           log.debug(err);
         }
-        
       }
     );
 

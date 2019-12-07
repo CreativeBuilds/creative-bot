@@ -117,10 +117,11 @@ export const PopupDialogTitle = styled.h1`
  * @description Used for any filler text in a popup
  */
 export const PopupDialogText = styled.div`
-  width: 85%;
+  width: 95%;
   font-size: 1.2em;
   font-weight: 100;
   margin: auto;
+  margin-bottom: 10px;
   text-align: ${(props: ITitleProps) => (!!props.center ? 'center' : 'unset')};
 `;
 

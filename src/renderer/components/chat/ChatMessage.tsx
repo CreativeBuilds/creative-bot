@@ -4,13 +4,11 @@ import { ThemeSet } from 'styled-theming';
 import { IChatColors, IChatObject, IGiftObject } from '@/renderer';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Icon } from '../generic-styled-components/Icon';
-import { FaEyeSlash, FaEye, FaPlus } from 'react-icons/fa';
-import { AdvancedDiv, HoverStyle } from '../generic-styled-components/AdvancedDiv';
+import { FaEyeSlash, FaEye } from 'react-icons/fa';
 import { EmoteItem } from '../generic-styled-components/Emote';
 
 import {
   listItemColor,
-  listItemBackgroundColor,
   listItemAlternativeColor,
   eventColor,
   eventBackgroundColor
@@ -111,43 +109,12 @@ const GiftContent = styled.div`
   padding-right: 15px;
   word-wrap: break-word;
 `;
-const ChatSticker = styled.img`
-  height: 48px;
-  overflow: hidden;
-`;
-
 const ChatUsername = styled.div`
   position: absolute;
   top: 2px;
   left: 10px;
   font-size: 17px;
   border-bottom: 1px dashed;
-`;
-
-const StickerContainer = styled.div`
-    display: inline-flex;
-    position: relative;
-`;
-
-const StickerAddCircle = styled.div`
-      display: flex;
-      position: absolute;
-      height: 36px;
-      width: 36px;
-      background-color: rgba(255,255,255,0.7);
-      border-radius: 50%;
-      left: 12.5%;
-      top: 12.5%;
-
-      svg {
-        stroke: #000000;
-        fill: #000000;
-        text-align: center;
-        vertical-align: middle;
-        margin: auto;
-      }
-
-      box-shadow: 1px 0px 5px 1px #000000
 `;
 
 /**
@@ -163,7 +130,7 @@ export const ChatMessage = ({
     viewer: `rgba(255,255,255,0)`
   },
   highlighted,
-  onAddStickerClick = (message) => {}
+  onAddStickerClick = message => {}
 }: {
   message: IChatObject | IGiftObject;
   colors?: IChatColors;
@@ -338,8 +305,7 @@ export const ChatMessage = ({
     <Chat
       padTop={!message.deleted || deletedButShow}
       highlighted={highlighted}
-      isEvent={isEvent()}
-    >
+      isEvent={isEvent()}>
       {message.deleted && !deletedButShow ? null : (
         <ChatUsername>{message.sender.displayname}</ChatUsername>
       )}
@@ -356,7 +322,14 @@ export const ChatMessage = ({
       </ChatContent>
 
       <StickerContent hidden={!isSticker()}>
-        <EmoteItem id={''} dliveId={''} url={stickerUrl()} height={'50px'} onClick={() => onAddStickerClick(message)} />
+        <EmoteItem
+          id={''}
+          dliveId={''}
+          url={stickerUrl()}
+          hideBorder={true}
+          height={50}
+          onClick={() => onAddStickerClick(message)}
+        />
       </StickerContent>
       <FollowContent hidden={!isFollow()}>
         {getPhrase('just_followed')}
@@ -365,8 +338,7 @@ export const ChatMessage = ({
       {message.deleted ? (
         <Icon
           style={{ position: 'absolute', right: '10px', top: '19px' }}
-          onClick={updateShow}
-        >
+          onClick={updateShow}>
           {deletedButShow ? (
             <FaEye size={'18px'} />
           ) : (

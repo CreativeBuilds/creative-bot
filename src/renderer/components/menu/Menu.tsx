@@ -162,21 +162,26 @@ const MenuComponent = (
         <Nav
           defaultSelected={
             props.location.pathname ? props.location.pathname : ''
-          }
-        >
+          }>
           <NavItem eventKey='/' className='navItem'>
             <NavIcon>
               <FaComments
-                style={{ fontSize: '30px', width: '30px', height: '45px' }}
-              ></FaComments>
+                style={{
+                  fontSize: '30px',
+                  width: '30px',
+                  height: '45px'
+                }}></FaComments>
             </NavIcon>
             <NavText>{getPhrase('menu_chat')}</NavText>
           </NavItem>
           <NavItem eventKey='/users'>
             <NavIcon>
               <FaUserAlt
-                style={{ fontSize: '30px', width: '30px', height: '45px' }}
-              ></FaUserAlt>
+                style={{
+                  fontSize: '30px',
+                  width: '30px',
+                  height: '45px'
+                }}></FaUserAlt>
             </NavIcon>
             <NavText>{getPhrase('menu_users')}</NavText>
           </NavItem>
@@ -191,24 +196,33 @@ const MenuComponent = (
           <NavItem eventKey='/commands'>
             <NavIcon>
               <FaList
-                style={{ fontSize: '30px', width: '30px', height: '45px' }}
-              ></FaList>
+                style={{
+                  fontSize: '30px',
+                  width: '30px',
+                  height: '45px'
+                }}></FaList>
             </NavIcon>
             <NavText>{getPhrase('menu_commands')}</NavText>
           </NavItem>
           <NavItem eventKey='/custom_variables'>
             <NavIcon>
               <FaCode
-                style={{ fontSize: '30px', width: '30px', height: '45px' }}
-              ></FaCode>
+                style={{
+                  fontSize: '30px',
+                  width: '30px',
+                  height: '45px'
+                }}></FaCode>
             </NavIcon>
             <NavText>{getPhrase('menu_custom_variables')}</NavText>
           </NavItem>
           <NavItem eventKey='/timers'>
             <NavIcon>
               <FaClock
-                style={{ fontSize: '30px', width: '30px', height: '45px' }}
-              ></FaClock>
+                style={{
+                  fontSize: '30px',
+                  width: '30px',
+                  height: '45px'
+                }}></FaClock>
             </NavIcon>
             <NavText>{getPhrase('menu_timers')}</NavText>
           </NavItem>
@@ -223,16 +237,30 @@ const MenuComponent = (
           <NavItem eventKey='/themes'>
             <NavIcon>
               <FaImage
+                style={{
+                  fontSize: '30px',
+                  width: '30px',
+                  height: '45px'
+                }}></FaImage>
+            </NavIcon>
+            <NavText>{getPhrase('menu_themes')}</NavText>
+          </NavItem>
+          {/* <NavItem eventKey='/testing'>
+            <NavIcon>
+              <FaImage
                 style={{ fontSize: '30px', width: '30px', height: '45px' }}
               ></FaImage>
             </NavIcon>
             <NavText>{getPhrase('menu_themes')}</NavText>
-          </NavItem>
+          </NavItem> */}
           <NavItem eventKey='/logout'>
             <NavIcon>
               <FaSignOutAlt
-                style={{ fontSize: '30px', width: '30px', height: '45px' }}
-              ></FaSignOutAlt>
+                style={{
+                  fontSize: '30px',
+                  width: '30px',
+                  height: '45px'
+                }}></FaSignOutAlt>
             </NavIcon>
             <NavText>{getPhrase('menu_logout')}</NavText>
           </NavItem>

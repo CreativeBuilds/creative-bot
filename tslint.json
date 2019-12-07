@@ -22,6 +22,7 @@
     "max-func-body-length": false,
     "max-classes-per-file": false,
     "match-default-export-name": false,
+    "prefer-template": false,
     "no-implicit-dependencies": [
       true,
       "dev",

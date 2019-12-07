@@ -1,8 +1,3 @@
-import {
-  ICreateChange,
-  IUpdateChange,
-  IDeleteChange
-} from 'dexie-observable/api';
 import { User } from './helpers/db/db';
 
 export interface IConfig {
