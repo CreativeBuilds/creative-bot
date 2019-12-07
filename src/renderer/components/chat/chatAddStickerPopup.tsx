@@ -21,7 +21,6 @@ import { sendMessage } from '@/renderer/helpers/dlive/sendMessage';
 import { FaTimes, FaHandMiddleFinger } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Button } from '../generic-styled-components/button';
-import { AdvancedDiv, HoverStyle } from '../generic-styled-components/AdvancedDiv';
 import { Panel, PanelTitle, PanelSubtitle } from '../generic-styled-components/Panel'
 import { Emote } from '@/renderer/helpers/db/db';
 import { rxEmotes } from '@/renderer/helpers/rxEmote';

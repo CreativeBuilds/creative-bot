@@ -171,15 +171,7 @@ const ChatInputStickers = styled.div`
     height: 30px;
     width: 30px;
     color: ${(props: IChatInputSend): ThemeSet | string =>
-      props.disabled
-        ? props.disabledColor
-          ? props.disabledColor
-          : textInputDisabledTextColor
-          ? textInputDisabledTextColor
-          : '#ccc'
-        : props.color
-        ? props.color
-        : 'inherit'};
+      textInputDisabledTextColor ? textInputDisabledTextColor : 'inherit'};
     /* transition: all 0.15s ease-in; */
   }
 `;
@@ -270,7 +262,6 @@ export const ChatInput = ({
           onKeyDown={checkForEnter}
         />
         <ChatInputStickers
-          color={'#df1ebfcc'}
           colorHover={'#df1ebf'}
         >
           <FaGrinBeam onClick={sendStickerToStream} />

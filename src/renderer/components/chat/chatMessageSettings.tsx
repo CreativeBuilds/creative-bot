@@ -86,6 +86,9 @@ export const ChatMessageSettings = ({
       : 'Thank you for gifting a sub, $USER!'
   );
 
+  const [enableStickerMessages, setEnableStickerMessages] = React.useState(config.enableStickers ? config.enableStickers : true);
+  const [enableStickersAsText, setStickersAsText] = React.useState(config.enableStickersAsText ? config.enableStickersAsText : false);
+
   React.useEffect(() => {
     setSendEventMessages(
       eventConfig?.enableEventMessages
@@ -117,6 +120,10 @@ export const ChatMessageSettings = ({
 
   const goToOther = () => {
     setTab('other');
+  }
+
+  const goToConfigs = () => {
+    setTab('configs');
   }
 
   const updateSendEventMessages = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -161,12 +168,33 @@ export const ChatMessageSettings = ({
     setGiftedSubMessage(e.target.value);
   };
 
+  const updateEnableStickerMessages = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEnableStickerMessages(!enableStickerMessages)
+  };
+
+  const updateStickersAsText = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setStickersAsText(!enableStickersAsText)
+  };
+
   const hasChanged = (): boolean => {
-    return lemonMessage !== eventConfig?.onLemon || icecreamMessage !== eventConfig?.onIcecream || diamondMessage !== eventConfig?.onDiamond || ninjaMessage !== eventConfig?.onNinja || ninjetMessage !== eventConfig?.onNinjet || followMessage !== eventConfig?.onFollow || subMessage !== eventConfig?.onSub || giftedSubMessage !== eventConfig?.onGiftedSub;
+    return lemonMessage !== eventConfig?.onLemon || 
+    icecreamMessage !== eventConfig?.onIcecream || 
+    diamondMessage !== eventConfig?.onDiamond || 
+    ninjaMessage !== eventConfig?.onNinja || 
+    ninjetMessage !== eventConfig?.onNinjet || 
+    followMessage !== eventConfig?.onFollow || 
+    subMessage !== eventConfig?.onSub || 
+    giftedSubMessage !== eventConfig?.onGiftedSub ||
+    enableStickerMessages !== config?.enableStickers ||
+    enableStickersAsText !== config?.enableStickersAsText;
   };
 
   const saveSettings = () => {
-    updateConfig({...config, eventConfig: {
+    updateConfig({
+      ...config, 
+      enableStickers: enableStickerMessages,
+      enableStickersAsText: enableStickersAsText,
+      eventConfig: {
       ...eventConfig,
       onDiamond: diamondMessage,
       onFollow: followMessage,
@@ -223,6 +251,12 @@ export const ChatMessageSettings = ({
               selected={isPage('other')}
             >
               {getPhrase('chat_custom_messages_other')}
+            </PopupDialogTab>
+            <PopupDialogTab
+              onClick={isPage('configs') ? () => null : goToConfigs}
+              selected={isPage('configs')}
+            >
+              {getPhrase('chat_custom_messages_config')}
             </PopupDialogTab>
           </PopupDialogTabHeaderWrapper>
         </PopupDialogTabWrapper>
@@ -303,6 +337,37 @@ export const ChatMessageSettings = ({
                   value={subMessage}
                   onChange={updateSubMessage}
                 />
+              </PopupDialogInputWrapper>
+            </React.Fragment>
+          ) : isPage('configs') ? (
+            <React.Fragment>
+              <PopupDialogInputWrapper>
+                <PopupDialogInputName>
+                  {getPhrase('chat_custom_messages_enablestickers')}
+                </PopupDialogInputName>
+                <Toggle
+                  checked={enableStickerMessages}
+                  icons={false}
+                  onChange={updateEnableStickerMessages}
+                  className={'toggler'}
+                />
+                <PopupDialogInputInfo>
+                  {getPhrase('chat_custom_messages_enablestickers_info')}
+                </PopupDialogInputInfo>
+              </PopupDialogInputWrapper>
+              <PopupDialogInputWrapper>
+                <PopupDialogInputName>
+                  {getPhrase('chat_custom_messages_enablestickersastext')}
+                </PopupDialogInputName>
+                <Toggle
+                  checked={enableStickersAsText}
+                  icons={false}
+                  onChange={updateStickersAsText}
+                  className={'toggler'}
+                />
+                <PopupDialogInputInfo>
+                  {getPhrase('chat_custom_messages_enablestickersastext_info')}
+                </PopupDialogInputInfo>
               </PopupDialogInputWrapper>
             </React.Fragment>
           ) : null}

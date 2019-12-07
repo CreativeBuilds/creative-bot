@@ -1,11 +1,11 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import { ThemeSet } from 'styled-theming';
-import { IChatColors, IChatObject, IGiftObject } from '@/renderer';
+import { IChatColors, IChatObject, IGiftObject, IConfig } from '@/renderer';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Icon } from '../generic-styled-components/Icon';
-import { FaEyeSlash, FaEye } from 'react-icons/fa';
-import { EmoteItem } from '../generic-styled-components/Emote';
+import { FaEyeSlash, FaEye, FaPlus } from 'react-icons/fa';
+import { EmoteItem, EmoteAsTextItem } from '../generic-styled-components/Emote';
 
 import {
   listItemColor,
@@ -19,7 +19,9 @@ interface IChatProps {
   padTop?: boolean;
   highlighted?: boolean;
   highlightedBackground?: string;
+  isSticker?: boolean;
   isEvent?: boolean;
+  config?: Partial<IConfig>;
 }
 
 const Chat = styled.div`
@@ -30,7 +32,7 @@ const Chat = styled.div`
   min-width: -webkit-fill-available;
   padding-top: ${(props: IChatProps): string =>
     props.padTop ? '30px' : 'unset'};
-  height: 55px;
+  height:  55px;
   background: ${(props: IChatProps): ThemeSet | string =>
     props.isEvent ? eventBackgroundColor : 'transparent'};
   color: ${(props: IChatProps): ThemeSet | string =>
@@ -122,6 +124,7 @@ const ChatUsername = styled.div`
  */
 export const ChatMessage = ({
   message,
+  config,
   colors = {
     owner: 'rgba(56,62,225,0.65)',
     bot: `rgba(104,52,215,0.65)`,
@@ -133,6 +136,7 @@ export const ChatMessage = ({
   onAddStickerClick = message => {}
 }: {
   message: IChatObject | IGiftObject;
+  config: Partial<IConfig>;
   colors?: IChatColors;
   highlighted: boolean;
   onAddStickerClick?: (e?: IChatObject | IGiftObject) => void;
@@ -242,6 +246,7 @@ export const ChatMessage = ({
       }
     }
   };
+
   const isGift = () => {
     if (!message.type) {
       return false;
@@ -305,7 +310,9 @@ export const ChatMessage = ({
     <Chat
       padTop={!message.deleted || deletedButShow}
       highlighted={highlighted}
-      isEvent={isEvent()}>
+      isSticker={isSticker()}
+      isEvent={isEvent()}
+      config={config}>
       {message.deleted && !deletedButShow ? null : (
         <ChatUsername>{message.sender.displayname}</ChatUsername>
       )}
@@ -322,14 +329,19 @@ export const ChatMessage = ({
       </ChatContent>
 
       <StickerContent hidden={!isSticker()}>
-        <EmoteItem
-          id={''}
-          dliveId={''}
-          url={stickerUrl()}
-          hideBorder={true}
-          height={50}
-          onClick={() => onAddStickerClick(message)}
-        />
+        {!config.enableStickersAsText ? 
+          <EmoteItem
+            id={''}
+            dliveId={''}
+            url={stickerUrl()}
+            hideBorder={true}
+            height={50}
+            onClick={() => onAddStickerClick(message)}
+          /> : 
+          <EmoteAsTextItem> 
+            <div>{message.content}</div>
+            <FaPlus onClick={() => onAddStickerClick(message)} />
+          </EmoteAsTextItem> }
       </StickerContent>
       <FollowContent hidden={!isFollow()}>
         {getPhrase('just_followed')}

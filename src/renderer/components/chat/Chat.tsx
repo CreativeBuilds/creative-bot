@@ -264,6 +264,18 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
     }
     shell.openExternal(`https://dlive.tv/${streamerAccount.displayname}`);
   };
+ 
+  const isSticker = (message: IChatObject) => {
+    if (!message.content) {
+      return false;
+    } else {
+      if (message.content.search(/^[:]emote/gi) > -1) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  };
 
   return (
     <PageMain>
@@ -313,8 +325,10 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
         </CurrentlyConnected>
         <ChatMessages>
           {reverse(
-            messages.map(message => (
-              <ChatMessage
+            messages.map(message => (   
+              !isSticker(message) ? 
+                <ChatMessage
+                config={config}
                 highlighted={
                   !!streamerAccount
                     ? (message.content || '')
@@ -325,7 +339,22 @@ export const Chat = ({ chat }: { chat: {}[] }): React.ReactElement => {
                 key={message.id}
                 message={message}
                 onAddStickerClick={openAddStickerPopup}
-              />
+              /> : 
+              config?.enableStickers ?
+              <ChatMessage
+              config={config}
+              highlighted={
+                !!streamerAccount
+                  ? (message.content || '')
+                      .toLowerCase()
+                      .includes(streamerAccount.displayname.toLowerCase())
+                  : false
+              }
+              key={message.id}
+              message={message}
+              onAddStickerClick={openAddStickerPopup}
+            /> : 
+            null         
             ))
           )}
           <ScrollTo id='scroll-to' />

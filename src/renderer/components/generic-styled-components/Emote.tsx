@@ -20,10 +20,6 @@ import { FaShare, FaPlus, FaTimes } from 'react-icons/fa';
 import { getPhrase } from '@/renderer/helpers/lang';
 import { Emote } from '@/renderer/helpers/db/db';
 import { rxEmotes } from '@/renderer/helpers/rxEmote';
-import {
-  AdvancedDiv,
-  HoverStyle
-} from '../generic-styled-components/AdvancedDiv';
 import { accentColor } from '@/renderer/helpers/appearance';
 import theme = require('styled-theming');
 
@@ -111,6 +107,31 @@ const DeleteCircleButton = styled.div`
 
   box-shadow: 1px 0px 5px 1px #000000;
   z-index: 999;
+`;
+
+export const EmoteAsTextItem = styled.div`
+  display: inline-block;
+  > div {
+    margin-right: 10px;
+  }
+
+  svg {
+    border-radius: 15px;
+    padding: 3px;
+    &:hover {
+      cursor: pointer;
+      fill: black;
+      stroke: black;
+      background-color: rgba(255,255,255, 74);
+      border-radius: 15px;
+      padding: 3px;
+    }
+  }
+
+  svg, div {
+    display: inline-block;
+    vertical-align: middle;
+  }
 `;
 
 interface IAnEmoteProps {
