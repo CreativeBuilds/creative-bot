@@ -256,7 +256,7 @@ export const ChatMessageSettings = ({
               onClick={isPage('configs') ? () => null : goToConfigs}
               selected={isPage('configs')}
             >
-              Config
+              {getPhrase('chat_custom_messages_config')}
             </PopupDialogTab>
           </PopupDialogTabHeaderWrapper>
         </PopupDialogTabWrapper>
@@ -343,7 +343,7 @@ export const ChatMessageSettings = ({
             <React.Fragment>
               <PopupDialogInputWrapper>
                 <PopupDialogInputName>
-                  Enable Stickers
+                  {getPhrase('chat_custom_messages_enablestickers')}
                 </PopupDialogInputName>
                 <Toggle
                   checked={enableStickerMessages}
@@ -352,12 +352,12 @@ export const ChatMessageSettings = ({
                   className={'toggler'}
                 />
                 <PopupDialogInputInfo>
-                  Enable or Disable stickers in chat
+                  {getPhrase('chat_custom_messages_enablestickers_info')}
                 </PopupDialogInputInfo>
               </PopupDialogInputWrapper>
               <PopupDialogInputWrapper>
                 <PopupDialogInputName>
-                  Enable Stickers as Text
+                  {getPhrase('chat_custom_messages_enablestickersastext')}
                 </PopupDialogInputName>
                 <Toggle
                   checked={enableStickersAsText}
@@ -366,7 +366,7 @@ export const ChatMessageSettings = ({
                   className={'toggler'}
                 />
                 <PopupDialogInputInfo>
-                  Allows the ability to display Stickers as Text in Chat
+                  {getPhrase('chat_custom_messages_enablestickersastext_info')}
                 </PopupDialogInputInfo>
               </PopupDialogInputWrapper>
             </React.Fragment>
